@@ -1,16 +1,27 @@
 const express = require('express');
 const path = require('node:path');
+const compression = require('compression');
 const apiRoutes = require('./routes/api');
 const { getDatabase } = require('./database');
 
 const app = express();
 
+// Compressão HTTP (Gzip/Deflate) para economizar dados móveis
+app.use(compression());
+
 // Middlewares essenciais
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos do frontend
-app.use(express.static(path.join(__dirname, '../public')));
+// Servir arquivos estáticos do frontend com cache HTTP para reduzir consumo de rede
+app.use(express.static(path.join(__dirname, '../public'), {
+  maxAge: '1d',
+  setHeaders: (res, filePath) => {
+    if (/\.(jpg|jpeg|png|svg|webp|woff2|woff|ttf)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
+    }
+  }
+}));
 
 // Rotas da API
 app.use('/api', apiRoutes);

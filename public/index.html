@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lino Livre — Livros livres, para todos.</title>
+  <meta name="description" content="Livros digitais e cursos gratuitos para todos.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -25,19 +26,29 @@
         <div class="brand-icon">📚</div>
         <div>
           <h1 class="brand-title">Lino Livre</h1>
-          <p class="brand-subtitle">Livros livres, para todos.</p>
+          <p class="brand-subtitle" data-i18n="tagline">Livros livres, para todos.</p>
         </div>
       </div>
       <div class="header-actions">
-        <a id="btn-header-comunidade" class="btn btn-whatsapp hidden" href="#" target="_blank" rel="noopener noreferrer" title="Entrar no grupo Lino Livre no WhatsApp">
+        <label class="language-picker" for="idioma-site">
+          <span data-i18n="language">Idioma</span>
+          <select id="idioma-site" aria-label="Idioma do site" data-i18n-aria-label="languageLabel" onchange="app.mudarIdioma(this.value)">
+            <option value="pt-BR">Português</option>
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="zh-CN">中文（简体）</option>
+            <option value="fr">Français</option>
+          </select>
+        </label>
+        <a id="btn-header-comunidade" class="btn btn-whatsapp hidden" href="#" target="_blank" rel="noopener noreferrer" title="Entrar no grupo Lino Livre no WhatsApp" data-i18n-title="joinGroupTitle">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          <span>Grupo</span>
+          <span data-i18n="group">Grupo</span>
         </a>
-        <a id="btn-header-canal" class="btn btn-whatsapp-outline hidden" href="#" target="_blank" rel="noopener noreferrer" title="Seguir o canal Lino Livre no WhatsApp">
+        <a id="btn-header-canal" class="btn btn-whatsapp-outline hidden" href="#" target="_blank" rel="noopener noreferrer" title="Seguir o canal Lino Livre no WhatsApp" data-i18n-title="followChannelTitle">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          <span>Canal</span>
+          <span data-i18n="channel">Canal</span>
         </a>
-        <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()">+ Adicionar Livro</button>
+        <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()" data-i18n="addBook">+ Adicionar Livro</button>
       </div>
     </div>
   </header>
@@ -45,9 +56,9 @@
   <!-- Navegação Principal por Abas -->
   <nav class="container nav-tabs-section">
     <div class="nav-tabs">
-      <button class="tab-btn active" id="tab-btn-livros" onclick="app.trocarAba('livros')">📚 Livros Digitais</button>
-      <button class="tab-btn" id="tab-btn-cursos" onclick="app.trocarAba('cursos')">🎓 Cursos Gratuitos</button>
-      <button class="tab-btn" id="tab-btn-dashboard" onclick="app.trocarAba('dashboard')">📊 Métricas & Fontes</button>
+      <button class="tab-btn active" id="tab-btn-livros" onclick="app.trocarAba('livros')" data-i18n="tabBooks">📚 Livros Digitais</button>
+      <button class="tab-btn" id="tab-btn-cursos" onclick="app.trocarAba('cursos')" data-i18n="tabCourses">🎓 Cursos Gratuitos</button>
+      <button class="tab-btn" id="tab-btn-dashboard" onclick="app.trocarAba('dashboard')" data-i18n="tabStats">📊 Métricas & Fontes</button>
     </div>
   </nav>
 
@@ -57,31 +68,31 @@
     <section class="container filter-section">
       <div class="search-bar">
         <span class="search-icon">🔍</span>
-        <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." oninput="app.buscarComDebounce()">
+        <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." data-i18n-placeholder="searchBooks" oninput="app.buscarComDebounce()">
       </div>
 
       <!-- Filtros de Categorias -->
       <div class="filter-row">
-        <span class="filter-label">Categorias:</span>
+        <span class="filter-label" data-i18n="categories">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
-          <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')">Todas</button>
-          <button class="pill" data-categoria="Tecnologia & Guias Digitais" onclick="app.filtrarPorCategoria('Tecnologia & Guias Digitais')">💻 Guias & Tecnologia</button>
-          <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')">Clássicos Brasileiros</button>
-          <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')">Romances</button>
-          <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')">Poesia</button>
-          <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')">Didáticos & Ensaios</button>
-          <button class="pill" data-categoria="Literatura Infantojuvenil" onclick="app.filtrarPorCategoria('Literatura Infantojuvenil')">Infantojuvenil</button>
+          <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')" data-i18n="allF">Todas</button>
+          <button class="pill" data-categoria="Tecnologia & Guias Digitais" onclick="app.filtrarPorCategoria('Tecnologia & Guias Digitais')" data-i18n="catTech">💻 Guias & Tecnologia</button>
+          <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')" data-i18n="catClassics">Clássicos Brasileiros</button>
+          <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')" data-i18n="catNovels">Romances</button>
+          <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')" data-i18n="catPoetry">Poesia</button>
+          <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')" data-i18n="catEducation">Didáticos & Ensaios</button>
+          <button class="pill" data-categoria="Literatura Infantojuvenil" onclick="app.filtrarPorCategoria('Literatura Infantojuvenil')" data-i18n="catYoung">Infantojuvenil</button>
         </div>
       </div>
 
       <!-- Filtros de Formato e Licença -->
       <div class="filter-row">
-        <span class="filter-label">Formato:</span>
+        <span class="filter-label" data-i18n="format">Formato:</span>
         <div class="pills-container" id="pills-formatos">
-          <button class="pill active" data-formato="" onclick="app.filtrarPorFormato('')">Todos</button>
+          <button class="pill active" data-formato="" onclick="app.filtrarPorFormato('')" data-i18n="allM">Todos</button>
           <button class="pill" data-formato="pdf" onclick="app.filtrarPorFormato('pdf')">PDF</button>
           <button class="pill" data-formato="epub" onclick="app.filtrarPorFormato('epub')">EPUB</button>
-          <button class="pill" data-formato="html" onclick="app.filtrarPorFormato('html')">Web / HTML</button>
+          <button class="pill" data-formato="html" onclick="app.filtrarPorFormato('html')" data-i18n="webFormat">Web / HTML</button>
           <button class="pill" data-formato="txt" onclick="app.filtrarPorFormato('txt')">TXT</button>
         </div>
       </div>
@@ -90,14 +101,14 @@
     <!-- Catálogo de Livros -->
     <main class="container main-container">
       <div id="grade-livros" class="books-grid">
-        <div class="loading">Carregando acervo digital...</div>
+        <div class="loading" data-i18n="loadingBooks">Carregando acervo digital...</div>
       </div>
 
       <!-- Paginação -->
       <div id="paginacao" class="pagination-container hidden">
-        <button id="btn-pag-ant" class="btn btn-secondary btn-sm" onclick="app.paginaAnterior()">← Anterior</button>
+        <button id="btn-pag-ant" class="btn btn-secondary btn-sm" onclick="app.paginaAnterior()" data-i18n="previous">← Anterior</button>
         <span id="texto-paginacao" class="pagination-info">Página 1 de 1</span>
-        <button id="btn-pag-prox" class="btn btn-secondary btn-sm" onclick="app.proximaPagina()">Próxima →</button>
+        <button id="btn-pag-prox" class="btn btn-secondary btn-sm" onclick="app.proximaPagina()" data-i18n="next">Próxima →</button>
       </div>
     </main>
   </div>
@@ -106,34 +117,37 @@
   <div id="aba-cursos" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner">
-        <div class="banner-badge-primary">⭐ Fonte Principal: Guia de TI</div>
-        <h2>Diretório de Cursos Livres, Livros Técnicos & Roadmaps</h2>
-        <p>Formação em tecnologia, inteligência artificial, programação e recursos educacionais abertos em parceria com o <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a> e as maiores instituições abertas do mundo.</p>
+        <div class="banner-badge-primary" data-i18n="mainSource">⭐ Fonte Principal: Guia de TI</div>
+        <h2 data-i18n="coursesHeading">Diretório de Cursos Livres, Livros Técnicos & Roadmaps</h2>
+        <p><span data-i18n="coursesIntro">Formação em tecnologia, inteligência artificial, programação e recursos educacionais abertos em parceria com o</span> <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a> <span data-i18n="coursesIntroEnd">e as maiores instituições abertas do mundo.</span></p>
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
         <span class="search-icon">🔍</span>
-        <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos, roadmaps ou tecnologias (Python, DevOps, IA, Power BI, Linux...)..." oninput="app.buscarCursosComDebounce()">
+        <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos, roadmaps ou tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-placeholder="searchCourses" oninput="app.buscarCursosComDebounce()">
       </div>
 
       <div class="filter-row">
-        <span class="filter-label">Filtros & Categorias:</span>
+        <span class="filter-label" data-i18n="filtersCategories">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
-          <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')">Todos</button>
-          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')">🚀 Guia de TI (Principal)</button>
-          <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')">Tecnologia Geral</button>
-          <button class="pill" data-filtro="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')">Ciências Exatas</button>
-          <button class="pill" data-filtro="Matemática" onclick="app.filtrarCursosPorArea('Matemática')">Matemática</button>
-          <button class="pill" data-filtro="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')">Biológicas</button>
-          <button class="pill" data-filtro="Ciências Humanas" onclick="app.filtrarCursosPorArea('Ciências Humanas')">Humanas</button>
-          <button class="pill" data-filtro="Linguagens" onclick="app.filtrarCursosPorArea('Linguagens')">Linguagens</button>
+          <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')" data-i18n="allM">Todos</button>
+          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="guiaMain">🚀 Guia de TI (Principal)</button>
+          <button class="pill pill-bradesco" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')">🏛️ Fundação Bradesco</button>
+          <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')" data-i18n="areaTech">Tecnologia Geral</button>
+          <button class="pill" data-filtro="Gestão & Negócios" onclick="app.filtrarCursosPorArea('Gestão & Negócios')" data-i18n="areaBusiness">Gestão & Negócios</button>
+          <button class="pill" data-filtro="Desenvolvimento Pessoal" onclick="app.filtrarCursosPorArea('Desenvolvimento Pessoal')" data-i18n="areaPersonal">Desenvolvimento Pessoal</button>
+          <button class="pill" data-filtro="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')" data-i18n="areaExact">Ciências Exatas</button>
+          <button class="pill" data-filtro="Matemática" onclick="app.filtrarCursosPorArea('Matemática')" data-i18n="areaMath">Matemática</button>
+          <button class="pill" data-filtro="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')" data-i18n="areaBio">Biológicas</button>
+          <button class="pill" data-filtro="Ciências Humanas" onclick="app.filtrarCursosPorArea('Ciências Humanas')" data-i18n="areaHuman">Humanas</button>
+          <button class="pill" data-filtro="Linguagens" onclick="app.filtrarCursosPorArea('Linguagens')" data-i18n="areaLanguages">Linguagens</button>
         </div>
       </div>
     </section>
 
     <main class="container main-container">
       <div id="grade-cursos" class="courses-grid">
-        <div class="loading">Carregando catálogo de cursos...</div>
+        <div class="loading" data-i18n="loadingCourses">Carregando catálogo de cursos...</div>
       </div>
     </main>
   </div>
@@ -142,7 +156,7 @@
   <div id="aba-dashboard" class="tab-content hidden">
     <section class="container main-container">
       <div id="dashboard-content" class="dashboard-grid">
-        <div class="loading">Carregando estatísticas do acervo...</div>
+        <div class="loading" data-i18n="loadingStats">Carregando estatísticas do acervo...</div>
       </div>
     </section>
   </div>
@@ -151,28 +165,28 @@
   <section id="secao-whatsapp" class="container whatsapp-section hidden" aria-labelledby="whatsapp-titulo">
     <h2 id="whatsapp-titulo" class="whatsapp-section-title">
       <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-      Junte-se ao Lino Livre no WhatsApp
+      <span data-i18n="joinWhatsapp">Junte-se ao Lino Livre no WhatsApp</span>
     </h2>
-    <p class="whatsapp-section-subtitle">Peça livros, receba novidades e partilhe leituras com a comunidade escolar.</p>
+    <p class="whatsapp-section-subtitle" data-i18n="whatsappIntro">Peça livros, receba novidades e partilhe leituras com a comunidade escolar.</p>
 
     <div class="whatsapp-cards">
       <div id="card-comunidade" class="whatsapp-card hidden">
-        <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" width="160" height="160" loading="lazy">
-        <h3>💬 Grupo Lino Livre</h3>
-        <p>Converse, peça e recomende livros que quer ler.</p>
+        <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="qrGroup" width="160" height="160" loading="lazy">
+        <h3 data-i18n="groupHeading">💬 Grupo Lino Livre</h3>
+        <p data-i18n="groupDescription">Converse, peça e recomende livros que quer ler.</p>
         <a id="link-card-comunidade" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          Entrar no grupo
+          <span data-i18n="joinGroup">Entrar no grupo</span>
         </a>
       </div>
 
       <div id="card-canal" class="whatsapp-card hidden">
-        <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" width="160" height="160" loading="lazy">
-        <h3>📢 Canal Livros e Cursos</h3>
-        <p>Receba as novidades de livros e cursos gratuitos.</p>
+        <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="qrChannel" width="160" height="160" loading="lazy">
+        <h3 data-i18n="channelHeading">📢 Canal Livros e Cursos</h3>
+        <p data-i18n="channelDescription">Receba as novidades de livros e cursos gratuitos.</p>
         <a id="link-card-canal" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          Seguir o canal
+          <span data-i18n="followChannel">Seguir o canal</span>
         </a>
       </div>
     </div>
@@ -181,11 +195,12 @@
   <!-- Rodapé -->
   <footer class="site-footer">
     <div class="container footer-content">
-      <p><strong>Lino Livre</strong> • Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</p>
+      <p><strong>Lino Livre</strong> • <span data-i18n="footerText">Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</span></p>
+      <p class="catalog-language-note" data-i18n="originalContent">Títulos, sinopses, cursos e textos permanecem no idioma original das fontes.</p>
       <p id="footer-links-container" class="footer-links hidden">
         <a id="link-footer-comunidade" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          Grupo WhatsApp
+          <span data-i18n="whatsappGroup">Grupo WhatsApp</span>
         </a>
         <span id="footer-separator" aria-hidden="true">•</span>
         <a id="link-footer-canal" href="#" target="_blank" rel="noopener noreferrer">
@@ -196,23 +211,141 @@
     </div>
   </footer>
 
-  <!-- MODAL: LEITOR ONLINE SIMPLES -->
-  <div id="modal-leitor" class="modal-backdrop hidden">
-    <div class="reader-modal">
+  <!-- MODAL: LEITOR DIGITAL IMERSIVO (ESTILO ONLINE LINO LIVRE) -->
+  <div id="modal-leitor" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="leitor-titulo">
+    <div class="reader-modal theme-creme" id="leitor-container">
+      
+      <!-- Barra Superior do Leitor -->
       <div class="reader-header">
-        <div>
+        <button class="reader-btn-back" onclick="app.fecharModais()" title="Voltar ao Catálogo">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span class="btn-back-text">Voltar</span>
+        </button>
+
+        <div class="reader-meta-central">
           <h3 id="leitor-titulo" class="reader-title">Título do Livro</h3>
           <p id="leitor-autor" class="reader-subtitle">Autor</p>
         </div>
-        <div class="reader-actions">
-          <button class="btn-text" onclick="app.alterarFonte(-2)">A-</button>
-          <button class="btn-text" onclick="app.alterarFonte(2)">A+</button>
-          <button class="btn-close" onclick="app.fecharModais()">&times;</button>
+
+        <!-- Seletor de Mídia [ Áudio | Texto ] -->
+        <div class="reader-segmented-toggle" role="tablist" aria-label="Modo de leitura">
+          <button id="toggle-audio-btn" type="button" class="toggle-pill" onclick="app.ativarModoAudio()">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            <span>Áudio</span>
+          </button>
+          <button id="toggle-texto-btn" type="button" class="toggle-pill active" onclick="app.ativarModoTexto()">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span>Texto</span>
+          </button>
+        </div>
+
+        <div class="reader-header-actions">
+          <button id="btn-toggle-painel" class="reader-action-btn" onclick="app.togglePainelAjustes()" title="Ajustes de Leitura e Conforto">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+          <button class="reader-action-btn" onclick="app.fecharModais()" title="Fechar Leitor">✕</button>
         </div>
       </div>
-      <div class="reader-body">
-        <div id="leitor-texto" class="reader-content font-serif"></div>
+
+      <!-- Barra de Controle de Voz / Audiolivro (Web Speech API) -->
+      <div id="player-audio-bar" class="reader-audio-bar hidden">
+        <div class="audio-info">
+          <span class="audio-pulse"></span>
+          <span id="audio-status-texto" class="audio-status">Voz do navegador pronta para leitura</span>
+          <span id="audio-voz-badge" class="badge-voz">pt-BR</span>
+        </div>
+        <div class="audio-controls">
+          <button id="btn-audio-play" class="btn-audio-control primary" onclick="app.alternarPlayAudio()">
+            <span id="icone-play">▶</span> Ouvir
+          </button>
+          <button id="btn-audio-stop" class="btn-audio-control" onclick="app.pararAudio()">
+            ⏹ Parar
+          </button>
+          <div class="audio-speed-selector">
+            <span class="speed-label">Velocidade:</span>
+            <button class="btn-speed active" data-speed="1" onclick="app.alterarVelocidadeAudio(1, this)">1.0x</button>
+            <button class="btn-speed" data-speed="1.2" onclick="app.alterarVelocidadeAudio(1.2, this)">1.2x</button>
+            <button class="btn-speed" data-speed="1.5" onclick="app.alterarVelocidadeAudio(1.5, this)">1.5x</button>
+          </div>
+        </div>
       </div>
+
+      <!-- Área de Leitura Principal -->
+      <div class="reader-body" id="reader-body-scroll">
+        <div class="reader-content font-serif" id="leitor-texto">
+          <!-- Conteúdo gerado dinamicamente com capitular e parágrafos estruturados -->
+        </div>
+
+        <!-- Indicador de Economia de Dados no Rodapé da Leitura -->
+        <div class="data-saver-notice">
+          <span>⚡ <strong>Modo Leitura Ultra Leve</strong> • Consumo de ~25 KB de dados móveis (economia de mais de 98% em relação ao download de PDF).</span>
+        </div>
+      </div>
+
+      <!-- Painel Flutuante de Conforto Visual (Bottom Sheet / Floating Card) -->
+      <div id="painel-ajustes-leitura" class="reader-bottom-panel" aria-label="Ajustes de leitura">
+        <div class="panel-handle-bar" onclick="app.togglePainelAjustes()">
+          <span class="panel-drag-pill"></span>
+        </div>
+        
+        <div class="panel-controls-grid">
+          <!-- 1. Controle de Luminosidade / Brilho -->
+          <div class="panel-control-row">
+            <span class="control-label">Iluminação</span>
+            <div class="brightness-slider-container">
+              <span class="sun-icon min">☀️</span>
+              <input type="range" id="slider-brilho" min="0.4" max="1" step="0.05" value="1" oninput="app.ajustarBrilho(this.value)" aria-label="Ajuste de brilho">
+              <span class="sun-icon max">☀️</span>
+            </div>
+          </div>
+
+          <!-- 2. Modos de Fundo / Tom do Papel -->
+          <div class="panel-control-row">
+            <span class="control-label">Tom do Papel</span>
+            <div class="paper-swatches">
+              <button type="button" id="swatch-creme" class="paper-swatch swatch-creme active" onclick="app.mudarTemaPapel('creme')" title="Creme Natural">
+                <span>Creme</span>
+              </button>
+              <button type="button" id="swatch-sepia" class="paper-swatch swatch-sepia" onclick="app.mudarTemaPapel('sepia')" title="Sépia Acolhedor">
+                <span>Sépia</span>
+              </button>
+              <button type="button" id="swatch-noturno" class="paper-swatch swatch-noturno" onclick="app.mudarTemaPapel('noturno')" title="Modo Noturno">
+                <span>Noite</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Tamanho da Fonte com Indicador Numérico -->
+          <div class="panel-control-row">
+            <span class="control-label">Tamanho da Fonte</span>
+            <div class="font-stepper">
+              <button type="button" class="btn-stepper" onclick="app.alterarFonte(-2)" title="Diminuir fonte">−</button>
+              <span id="valor-fonte-indicador" class="stepper-value">22</span>
+              <button type="button" class="btn-stepper" onclick="app.alterarFonte(2)" title="Aumentar fonte">+</button>
+            </div>
+          </div>
+
+          <!-- 4. Alinhamento de Texto -->
+          <div class="panel-control-row">
+            <span class="control-label">Alinhamento</span>
+            <div class="alignment-buttons">
+              <button type="button" class="btn-align" data-align="left" onclick="app.mudarAlinhamento('left')" title="Alinhar à Esquerda">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+              </button>
+              <button type="button" class="btn-align" data-align="center" onclick="app.mudarAlinhamento('center')" title="Centralizar">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/></svg>
+              </button>
+              <button type="button" class="btn-align active" data-align="justify" onclick="app.mudarAlinhamento('justify')" title="Justificado">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+              </button>
+              <button type="button" class="btn-align" data-align="right" onclick="app.mudarAlinhamento('right')" title="Alinhar à Direita">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

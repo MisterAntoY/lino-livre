@@ -42,6 +42,7 @@ router.get('/import/:id', fontesController.obterStatusImportacao);
 // 6. Cursos Livres e Gratuitos
 router.get('/cursos', cursosController.listar);
 router.get('/cursos/:id', cursosController.obterPorId);
+router.get('/cursos/:id/acessar', cursosController.acessarRedirect);
 router.post('/cursos', cursosController.criar);
 router.delete('/cursos/:id', cursosController.remover);
 

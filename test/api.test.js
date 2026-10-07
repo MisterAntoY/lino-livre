@@ -352,4 +352,57 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resBuscaPython.status, 200);
     assert.ok(resBuscaPython.data.some(c => c.titulo.toLowerCase().includes('python')));
   });
+
+  // Teste 10: Redirecionamento direto 302, integridade dos 61 cursos da Fundação Bradesco e capas autênticas
+  test('10. Redirecionamento 302 de cursos, catálogo da Fundação Bradesco e capas oficiais do Guia de TI', async () => {
+    // 10.1 - Obter um curso e verificar redirecionamento HTTP 302
+    const resCursos = await request('/api/cursos');
+    assert.equal(resCursos.status, 200);
+    assert.ok(resCursos.data.length >= 100, 'Catálogo deve possuir acervo expandido');
+
+    const primeiroCurso = resCursos.data[0];
+    const resRedirect = await request(`/api/cursos/${primeiroCurso.id}/acessar`);
+    assert.equal(resRedirect.status, 302, 'Deve responder HTTP 302 Found');
+    assert.equal(resRedirect.headers.get('location'), primeiroCurso.url, 'Header Location deve ser a URL direta do curso');
+
+    // 10.2 - Curso inexistente deve responder 404
+    const res404 = await request('/api/cursos/999999/acessar');
+    assert.equal(res404.status, 404, 'Curso inexistente deve retornar 404');
+
+    // 10.3 - Verificar todos os 61 cursos da Fundação Bradesco cadastrados um a um
+    const resBradesco = await request('/api/cursos?plataforma=Fundação Bradesco');
+    assert.equal(resBradesco.status, 200);
+    assert.equal(resBradesco.data.length, 61, 'Deve conter exatamente os 61 cursos oficiais da Fundação Bradesco');
+
+    for (const c of resBradesco.data) {
+      assert.ok(c.url.startsWith('https://www.ev.org.br/cursos/'), `Curso ${c.titulo} deve ter URL direta na EV`);
+      const slug = c.url.replace('https://www.ev.org.br/cursos/', '');
+      assert.ok(slug.length > 0, `Curso ${c.titulo} não pode ter URL genérica`);
+    }
+
+    // 10.4 - Garantir ausência total de URLs genéricas em todos os provedores
+    const urlsGenericasProibidas = [
+      'https://www.ev.org.br',
+      'https://ocw.mit.edu',
+      'https://phet.colorado.edu/pt_BR/',
+      'https://www.oercommons.org',
+      'https://pt.khanacademy.org'
+    ];
+    for (const c of resCursos.data) {
+      assert.ok(
+        !urlsGenericasProibidas.includes(c.url),
+        `Curso '${c.titulo}' possui URL genérica proibida: ${c.url}`
+      );
+    }
+
+    // 10.5 - Verificar capas webp dos livros do Guia de TI no acervo digital
+    const resLivros = await request('/api/livros?limit=50');
+    assert.equal(resLivros.status, 200);
+    const livrosGti = resLivros.data.data.filter(l => l.titulo.includes('Roadmap') || l.titulo.includes('DevOps') || l.titulo.includes('TechGuide') || l.titulo.includes('Trilha Info'));
+    assert.ok(livrosGti.length >= 4, 'Deve conter livros técnicos e roadmaps do Guia de TI');
+    for (const l of livrosGti) {
+      assert.ok(l.capa_url && l.capa_url.includes('guiadeti.com.br'), `Livro '${l.titulo}' deve possuir capa oficial do Guia de TI`);
+      assert.ok(l.capa_url.endsWith('.webp') || l.capa_url.includes('.webp'), `Capa do livro '${l.titulo}' deve ser formato webp`);
+    }
+  });
 });

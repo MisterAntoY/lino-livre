@@ -324,12 +324,18 @@ function parseRssItems(xmlText) {
     const linkMatch = raw.match(/<link(?:\s[^>]*)?>([\s\S]*?)<\/link>/i);
     const descMatch = raw.match(/<description(?:\s[^>]*)?>([\s\S]*?)<\/description>/i);
 
+    const encMatch = raw.match(/<enclosure[^>]+url=[\"']([^\"']+)[\"']/i) ||
+                     raw.match(/<media:content[^>]+url=[\"']([^\"']+)[\"']/i) ||
+                     raw.match(/<media:thumbnail[^>]+url=[\"']([^\"']+)[\"']/i) ||
+                     raw.match(/<img[^>]+src=[\"']([^\"']+)[\"']/i);
+    const capa_url = encMatch ? encMatch[1] : null;
+
     const title = titleMatch ? cleanCdata(titleMatch[1]) : '';
     const link = linkMatch ? cleanCdata(linkMatch[1]) : '';
     const desc = descMatch ? cleanCdata(descMatch[1]).replace(/<[^>]+>/g, '').trim() : '';
 
     if (title && link) {
-      items.push({ title, link, desc });
+      items.push({ title, link, desc, capa_url });
     }
   }
 
@@ -338,6 +344,7 @@ function parseRssItems(xmlText) {
 
 async function buscarGuiaDeTI(query = '') {
   const urls = [
+    'https://guiadeti.com.br/livros/feed/',
     'https://guiadeti.com.br/cursos/feed/',
     'https://guiadeti.com.br/roadmaps/feed/',
     'https://guiadeti.com.br/feed/'
@@ -389,13 +396,24 @@ async function buscarGuiaDeTI(query = '') {
 
     const slug = r.link.replace(/https?:\/\/guiadeti\.com\.br\/?/i, '').replace(/[\/]+/g, '-').replace(/^-|-$/g, '') || String(Math.random());
 
+    let capa_url = r.capa_url || null;
+    if (!capa_url) {
+      if (textAll.includes('ai expert')) capa_url = 'https://guiadeti.com.br/media/CACHE/images/library/2026/09/AI_Expert_Roadmap/65927a0974e90c3df4e690236a471e89.webp';
+      else if (textAll.includes('awesome roadmap')) capa_url = 'https://guiadeti.com.br/media/CACHE/images/library/2026/09/awesome/2ed4a9e52da1d1c276d7a2df6f618d02.webp';
+      else if (textAll.includes('devops')) capa_url = 'https://guiadeti.com.br/media/CACHE/images/library/2026/10/maestro-20261005-1a2d7f9a4897756f/cda1e67a527c2b1071b43c6290662c37.webp';
+      else if (textAll.includes('techguide')) capa_url = 'https://guiadeti.com.br/media/CACHE/images/library/2026/09/techguide/d9eb488def2346638788a8b5e8c1448d.webp';
+      else if (textAll.includes('trilha info')) capa_url = 'https://guiadeti.com.br/media/CACHE/images/library/2026/09/trilha-info/dee73d5d3f6c492970dd6f466a3b77ad.webp';
+      else if (textAll.includes('roadmap.sh')) capa_url = 'https://guiadeti.com.br/seo/thumbnail/roadmaps/roadmap/f906b934-8cde-44f9-8f18-6822586aa9a5/fallback.webp?v=v2-1790651464';
+      else capa_url = '/capas/o_alienista.png';
+    }
+
     return {
       id_externo: `guiadeti-${slug}`,
       titulo: r.title,
       autor_nome: 'Guia de TI & Comunidade',
       idioma: 'pt',
       ano_publicacao: 2026,
-      capa_url: '/capas/o_alienista.png',
+      capa_url,
       licenca: 'outro',
       sinopse: r.desc || 'Material educativo gratuito e trilha técnica disponibilizada pelo Guia de TI.',
       area,

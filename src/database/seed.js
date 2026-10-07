@@ -1,4 +1,5 @@
 const { getDatabase } = require('./index');
+const { cursosData } = require('./cursosSeedData');
 
 function seed(dbInstance = null) {
   const db = dbInstance || getDatabase();
@@ -233,7 +234,7 @@ function seed(dbInstance = null) {
     2026,
     'pt',
     'Guia estruturado e prático para o estudo e domínio de Inteligência Artificial, Machine Learning, Deep Learning e Engenharia de Prompts.',
-    '/capas/o_alienista.png',
+    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/AI_Expert_Roadmap/65927a0974e90c3df4e690236a471e89.webp',
     150,
     autGuiaTI,
     catTecnologia,
@@ -253,7 +254,7 @@ function seed(dbInstance = null) {
     2026,
     'pt',
     'Coleção abrangente de mapas de estudo para profissionais e estudantes de computação navegarem com clareza em suas jornadas de aprendizado.',
-    '/capas/policarpo_quaresma.png',
+    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/awesome/2ed4a9e52da1d1c276d7a2df6f618d02.webp',
     180,
     autGuiaTI,
     catTecnologia,
@@ -273,7 +274,7 @@ function seed(dbInstance = null) {
     2026,
     'pt',
     'Manual formativo sobre cultura DevOps, administração de sistemas Linux, automação e orquestração de servidores para infraestrutura moderna.',
-    '/capas/o_cortico.png',
+    'https://guiadeti.com.br/media/CACHE/images/library/2026/10/maestro-20261005-1a2d7f9a4897756f/cda1e67a527c2b1071b43c6290662c37.webp',
     220,
     autGuiaTI,
     catTecnologia,
@@ -285,64 +286,71 @@ function seed(dbInstance = null) {
   ).lastInsertRowid;
   insertLink.run(l11, 'html', 'https://guiadeti.com.br/cursos/curso-devops-cloud-linux-docker-e-projeto-marketplace/', 0, 1);
 
-  // 5. Inserir Cursos Gratuitos Curados (Guia de TI como principal fonte + OER internacionais)
+  // Livro 12 (Guia de TI): TechGuide.sh - Guia de Carreiras e Tecnologias
+  const l12 = insertLivro.run(
+    'TechGuide.sh - Guia de Carreiras e Tecnologias',
+    'Mapeamento de Habilidades e Competências Técnicas',
+    '978-0000000004',
+    2026,
+    'pt',
+    'Guia com caminhos estruturados de aprendizado, níveis de proficiência e tecnologias para desenvolvimento profissional.',
+    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/techguide/d9eb488def2346638788a8b5e8c1448d.webp',
+    160,
+    autGuiaTI,
+    catTecnologia,
+    fGuiaDeTI,
+    'guiadeti-techguide',
+    'outro',
+    410,
+    `TECHGUIDE.SH - GUIA DE CARREIRAS\n\nNavegue pelas tecnologias mais requisitadas e construa um plano de estudos sólido e direcionado.`
+  ).lastInsertRowid;
+  insertLink.run(l12, 'html', 'https://guiadeti.com.br/roadmaps/techguidesh-guia-de-carreiras-e-tecnologias/', 0, 1);
+
+  // Livro 13 (Guia de TI): Trilha Info - Trilhas Gratuitas em Português
+  const l13 = insertLivro.run(
+    'Trilha Info - Trilhas Gratuitas em Português',
+    'Formação Colaborativa em Frontend, Backend e DevOps',
+    '978-0000000005',
+    2026,
+    'pt',
+    'Trilhas colaborativas abertas em língua portuguesa para formação de desenvolvedores e preparação para entrevistas técnicas.',
+    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/trilha-info/dee73d5d3f6c492970dd6f466a3b77ad.webp',
+    190,
+    autGuiaTI,
+    catTecnologia,
+    fGuiaDeTI,
+    'guiadeti-trilha-info',
+    'outro',
+    375,
+    `TRILHA INFO\n\nAprenda a programar do zero e aprofunde seus conhecimentos em desenvolvimento web e engenharia de software em português.`
+  ).lastInsertRowid;
+  insertLink.run(l13, 'html', 'https://guiadeti.com.br/roadmaps/trilha-info-trilhas-gratuitas-de-tecnologia/', 0, 1);
+
+  // Livro 14 (Guia de TI): Roadmap.sh - Developer Roadmaps Traduzidos
+  const l14 = insertLivro.run(
+    'Roadmap.sh - Developer Roadmaps Traduzidos',
+    'Diretório Global de Guias de Estudo para Desenvolvedores',
+    '978-0000000006',
+    2026,
+    'pt',
+    'Mapas mentais e guias passo a passo cobrindo arquitetura de software, DevOps, segurança e stacks de programação.',
+    'https://guiadeti.com.br/seo/thumbnail/roadmaps/roadmap/f906b934-8cde-44f9-8f18-6822586aa9a5/fallback.webp?v=v2-1790651464',
+    210,
+    autGuiaTI,
+    catTecnologia,
+    fGuiaDeTI,
+    'guiadeti-roadmapsh',
+    'outro',
+    490,
+    `ROADMAP.SH - MAPAS DE CARREIRA\n\nDiretório de referência com trilhas para Frontend, Backend, DevOps, Cyber Security e Inteligência Artificial.`
+  ).lastInsertRowid;
+  insertLink.run(l14, 'html', 'https://guiadeti.com.br/roadmaps/roadmapsh-developer-roadmaps/', 0, 1);
+
+  // 5. Inserir Cursos Gratuitos Curados (Guia de TI + Fundação Bradesco 61 cursos + OER internacionais)
   const insertCurso = db.prepare(`
     INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
-
-  const cursosData = [
-    // Guia de TI — Cursos Oficiais e Roadmaps em Destaque Primário
-    ['Curso de Python 2025', 'Tecnologia', 'Guia de TI / Hashtag Programação', 'https://guiadeti.com.br/cursos/curso-de-python-2025/', 'gratuito', 'Iniciante', 'Curso gratuito de Python para iniciantes cobrindo variáveis, estruturas condicionais, listas, dicionários e lógica de programação moderna.'],
-    ['Curso DevOps: Cloud, Linux, Docker e Marketplace', 'Tecnologia', 'Guia de TI / Iago Ferreira TI', 'https://guiadeti.com.br/cursos/curso-devops-cloud-linux-docker-e-projeto-marketplace/', 'gratuito', 'Intermediário', 'Formação completa com 14 aulas sobre DevOps, SRE, Cloud Computing, Linux, Git, Docker, observabilidade e projeto de Marketplace.'],
-    ['Curso Básico de Power BI 2025: Do Zero ao Dashboard', 'Tecnologia', 'Guia de TI / Hashtag Treinamentos', 'https://guiadeti.com.br/cursos/curso-basico-de-power-bi-2025-do-zero-ao-dashboard/', 'gratuito', 'Iniciante', 'Aulas introdutórias práticas de Power BI com Power Query, modelagem de dados relacionais, fórmulas DAX, gráficos dinâmicos e dashboards.'],
-    ['Curso Básico e Gratuito de Claude & Engenharia de IA', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-basico-e-gratuito-de-claude/', 'gratuito', 'Iniciante', 'Curso completo de Claude abordando Artefatos, Cowork, Claude Code, Skills e automação de fluxos de trabalho com IA generativa.'],
-    ['Curso de Streamlit: Dashboards e Web Apps em Python', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-de-streamlit/', 'gratuito', 'Intermediário', 'Criação ágil de aplicações de dados e dashboards interativos em Python com filtros, gráficos interativos e integração com APIs.'],
-    ['Curso Gratuito de HTML e CSS: Landing Page do Zero', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-basico-de-html-e-css/', 'gratuito', 'Iniciante', 'Treinamento prático com 13 videoaulas abordando HTML semântico, CSS moderno, Flexbox, layout responsivo e formulários.'],
-    ['Curso de Introdução ao TypeScript', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-de-introducao-ao-typescript/', 'gratuito', 'Iniciante', 'Fundamentos de tipagem estática para JavaScript, interfaces, generics, classes, configuração de tsconfig e compilação para Node e Web.'],
-    ['Curso de Laravel 11 - Completo e Gratuito', 'Tecnologia', 'Guia de TI / Especializa TI', 'https://guiadeti.com.br/cursos/curso-de-laravel-11-completo-e-gratuito/', 'gratuito', 'Intermediário', 'Desenvolvimento moderno com Laravel 11, Docker, arquitetura MVC, autenticação, Eloquent ORM, Blade, validações e APIs REST.'],
-    ['Curso de Linux - Primeiros Passos e Terminal', 'Tecnologia', 'Guia de TI / Curso em Vídeo', 'https://guiadeti.com.br/cursos/curso-de-linux-primeiros-passos/', 'gratuito', 'Iniciante', 'Domínio do terminal Linux, comandos essenciais, manipulação de arquivos, permissões, usuários e administração básica do sistema operacional.'],
-    ['Curso de Redes de Computadores Grátis', 'Tecnologia', 'Guia de TI / Curso em Vídeo', 'https://guiadeti.com.br/cursos/curso-redes-de-computadores-gratis/', 'gratuito', 'Iniciante', 'Conceitos fundamentais de redes: arquitetura TCP/IP, endereçamento IPv4/IPv6, sub-redes, DNS, roteamento e segurança básica.'],
-    ['AI Expert Roadmap: Trilha de IA & Ciência de Dados', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/ai-expert-roadmap/', 'gratuito', 'Avançado', 'Guia completo e aberto para estudo de Machine Learning, Deep Learning, Engenharia de Dados, MLOps e Inteligência Artificial.'],
-    ['Awesome Roadmaps: Guias de Desenvolvimento de Software', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/awesome-roadmaps/', 'gratuito', 'Livre', 'Coleção consolidada de roteiros de estudo cobrindo frontend, backend, DevOps, cibersegurança e arquitetura de software.'],
-    ['TechGuide.sh - Guia de Carreiras e Tecnologias', 'Tecnologia', 'Guia de TI / Alura', 'https://guiadeti.com.br/roadmaps/techguidesh-guia-de-carreiras-e-tecnologias/', 'gratuito', 'Livre', 'Mapeamento das competências técnicas e caminhos de aprendizado para profissionais de tecnologia em diversas especialidades.'],
-    ['Trilha Info - Trilhas Gratuitas em Português', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/trilha-info-trilhas-gratuitas-de-tecnologia/', 'gratuito', 'Iniciante', 'Trilhas colaborativas e abertas para formação de desenvolvedores Frontend, Backend, Full Stack, DevOps e QA no Brasil.'],
-    ['Roadmap.sh - Developer Roadmaps Traduzidos', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/roadmapsh-developer-roadmaps/', 'gratuito', 'Livre', 'Mapas interativos de carreiras e habilidades para desenvolvimento de software, computação em nuvem e inteligência artificial.'],
-    
-    // Acervo Complementar OER & Aberto
-    ['Introdução à Ciência da Computação (CS50)', 'Tecnologia', 'Harvard / edX', 'https://cs50.harvard.edu/x/', 'gratuito', 'Iniciante', 'O curso de introdução à programação mais famoso do mundo, ensinando C, Python, SQL e algoritmos com acesso livre.'],
-    ['Física Geral com Simulações PhET', 'Ciências Exatas', 'University of Colorado / PhET', 'https://phet.colorado.edu/pt_BR/', 'cc-by', 'Ensino Médio', 'Simulações interativas gratuitas de física, química e biologia com planos de aula abertos.'],
-    ['Cálculo e Álgebra Linear Aberta', 'Matemática', 'MIT OpenCourseWare', 'https://ocw.mit.edu', 'cc-by-nc-sa', 'Intermediário', 'Materiais didáticos, videoaulas e provas completas dos cursos de graduação do MIT.'],
-    ['Livros Didáticos e Cursos Abertos de Biologia', 'Ciências Biológicas', 'OpenStax', 'https://openstax.org/details/books/biology-2e', 'cc-by', 'Ensino Médio e Superior', 'Livros e cursos abertos revisados por pares e adotados em centenas de instituições de ensino.'],
-    ['História do Brasil e Cidadania', 'Ciências Humanas', 'Khan Academy Brasil', 'https://pt.khanacademy.org/humanities/historia-do-brasil', 'cc-by-nc-sa', 'Iniciante', 'Aulas interativas e exercícios com gamificação cobrindo todo o currículo de história e ciências.'],
-    ['Fundamentos de Programação e Tecnologia', 'Tecnologia', 'Fundação Bradesco (Escola Virtual)', 'https://www.ev.org.br', 'gratuito', 'Iniciante', 'Cursos online gratuitos com emissão de certificado para estudantes e jovens profissionais.'],
-    ['Introdução à Física Mecânica', 'Ciências Exatas', 'MIT OpenCourseWare', 'https://ocw.mit.edu/courses/physics/', 'cc-by-nc-sa', 'Intermediário', 'Fundamentos de mecânica clássica, leis de Newton e conservação de energia.'],
-    ['Química Geral Interativa', 'Ciências Exatas', 'OpenStax', 'https://openstax.org/details/books/chemistry-2e', 'cc-by', 'Ensino Médio e Superior', 'Conceitos atômicos, reações químicas, estequiometria e equilíbrio químico.'],
-    ['Álgebra e Funções para Ensino Médio', 'Matemática', 'Khan Academy Brasil', 'https://pt.khanacademy.org/math/algebra', 'cc-by-nc-sa', 'Iniciante', 'Progressão de aprendizado em equações lineares, quadráticas e análise gráfica.'],
-    ['Biologia Celular e Molecular', 'Ciências Biológicas', 'CK-12 Foundation', 'https://www.ck12.org/biology/', 'cc-by-nc', 'Ensino Médio', 'Estudo estruturado da célula, genética mendeliana e biotecnologia.'],
-    ['Geometria e Trigonometria Prática', 'Matemática', 'CK-12 Foundation', 'https://www.ck12.org/geometry/', 'cc-by-nc', 'Ensino Médio', 'Teoremas fundamentais, cálculo de áreas e trigonometria do triângulo retângulo.'],
-    ['Introdução à Inteligência Artificial com Python', 'Tecnologia', 'Harvard / edX', 'https://cs50.harvard.edu/ai/', 'gratuito', 'Intermediário', 'Conceitos e algoritmos que orientam a inteligência artificial moderna e aprendizado de máquina.'],
-    ['Simulações de Circuitos Elétricos', 'Ciências Exatas', 'University of Colorado / PhET', 'https://phet.colorado.edu/pt_BR/simulations/circuit-construction-kit-dc', 'cc-by', 'Iniciante', 'Montagem interativa de circuitos elétricos com resistores, lâmpadas e baterias.'],
-    ['Literatura Brasileira e Redação Escolar', 'Linguagens', 'Fundação Bradesco (Escola Virtual)', 'https://www.ev.org.br', 'gratuito', 'Iniciante', 'Técnicas de redação dissertativo-argumentativa e análise dos grandes autores nacionais.'],
-    ['Gramática e Compreensão Textual', 'Linguagens', 'Khan Academy Brasil', 'https://pt.khanacademy.org', 'cc-by-nc-sa', 'Iniciante', 'Aulas de sintaxe, morfologia e leitura crítica orientada para estudantes.'],
-    ['Astronomia Fundamental Aberta', 'Ciências Exatas', 'OER Commons', 'https://www.oercommons.org', 'cc-by', 'Iniciante', 'Estudo do sistema solar, galáxias e evolução estelar com materiais de livre acesso.'],
-    ['Ecologia e Meio Ambiente Global', 'Ciências Biológicas', 'OER Commons', 'https://www.oercommons.org', 'cc-by', 'Iniciante', 'Dinâmica dos ecossistemas, biodiversidade e sustentabilidade ecológica.'],
-    ['Introdução à Microeconomia', 'Ciências Humanas', 'MIT OpenCourseWare', 'https://ocw.mit.edu/courses/economics/', 'cc-by-nc-sa', 'Intermediário', 'Princípios de mercados, oferta e demanda, tomada de decisão e políticas públicas.'],
-    ['Psicologia e Comportamento Humano', 'Ciências Humanas', 'OpenStax', 'https://openstax.org/details/books/psychology-2e', 'cc-by', 'Ensino Superior', 'Introdução à psicologia científica, cognição, memória e processos psicossociais.'],
-    ['Estatística Descritiva e Probabilidade', 'Matemática', 'OpenStax', 'https://openstax.org/details/books/introductory-statistics-2e', 'cc-by', 'Ensino Médio e Superior', 'Amostragem, medidas de tendência central, dispersão e distribuições de probabilidade.'],
-    ['Filosofia e Ética Cidadã', 'Ciências Humanas', 'OER Commons', 'https://www.oercommons.org', 'cc-by', 'Ensino Médio', 'Discussão sobre correntes filosóficas clássicas e dilemas morais contemporâneos.'],
-    ['Inglês Instrumental para Leitura e Pesquisa', 'Linguagens', 'Fundação Bradesco (Escola Virtual)', 'https://www.ev.org.br', 'gratuito', 'Iniciante', 'Desenvolvimento de competências para leitura de textos técnicos e acadêmicos em inglês.'],
-    ['Química Orgânica e Ligações Moleculares', 'Ciências Exatas', 'University of Colorado / PhET', 'https://phet.colorado.edu/pt_BR/', 'cc-by', 'Ensino Médio', 'Modelagem tridimensional de moléculas e visualização de reações orgânicas.'],
-    ['Algoritmos e Estruturas de Dados', 'Tecnologia', 'MIT OpenCourseWare', 'https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/', 'cc-by-nc-sa', 'Avançado', 'Ordenação, árvores de busca, grafos e complexidade computacional.'],
-    ['Desenvolvimento Web com Python e JS', 'Tecnologia', 'Harvard / edX', 'https://cs50.harvard.edu/web/', 'gratuito', 'Intermediário', 'Criação de aplicações web modernas, APIs REST, bancos de dados e interfaces reativas.'],
-    ['Empreendedorismo Jovem e Inovação', 'Ciências Humanas', 'Sebrae Educação', 'https://www.sebrae.com.br/sites/PortalSebrae/cursosonline', 'gratuito', 'Iniciante', 'Identificação de oportunidades, planejamento e criação de projetos de impacto.'],
-    ['Gestão de Projetos e Trabalho em Equipe', 'Gestão', 'Fundação Bradesco (Escola Virtual)', 'https://www.ev.org.br', 'gratuito', 'Iniciante', 'Metodologias ágeis, liderança colaborativa e organização de tarefas.'],
-    ['Genética, DNA e Hereditariedade', 'Ciências Biológicas', 'CK-12 Foundation', 'https://www.ck12.org/biology/genetics/', 'cc-by-nc', 'Ensino Médio', 'Mecanismos de replicação do DNA, transcrição, tradução e mutações gênicas.'],
-    ['Geografia Física e Cartografia Digital', 'Ciências Humanas', 'OER Commons', 'https://www.oercommons.org', 'cc-by', 'Ensino Médio', 'Estudo do relevo, clima, vegetação e interpretação de mapas e imagens de satélite.'],
-    ['Educação Financeira Pessoal', 'Ciências Humanas', 'Fundação Bradesco (Escola Virtual)', 'https://www.ev.org.br', 'gratuito', 'Iniciante', 'Planejamento orçamentário, investimentos básicos e consumo consciente.'],
-    ['Robótica e Eletrônica Aberta', 'Tecnologia', 'OER Commons', 'https://www.oercommons.org', 'cc-by', 'Iniciante', 'Introdução ao Arduino, componentes eletrônicos e automação para estudantes.'],
-    ['Neurociência Básica e Cognição', 'Ciências Biológicas', 'MIT OpenCourseWare', 'https://ocw.mit.edu/courses/brain-and-cognitive-sciences/', 'cc-by-nc-sa', 'Intermediário', 'Funcionamento do sistema nervoso, processamento sensorial e mecanismos de memória.']
-  ];
 
   for (const c of cursosData) {
     insertCurso.run(...c);

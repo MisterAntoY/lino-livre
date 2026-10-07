@@ -88,9 +88,24 @@ function remover(req, res) {
   }
 }
 
+function acessarRedirect(req, res) {
+  try {
+    const db = getDatabase();
+    const curso = db.prepare('SELECT id, titulo, url FROM cursos WHERE id = ?').get(req.params.id);
+    if (!curso) {
+      return res.status(404).json({ erro: 'Curso não encontrado' });
+    }
+    // Redirecionamento HTTP 302 direto para o curso oficial
+    res.redirect(302, curso.url);
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao redirecionar para o curso: ' + err.message });
+  }
+}
+
 module.exports = {
   listar,
   obterPorId,
+  acessarRedirect,
   criar,
   remover
 };
