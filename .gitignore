@@ -50,6 +50,11 @@ venv/
 .venv/
 *.egg-info/
 
+# Bancos de Dados locais
+*.db
+*.sqlite
+*.sqlite3
+
 # Arquivos temporários
 *.tmp
 *.temp
