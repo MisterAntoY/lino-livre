@@ -9,6 +9,7 @@ const app = {
   categoriaAtiva: '',
   fonteLivroAtiva: '',
   formatoAtivo: '',
+  filtroIdiomaLivro: '',
   areaCursoAtiva: '',
   fonteCursoAtiva: '',
   plataformaCursoAtiva: '',
@@ -169,6 +170,15 @@ const app = {
     this.carregarLivros();
   },
 
+  filtrarPorIdiomaLivro(lang) {
+    this.filtroIdiomaLivro = lang;
+    document.querySelectorAll('#pills-idiomas-livros .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+    this.paginaAtual = 1;
+    this.carregarLivros();
+  },
+
   async carregarLivros() {
     const grid = document.getElementById('grade-livros');
     grid.innerHTML = `<div class="loading">${t('books.searching')}</div>`;
@@ -179,6 +189,7 @@ const app = {
       if (this.categoriaAtiva) params.append('categoria_id', this.obterCategoriaId(this.categoriaAtiva));
       if (this.fonteLivroAtiva) params.append('fonte_slug', this.fonteLivroAtiva);
       if (this.formatoAtivo) params.append('formato', this.formatoAtivo);
+      if (this.filtroIdiomaLivro) params.append('idioma', this.filtroIdiomaLivro);
       params.append('page', this.paginaAtual);
       params.append('limit', 12);
 
@@ -210,7 +221,11 @@ const app = {
       'Desenvolvimento Web & Mobile': 8,
       'DevOps, Cloud & Infraestrutura': 9,
       'Ciência de Dados & Inteligência Artificial': 10,
-      'Metodologias Ágeis & Carreira Tech': 11
+      'Metodologias Ágeis & Carreira Tech': 11,
+      '🌍 Literatura & Vozes de África': 12,
+      '🌍 Contos & Tradição Oral Africana': 13,
+      '🌍 História & Sociedade Africana': 14,
+      '🌍 Filosofia & Pensamento Africano': 15
     };
     return mapa[nome] || nome || '';
   },
@@ -304,18 +319,30 @@ const app = {
         `;
       }
 
+      const langFlags = {
+        pt: '🇧🇷 PT',
+        en: '🇬🇧 EN',
+        fr: '🇫🇷 FR',
+        de: '🇩🇪 DE',
+        zh: '🇨🇳 ZH'
+      };
+      const flagLabel = langFlags[l.idioma] || (l.idioma || 'PT').toUpperCase();
+      const isAfrica = (l.categoria_nome && l.categoria_nome.includes('África'));
+
       return `
-        <article class="book-card">
+        <article class="book-card ${isAfrica ? 'book-card-africa' : ''}">
           <div class="book-cover-container">
             <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
-            <span class="badge-format">${l.idioma ? l.idioma.toUpperCase() : 'PT'}</span>
+            <span class="badge-format">${flagLabel}</span>
           </div>
 
           <div class="book-details">
             <h3 class="book-title">${this.escape(l.titulo)}</h3>
             <p class="book-author">${this.escape(l.autor_nome || t('books.defaultAuthor'))} ${l.ano_publicacao ? `• ${l.ano_publicacao}` : ''}</p>
             <div>
+              <span class="book-lang-badge lang-${l.idioma || 'pt'}">${flagLabel}</span>
               <span class="badge-license">${this.escape(licencaFormatada)}</span>
+              ${isAfrica ? `<span class="africa-stats-badge" style="background:#fef3c7; color:#78350f; border-color:#f59e0b; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700;">🌍 Coleção África</span>` : ''}
             </div>
 
             <p class="book-synopsis">${this.escape(sinopse)}</p>
@@ -628,25 +655,43 @@ const app = {
     }
   },
 
-  obterVozPortugues() {
+  obterVozParaIdioma(idioma = 'pt') {
     if (!('speechSynthesis' in window)) return null;
     const vozes = window.speechSynthesis.getVoices();
-    const vozPtBr = vozes.find(v => v.lang === 'pt-BR' || v.lang === 'pt_BR');
-    if (vozPtBr) return vozPtBr;
-    const vozPt = vozes.find(v => v.lang && v.lang.toLowerCase().startsWith('pt'));
-    if (vozPt) return vozPt;
+    if (!vozes || vozes.length === 0) return null;
+
+    const langCode = (idioma || 'pt').toLowerCase().slice(0, 2);
+
+    const prefixos = {
+      pt: ['pt-br', 'pt_br', 'pt-pt', 'pt'],
+      en: ['en-us', 'en_us', 'en-gb', 'en'],
+      fr: ['fr-fr', 'fr_fr', 'fr-ca', 'fr'],
+      de: ['de-de', 'de_de', 'de-at', 'de'],
+      zh: ['zh-cn', 'zh_cn', 'zh-tw', 'zh']
+    };
+
+    const targets = prefixos[langCode] || [langCode];
+    for (const pref of targets) {
+      const encontrada = vozes.find(v => v.lang && v.lang.toLowerCase().replace('_', '-').startsWith(pref));
+      if (encontrada) return encontrada;
+    }
     return vozes[0] || null;
+  },
+
+  obterVozPortugues() {
+    return this.obterVozParaIdioma(this.livroAtual?.idioma || 'pt');
   },
 
   atualizarBadgeVoz() {
     const badge = document.getElementById('audio-voz-badge');
-    const voz = this.obterVozPortugues();
+    const idiomaLivro = this.livroAtual?.idioma || 'pt';
+    const voz = this.obterVozParaIdioma(idiomaLivro);
     if (badge) {
       if (voz) {
-        badge.textContent = voz.name ? `${voz.lang} (${voz.name.split(' ')[0]})` : (voz.lang || 'pt-BR');
-        badge.title = `Voz: ${voz.name} (${voz.lang})`;
+        badge.textContent = voz.name ? `${voz.lang} (${voz.name.split(' ')[0]})` : (voz.lang || idiomaLivro);
+        badge.title = `Voz Nativa: ${voz.name} (${voz.lang})`;
       } else {
-        badge.textContent = 'pt-BR';
+        badge.textContent = idiomaLivro.toUpperCase();
       }
     }
   },
@@ -742,12 +787,14 @@ const app = {
 
     const texto = this.speechState.paragrafos[indice];
     const utterance = new SpeechSynthesisUtterance(texto);
-    const voz = this.obterVozPortugues();
+    const idiomaLivro = this.livroAtual?.idioma || 'pt';
+    const voz = this.obterVozParaIdioma(idiomaLivro);
     if (voz) {
       utterance.voice = voz;
       utterance.lang = voz.lang;
     } else {
-      utterance.lang = 'pt-BR';
+      const defaults = { pt: 'pt-BR', en: 'en-US', fr: 'fr-FR', de: 'de-DE', zh: 'zh-CN' };
+      utterance.lang = defaults[idiomaLivro] || 'pt-BR';
     }
     utterance.rate = this.speechState.velocidade;
 
@@ -1188,6 +1235,7 @@ const app = {
       const r = data.resumo || {};
       const formatos = data.formatos || [];
       const areas = data.areas || [];
+      const idiomas = data.idiomas || [];
       const fontes = data.fontes || [];
       const maisLidos = data.mais_lidos || [];
 
@@ -1212,6 +1260,28 @@ const app = {
         </div>
 
         <div class="dash-sections-row">
+          <div class="dash-box">
+            <h3>🌐 Idiomas do Acervo</h3>
+            <div class="dash-list">
+              ${idiomas.map(i => {
+                const flags = {
+                  pt: '🇧🇷 Português',
+                  en: '🇬🇧 English',
+                  fr: '🇫🇷 Français',
+                  de: '🇩🇪 Deutsch',
+                  zh: '🇨🇳 中文'
+                };
+                const label = flags[i.idioma] || (i.idioma ? i.idioma.toUpperCase() : 'Outro');
+                return `
+                  <div class="dash-list-item">
+                    <span>${label}</span>
+                    <span class="dash-list-badge">${i.total} ${t('dashboard.works')}</span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
           <div class="dash-box">
             <h3>${t('dashboard.formats')}</h3>
             <div class="dash-list">

@@ -27,6 +27,14 @@
       "dashboard": "📊 Metrics & Sources"
     },
     "books": {
+      "languageFilter": "Language:",
+      "allLanguages": "All Languages",
+      "africaBannerTitle": "The Largest Digital Book Library of Africa",
+      "africaBannerDesc": "Masterpieces of African literature, ancestral oral folklore, history of great civilizations, and philosophy in 5 languages: Portuguese, English, French, German, and Chinese. All books feature instant multi-chapter online reading without heavy PDF downloads.",
+      "catAfricaLit": "🌍 African Literature & Voices",
+      "catAfricaFolklore": "🌍 African Tales & Oral Tradition",
+      "catAfricaHistory": "🌍 African History & Civilizations",
+      "catAfricaPhilosophy": "🌍 African Thought & Philosophy",
       "searchPlaceholder": "Search by title or author...",
       "categories": "Categories:",
       "all": "All",
@@ -237,7 +245,11 @@
       "Desenvolvimento Web & Mobile": "Web & Mobile Development",
       "DevOps, Cloud & Infraestrutura": "DevOps, Cloud & Infrastructure",
       "Ciência de Dados & Inteligência Artificial": "Data Science & Artificial Intelligence",
-      "Metodologias Ágeis & Carreira Tech": "Agile Methodologies & Tech Career"
+      "Metodologias Ágeis & Carreira Tech": "Agile Methodologies & Tech Career",
+      "🌍 Literatura & Vozes de África": "🌍 African Literature & Voices",
+      "🌍 Contos & Tradição Oral Africana": "🌍 African Tales & Oral Tradition",
+      "🌍 História & Sociedade Africana": "🌍 African History & Civilizations",
+      "🌍 Filosofia & Pensamento Africano": "🌍 African Thought & Philosophy"
     },
     "areas": {
       "Tecnologia": "Technology",

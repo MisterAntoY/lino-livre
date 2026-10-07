@@ -110,5 +110,6 @@ END;
 CREATE INDEX IF NOT EXISTS idx_livros_autor ON livros(autor_id);
 CREATE INDEX IF NOT EXISTS idx_livros_categoria ON livros(categoria_id);
 CREATE INDEX IF NOT EXISTS idx_livros_fonte ON livros(fonte_id);
+CREATE INDEX IF NOT EXISTS idx_livros_idioma ON livros(idioma);
 CREATE INDEX IF NOT EXISTS idx_links_livro ON links_livros(livro_id);
 CREATE INDEX IF NOT EXISTS idx_cursos_area ON cursos(area);

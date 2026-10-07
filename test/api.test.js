@@ -424,4 +424,44 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     `).all();
     assert.equal(dupCheck.length, 0, 'Não deve existir nenhum livro duplicado no catálogo');
   });
+
+  // Teste 12: Coleção Monumental de África nos 5 idiomas oficiais
+  test('12. Coleção Monumental de África cobre 5 idiomas (pt, en, fr, de, zh) com capítulos e metadados', async () => {
+    // 12.1 - Consulta por idioma English (en)
+    const resEn = await request('/api/livros?idioma=en');
+    assert.equal(resEn.status, 200);
+    assert.ok(resEn.data.total >= 8, 'Deve conter acervo em inglês (>= 8)');
+    assert.ok(resEn.data.data.some(l => l.titulo.includes('Olaudah Equiano')));
+
+    // 12.2 - Consulta por idioma Français (fr)
+    const resFr = await request('/api/livros?idioma=fr');
+    assert.equal(resFr.status, 200);
+    assert.ok(resFr.data.total >= 6, 'Deve conter acervo em francês (>= 6)');
+    assert.ok(resFr.data.data.some(l => l.titulo.includes('Senghor') || l.autor_nome.includes('Senghor')));
+
+    // 12.3 - Consulta por idioma Deutsch (de)
+    const resDe = await request('/api/livros?idioma=de');
+    assert.equal(resDe.status, 200);
+    assert.ok(resDe.data.total >= 6, 'Deve conter acervo em alemão (>= 6)');
+    assert.ok(resDe.data.data.some(l => l.titulo.includes('Afrikanische') || l.titulo.includes('Bantu')));
+
+    // 12.4 - Consulta por idioma 中文 (zh)
+    const resZh = await request('/api/livros?idioma=zh');
+    assert.equal(resZh.status, 200);
+    assert.ok(resZh.data.total >= 8, 'Deve conter acervo em chinês (>= 8)');
+    assert.ok(resZh.data.data.some(l => l.titulo.includes('非洲') || l.titulo.includes('曼德拉')));
+
+    // 12.5 - Consulta por categoria africana
+    const resCatLit = await request('/api/livros?categoria_id=' + encodeURIComponent('🌍 Literatura & Vozes de África'));
+    assert.equal(resCatLit.status, 200);
+    assert.ok(resCatLit.data.total >= 10, 'Deve conter obras de Literatura e Vozes de África');
+
+    // 12.6 - Leitura com múltiplos capítulos estruturados
+    const resEquiano = await request('/api/livros?busca=Equiano');
+    assert.equal(resEquiano.status, 200);
+    const idEquiano = resEquiano.data.data[0].id;
+    const resDetalhe = await request(`/api/livros/${idEquiano}`);
+    assert.equal(resDetalhe.status, 200);
+    assert.ok(resDetalhe.data.conteudo_texto.includes('### Chapter I'), 'Deve possuir múltiplos capítulos para leitura online');
+  });
 });

@@ -27,6 +27,14 @@
       "dashboard": "📊 数据与来源"
     },
     "books": {
+      "languageFilter": "语言：",
+      "allLanguages": "全部语言",
+      "africaBannerTitle": "非洲最大数字图书宝库",
+      "africaBannerDesc": "汇聚非洲文学经典、古老口头传统神话、伟大古国文明通史与哲学思想，涵盖葡语、英语、法语、德语与中文五大语种。所有著作均支持浏览器多章节超轻量极速在线阅读，无需下载耗费移动流量。",
+      "catAfricaLit": "🌍 非洲文学与心声",
+      "catAfricaFolklore": "🌍 非洲故事与口头传统",
+      "catAfricaHistory": "🌍 非洲历史与文明",
+      "catAfricaPhilosophy": "🌍 非洲哲学与思潮",
       "searchPlaceholder": "按标题或作者搜索……",
       "categories": "分类：",
       "all": "全部",
@@ -237,7 +245,11 @@
       "Desenvolvimento Web & Mobile": "Web 与移动开发",
       "DevOps, Cloud & Infraestrutura": "DevOps、云与基础设施",
       "Ciência de Dados & Inteligência Artificial": "数据科学与人工智能",
-      "Metodologias Ágeis & Carreira Tech": "敏捷方法与技术职业"
+      "Metodologias Ágeis & Carreira Tech": "敏捷方法与技术职业",
+      "🌍 Literatura & Vozes de África": "🌍 非洲文学与心声",
+      "🌍 Contos & Tradição Oral Africana": "🌍 非洲故事与口头传统",
+      "🌍 História & Sociedade Africana": "🌍 非洲历史与文明",
+      "🌍 Filosofia & Pensamento Africano": "🌍 非洲哲学与思潮"
     },
     "areas": {
       "Tecnologia": "技术",

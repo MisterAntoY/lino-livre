@@ -1,10 +1,10 @@
 {
   "meta": {
     "code": "pt",
-    "label": "Português",
-    "flag": "🇧🇷",
-    "htmlLang": "pt-BR",
-    "speechLang": "pt-BR"
+    "label": "Português (Angola)",
+    "flag": "🇦🇴",
+    "htmlLang": "pt-AO",
+    "speechLang": "pt-AO"
   },
   "title": "Lino Livre — Livros livres, para todos.",
   "ui": {
@@ -27,15 +27,25 @@
       "dashboard": "📊 Métricas & Fontes"
     },
     "books": {
+      "languageFilter": "Idioma:",
+      "allLanguages": "Todos os Idiomas",
+      "africaBannerTitle": "O Maior Acervo de Livros Digitais de África",
+      "africaBannerDesc": "Obras-primas da literatura africana, contos da tradição oral ancestral, história das grandes civilizações e filosofia em 5 idiomas: Português, English, Français, Deutsch e 中文. Todos os livros possuem leitura online multi-capítulos sem necessidade de baixar arquivos pesados.",
+      "catAfricaLit": "🌍 Literatura & Vozes de África",
+      "catAfricaFolklore": "🌍 Contos & Tradição Oral Africana",
+      "catAfricaHistory": "🌍 História & Sociedade Africana",
+      "catAfricaPhilosophy": "🌍 Filosofia & Pensamento Africano",
       "searchPlaceholder": "Pesquisar por título ou autor...",
       "categories": "Categorias:",
       "all": "Todas",
       "catGuides": "💻 Guias & Tecnologia",
-      "catClassics": "Clássicos Brasileiros",
+      "catClassics": "Clássicos Lusófonos",
       "catRomance": "Romances",
       "catPoetry": "Poesia",
       "catEssays": "Didáticos & Ensaios",
       "catYouth": "Infantojuvenil",
+      "catAngolan": "Literatura Angolana",
+      "catAfricanLuso": "Literatura Africana Lusófona",
       "format": "Formato:",
       "allFormats": "Todos",
       "webFormat": "Web / HTML",
@@ -237,7 +247,15 @@
       "Desenvolvimento Web & Mobile": "Desenvolvimento Web & Mobile",
       "DevOps, Cloud & Infraestrutura": "DevOps, Cloud & Infraestrutura",
       "Ciência de Dados & Inteligência Artificial": "Ciência de Dados & Inteligência Artificial",
-      "Metodologias Ágeis & Carreira Tech": "Metodologias Ágeis & Carreira Tech"
+      "Metodologias Ágeis & Carreira Tech": "Metodologias Ágeis & Carreira Tech",
+      "🌍 Literatura & Vozes de África": "🌍 Literatura & Vozes de África",
+      "🌍 Contos & Tradição Oral Africana": "🌍 Contos & Tradição Oral Africana",
+      "🌍 História & Sociedade Africana": "🌍 História & Sociedade Africana",
+      "🌍 Filosofia & Pensamento Africano": "🌍 Filosofia & Pensamento Africano",
+      "Literatura Angolana": "Literatura Angolana",
+      "Literatura Africana Lusófona": "Literatura Africana Lusófona",
+      "Poesia Africana": "Poesia Africana",
+      "Autores Lusófonos Clássicos": "Autores Lusófonos Clássicos"
     },
     "areas": {
       "Tecnologia": "Tecnologia",
@@ -280,7 +298,7 @@
     "16": "O clássico de Martin Fowler demonstrando o catálogo de refatorações, princípios de código legível, cheiros de código (code smells) e testes automatizados.",
     "17": "Guia visual e didático cobrindo os 22 padrões clássicos de projeto (Criacionais, Estruturais e Comportamentais) com diagramas e analogias do mundo real.",
     "18": "Metodologia Lean Startup: ciclo Construir-Medir-Aprender, produto mínimo viável (MVP), testes de hipóteses e pivotagem para produtos digitais.",
-    "19": "Manual sobre desenvolvimento front-end focado em dispositivos móveis: media queries, viewport, otimização de imagens e navegação touch.",
+    "19": "Manual prático para criação de projetos eletrônicos e Internet das Coisas (IoT) com a plataforma de hardware livre Arduino.",
     "20": "Hábitos comprovados por líderes técnicos para foco, aprendizado contínuo, eliminação de distrações e construção de projetos de alto impacto.",
     "21": "Conceitos fundamentais de Big Data, Hadoop, Spark, NoSQL e arquiteturas de dados para suporte à tomada de decisões estratégicas.",
     "22": "Passo a passo para modelagem dimensional (Kimball), ETL open-source e criação de painéis gerenciais eficientes sem altos custos de licença.",
@@ -296,6 +314,26 @@
     "32": "Trilha aberta cobrindo linguagens backend (Node, Python, Java, Go), modelagem de dados, mensageria e segurança para serviços em produção.",
     "33": "Trilha estruturada em português para dominar cultura DevOps, automação de deploys, containers e infraestrutura como código.",
     "34": "Roteiro de formação para engenheiros de dados com recursos abertos cobrindo ingestão, processamento distribuído e governança de dados.",
-    "35": "Trilha completa em português para qualidade de software, testes manuais e automatizados, boas práticas e CI/CD com foco em QA."
+    "35": "Trilha completa em português para qualidade de software, testes manuais e automatizados, boas práticas e CI/CD com foco em QA.",
+    "36": "Primeiro livro de um autor angolano impresso em Angola (1849). Poesia lírica e saudosista de José da Silva Maia Ferreira, natural de Luanda.",
+    "37": "Poesia completa de Alda Lara, poetisa angolana pioneira (1904–1930). Temas de amor, terra, identidade e justiça social em verso livre.",
+    "38": "Poemas de Viriato da Cruz (1928–1967), maior poeta angolano do século XX. Voz fundadora da poesia de intervenção e libertação em Angola.",
+    "39": "Romance de José Eduardo Agualusa (2012). Mulher portuguesa isola-se em Luanda por 30 anos; diário, poemas e reflexões sobre Angola independente. Prémio Dublin 2017.",
+    "40": "Romance de Pepetela (1980). Guerra de libertação em Mayombe: guerrilheiros de várias etnias constroem na prática a unidade nacional angolana.",
+    "41": "Romance de Pepetela (1992). Trajetória de uma geração de nacionalistas angolanos da luta armada ao poder, confrontando utopias e realidades.",
+    "42": "Romance de Ondjaki (2012). Luanda contemporânea: corrupção, petróleo, memória e sobrevivência. Prémio José Saramago 2013.",
+    "43": "Romance de Boaventura Cardoso (2001). Mãe angolana enfrenta guerra, perda e memória. Reflexão profunda sobre maternidade e resistência.",
+    "44": "Coletânea de José Luandino Vieira (2004). Contos do musseque de Luanda: vida cotidiana, resistência cultural e língua portuguesa reinventada.",
+    "45": "Obra de Uanhenga Xitu (1984). Tradição oral cokwe transcrita: o Mestre Tamoda ensina sabedoria, ética e história do povo angolano.",
+    "46": "Poesia de Agostinho Neto (1974). Primeiro presidente de Angola: versos de luta, esperança e construção da nação. Inclui 'Sagrada Esperança'.",
+    "47": "Romance de Ondjaki (2003). Infância em Luanda pós-independência: sonhos, brincadeiras e a descoberta do mundo adulto. Prémio Jabuti Juvenil.",
+    "48": "Romance de Mia Couto (1992). Moçambique em guerra: dois homens — um velho contador de histórias, um menino — percorrem estradas devastadas. Prémio Camões 2013.",
+    "49": "Poesia de José Craveirinha (2004). Maior poeta moçambicano: versos de prisão, resistência e identidade africana em português reinventado.",
+    "50": "Romance de Baltasar Lopes (1947). Cabo Verde: Chiquinho cresce entre seca, emigração e o despertar da consciência crioula. Clássico da lusofonia.",
+    "51": "Poesia de Corsino Fortes (1986). Cabo Verde: árvore e tambor, identidade e diáspora. Prémio Camões 1989 (primeiro africano).",
+    "52": "Poesia de Jorge Barbosa (1941). Cabo Verde: claridade, mar e saudade. Fundador da Revista Claridade, marco do modernismo cabo-verdiano.",
+    "53": "Romance de Fernando Monteiro de Castro Soromenho (1961). Angola colonial: seca, fome e a tragédia dos trabalhadores forçados nos caminhos de ferro.",
+    "54": "Romance de Dina Salústio (2009). Cabo Verde: mulheres, tradição e modernidade. Primeira mulher cabo-verdiana a publicar romance. Prémio Camões 2020.",
+    "55": "Romance de Germano Almeida (2018). Cabo Verde: mistério, humor e crítica social. Prémio Camões 2018."
   }
 }

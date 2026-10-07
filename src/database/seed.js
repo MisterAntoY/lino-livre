@@ -1,6 +1,7 @@
 const { getDatabase } = require('./index');
 const { cursosData } = require('./cursosSeedData');
 const { githubBooks } = require('./githubBooksSeedData');
+const { livrosAfricaData } = require('./livrosAfricaData');
 const { roadmapShList } = require('./roadmapShData');
 const {
   domCasmurroTexto,
@@ -66,6 +67,10 @@ function seed(dbInstance = null) {
   const catDevOps = insertCat.run('DevOps, Cloud & Infraestrutura', 'Linux, Docker, Kubernetes, redes, segurança e computação em nuvem').lastInsertRowid;
   const catData = insertCat.run('Ciência de Dados & Inteligência Artificial', 'Big Data, Machine Learning, Business Intelligence, Data Science e estatística').lastInsertRowid;
   const catAgil = insertCat.run('Metodologias Ágeis & Carreira Tech', 'Scrum, Lean Startup, hábitos de produtividade, liderança e gestão técnica').lastInsertRowid;
+  const catAfricaLit = insertCat.run('🌍 Literatura & Vozes de África', 'Obras-primas da literatura africana e pan-africana em múltiplos idiomas').lastInsertRowid;
+  const catAfricaContos = insertCat.run('🌍 Contos & Tradição Oral Africana', 'Folclore, fábulas bantas, lendas de Anansi e sabedoria oral ancestral').lastInsertRowid;
+  const catAfricaHist = insertCat.run('🌍 História & Sociedade Africana', 'Civilizações antigas, impérios do Sahel, arqueologia e história pan-africana').lastInsertRowid;
+  const catAfricaFilo = insertCat.run('🌍 Filosofia & Pensamento Africano', 'Négritude, libertação, dignidade humana e filosofia pan-africana').lastInsertRowid;
 
   // 3. Inserir Autores
   const insertAutor = db.prepare('INSERT INTO autores (nome, nacionalidade, biografia) VALUES (?, ?, ?)');
@@ -533,6 +538,51 @@ function seed(dbInstance = null) {
     if (b.links && Array.isArray(b.links)) {
       for (const lk of b.links) {
         insertLink.run(bId, lk.formato || 'pdf', lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir a Coleção Monumental de África (5 idiomas: pt, en, fr, de, zh)
+  const catAfricaMap = {
+    '🌍 Literatura & Vozes de África': catAfricaLit,
+    '🌍 Contos & Tradição Oral Africana': catAfricaContos,
+    '🌍 História & Sociedade Africana': catAfricaHist,
+    '🌍 Filosofia & Pensamento Africano': catAfricaFilo
+  };
+
+  for (const b of livrosAfricaData) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, b.nacionalidade || 'Africana / Internacional', b.biografia || 'Autor de relevo da literatura e cultura africana.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catAfricaMap[b.categoria] || catAfricaLit;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      b.isbn || null,
+      b.ano || 1960,
+      b.idioma || 'pt',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 200,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      b.licenca || 'dominio-publico',
+      b.leituras || (Math.floor(Math.random() * 80) + 300),
+      b.conteudoTexto
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      for (const lk of b.links) {
+        insertLink.run(bId, lk.formato || 'html', encodeURI(lk.url), 0, 1);
       }
     }
   }

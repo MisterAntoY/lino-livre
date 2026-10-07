@@ -2102,3 +2102,149 @@ html[lang^="zh"] .course-title {
   background: #fde68a;
   color: #78350f;
 }
+
+/* ==================== COLEÇÃO DIGITAL MONUMENTAL DE ÁFRICA ==================== */
+.africa-collection-banner {
+  background: linear-gradient(135deg, #7c2d12 0%, #9a3412 40%, #b45309 100%);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(124, 45, 18, 0.3), 0 8px 10px -6px rgba(124, 45, 18, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.africa-collection-banner::after {
+  content: "🌍";
+  position: absolute;
+  right: 1.5rem;
+  bottom: -0.5rem;
+  font-size: 7rem;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.africa-banner-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.africa-badge {
+  background: #f59e0b;
+  color: #451a03;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.africa-stats-badge {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fef3c7;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
+}
+
+.africa-collection-banner h2 {
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.africa-collection-banner p {
+  font-size: 0.925rem;
+  line-height: 1.55;
+  color: #fed7aa;
+  margin: 0 0 1.25rem 0;
+  max-width: 820px;
+}
+
+.africa-lang-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pill-lang-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.pill-lang-btn:hover {
+  background: #ffffff;
+  color: #7c2d12;
+  border-color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.pill-lang-btn.pill-lang-reset {
+  background: #f59e0b;
+  color: #451a03;
+  border-color: #f59e0b;
+}
+
+.pill-lang-btn.pill-lang-reset:hover {
+  background: #fde68a;
+  color: #451a03;
+}
+
+/* Category highlights for African collection */
+.highlight-pill-africa {
+  background: #fffbeb !important;
+  color: #92400e !important;
+  border-color: #f59e0b !important;
+  font-weight: 600;
+}
+
+.highlight-pill-africa:hover {
+  background: #fef3c7 !important;
+  border-color: #d97706 !important;
+}
+
+.highlight-pill-africa.active {
+  background: #b45309 !important;
+  color: #ffffff !important;
+  border-color: #78350f !important;
+}
+
+/* Book Language Flag Badge */
+.book-lang-badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-right: 0.35rem;
+}
+
+.book-lang-badge.lang-pt { background: #fef3c7; color: #78350f; border-color: #fde68a; }
+.book-lang-badge.lang-en { background: #d1fae5; color: #064e3b; border-color: #a7f3d0; }
+.book-lang-badge.lang-fr { background: #e0f2fe; color: #0c4a6e; border-color: #bae6fd; }
+.book-lang-badge.lang-de { background: #ffedd5; color: #7c2d12; border-color: #fed7aa; }
+.book-lang-badge.lang-zh { background: #fce7f3; color: #831843; border-color: #fbcfe8; }
