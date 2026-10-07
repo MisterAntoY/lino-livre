@@ -2,10 +2,10 @@ const { test, describe, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { initDatabase, atualizarStatusAtrasos } = require('../src/database');
+const { initDatabase } = require('../src/database');
 
-describe('Testes do Sistema de Biblioteca Escolar', () => {
-  const testDbPath = path.join(__dirname, 'test_biblioteca.db');
+describe('Testes de Distribuição de Livros Digitais', () => {
+  const testDbPath = path.join(__dirname, 'test_digital.db');
   let db;
 
   before(() => {
@@ -23,18 +23,17 @@ describe('Testes do Sistema de Biblioteca Escolar', () => {
 
   test('Deve cadastrar categorias e impedir duplicações com o mesmo nome', () => {
     const insert = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
-    const res = insert.run('Literatura Brasileira', 'Livros nacionais');
+    const res = insert.run('Clássicos Brasileiros', 'Obras nacionais em domínio público');
     assert.ok(res.lastInsertRowid > 0);
 
-    // Tentar duplicar deve lançar erro devido à restrição UNIQUE
     assert.throws(() => {
-      insert.run('Literatura Brasileira', 'Tentativa duplicada');
+      insert.run('Clássicos Brasileiros', 'Tentativa duplicada');
     }, /UNIQUE/);
   });
 
-  test('Deve cadastrar autores corretamente', () => {
+  test('Deve cadastrar autores com dados biográficos', () => {
     const insert = db.prepare('INSERT INTO autores (nome, nacionalidade, biografia) VALUES (?, ?, ?)');
-    const res = insert.run('Machado de Assis', 'Brasileiro', 'Fundador da ABL');
+    const res = insert.run('Machado de Assis', 'Brasileiro', 'Mestre do realismo e fundador da ABL');
     assert.ok(res.lastInsertRowid > 0);
 
     const autor = db.prepare('SELECT * FROM autores WHERE id = ?').get(res.lastInsertRowid);
@@ -42,110 +41,89 @@ describe('Testes do Sistema de Biblioteca Escolar', () => {
     assert.equal(autor.nacionalidade, 'Brasileiro');
   });
 
-  test('Deve cadastrar livros com estoque inicial e chaves estrangeiras', () => {
+  test('Deve cadastrar livro digital com formato, arquivo e texto de leitura', () => {
     const autor = db.prepare('SELECT id FROM autores LIMIT 1').get();
     const categoria = db.prepare('SELECT id FROM categorias LIMIT 1').get();
 
     const insertLivro = db.prepare(`
-      INSERT INTO livros (titulo, isbn, ano_publicacao, quantidade_total, quantidade_disponivel, autor_id, categoria_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO livros (
+        titulo, subtitulo, sinopse, formato, arquivo_url, capa_url, conteudo_texto, autor_id, categoria_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    // Livro com 2 exemplares
-    const res = insertLivro.run('Dom Casmurro', '978-8572323864', 1899, 2, 2, autor.id, categoria.id);
+    const res = insertLivro.run(
+      'Dom Casmurro',
+      'Edição Digital Escolar',
+      'A história de Bento Santiago e Capitu.',
+      'PDF',
+      'https://exemplo.com/dom-casmurro.pdf',
+      'https://exemplo.com/capa.jpg',
+      'CAPÍTULO I: Do Título. Uma noite destas...',
+      autor.id,
+      categoria.id
+    );
+
     assert.ok(res.lastInsertRowid > 0);
 
     const livro = db.prepare('SELECT * FROM livros WHERE id = ?').get(res.lastInsertRowid);
     assert.equal(livro.titulo, 'Dom Casmurro');
-    assert.equal(livro.quantidade_total, 2);
-    assert.equal(livro.quantidade_disponivel, 2);
+    assert.equal(livro.formato, 'PDF');
+    assert.equal(livro.downloads_count, 0);
+    assert.equal(livro.leituras_count, 0);
+    assert.ok(livro.conteudo_texto.includes('CAPÍTULO I'));
   });
 
-  test('Regra de negócio: Realizar empréstimo deve decrementar quantidade_disponivel', () => {
-    const livro = db.prepare('SELECT * FROM livros WHERE titulo = ?').get('Dom Casmurro');
-    const qtdInicial = livro.quantidade_disponivel;
+  test('Distribuição digital: Deve incrementar downloads_count e registrar log de acesso', () => {
+    const livro = db.prepare('SELECT id, downloads_count FROM livros LIMIT 1').get();
+    const countAntes = livro.downloads_count;
 
-    // Empréstimo 1
-    db.prepare('UPDATE livros SET quantidade_disponivel = quantidade_disponivel - 1 WHERE id = ?').run(livro.id);
-    const emp1 = db.prepare(`
-      INSERT INTO emprestimos (livro_id, aluno_nome, aluno_matricula, data_emprestimo, data_devolucao_prevista, status)
-      VALUES (?, ?, ?, '2026-10-01', '2026-10-15', 'ativo')
-    `).run(livro.id, 'Carlos Alberto', 'MAT-100');
+    // Incrementar download
+    db.prepare('UPDATE livros SET downloads_count = downloads_count + 1 WHERE id = ?').run(livro.id);
 
-    assert.ok(emp1.lastInsertRowid > 0);
+    // Inserir log
+    const resAcesso = db.prepare(`
+      INSERT INTO acessos_digitais (livro_id, tipo_acesso, aluno_nome, aluno_turma)
+      VALUES (?, 'download', ?, ?)
+    `).run(livro.id, 'Lucas Silva', '3º Ano');
 
-    const livroApos1 = db.prepare('SELECT quantidade_disponivel FROM livros WHERE id = ?').get(livro.id);
-    assert.equal(livroApos1.quantidade_disponivel, qtdInicial - 1);
+    assert.ok(resAcesso.lastInsertRowid > 0);
 
-    // Empréstimo 2 (último exemplar)
-    db.prepare('UPDATE livros SET quantidade_disponivel = quantidade_disponivel - 1 WHERE id = ?').run(livro.id);
-    const emp2 = db.prepare(`
-      INSERT INTO emprestimos (livro_id, aluno_nome, aluno_matricula, data_emprestimo, data_devolucao_prevista, status)
-      VALUES (?, ?, ?, '2026-10-02', '2026-10-16', 'ativo')
-    `).run(livro.id, 'Mariana Lima', 'MAT-101');
+    const livroAtualizado = db.prepare('SELECT downloads_count FROM livros WHERE id = ?').get(livro.id);
+    assert.equal(livroAtualizado.downloads_count, countAntes + 1);
 
-    assert.ok(emp2.lastInsertRowid > 0);
-
-    const livroEsgotado = db.prepare('SELECT quantidade_disponivel FROM livros WHERE id = ?').get(livro.id);
-    assert.equal(livroEsgotado.quantidade_disponivel, 0);
+    const log = db.prepare('SELECT * FROM acessos_digitais WHERE id = ?').get(resAcesso.lastInsertRowid);
+    assert.equal(log.tipo_acesso, 'download');
+    assert.equal(log.aluno_nome, 'Lucas Silva');
   });
 
-  test('Regra de negócio: Devolução deve restaurar quantidade_disponivel e marcar como devolvido', () => {
-    const emp = db.prepare('SELECT * FROM emprestimos WHERE aluno_matricula = ?').get('MAT-100');
-    assert.equal(emp.status, 'ativo');
+  test('Distribuição digital: Deve incrementar leituras_count para leitura online no navegador', () => {
+    const livro = db.prepare('SELECT id, leituras_count FROM livros LIMIT 1').get();
+    const countAntes = livro.leituras_count;
 
-    // Devolver
-    db.prepare(`
-      UPDATE emprestimos
-      SET status = 'devolvido', data_devolucao_real = '2026-10-05'
-      WHERE id = ?
-    `).run(emp.id);
+    // Incrementar leitura
+    db.prepare('UPDATE livros SET leituras_count = leituras_count + 1 WHERE id = ?').run(livro.id);
 
-    db.prepare(`
-      UPDATE livros
-      SET quantidade_disponivel = MIN(quantidade_total, quantidade_disponivel + 1)
-      WHERE id = ?
-    `).run(emp.livro_id);
+    // Inserir log
+    const resAcesso = db.prepare(`
+      INSERT INTO acessos_digitais (livro_id, tipo_acesso, aluno_nome, aluno_turma)
+      VALUES (?, 'leitura_online', ?, ?)
+    `).run(livro.id, 'Mariana Costa', '2º Ano');
 
-    const empDevolvido = db.prepare('SELECT * FROM emprestimos WHERE id = ?').get(emp.id);
-    assert.equal(empDevolvido.status, 'devolvido');
-    assert.equal(empDevolvido.data_devolucao_real, '2026-10-05');
+    assert.ok(resAcesso.lastInsertRowid > 0);
 
-    const livroAtualizado = db.prepare('SELECT quantidade_disponivel FROM livros WHERE id = ?').get(emp.livro_id);
-    assert.equal(livroAtualizado.quantidade_disponivel, 1);
+    const livroAtualizado = db.prepare('SELECT leituras_count FROM livros WHERE id = ?').get(livro.id);
+    assert.equal(livroAtualizado.leituras_count, countAntes + 1);
   });
 
-  test('Regra de negócio: Identificação automática de empréstimo em atraso', () => {
+  test('Integridade: Excluir livro digital deve remover acessos em cascata', () => {
     const livro = db.prepare('SELECT id FROM livros LIMIT 1').get();
+    
+    const logsAntes = db.prepare('SELECT COUNT(*) AS total FROM acessos_digitais WHERE livro_id = ?').get(livro.id);
+    assert.ok(logsAntes.total > 0);
 
-    // Criar um empréstimo com data de devolução prevista no passado
-    const empAtrasado = db.prepare(`
-      INSERT INTO emprestimos (livro_id, aluno_nome, aluno_matricula, data_emprestimo, data_devolucao_prevista, status)
-      VALUES (?, ?, ?, '2026-09-01', '2026-09-15', 'ativo')
-    `).run(livro.id, 'Aluno Atrasado', 'MAT-999');
+    db.prepare('DELETE FROM livros WHERE id = ?').run(livro.id);
 
-    // Executar verificação de atraso
-    atualizarStatusAtrasos(db);
-
-    const res = db.prepare('SELECT status FROM emprestimos WHERE id = ?').get(empAtrasado.lastInsertRowid);
-    assert.equal(res.status, 'atrasado');
-  });
-
-  test('Regra de negócio: Integridade referencial impede deletar livro com empréstimo ativo', () => {
-    const livro = db.prepare(`
-      SELECT l.id FROM livros l
-      JOIN emprestimos e ON e.livro_id = l.id
-      WHERE e.status = 'ativo'
-      LIMIT 1
-    `).get();
-
-    assert.ok(livro);
-
-    // O controller verifica se há empréstimos ativos antes de deletar
-    const ativos = db.prepare(`
-      SELECT COUNT(*) AS total FROM emprestimos WHERE livro_id = ? AND status IN ('ativo', 'atrasado')
-    `).get(livro.id);
-
-    assert.ok(ativos.total > 0);
+    const logsDepois = db.prepare('SELECT COUNT(*) AS total FROM acessos_digitais WHERE livro_id = ?').get(livro.id);
+    assert.equal(logsDepois.total, 0);
   });
 });

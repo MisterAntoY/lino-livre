@@ -1,65 +1,63 @@
-const { getDatabase, atualizarStatusAtrasos } = require('../database');
+const { getDatabase } = require('../database');
 
 function metricas(req, res) {
   try {
     const db = getDatabase();
-    atualizarStatusAtrasos(db);
 
     const totaisLivros = db.prepare(`
       SELECT 
         COUNT(*) AS total_titulos,
-        COALESCE(SUM(quantidade_total), 0) AS total_exemplares,
-        COALESCE(SUM(quantidade_disponivel), 0) AS total_disponiveis,
-        COALESCE(SUM(quantidade_total - quantidade_disponivel), 0) AS total_emprestados
+        COALESCE(SUM(downloads_count), 0) AS total_downloads,
+        COALESCE(SUM(leituras_count), 0) AS total_leituras,
+        COALESCE(SUM(downloads_count + leituras_count), 0) AS total_engajamento
       FROM livros
     `).get();
 
-    const totaisEmprestimos = db.prepare(`
-      SELECT 
-        COUNT(CASE WHEN status = 'ativo' THEN 1 END) AS ativos,
-        COUNT(CASE WHEN status = 'atrasado' THEN 1 END) AS atrasados,
-        COUNT(CASE WHEN status = 'devolvido' THEN 1 END) AS devolvidos,
-        COUNT(*) AS total_historico
-      FROM emprestimos
-    `).get();
+    const formatos = db.prepare(`
+      SELECT formato, COUNT(*) AS total
+      FROM livros
+      GROUP BY formato
+    `).all();
 
     const totalAutores = db.prepare('SELECT COUNT(*) AS total FROM autores').get().total;
     const totalCategorias = db.prepare('SELECT COUNT(*) AS total FROM categorias').get().total;
 
-    const maisEmprestados = db.prepare(`
-      SELECT l.id, l.titulo, COUNT(e.id) AS total_emprestimos
+    const maisPopulares = db.prepare(`
+      SELECT 
+        l.id, l.titulo, l.formato, l.downloads_count, l.leituras_count,
+        (l.downloads_count + l.leituras_count) AS total_acessos,
+        a.nome AS autor_nome
       FROM livros l
-      JOIN emprestimos e ON e.livro_id = l.id
-      GROUP BY l.id
-      ORDER BY total_emprestimos DESC
+      LEFT JOIN autores a ON a.id = l.autor_id
+      ORDER BY total_acessos DESC
       LIMIT 5
     `).all();
 
-    const ultimosEmprestimos = db.prepare(`
+    const ultimosAcessos = db.prepare(`
       SELECT 
-        e.*,
-        l.titulo AS livro_titulo
-      FROM emprestimos e
-      JOIN livros l ON l.id = e.livro_id
-      ORDER BY e.criado_em DESC
-      LIMIT 5
+        a.id, a.tipo_acesso, a.aluno_nome, a.aluno_turma, a.criado_em,
+        l.titulo AS livro_titulo, l.formato
+      FROM acessos_digitais a
+      JOIN livros l ON l.id = a.livro_id
+      ORDER BY a.criado_em DESC
+      LIMIT 6
     `).all();
 
     res.json({
-      acervo: {
+      resumo: {
         total_titulos: totaisLivros.total_titulos,
-        total_exemplares: totaisLivros.total_exemplares,
-        total_disponiveis: totaisLivros.total_disponiveis,
-        total_emprestados: totaisLivros.total_emprestados,
+        total_downloads: totaisLivros.total_downloads,
+        total_leituras: totaisLivros.total_leituras,
+        total_engajamento: totaisLivros.total_engajamento,
         total_autores: totalAutores,
         total_categorias: totalCategorias
       },
-      emprestimos: totaisEmprestimos,
-      mais_emprestados: maisEmprestados,
-      ultimos_emprestimos: ultimosEmprestimos
+      formatos,
+      mais_populares: maisPopulares,
+      ultimos_acessos: ultimosAcessos
     });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao carregar métricas do dashboard: ' + err.message });
+    res.status(500).json({ erro: 'Erro ao carregar estatísticas digitais: ' + err.message });
   }
 }
 

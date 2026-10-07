@@ -8,28 +8,27 @@ function initDatabase(dbPath = null) {
   const targetPath = dbPath || path.join(__dirname, '../../biblioteca.db');
   const db = new DatabaseSync(targetPath);
 
-  // Ativar verificação de integridade referencial
+  // Ativar verificação de chaves estrangeiras
   db.exec('PRAGMA foreign_keys = ON;');
+
+  // Migração defensiva: se houver tabela 'livros' antiga sem a coluna 'formato', resetar estrutura
+  try {
+    const colunas = db.prepare("PRAGMA table_info(livros)").all();
+    if (colunas.length > 0 && !colunas.some(c => c.name === 'formato')) {
+      db.exec(`
+        DROP TABLE IF EXISTS emprestimos;
+        DROP TABLE IF EXISTS acessos_digitais;
+        DROP TABLE IF EXISTS livros;
+      `);
+    }
+  } catch (_) {}
 
   // Carregar e executar o esquema
   const schemaPath = path.join(__dirname, 'schema.sql');
   const schemaSql = fs.readFileSync(schemaPath, 'utf8');
   db.exec(schemaSql);
 
-  // Atualizar status de empréstimos vencidos automaticamente
-  atualizarStatusAtrasos(db);
-
   return db;
-}
-
-function atualizarStatusAtrasos(db) {
-  const hoje = new Date().toISOString().split('T')[0];
-  const updateStmt = db.prepare(`
-    UPDATE emprestimos
-    SET status = 'atrasado'
-    WHERE status = 'ativo' AND data_devolucao_prevista < ?
-  `);
-  updateStmt.run(hoje);
 }
 
 function getDatabase(dbPath = null) {
@@ -44,6 +43,5 @@ function getDatabase(dbPath = null) {
 
 module.exports = {
   getDatabase,
-  initDatabase,
-  atualizarStatusAtrasos
+  initDatabase
 };

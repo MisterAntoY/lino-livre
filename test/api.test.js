@@ -7,10 +7,10 @@ const app = require('../src/app');
 const { initDatabase } = require('../src/database');
 const { seed } = require('../src/database/seed');
 
-describe('Testes de Integração da API HTTP', () => {
+describe('Testes de Integração da API de Distribuição Digital', () => {
   let server;
   let port;
-  const testDbPath = path.join(__dirname, 'api_test.db');
+  const testDbPath = path.join(__dirname, 'api_test_digital.db');
 
   before(async () => {
     if (fs.existsSync(testDbPath)) {
@@ -48,59 +48,55 @@ describe('Testes de Integração da API HTTP', () => {
     return { status: res.status, data };
   };
 
-  test('GET /api/dashboard retorna estatísticas consolidadas', async () => {
+  test('GET /api/dashboard retorna métricas de distribuição digital', async () => {
     const res = await request('/api/dashboard');
     assert.equal(res.status, 200);
-    assert.ok(res.data.acervo.total_titulos > 0);
-    assert.ok(res.data.acervo.total_exemplares > 0);
-    assert.ok(res.data.emprestimos.ativos >= 0);
+    assert.ok(res.data.resumo.total_titulos > 0);
+    assert.ok(res.data.resumo.total_downloads > 0);
+    assert.ok(res.data.resumo.total_leituras > 0);
+    assert.ok(Array.isArray(res.data.formatos));
+    assert.ok(Array.isArray(res.data.mais_populares));
   });
 
-  test('GET /api/livros retorna lista com autores e categorias vinculados', async () => {
-    const res = await request('/api/livros');
-    assert.equal(res.status, 200);
-    assert.ok(Array.isArray(res.data));
-    const domCasmurro = res.data.find(l => l.titulo === 'Dom Casmurro');
-    assert.ok(domCasmurro);
-    assert.equal(domCasmurro.autor_nome, 'Machado de Assis');
-    assert.equal(domCasmurro.categoria_nome, 'Literatura Brasileira');
+  test('GET /api/livros filtra por formato digital', async () => {
+    const resPdf = await request('/api/livros?formato=PDF');
+    assert.equal(resPdf.status, 200);
+    assert.ok(resPdf.data.every(l => l.formato === 'PDF'));
+
+    const resWeb = await request('/api/livros?formato=Web');
+    assert.equal(resWeb.status, 200);
+    assert.ok(resWeb.data.every(l => l.formato === 'Web'));
   });
 
-  test('POST /api/emprestimos cria empréstimo e decrementa estoque', async () => {
-    // Buscar livro com estoque disponível
-    const listRes = await request('/api/livros?apenas_disponiveis=true');
+  test('POST /api/livros/:id/download incrementa downloads_count', async () => {
+    const listRes = await request('/api/livros');
     const livro = listRes.data[0];
-    const qtdAntes = livro.quantidade_disponivel;
+    const downloadsAntes = livro.downloads_count;
 
-    const payload = {
-      livro_id: livro.id,
-      aluno_nome: 'Ana Clara',
-      aluno_matricula: 'MAT-9901',
-      dias_prazo: 14
-    };
-
-    const empRes = await request('/api/emprestimos', {
+    const dlRes = await request(`/api/livros/${livro.id}/download`, {
       method: 'POST',
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ aluno_nome: 'Carolina Lima', aluno_turma: '3º EM' })
     });
 
-    assert.equal(empRes.status, 201);
-    assert.equal(empRes.data.aluno_nome, 'Ana Clara');
-    assert.equal(empRes.data.status, 'ativo');
+    assert.equal(dlRes.status, 200);
+    assert.equal(dlRes.data.total_downloads, downloadsAntes + 1);
 
-    // Verificar estoque atualizado do livro
     const livroAtualizado = await request(`/api/livros/${livro.id}`);
-    assert.equal(livroAtualizado.data.quantidade_disponivel, qtdAntes - 1);
+    assert.equal(livroAtualizado.data.downloads_count, downloadsAntes + 1);
+  });
 
-    // Devolver o livro
-    const devRes = await request(`/api/emprestimos/${empRes.data.id}/devolver`, {
-      method: 'POST'
+  test('POST /api/livros/:id/ler abre leitura online e incrementa leituras_count', async () => {
+    const listRes = await request('/api/livros');
+    const livro = listRes.data[0];
+    const leiturasAntes = livro.leituras_count;
+
+    const lerRes = await request(`/api/livros/${livro.id}/ler`, {
+      method: 'POST',
+      body: JSON.stringify({ aluno_nome: 'Gabriel Pires', aluno_turma: '1º EM' })
     });
-    assert.equal(devRes.status, 200);
-    assert.equal(devRes.data.emprestimo.status, 'devolvido');
 
-    // Confirmar reposição do estoque
-    const livroAposDevolucao = await request(`/api/livros/${livro.id}`);
-    assert.equal(livroAposDevolucao.data.quantidade_disponivel, qtdAntes);
+    assert.equal(lerRes.status, 200);
+    assert.ok(lerRes.data.livro.conteudo_texto);
+    assert.equal(lerRes.data.livro.leituras_count, leiturasAntes + 1);
   });
 });
