@@ -394,10 +394,10 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(livroSvg.capa_url.endsWith('.svg'), 'Capa deve ser vetor SVG original');
     assert.ok(livroSvg.links.some(lnk => lnk.url.includes('raw.githubusercontent.com')), 'Link deve ser direto do GitHub raw');
 
-    // 11.2 - Livros do italocamil0/books (todos os 219 livros)
+    // 11.2 - Livros do italocamil0/books (185 livros únicos desduplicados)
     const resItalo = await request('/api/livros?fonte_slug=github-italocamilo');
     assert.equal(resItalo.status, 200);
-    assert.ok(resItalo.data.total >= 200, 'Deve conter todos os livros do acervo italocamil0 (>= 200)');
+    assert.ok(resItalo.data.total >= 180, 'Deve conter todos os livros únicos do acervo italocamil0 (>= 180)');
     assert.ok(resItalo.data.data.some(l => l.links.some(lnk => lnk.url.includes('italocamil0/books'))));
 
     // 11.3 - Guias visuais e roadmaps da Trilha Info
@@ -410,8 +410,18 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resCatArq.status, 200);
     assert.ok(resCatArq.data.data.length > 0, 'Deve retornar livros de engenharia/arquitetura');
 
-    // 11.5 - Volume consolidado de livros
+    // 11.5 - Volume consolidado de livros únicos
     const resTodos = await request('/api/livros');
-    assert.ok(resTodos.data.total >= 350, 'Acervo deve conter mais de 350 livros cadastrados');
+    assert.ok(resTodos.data.total >= 320, 'Acervo deve conter mais de 320 livros únicos cadastrados');
+
+    // 11.6 - Garantia de zero títulos duplicados
+    const db = getDatabase();
+    const dupCheck = db.prepare(`
+      SELECT titulo, COUNT(*) as qtd
+      FROM livros
+      GROUP BY LOWER(TRIM(titulo))
+      HAVING COUNT(*) > 1
+    `).all();
+    assert.equal(dupCheck.length, 0, 'Não deve existir nenhum livro duplicado no catálogo');
   });
 });

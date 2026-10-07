@@ -1,10 +1,11 @@
 /**
- * Acervo Curado de Livros Técnicos e Manuais Abertos via GitHub e Fontes Oficiais
- * Fontes Oficiais:
- * - https://github.com/KAYOKG/BibliotecaDev (109 livros com capas SVG e PDFs diretos)
- * - https://github.com/italocamil0/books/tree/main/books (219 PDFs técnicos abertos)
- * - https://github.com/flaviojmendes/trilhainfo (12 guias visuais e roadmaps)
- * - https://guiadeti.com.br (6 roadmaps e manuais digitais)
+ * Acervo Curado e Higienizado de Livros Técnicos e Manuais Abertos via GitHub
+ * Deduplicado e Unificado:
+ * - BibliotecaDev: 109 livros (com capas originais SVG e PDFs diretos)
+ * - Books Tech (italocamil0): 185 livros únicos (sem sobreposições ou duplicatas internas)
+ * - Trilha Info: 12 guias e roadmaps visuais
+ * - Guia de TI: 6 guias e roadmaps digitais
+ * Total: 312 obras e guias técnicos únicos
  */
 
 const githubBooks = [
@@ -2175,25 +2176,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "A Web Mobile",
-    "subtitulo": "Programe para um Mundo de Muitos Dispositivos",
-    "autor": "Casa do Código",
-    "categoria": "Ciência de Dados & Inteligência Artificial",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-awebmobile",
-    "ano": 2018,
-    "paginas": 183,
-    "sinopse": "Manual e guia técnico abordando A Web Mobile. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/A%20Web%20Mobile%20-%20Programe%20para%20um%20Mundo%20de%20Muitos%20Dispositivos.svg",
-    "leituras": 140,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/A%20Web%20Mobile%20-%20Programe%20para%20um%20Mundo%20de%20Muitos%20Dispositivos%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Adrian Fernandez and Dung Dang (Auth.)",
     "subtitulo": null,
     "autor": "Getting Started with the MSP430 Launchpad",
@@ -2209,25 +2191,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Adrian%20Fernandez%20and%20Dung%20Dang%20(Auth.)%20-%20Getting%20Started%20with%20the%20MSP430%20Launchpad%20(2013).pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Agile",
-    "subtitulo": "Desenvolvimento de software com entregas frequentes e foco no valor de negocio",
-    "autor": "Casa do Código",
-    "categoria": "Metodologias Ágeis & Carreira Tech",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-agile",
-    "ano": 2018,
-    "paginas": 230,
-    "sinopse": "Manual e guia técnico abordando Agile. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Actionable%20Agile%20Metrics%20For%20Predictability%20-%20An%20Introduction.svg",
-    "leituras": 140,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Agile%20-%20Desenvolvimento%20de%20software%20com%20entregas%20frequentes%20e%20foco%20no%20valor%20de%20negocio%20-%20Casa%20do%20Codigo.pdf"
       }
     ]
   },
@@ -2460,25 +2423,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "CSS Eficiente",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-csseficiente",
-    "ano": 2018,
-    "paginas": 273,
-    "sinopse": "Manual e guia técnico abordando CSS Eficiente. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/CSS%20Eficiente%20-%20T%C3%A9cnicas%20e%20ferramentas%20que%20fazem%20a%20diferen%C3%A7a%20nos%20seus%20estilos.svg",
-    "leituras": 142,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/CSS%20Eficiente.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "CURSO_WD_43_-_DESENVOLVIMENTO_WEB_COM_HT",
     "subtitulo": null,
     "autor": "Comunidade Tech",
@@ -2593,25 +2537,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Começando com o Linux",
-    "subtitulo": "Comandos, serviços e administração",
-    "autor": "Casa do Código",
-    "categoria": "DevOps, Cloud & Infraestrutura",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-comecandocomolinux",
-    "ano": 2018,
-    "paginas": 280,
-    "sinopse": "Manual e guia técnico abordando Começando com o Linux. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 193,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Componentes Reutilizaveis em Java Com Reflexoes e Anotacoes",
     "subtitulo": null,
     "autor": "Casa do Código",
@@ -2650,25 +2575,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Conhecendo o Adobe Photoshop CS6 ",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Tecnologia & Guias Digitais",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-conhecendooadobephotoshopcs6-31",
-    "ano": 2018,
-    "paginas": 303,
-    "sinopse": "Manual e guia técnico abordando Conhecendo o Adobe Photoshop CS6 . Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 177,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Conhecendo%20o%20Adobe%20Photoshop%20CS6%20.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Containers com Docker do Desenvolvimento a Producao",
     "subtitulo": null,
     "autor": "Comunidade Tech",
@@ -2688,25 +2594,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Controlando versões com Git e GitHub",
-    "subtitulo": null,
-    "autor": "Casa do Código",
-    "categoria": "DevOps, Cloud & Infraestrutura",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-controlandoversoescomgitegithub",
-    "ano": 2018,
-    "paginas": 233,
-    "sinopse": "Manual e guia técnico abordando Controlando versões com Git e GitHub. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Controlando%20Vers%C3%B5es%20com%20Git%20e%20GitHub.svg",
-    "leituras": 160,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Controlando%20vers%C3%B5es%20com%20Git%20e%20GitHub%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Criando aplicações para o seu Windows Phone",
     "subtitulo": null,
     "autor": "Casa do Código",
@@ -2722,25 +2609,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Criando%20aplica%C3%A7%C3%B5es%20para%20o%20seu%20Windows%20Phone%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Criando aplicações para o seu Windows Phone",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Ciência de Dados & Inteligência Artificial",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-criandoaplicacoesparaoseuwindowspho-35",
-    "ano": 2018,
-    "paginas": 234,
-    "sinopse": "Manual e guia técnico abordando Criando aplicações para o seu Windows Phone. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 167,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Criando%20aplica%C3%A7%C3%B5es%20para%20o%20seu%20Windows%20Phone.pdf"
       }
     ]
   },
@@ -2779,25 +2647,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Cucumber%20e%20RSpec%20Construa%20aplica%C3%A7%C3%B5es%20Ruby%20com%20testes%20e%20especifica%C3%A7%C3%B5es%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Cucumber e RSpec Construa aplicações Ruby com testes e especificações",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Arquitetura & Engenharia de Software",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-cucumbererspecconstruaaplicacoesrub-38",
-    "ano": 2018,
-    "paginas": 181,
-    "sinopse": "Manual e guia técnico abordando Cucumber e RSpec Construa aplicações Ruby com testes e especificações. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 187,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Cucumber%20e%20RSpec%20Construa%20aplica%C3%A7%C3%B5es%20Ruby%20com%20testes%20e%20especifica%C3%A7%C3%B5es.pdf"
       }
     ]
   },
@@ -2935,25 +2784,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Desenvolvimento de Jogos para iOS",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-desenvolvimentodejogosparaios-46",
-    "ano": 2018,
-    "paginas": 267,
-    "sinopse": "Manual e guia técnico abordando Desenvolvimento de Jogos para iOS. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 177,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desenvolvimento%20de%20Jogos%20para%20iOS.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Desenvolvimento web com ASP.NET MVC",
     "subtitulo": null,
     "autor": "Casa do Código",
@@ -2973,9 +2803,9 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Desenvolvimento web com PHP e MySQL",
-    "subtitulo": null,
-    "autor": "Casa do Código",
+    "titulo": "Test-Driven Development no Mundo Real com PHP",
+    "subtitulo": "Teste e Design no Mundo Real com PHP",
+    "autor": "Maurício Aniche",
     "categoria": "Ciência de Dados & Inteligência Artificial",
     "fonteSlug": "github-italocamilo",
     "fonteIdExterno": "italo-desenvolvimentowebcomphpemysql",
@@ -3049,25 +2879,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "DevOps na prática",
-    "subtitulo": "entrega de software confiável e automatizada",
-    "autor": "Casa do Código",
-    "categoria": "DevOps, Cloud & Infraestrutura",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-devopsnapratica",
-    "ano": 2018,
-    "paginas": 246,
-    "sinopse": "Manual e guia técnico abordando DevOps na prática. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/DevOps%20na%20Pr%C3%A1tica%20-%20Entrega%20de%20Software%20Confi%C3%A1vel%20e%20Automatizada.svg",
-    "leituras": 138,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/DevOps%20na%20pr%C3%A1tica%20-%20entrega%20de%20software%20confi%C3%A1vel%20e%20automatizada%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Diego Martins de Pinho",
     "subtitulo": "Javascript",
     "autor": "ECMAScript 6 Entre de cabeça no futuro do JavaScript",
@@ -3121,25 +2932,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Dominando%20JavaScript%20Com%20Jquery%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Dominando JavaScript Com Jquery ",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-dominandojavascriptcomjquery-56",
-    "ano": 2018,
-    "paginas": 285,
-    "sinopse": "Manual e guia técnico abordando Dominando JavaScript Com Jquery . Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 189,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Dominando%20JavaScript%20Com%20Jquery%20.pdf"
       }
     ]
   },
@@ -3258,25 +3050,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Entrega contínua em Android",
-    "subtitulo": null,
-    "autor": "Como automatizar a distribuição de apps",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-entregacontinuaemandroid",
-    "ano": 2018,
-    "paginas": 283,
-    "sinopse": "Manual e guia técnico abordando Entrega contínua em Android. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Entrega%20cont%C3%ADnua%20em%20Android%20-%20Como%20automatizar%20a%20distribui%C3%A7%C3%A3o%20de%20apps.svg",
-    "leituras": 159,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Entrega%20cont%C3%ADnua%20em%20Android%20-%20Como%20automatizar%20a%20distribui%C3%A7%C3%A3o%20de%20apps.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Estrutura de Dados, algoritmos, análise da complexidade e implementações em Java e C, C--",
     "subtitulo": null,
     "autor": "Comunidade Tech",
@@ -3334,25 +3107,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Explorando APIs e bibliotecas Java JDBC, IO, Threads, JavaFX e mais",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Ciência de Dados & Inteligência Artificial",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-explorandoapisebibliotecasjavajdbci-67",
-    "ano": 2018,
-    "paginas": 306,
-    "sinopse": "Manual e guia técnico abordando Explorando APIs e bibliotecas Java JDBC, IO, Threads, JavaFX e mais. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 150,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Explorando%20APIs%20e%20bibliotecas%20Java%20JDBC%2C%20IO%2C%20Threads%2C%20JavaFX%20e%20mais.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Falando de Grails Altíssima produtividade no desenvolvimento web",
     "subtitulo": null,
     "autor": "Casa do Código",
@@ -3372,25 +3126,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Fragmentos de um programador",
-    "subtitulo": null,
-    "autor": "Artigos e insights da carreira de um profissional",
-    "categoria": "Arquitetura & Engenharia de Software",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-fragmentosdeumprogramador",
-    "ano": 2018,
-    "paginas": 316,
-    "sinopse": "Manual e guia técnico abordando Fragmentos de um programador. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Fragmentos%20de%20um%20programador%20-%20Artigos%20e%20insights%20da%20carreira%20de%20um%20profissional.svg",
-    "leituras": 135,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Fragmentos%20de%20um%20programador%20-%20Artigos%20e%20insights%20da%20carreira%20de%20um%20profissional.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Como aumentar as chances de sucesso do seu software",
     "subtitulo": null,
     "autor": "Gestão de produtos",
@@ -3406,25 +3141,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Gest%C3%A3o%20de%20produtos%20-%20Como%20aumentar%20as%20chances%20de%20sucesso%20do%20seu%20software.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Google Android",
-    "subtitulo": "crie aplicações para celulares e tablets",
-    "autor": "Casa do Código",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-googleandroid",
-    "ano": 2018,
-    "paginas": 274,
-    "sinopse": "Manual e guia técnico abordando Google Android. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Google%20Android%20-%20crie%20aplica%C3%A7%C3%B5es%20para%20celulares%20e%20tablets.svg",
-    "leituras": 146,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Google%20Android%20-%20crie%20aplica%C3%A7%C3%B5es%20para%20celulares%20e%20tablets%20-%20Casa%20do%20Codigo.pdf"
       }
     ]
   },
@@ -3501,25 +3217,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Guia%20da%20Startup%20Como%20startups%20e%20empresas%20estabelecidas%20podem%20criar%20produtos%20web%20rent%C3%A1veis%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Guia do Mestre Programador",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Ciência de Dados & Inteligência Artificial",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-guiadomestreprogramador",
-    "ano": 2018,
-    "paginas": 234,
-    "sinopse": "Manual e guia técnico abordando Guia do Mestre Programador. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Guia%20do%20Mestre%20Programador%20-%20Pensando%20como%20pirata%2C%20evoluindo%20como%20jedi.svg",
-    "leituras": 159,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Guia%20do%20Mestre%20Programador.pdf"
       }
     ]
   },
@@ -3695,25 +3392,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Introdução e boas práticas em UX Design",
-    "subtitulo": null,
-    "autor": "Casa do Código",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-introducaoeboaspraticasemuxdesign",
-    "ano": 2018,
-    "paginas": 239,
-    "sinopse": "Manual e guia técnico abordando Introdução e boas práticas em UX Design. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 166,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introdu%C3%A7%C3%A3o%20e%20boas%20pr%C3%A1ticas%20em%20UX%20Design%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Introdução à Arquitetura e Design de Software",
     "subtitulo": null,
     "autor": "Casa do Código",
@@ -3729,25 +3407,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introdu%C3%A7%C3%A3o%20%C3%A0%20Arquitetura%20e%20Design%20de%20Software%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Introdução à Arquitetura e Design de Software",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Arquitetura & Engenharia de Software",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-introducaoaarquiteturaedesigndesoft-88",
-    "ano": 2018,
-    "paginas": 282,
-    "sinopse": "Manual e guia técnico abordando Introdução à Arquitetura e Design de Software. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 186,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introdu%C3%A7%C3%A3o%20%C3%A0%20Arquitetura%20e%20Design%20de%20Software.pdf"
       }
     ]
   },
@@ -3843,25 +3502,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java%208%20Pratico%20Lambdas%20Streams%20e%20os%20Novos%20Recursos%20da%20Linguagem%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Java 8 Pratico Lambdas Streams e os Novos Recursos da Linguagem",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-java8praticolambdasstreamseosnovosr-94",
-    "ano": 2018,
-    "paginas": 181,
-    "sinopse": "Manual e guia técnico abordando Java 8 Pratico Lambdas Streams e os Novos Recursos da Linguagem. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 135,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java%208%20Pratico%20Lambdas%20Streams%20e%20os%20Novos%20Recursos%20da%20Linguagem.pdf"
       }
     ]
   },
@@ -4607,25 +4247,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Livro de PHP",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-livrodephp",
-    "ano": 2018,
-    "paginas": 308,
-    "sinopse": "Manual e guia técnico abordando Livro de PHP. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 135,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20PHP.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Livro de Python (Automatize tarefas maçantes)",
     "subtitulo": null,
     "autor": "Comunidade Tech",
@@ -4968,25 +4589,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "MundoJ Segurança com Java",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-mundojsegurancacomjava-153",
-    "ano": 2018,
-    "paginas": 205,
-    "sinopse": "Manual e guia técnico abordando MundoJ Segurança com Java. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 140,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/MundoJ%20Seguran%C3%A7a%20com%20Java.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "MySQL Comece com o principal banco de dados open source do mercado",
     "subtitulo": null,
     "autor": "Casa do Código",
@@ -5002,25 +4604,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/MySQL%20Comece%20com%20o%20principal%20banco%20de%20dados%20open%20source%20do%20mercado%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "MySQL Comece com o principal banco de dados open source do mercado",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Ciência de Dados & Inteligência Artificial",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-mysqlcomececomoprincipalbancodedado-155",
-    "ano": 2018,
-    "paginas": 195,
-    "sinopse": "Manual e guia técnico abordando MySQL Comece com o principal banco de dados open source do mercado. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 179,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/MySQL%20Comece%20com%20o%20principal%20banco%20de%20dados%20open%20source%20do%20mercado.pdf"
       }
     ]
   },
@@ -5101,25 +4684,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "O Programador Apaixonado",
-    "subtitulo": "Construindo uma carreira notavel em desenvolvimento de software",
-    "autor": "Casa do Código",
-    "categoria": "Metodologias Ágeis & Carreira Tech",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-oprogramadorapaixonado",
-    "ano": 2018,
-    "paginas": 196,
-    "sinopse": "Manual e guia técnico abordando O Programador Apaixonado. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/O%20Programador%20Apaixonado%20-%20Construindo%20uma%20Carreira%20Not%C3%A1vel%20em%20Desenvolvimento%20de%20Software.svg",
-    "leituras": 123,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/O%20Programador%20Apaixonado%20-%20Construindo%20uma%20carreira%20notavel%20em%20desenvolvimento%20de%20software%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Construindo uma carreira notavel em desenvolvimento de software",
     "subtitulo": null,
     "autor": "O Programador Apaixonado",
@@ -5192,63 +4756,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Orienta%C3%A7%C3%A3o%20a%20Objetos%20e%20SOLID%20para%20Ninjas%20Projetando%20classes%20flex%C3%ADveis%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Orientação a Objetos e SOLID para Ninjas Projetando classes flexíveis",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Tecnologia & Guias Digitais",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-orientacaoaobjetosesolidparaninjasp-165",
-    "ano": 2018,
-    "paginas": 202,
-    "sinopse": "Manual e guia técnico abordando Orientação a Objetos e SOLID para Ninjas Projetando classes flexíveis. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 137,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Orienta%C3%A7%C3%A3o%20a%20Objetos%20e%20SOLID%20para%20Ninjas%20Projetando%20classes%20flex%C3%ADveis.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Crie aplicações web como um verdadeiro artesão",
-    "subtitulo": null,
-    "autor": "PHP e Laravel",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-crieaplicacoeswebcomoumverdadeiroar",
-    "ano": 2018,
-    "paginas": 206,
-    "sinopse": "Manual e guia técnico abordando Crie aplicações web como um verdadeiro artesão. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 182,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/PHP%20e%20Laravel%20-%20Crie%20aplica%C3%A7%C3%B5es%20web%20como%20um%20verdadeiro%20artes%C3%A3o.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "PHP e Laravel Crie aplicações web como um verdadeiro artesão",
-    "subtitulo": null,
-    "autor": "Casa do Código",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-phpelaravelcrieaplicacoeswebcomoumv",
-    "ano": 2018,
-    "paginas": 258,
-    "sinopse": "Manual e guia técnico abordando PHP e Laravel Crie aplicações web como um verdadeiro artesão. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 162,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/PHP%20e%20Laravel%20Crie%20aplica%C3%A7%C3%B5es%20web%20como%20um%20verdadeiro%20artes%C3%A3o%20-%20Casa%20do%20Codigo.pdf"
       }
     ]
   },
@@ -5728,28 +5235,9 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Swift Programe para iPhone e iPad",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Tecnologia & Guias Digitais",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-swiftprogrameparaiphoneeipad-193",
-    "ano": 2018,
-    "paginas": 298,
-    "sinopse": "Manual e guia técnico abordando Swift Programe para iPhone e iPad. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 149,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Swift%20Programe%20para%20iPhone%20e%20iPad.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Test Driven Development",
+    "titulo": "Test-Driven Development no Mundo Real com .NET",
     "subtitulo": "Teste e Design no Mundo Real com DotNet",
-    "autor": "Casa do Código",
+    "autor": "Maurício Aniche",
     "categoria": "Arquitetura & Engenharia de Software",
     "fonteSlug": "github-italocamilo",
     "fonteIdExterno": "italo-testdrivendevelopment",
@@ -5762,63 +5250,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Test%20Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real%20com%20DotNet%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Test Driven Development",
-    "subtitulo": "Teste e Design no Mundo Real com PHP",
-    "autor": "Casa do Código",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-testdrivendevelopment-195",
-    "ano": 2018,
-    "paginas": 280,
-    "sinopse": "Manual e guia técnico abordando Test Driven Development. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Test-Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real.svg",
-    "leituras": 182,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Test%20Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real%20com%20PHP%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Test-Driven Development",
-    "subtitulo": "Teste e Design no Mundo Real",
-    "autor": "Casa do Código",
-    "categoria": "Arquitetura & Engenharia de Software",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-testdrivendevelopment-196",
-    "ano": 2018,
-    "paginas": 313,
-    "sinopse": "Manual e guia técnico abordando Test-Driven Development. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Test-Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real.svg",
-    "leituras": 161,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Test-Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Teste e Design no Mundo Real com PHP",
-    "subtitulo": null,
-    "autor": "Test-Driven Development",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-testeedesignnomundorealcomphp",
-    "ano": 2018,
-    "paginas": 206,
-    "sinopse": "Manual e guia técnico abordando Teste e Design no Mundo Real com PHP. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Test-Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real.svg",
-    "leituras": 185,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Test-Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real%20com%20PHP.pdf"
       }
     ]
   },
@@ -5857,25 +5288,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Turbine%20seu%20CSS%20-%20folhas%20de%20estilo%20inteligentes%20com%20Sass.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "UX e Usabilidade aplicados em Mobile e Web",
-    "subtitulo": null,
-    "autor": "Caelum",
-    "categoria": "Ciência de Dados & Inteligência Artificial",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-uxeusabilidadeaplicadosemmobileeweb",
-    "ano": 2018,
-    "paginas": 260,
-    "sinopse": "Manual e guia técnico abordando UX e Usabilidade aplicados em Mobile e Web. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/UX%20e%20Usabilidade%20Aplicados%20em%20Mobile%20e%20Web.svg",
-    "leituras": 162,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/UX%20e%20Usabilidade%20aplicados%20em%20Mobile%20e%20Web%20-%20Caelum%2C%20Curso%20WD-41.pdf"
       }
     ]
   },
@@ -5937,25 +5349,6 @@ const githubBooks = [
     ]
   },
   {
-    "titulo": "Web Design Responsivo",
-    "subtitulo": "Páginas adaptáveis para todos os dispositivos",
-    "autor": "Casa do Código",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-webdesignresponsivo",
-    "ano": 2018,
-    "paginas": 280,
-    "sinopse": "Manual e guia técnico abordando Web Design Responsivo. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Web%20Design%20Responsivo%20-%20P%C3%A1ginas%20adapt%C3%A1veis%20para%20todos%20os%20dispositivos.svg",
-    "leituras": 164,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Web%20Design%20Responsivo%20-%20P%C3%A1ginas%20adapt%C3%A1veis%20para%20todos%20os%20dispositivos%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
     "titulo": "Web Services REST com ASP .NET Web API e Windows Azure",
     "subtitulo": null,
     "autor": "Comunidade Tech",
@@ -5990,25 +5383,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Windows%20Server%202012%20R2%20Estudo%20dirigido%20para%20MCSA%20prova%2070-410%20.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "Zend Certified Engineer Descomplicando a Certificação PHP",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-zendcertifiedengineerdescomplicando",
-    "ano": 2018,
-    "paginas": 247,
-    "sinopse": "Manual e guia técnico abordando Zend Certified Engineer Descomplicando a Certificação PHP. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 170,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Zend%20Certified%20Engineer%20Descomplicando%20a%20Certificac%CC%A7a%CC%83o%20PHP.pdf"
       }
     ]
   },
@@ -6104,25 +5478,6 @@ const githubBooks = [
       {
         "formato": "pdf",
         "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/iOS%20Programe%20para%20iPhone%20e%20iPad%20-%20Casa%20do%20Codigo.pdf"
-      }
-    ]
-  },
-  {
-    "titulo": "iOS Programe para iPhone e iPad",
-    "subtitulo": null,
-    "autor": "Comunidade Tech",
-    "categoria": "Desenvolvimento Web & Mobile",
-    "fonteSlug": "github-italocamilo",
-    "fonteIdExterno": "italo-iosprogrameparaiphoneeipad-213",
-    "ano": 2018,
-    "paginas": 270,
-    "sinopse": "Manual e guia técnico abordando iOS Programe para iPhone e iPad. Disponibilizado para estudo no repositório de livros abertos de italocamil0.",
-    "capaUrl": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o.svg",
-    "leituras": 133,
-    "links": [
-      {
-        "formato": "pdf",
-        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/iOS%20Programe%20para%20iPhone%20e%20iPad.pdf"
       }
     ]
   },
@@ -6255,7 +5610,7 @@ const githubBooks = [
     "links": [
       {
         "formato": "html",
-        "url": "https://trilha.info"
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/bigO.jpg"
       }
     ]
   },
@@ -6274,7 +5629,7 @@ const githubBooks = [
     "links": [
       {
         "formato": "html",
-        "url": "https://trilha.info"
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/basicAuth.jpg"
       }
     ]
   },
@@ -6293,7 +5648,7 @@ const githubBooks = [
     "links": [
       {
         "formato": "html",
-        "url": "https://trilha.info"
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/onboarding.jpg"
       }
     ]
   },
@@ -6312,7 +5667,7 @@ const githubBooks = [
     "links": [
       {
         "formato": "html",
-        "url": "https://trilha.info"
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/sso.jpg"
       }
     ]
   },
@@ -6331,7 +5686,7 @@ const githubBooks = [
     "links": [
       {
         "formato": "html",
-        "url": "https://trilha.info"
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/star.jpg"
       }
     ]
   },
@@ -6350,7 +5705,7 @@ const githubBooks = [
     "links": [
       {
         "formato": "html",
-        "url": "https://trilha.info"
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/slaSloSli.jpg"
       }
     ]
   },
@@ -6369,7 +5724,7 @@ const githubBooks = [
     "links": [
       {
         "formato": "html",
-        "url": "https://trilha.info"
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/jsAsyncDefer.jpg"
       }
     ]
   },
