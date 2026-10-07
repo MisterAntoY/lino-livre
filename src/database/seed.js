@@ -1,6 +1,7 @@
 const { getDatabase } = require('./index');
 const { cursosData } = require('./cursosSeedData');
 const { githubBooks } = require('./githubBooksSeedData');
+const { roadmapShList } = require('./roadmapShData');
 const {
   domCasmurroTexto,
   memoriasPosthumasTexto,
@@ -554,62 +555,9 @@ function seed(dbInstance = null) {
     insertCurso.run(c[0], tipo, c[1], c[2], c[3], c[4], c[5], c[6]);
   }
 
-  // Roadmaps interativos oficiais complementares
-  const roadmapsOficiais = [
-    [
-      "Roadmap.sh: Formação Desenvolvedor Frontend",
-      "roadmap",
-      "Tecnologia",
-      "Roadmap.sh",
-      "https://roadmap.sh/frontend",
-      "gratuito",
-      "Iniciante a Avançado",
-      "Guia passo a passo interativo com árvore de habilidades para se tornar um desenvolvedor frontend moderno: HTML, CSS, JavaScript, React e Performance."
-    ],
-    [
-      "Roadmap.sh: Formação Desenvolvedor Backend",
-      "roadmap",
-      "Tecnologia",
-      "Roadmap.sh",
-      "https://roadmap.sh/backend",
-      "gratuito",
-      "Intermediário a Avançado",
-      "Árvore de competências essencial para arquitetura backend: Node.js, Python, bancos SQL/NoSQL, APIs RESTful, Caching e Microsserviços."
-    ],
-    [
-      "Roadmap.sh: Formação DevOps & Cloud Engineering",
-      "roadmap",
-      "Tecnologia",
-      "Roadmap.sh",
-      "https://roadmap.sh/devops",
-      "gratuito",
-      "Intermediário a Avançado",
-      "Guia completo cobrindo Linux, Git, Containers Docker, Kubernetes, CI/CD, Infraestrutura como Código (Terraform) e Observabilidade."
-    ],
-    [
-      "Roadmap.sh: Formação Inteligência Artificial & Ciência de Dados",
-      "roadmap",
-      "Tecnologia",
-      "Roadmap.sh",
-      "https://roadmap.sh/ai-data-scientist",
-      "gratuito",
-      "Intermediário a Avançado",
-      "Trilha para dominar fundamentos matemáticos, estatística, Python, Machine Learning, Redes Neurais, LLMs e Engenharia de Prompts com IA."
-    ],
-    [
-      "Roadmap.sh: Formação Cyber Security & Cibersegurança",
-      "roadmap",
-      "Tecnologia",
-      "Roadmap.sh",
-      "https://roadmap.sh/cyber-security",
-      "gratuito",
-      "Iniciante a Avançado",
-      "Roteiro interativo para segurança da informação, arquitetura de redes seguras, testes de penetração, conformidade e defesa cibernética."
-    ]
-  ];
-
-  for (const r of roadmapsOficiais) {
-    insertCurso.run(...r);
+  // Roadmaps interativos oficiais do Roadmap.sh (95 roadmaps oficiais extraídos de nilbuild/developer-roadmap)
+  for (const r of roadmapShList) {
+    insertCurso.run(r.titulo, 'roadmap', r.area, r.plataforma, r.url, r.licenca, r.nivel, r.descricao);
   }
 
     db.exec('COMMIT;');

@@ -372,6 +372,15 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resTrilha.status, 200);
     assert.ok(resTrilha.data.length >= 8, 'Deve conter as 8 formações da Trilha Info');
     assert.ok(resTrilha.data.some(c => c.titulo.includes('Frontend')));
+
+    // 10.4 - Roadmaps oficiais do Roadmap.sh (95 roadmaps catalogados de nilbuild/developer-roadmap)
+    const resRoadmapSh = await request('/api/roadmaps?plataforma=Roadmap.sh');
+    assert.equal(resRoadmapSh.status, 200);
+    assert.ok(resRoadmapSh.data.length >= 95, 'Deve conter os 95 roadmaps oficiais do Roadmap.sh');
+    assert.ok(resRoadmapSh.data.some(r => r.url === 'https://roadmap.sh/ai-agents'), 'Deve conter roadmap de AI Agents');
+    assert.ok(resRoadmapSh.data.some(r => r.url === 'https://roadmap.sh/devops'), 'Deve conter roadmap de DevOps');
+    assert.ok(resRoadmapSh.data.some(r => r.url === 'https://roadmap.sh/frontend'), 'Deve conter roadmap de Frontend');
+    assert.ok(resRoadmapSh.data.some(r => r.url === 'https://roadmap.sh/rust'), 'Deve conter roadmap de Rust');
   });
 
   // Teste 11: Livros técnicos e manuais via GitHub (BibliotecaDev, italocamil0, Trilha Info)
