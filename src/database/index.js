@@ -12,12 +12,13 @@ try {
 
 let instance = null;
 
-function initDatabase(dbPath = null) {
-  const targetPath = dbPath || path.join(__dirname, '../../biblioteca.db');
+function initDatabase(dbPath = null, setAsInstance = true) {
+  const targetPath = dbPath || process.env.DATABASE_PATH || path.join(__dirname, '../../biblioteca.db');
   const db = new DatabaseSync(targetPath);
 
-  // Ativar verificação de chaves estrangeiras
+  // Ativar verificação de chaves estrangeiras e resiliência a concorrência
   db.exec('PRAGMA foreign_keys = ON;');
+  db.exec('PRAGMA busy_timeout = 5000;');
 
   // Migração defensiva: se houver tabela 'livros' antiga sem a coluna 'licenca', resetar
   try {
@@ -39,7 +40,9 @@ function initDatabase(dbPath = null) {
   const schemaSql = fs.readFileSync(schemaPath, 'utf8');
   db.exec(schemaSql);
 
-  instance = db;
+  if (setAsInstance) {
+    instance = db;
+  }
   return db;
 }
 

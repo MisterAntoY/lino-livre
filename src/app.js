@@ -19,6 +19,9 @@ app.use(express.static(path.join(__dirname, '../public'), {
   setHeaders: (res, filePath) => {
     if (/\.(jpg|jpeg|png|svg|webp|woff2|woff|ttf)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
+    } else if (/\.(js|css|html|json)$/i.test(filePath)) {
+      // revalida sempre (ETag) para nunca servir código/idioma desatualizado
+      res.setHeader('Cache-Control', 'no-cache');
     }
   }
 }));

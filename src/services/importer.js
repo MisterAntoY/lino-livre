@@ -32,8 +32,14 @@ async function executarImportacao(jobId, fonteSlug, query) {
       if (item.is_curso || fonteSlug === 'guiadeti') {
         const cursoUrl = (item.links && item.links[0]?.url) || item.url;
         if (cursoUrl) {
-          const existente = db.prepare('SELECT id FROM cursos WHERE url = ?').get(cursoUrl);
+          const existente = db.prepare('SELECT id, plataforma, descricao FROM cursos WHERE url = ?').get(cursoUrl);
           if (existente) {
+            const plat = (existente.plataforma && existente.plataforma.includes('YouTube'))
+              ? existente.plataforma
+              : (item.plataforma || 'Guia de TI');
+            const desc = (existente.descricao && existente.descricao.toLowerCase().includes('certifica'))
+              ? existente.descricao
+              : (item.sinopse || item.descricao || null);
             db.prepare(`
               UPDATE cursos SET
                 titulo = ?, area = ?, plataforma = ?, licenca = ?, nivel = ?, descricao = ?
@@ -41,10 +47,10 @@ async function executarImportacao(jobId, fonteSlug, query) {
             `).run(
               item.titulo,
               item.area || 'Tecnologia',
-              item.plataforma || 'Guia de TI',
+              plat,
               'gratuito',
               item.nivel || 'Iniciante',
-              item.sinopse || item.descricao || null,
+              desc,
               existente.id
             );
           } else {
@@ -384,11 +390,15 @@ async function buscarGuiaDeTI(query = '') {
     else if (textAll.includes('python') || textAll.includes('javascript') || textAll.includes('typescript') || textAll.includes('html') || textAll.includes('laravel')) area = 'Programação & Web';
 
     let plataforma = 'Guia de TI';
-    if (textAll.includes('hashtag')) plataforma = 'Guia de TI / Hashtag';
-    else if (textAll.includes('iago ferreira')) plataforma = 'Guia de TI / Iago Ferreira';
-    else if (textAll.includes('especializa ti')) plataforma = 'Guia de TI / Especializa TI';
-    else if (textAll.includes('curso em vídeo')) plataforma = 'Guia de TI / Curso em Vídeo';
-    else if (textAll.includes('alura') || textAll.includes('techguide')) plataforma = 'Guia de TI / Alura';
+    if (r.link && r.link.includes('/cursos/')) {
+      plataforma = 'Guia de TI / YouTube';
+      if (textAll.includes('hashtag')) plataforma = 'Guia de TI / YouTube (Hashtag)';
+      else if (textAll.includes('iago ferreira')) plataforma = 'Guia de TI / YouTube (Iago Ferreira TI)';
+      else if (textAll.includes('especializa ti')) plataforma = 'Guia de TI / YouTube (Especializa TI)';
+      else if (textAll.includes('curso em vídeo')) plataforma = 'Guia de TI / YouTube (Curso em Vídeo)';
+    } else {
+      if (textAll.includes('alura') || textAll.includes('techguide')) plataforma = 'Guia de TI / Alura';
+    }
 
     let nivel = 'Intermediário';
     if (textAll.includes('básico') || textAll.includes('iniciante') || textAll.includes('primeiros passos') || textAll.includes('zero')) nivel = 'Iniciante';

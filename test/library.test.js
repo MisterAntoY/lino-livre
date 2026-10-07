@@ -12,11 +12,11 @@ describe('Testes de Domínio e Banco de Dados - Lino Livre', () => {
     if (fs.existsSync(testDbPath)) {
       try { fs.unlinkSync(testDbPath); } catch (_) {}
     }
-    db = initDatabase(testDbPath);
+    db = initDatabase(testDbPath, false);
   });
 
   after(() => {
-    closeDatabase();
+    try { db.close(); } catch (_) {}
     if (fs.existsSync(testDbPath)) {
       try { fs.unlinkSync(testDbPath); } catch (_) {}
     }

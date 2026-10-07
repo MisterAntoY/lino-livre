@@ -1,13 +1,26 @@
 const { getDatabase } = require('./index');
 const { cursosData } = require('./cursosSeedData');
+const { githubBooks } = require('./githubBooksSeedData');
+const {
+  domCasmurroTexto,
+  memoriasPosthumasTexto,
+  oCorticoTexto,
+  oAlienistaTexto,
+  iracemaTexto,
+  policarpoQuaresmaTexto,
+  espumasFlutuantesTexto,
+  oGuaraniTexto
+} = require('./textosObras');
 
 function seed(dbInstance = null) {
   const db = dbInstance || getDatabase();
 
   console.log('Populando acervo Lino Livre com fontes, livros, links e cursos...');
 
-  db.exec(`
-    DELETE FROM links_livros;
+  db.exec('BEGIN TRANSACTION;');
+  try {
+    db.exec(`
+      DELETE FROM links_livros;
     DELETE FROM import_jobs;
     DELETE FROM cursos;
     DELETE FROM livros;
@@ -17,9 +30,12 @@ function seed(dbInstance = null) {
     DELETE FROM sqlite_sequence;
   `);
 
-  // 1. Inserir Fontes Oficiais (Guia de TI como principal fonte técnica)
+  // 1. Inserir Fontes Oficiais (Guia de TI, GitHub e fontes abertas)
   const insertFonte = db.prepare('INSERT INTO fontes (slug, nome, tipo, url_base, ativa) VALUES (?, ?, ?, ?, ?)');
   const fGuiaDeTI = insertFonte.run('guiadeti', 'Guia de TI', 'rss', 'https://guiadeti.com.br', 1).lastInsertRowid;
+  const fBibDev = insertFonte.run('github-bibliotecadev', 'BibliotecaDev (GitHub)', 'manual', 'https://github.com/KAYOKG/BibliotecaDev', 1).lastInsertRowid;
+  const fItalo = insertFonte.run('github-italocamilo', 'Repositório Books Tech (GitHub)', 'manual', 'https://github.com/italocamil0/books', 1).lastInsertRowid;
+  const fTrilha = insertFonte.run('trilhainfo', 'Trilha Info (Flávio Mendes / GitHub)', 'manual', 'https://trilha.info', 1).lastInsertRowid;
   const fGutenberg = insertFonte.run('gutenberg', 'Project Gutenberg', 'api', 'https://gutendex.com', 1).lastInsertRowid;
   const fOpenLib = insertFonte.run('openlibrary', 'Open Library', 'api', 'https://openlibrary.org', 1).lastInsertRowid;
   const fDomPub = insertFonte.run('dominiopublico', 'Portal Domínio Público (MEC)', 'manual', 'https://www.dominiopublico.gov.br', 1).lastInsertRowid;
@@ -34,6 +50,11 @@ function seed(dbInstance = null) {
   const catIndianismo = insertCat.run('Romance Indianista', 'Obras da vertente indianista do romantismo brasileiro').lastInsertRowid;
   const catDidaticos = insertCat.run('Apoio Pedagógico & Filosofia', 'Textos formativos e reflexões sociopolíticas').lastInsertRowid;
   const catTecnologia = insertCat.run('Tecnologia & Guias Digitais', 'Manuais técnicos, guias de programação, inteligência artificial e roadmaps abertos').lastInsertRowid;
+  const catArq = insertCat.run('Arquitetura & Engenharia de Software', 'Clean Architecture, Design Patterns, Refatoração e boas práticas de código').lastInsertRowid;
+  const catWeb = insertCat.run('Desenvolvimento Web & Mobile', 'Frontend, Backend, APIs, frameworks modernos e desenvolvimento mobile').lastInsertRowid;
+  const catDevOps = insertCat.run('DevOps, Cloud & Infraestrutura', 'Linux, Docker, Kubernetes, redes, segurança e computação em nuvem').lastInsertRowid;
+  const catData = insertCat.run('Ciência de Dados & Inteligência Artificial', 'Big Data, Machine Learning, Business Intelligence, Data Science e estatística').lastInsertRowid;
+  const catAgil = insertCat.run('Metodologias Ágeis & Carreira Tech', 'Scrum, Lean Startup, hábitos de produtividade, liderança e gestão técnica').lastInsertRowid;
 
   // 3. Inserir Autores
   const insertAutor = db.prepare('INSERT INTO autores (nome, nacionalidade, biografia) VALUES (?, ?, ?)');
@@ -74,7 +95,7 @@ function seed(dbInstance = null) {
     'dp-bv000241',
     'dominio-publico',
     380,
-    `CAPÍTULO I: DO TÍTULO\n\nUma noite destas, vindo da cidade para o Engenho Novo, encontrei no trem da Central um rapaz aqui do bairro...`
+    domCasmurroTexto
   ).lastInsertRowid;
   insertLink.run(l1, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000241.pdf', 1887436, 1);
   insertLink.run(l1, 'epub', 'https://www.gutenberg.org/ebooks/55752.epub3.images', 1250000, 1);
@@ -96,7 +117,7 @@ function seed(dbInstance = null) {
     'dp-bv000215',
     'dominio-publico',
     215,
-    `AO VERME QUE PRIMEIRO ROEU AS FRIAS CARNES DO MEU CADÁVER DEDICO COMO SAUDOSA LEMBRANÇA ESTAS MEMÓRIAS PÓSTUMAS\n\nCAPÍTULO I: ÓBITO DO AUTOR...`
+    memoriasPosthumasTexto
   ).lastInsertRowid;
   insertLink.run(l2, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000215.pdf', 2140000, 1);
   insertLink.run(l2, 'epub', 'https://www.gutenberg.org/ebooks/54829.epub3.images', 1100000, 1);
@@ -117,7 +138,7 @@ function seed(dbInstance = null) {
     'dp-bv000194',
     'dominio-publico',
     165,
-    `CAPÍTULO I\n\nJoão Romão foi, dos treze aos vinte e cinco anos, empregado de um vendeiro no bairro de Botafogo...`
+    oCorticoTexto
   ).lastInsertRowid;
   insertLink.run(l3, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000194.pdf', 2500000, 1);
   insertLink.run(l3, 'epub', 'https://www.gutenberg.org/ebooks/54575.epub3.images', 1400000, 1);
@@ -138,7 +159,7 @@ function seed(dbInstance = null) {
     'dp-bv000231',
     'dominio-publico',
     420,
-    `CAPÍTULO I: DE COMO A VILA DE ITAGUAÍ GANHOU UMA CASA DE ORATES\n\nAs crônicas da vila de Itaguaí dizem que em tempos remotos viveu ali um certo médico...`
+    oAlienistaTexto
   ).lastInsertRowid;
   insertLink.run(l4, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000231.pdf', 950000, 1);
   insertLink.run(l4, 'html', 'https://pt.wikisource.org/wiki/O_Alienista', 0, 1);
@@ -159,7 +180,7 @@ function seed(dbInstance = null) {
     'dp-bv000160',
     'dominio-publico',
     190,
-    `PRIMEIRA PARTE: CAPÍTULO I - UMA LIÇÃO DE VIOLÃO\n\nComo de hábito, às quatro e meia da tarde, Policarpo Quaresma...`
+    policarpoQuaresmaTexto
   ).lastInsertRowid;
   insertLink.run(l5, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000160.pdf', 1450000, 1);
   insertLink.run(l5, 'epub', 'https://www.gutenberg.org/ebooks/57530.epub3.images', 980000, 1);
@@ -180,7 +201,7 @@ function seed(dbInstance = null) {
     'dp-bv000067',
     'dominio-publico',
     310,
-    `O NAVIO NEGREIRO (TRAGÉDIA NO MAR)\n\n'Stamos em pleno mar... Doudo espasmo\nDe vaga em vaga o espaço rasga e ferve...`
+    espumasFlutuantesTexto
   ).lastInsertRowid;
   insertLink.run(l6, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000067.pdf', 850000, 1);
 
@@ -200,7 +221,7 @@ function seed(dbInstance = null) {
     'dp-bv000185',
     'dominio-publico',
     290,
-    `CAPÍTULO I\n\nVerdes mares bravios de minha terra natal, onde canta a jandaia nas frondes da carnaúba...`
+    iracemaTexto
   ).lastInsertRowid;
   insertLink.run(l7, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000185.pdf', 1200000, 1);
   insertLink.run(l7, 'epub', 'https://www.gutenberg.org/ebooks/67705.epub3.images', 850000, 1);
@@ -221,7 +242,7 @@ function seed(dbInstance = null) {
     'dp-bv000186',
     'dominio-publico',
     230,
-    `PRIMEIRA PARTE: OS CAVALEIROS\n\nCAPÍTULO I: O CENÁRIO\n\nDe um dos cabeços da Serra dos Órgãos descai um fio d'água...`
+    oGuaraniTexto
   ).lastInsertRowid;
   insertLink.run(l8, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000186.pdf', 2800000, 1);
   insertLink.run(l8, 'epub', 'https://www.gutenberg.org/ebooks/38496.epub3.images', 1900000, 1);
@@ -346,7 +367,61 @@ function seed(dbInstance = null) {
   ).lastInsertRowid;
   insertLink.run(l14, 'html', 'https://guiadeti.com.br/roadmaps/roadmapsh-developer-roadmaps/', 0, 1);
 
-  // 5. Inserir Cursos Gratuitos Curados (Guia de TI + Fundação Bradesco 61 cursos + OER internacionais)
+  // Inserir Livros Técnicos e Manuais Abertos do GitHub (BibliotecaDev, italo books e Trilha Info)
+  const catMap = {
+    'Arquitetura & Engenharia de Software': catArq,
+    'Desenvolvimento Web & Mobile': catWeb,
+    'DevOps, Cloud & Infraestrutura': catDevOps,
+    'Ciência de Dados & Inteligência Artificial': catData,
+    'Metodologias Ágeis & Carreira Tech': catAgil,
+    'Tecnologia & Guias Digitais': catTecnologia
+  };
+
+  const fonteMap = {
+    'github-bibliotecadev': fBibDev,
+    'github-italocamilo': fItalo,
+    'trilhainfo': fTrilha,
+    'guiadeti': fGuiaDeTI
+  };
+
+  for (const b of githubBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Internacional/Comunidade', 'Autor de obras e manuais técnicos abertos.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2020,
+      'pt',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 200,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      'outro',
+      Math.floor(Math.random() * 80) + 120,
+      `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nMaterial disponível livremente para leitura e estudo no acervo Lino Livre.`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      for (const lk of b.links) {
+        insertLink.run(bId, lk.formato || 'pdf', lk.url, 0, 1);
+      }
+    }
+  }
+
+  // 5. Inserir Cursos Gratuitos Curados (Guia de TI + Fundação Bradesco 61 cursos + OER + Trilha Info)
   const insertCurso = db.prepare(`
     INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -356,7 +431,12 @@ function seed(dbInstance = null) {
     insertCurso.run(...c);
   }
 
-  console.log('Seed do Lino Livre finalizado com sucesso!');
+    db.exec('COMMIT;');
+    console.log('Seed do Lino Livre finalizado com sucesso!');
+  } catch (err) {
+    try { db.exec('ROLLBACK;'); } catch (_) {}
+    throw err;
+  }
 }
 
 if (require.main === module) {

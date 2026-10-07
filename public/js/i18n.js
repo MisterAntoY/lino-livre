@@ -1,0 +1,222 @@
+// Lino Livre — Sistema de internacionalização (i18n)
+// Idiomas disponíveis: pt (base), en, de, zh, fr
+//
+// Uso:
+//   t('books.readOnline')            → texto estático
+//   t('books.pageOf', {p: 1, t: 5})  → com placeholders {p} {t}
+//   traduzirCategoria('Clássicos Brasileiros')
+//   I18N.setLang('de')               → troca o idioma em tempo real
+
+(function () {
+  'use strict';
+
+  const IDIOMAS = ['pt', 'en', 'de', 'zh', 'fr'];
+  const CHAVE_LS = 'lino_lang';
+
+  const I18N = {
+    lang: 'pt',
+    dict: null,      // idioma ativo (com fallback para pt)
+    base: null,      // dicionário pt (sempre carregado)
+    carregado: false,
+    ouvintes: [],
+
+    idiomas() {
+      return IDIOMAS.map(c => {
+        const d = (c === this.lang && this.dict) ? this.dict : null;
+        return { code: c, label: (d && d.meta && d.meta.label) || LABELS_PADRAO[c], flag: FLAGS[c] };
+      });
+    },
+
+    async init() {
+      // 1. dicionário base (pt) — garante fallback total
+      this.base = await this.carregar('pt');
+
+      // 2. idioma preferido
+      const alvo = this.detectarIdioma();
+
+      // 3. carrega e aplica
+      await this.carregarEAplicar(alvo);
+      return this.lang;
+    },
+
+    detectarIdioma() {
+      try {
+        const url = new URL(window.location.href);
+        const q = (url.searchParams.get('lang') || '').toLowerCase().slice(0, 2);
+        if (IDIOMAS.includes(q)) {
+          localStorage.setItem(CHAVE_LS, q);
+          return q;
+        }
+      } catch (_) {}
+
+      try {
+        const salvo = (localStorage.getItem(CHAVE_LS) || '').toLowerCase().slice(0, 2);
+        if (IDIOMAS.includes(salvo)) return salvo;
+      } catch (_) {}
+
+      const nav = (navigator.languages && navigator.languages[0]) || navigator.language || 'pt';
+      const curto = String(nav).toLowerCase().slice(0, 2);
+      if (IDIOMAS.includes(curto)) return curto;
+
+      return 'pt';
+    },
+
+    async carregar(code) {
+      try {
+        const res = await fetch(`/locales/${code}.json`, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(res.status);
+        return await res.json();
+      } catch (err) {
+        console.warn(`[i18n] Falha ao carregar /locales/${code}.json:`, err.message);
+        return null;
+      }
+    },
+
+    async carregarEAplicar(code) {
+      let d = code === 'pt' ? this.base : await this.carregar(code);
+      if (!d) d = this.base;          // fallback
+      if (!d) return;                 // nem pt carregou: nada a fazer
+
+      this.lang = (d.meta && d.meta.code) || code;
+      this.dict = d;
+      this.carregado = true;
+
+      this.aplicarDocumento();
+      this.notificar();
+    },
+
+    async setLang(code) {
+      if (!IDIOMAS.includes(code)) return;
+      try { localStorage.setItem(CHAVE_LS, code); } catch (_) {}
+      this.manterURL(code);
+      await this.carregarEAplicar(code);
+    },
+
+    // mantém ?lang= na URL para que links compartilhados abram no idioma certo
+    manterURL(code) {
+      try {
+        const url = new URL(window.location.href);
+        if (code === 'pt') url.searchParams.delete('lang');
+        else url.searchParams.set('lang', code);
+        history.replaceState(null, '', url.pathname + url.search + url.hash);
+      } catch (_) {}
+    },
+
+    // ---------- consulta ----------
+    // aceita tanto "books.error" (app.js) quanto "ui.books.error" (data-i18n)
+    t(path, vars) {
+      const d = this.dict || this.base;
+      if (!d) return path;
+      let s = this.buscarChave(d, path);
+      if (typeof s !== 'string' && this.base) s = this.buscarChave(this.base, path);
+      return typeof s === 'string' ? interpolar(s, vars) : path;
+    },
+
+    buscarChave(dicionario, path) {
+      if (!dicionario) return undefined;
+      let s = buscar(dicionario, path);
+      if (typeof s !== 'string' && dicionario.ui) s = buscar(dicionario.ui, path);
+      return s;
+    },
+
+    titulo() {
+      const d = this.dict || this.base;
+      return (d && d.title) || 'Lino Livre';
+    },
+
+    // sinopse do livro traduzida (chave = id do livro); cai para o texto do banco
+    sinopse(id, padrao) {
+      const d = this.dict || this.base;
+      const mapa = d && d.synopses;
+      if (mapa && mapa[String(id)]) return mapa[String(id)];
+      if (this.base && this.base.synopses && this.base.synopses[String(id)]) return this.base.synopses[String(id)];
+      return padrao || '';
+    },
+
+    mapa(secao, chave, padrao) {
+      const d = this.dict || this.base;
+      const m = d && d.ui && d.ui[secao];
+      if (m && Object.prototype.hasOwnProperty.call(m, chave)) return m[chave];
+      if (this.base && this.base.ui && this.base.ui[secao] && this.base.ui[secao][chave] !== undefined) return this.base.ui[secao][chave];
+      return padrao !== undefined ? padrao : chave;
+    },
+
+    // ---------- aplicação no DOM ----------
+    aplicarDocumento() {
+      const d = this.dict || this.base;
+      if (!d) return;
+
+      const langHtml = (d.meta && d.meta.htmlLang) || this.lang;
+      document.documentElement.setAttribute('lang', langHtml);
+      document.title = this.titulo();
+
+      // data-i18n="chave"          → textContent
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const txt = this.t(el.getAttribute('data-i18n'));
+        // textos com placeholders dinâmicos ({p}, {a}...) são preenchidos pelo app.js
+        if (/\{[a-zA-Z_]+\}/.test(txt)) return;
+        el.innerHTML = txt;
+      });
+
+      // data-i18n-html="chave"     → innerHTML preservando marcação interna
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        el.innerHTML = this.t(el.getAttribute('data-i18n-html'));
+      });
+
+      // data-i18n-ph="chave"       → placeholder
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        el.setAttribute('placeholder', this.t(el.getAttribute('data-i18n-ph')));
+      });
+
+      // data-i18n-title="chave"    → atributo title
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        el.setAttribute('title', this.t(el.getAttribute('data-i18n-title')));
+      });
+
+      // data-i18n-alt="chave"      → atributo alt
+      document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+        el.setAttribute('alt', this.t(el.getAttribute('data-i18n-alt')));
+      });
+
+      // data-i18n-aria="chave"     → atributo aria-label
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        el.setAttribute('aria-label', this.t(el.getAttribute('data-i18n-aria')));
+      });
+
+      this.sincronizarSeletor();
+    },
+
+    sincronizarSeletor() {
+      const sel = document.getElementById('seletor-idioma');
+      if (sel) sel.value = this.lang;
+    },
+
+    // ---------- notificação ----------
+    aoTrocar(fn) { this.ouvintes.push(fn); },
+    notificar() { this.ouvintes.forEach(fn => { try { fn(this.lang); } catch (e) { console.error(e); } }); }
+  };
+
+  // ---------- helpers ----------
+  function buscar(obj, path) {
+    if (!obj) return undefined;
+    return path.split('.').reduce((acc, k) => (acc && typeof acc === 'object') ? acc[k] : undefined, obj);
+  }
+
+  function interpolar(s, vars) {
+    if (!vars) return s;
+    return String(s).replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m));
+  }
+
+  const FLAGS = { pt: '🇧🇷', en: '🇬🇧', de: '🇩🇪', zh: '🇨🇳', fr: '🇫🇷' };
+  const LABELS_PADRAO = { pt: 'Português', en: 'English', de: 'Deutsch', zh: '中文', fr: 'Français' };
+
+  window.I18N = I18N;
+
+  // atalho global — usado por index.html e por app.js
+  window.t = function (path, vars) { return I18N.t(path, vars); };
+
+  window.traduzirCategoria = nome => I18N.mapa('categories', nome, nome);
+  window.traduzirArea = nome => I18N.mapa('areas', nome, nome);
+  window.traduzirNivel = nome => I18N.mapa('levels', nome, I18N.t('courses.levelDefault'));
+  window.traduzirLicenca = chave => I18N.mapa('licenses', chave, chave);
+})();

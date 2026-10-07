@@ -32,13 +32,68 @@ const app = {
   },
 
   async init() {
+    // 1. Internacionalização: carrega pt + idioma preferido e aplica ao DOM
+    if (window.I18N) {
+      await I18N.init();
+      I18N.aoTrocar(() => this.aplicarIdioma());
+    }
+
     this.carregarPreferenciasLeitor();
     this.iniciarSinteseVoz();
     this.verificarEconomiaDeDados();
     await Promise.all([
       this.carregarLivros(),
+      this.carregarCategoriasSelect(),
       this.verificarComunidadeECanal()
     ]);
+  },
+
+  // ==================== IDIOMA ====================
+  async trocarIdioma(code) {
+    if (!window.I18N || I18N.lang === code) return;
+    await I18N.setLang(code);
+  },
+
+  // re-renderiza tudo o que depende de texto traduzido
+  aplicarIdioma() {
+    this.atualizarBadgeVoz();
+
+    if (this.livros.length > 0) {
+      this.renderizarLivros(this.livros);
+      this.atualizarControlesPaginacao();
+    }
+
+    if (this.cursos.length > 0) this.renderizarCursos(this.cursos);
+
+    if (this.abaAtiva === 'dashboard') this.carregarDashboard();
+
+    this.carregarCategoriasSelect();
+
+    // se o leitor estiver aberto, re-renderiza o cabeçalho dele
+    if (this.livroAtual) {
+      const l = this.livroAtual;
+      document.getElementById('leitor-autor').textContent =
+        `${l.autor_nome || t('books.defaultAuthor')} • ${traduzirLicenca(l.licenca)}`;
+      this.renderizarConteudoLeitor(l);
+      this.aplicarPreferenciasLeitor();
+    }
+  },
+
+  // preenche o <select> de categorias a partir do banco (ids corretos + rótulos traduzidos)
+  async carregarCategoriasSelect() {
+    const sel = document.getElementById('novo-categoria-select');
+    if (!sel) return;
+    try {
+      const res = await fetch('/api/categorias');
+      const cats = await res.json();
+      const ativo = sel.value;
+      sel.innerHTML = (cats || []).map(c =>
+        `<option value="${c.id}">${this.escape(traduzirCategoria(c.nome))}</option>`
+      ).join('');
+      if (ativo) sel.value = ativo;
+    } catch (_) {
+      if (!sel.options.length) sel.innerHTML = '<option value="">—</option>';
+    }
   },
 
   trocarAba(nomeAba) {
@@ -90,7 +145,7 @@ const app = {
 
   async carregarLivros() {
     const grid = document.getElementById('grade-livros');
-    grid.innerHTML = `<div class="loading">Buscando obras no acervo digital...</div>`;
+    grid.innerHTML = `<div class="loading">${t('books.searching')}</div>`;
 
     try {
       const params = new URLSearchParams();
@@ -111,33 +166,39 @@ const app = {
       this.renderizarLivros(itens);
       this.atualizarControlesPaginacao();
     } catch (err) {
-      grid.innerHTML = `<div class="loading" style="color:#b91c1c">Erro ao carregar livros: ${err.message}</div>`;
+      grid.innerHTML = `<div class="loading" style="color:#b91c1c">${this.escape(t('books.error', { msg: err.message }))}</div>`;
     }
   },
 
   obterCategoriaId(nome) {
+    // ids conforme a tabela `categorias` do banco
     const mapa = {
       'Clássicos Brasileiros': 1,
       'Romance & Crônicas': 2,
       'Teatro & Poesia': 3,
-      'Apoio Pedagógico & Filosofia': 4,
-      'Literatura Infantojuvenil': 5,
-      'Tecnologia & Guias Digitais': 6
+      'Romance Indianista': 4,
+      'Apoio Pedagógico & Filosofia': 5,
+      'Tecnologia & Guias Digitais': 6,
+      'Arquitetura & Engenharia de Software': 7,
+      'Desenvolvimento Web & Mobile': 8,
+      'DevOps, Cloud & Infraestrutura': 9,
+      'Ciência de Dados & Inteligência Artificial': 10,
+      'Metodologias Ágeis & Carreira Tech': 11
     };
-    return mapa[nome] || '';
+    return mapa[nome] || nome || '';
   },
 
   renderizarLivros(lista) {
     const grid = document.getElementById('grade-livros');
 
     if (!lista || lista.length === 0) {
-      grid.innerHTML = `<div class="loading">Nenhum livro encontrado para os filtros selecionados.</div>`;
+      grid.innerHTML = `<div class="loading">${t('books.empty')}</div>`;
       return;
     }
 
     grid.innerHTML = lista.map(l => {
       const capaUrl = l.capa_url || '/capas/dom_casmurro.jpg';
-      const licencaFormatada = (l.licenca || 'Domínio Público').replace('-', ' ').toUpperCase();
+      const licencaFormatada = traduzirLicenca(l.licenca || 'dominio-publico');
       
       const links = l.links || [];
       const tagsFormatos = links.map(lnk => {
@@ -147,7 +208,7 @@ const app = {
           labelTamanho = ` (~${mb} MB)`;
         }
         return `
-          <a class="format-tag" href="/api/livros/${l.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" title="Abrir formato ${lnk.formato.toUpperCase()}${labelTamanho}">
+          <a class="format-tag" href="/api/livros/${l.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.openFormat', { f: lnk.formato.toUpperCase() }))}${labelTamanho}">
             📄 ${lnk.formato.toUpperCase()}${labelTamanho}
           </a>
         `;
@@ -159,46 +220,48 @@ const app = {
         : '';
       const downloadLink = links[0];
 
+      const sinopse = I18N.sinopse(l.id, l.sinopse || t('books.synopsisFallback'));
+
       return `
         <article class="book-card">
           <div class="book-cover-container">
-            <img src="${capaUrl}" alt="Capa de ${this.escape(l.titulo)}" class="book-cover" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
+            <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
             <span class="badge-format">${l.idioma ? l.idioma.toUpperCase() : 'PT'}</span>
           </div>
 
           <div class="book-details">
             <h3 class="book-title">${this.escape(l.titulo)}</h3>
-            <p class="book-author">${this.escape(l.autor_nome || 'Autor Clássico')} ${l.ano_publicacao ? `• ${l.ano_publicacao}` : ''}</p>
+            <p class="book-author">${this.escape(l.autor_nome || t('books.defaultAuthor'))} ${l.ano_publicacao ? `• ${l.ano_publicacao}` : ''}</p>
             <div>
               <span class="badge-license">${this.escape(licencaFormatada)}</span>
             </div>
 
-            <p class="book-synopsis">${this.escape(l.sinopse || 'Disponível livremente para leitura online e download educativo.')}</p>
+            <p class="book-synopsis">${this.escape(sinopse)}</p>
 
             <div class="format-tags">
-              ${tagsFormatos || '<span style="font-size:0.75rem; color:#94a3b8">Texto Digital</span>'}
+              ${tagsFormatos || `<span style="font-size:0.75rem; color:#94a3b8">${t('books.digitalText')}</span>`}
             </div>
 
             <div class="book-stats">
-              <span>📖 <strong>${l.leituras || 0}</strong> leituras</span>
-              <span>🏷️ ${this.escape(l.categoria_nome || 'Literatura')}</span>
+              <span>${t('books.readings', { n: l.leituras || 0 })}</span>
+              <span>🏷️ ${this.escape(traduzirCategoria(l.categoria_nome) || t('books.defaultCategory'))}</span>
             </div>
 
-            <div class="data-badge-card" title="Leitura no navegador economiza dados móveis">
-              ⚡ <span>Leitura Online ultraleve (~25 KB)</span>
+            <div class="data-badge-card" title="${this.escape(t('books.ultralightTitle'))}">
+              ${t('books.ultralight')}
             </div>
 
             <div class="book-actions">
               <button class="btn btn-primary" onclick="app.abrirLeitorOuLink(${l.id})">
-                📖 Ler Online
+                ${t('books.readOnline')}
               </button>
               ${downloadLink ? `
-                <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer" title="Baixar arquivo${pdfTamanho}">
-                  ⬇ Baixar${pdfTamanho}
+                <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.downloadFile'))}${pdfTamanho}">
+                  ${t('books.download')}${pdfTamanho}
                 </a>
               ` : `
                 <button class="btn btn-secondary" onclick="app.abrirLeitorOuLink(${l.id})">
-                  Visualizar
+                  ${t('books.view')}
                 </button>
               `}
             </div>
@@ -211,7 +274,7 @@ const app = {
   async abrirLeitorOuLink(livroId) {
     try {
       const res = await fetch(`/api/livros/${livroId}`);
-      if (!res.ok) throw new Error('Não foi possível carregar os detalhes do livro');
+      if (!res.ok) throw new Error(t('books.errorDetails'));
       const livro = await res.json();
 
       if (livro.conteudo_texto && livro.conteudo_texto.trim().length > 0) {
@@ -219,7 +282,7 @@ const app = {
         this.pararAudio();
 
         document.getElementById('leitor-titulo').textContent = livro.titulo;
-        document.getElementById('leitor-autor').textContent = `${livro.autor_nome || 'Autor Clássico'} • ${livro.licenca}`;
+        document.getElementById('leitor-autor').textContent = `${livro.autor_nome || t('books.defaultAuthor')} • ${traduzirLicenca(livro.licenca)}`;
 
         this.renderizarConteudoLeitor(livro);
         this.aplicarPreferenciasLeitor();
@@ -229,10 +292,10 @@ const app = {
       } else if (livro.links && livro.links.length > 0) {
         window.open(`/api/livros/${livro.id}/ler/${livro.links[0].id}`, '_blank');
       } else {
-        this.mostrarToast('Esta obra está disponível no catálogo digital.');
+        this.mostrarToast(t('books.availableCatalog'));
       }
     } catch (err) {
-      this.mostrarToast('Erro ao abrir obra: ' + err.message);
+      this.mostrarToast(t('books.errorOpen', { msg: err.message }));
     }
   },
 
@@ -250,15 +313,15 @@ const app = {
       html += `
         <div class="reader-chapter-heading">
           <h2 class="reader-chapter-title">${this.escape(blocos[0])}</h2>
-          <p class="reader-work-title">${this.escape(livro.titulo)} — ${this.escape(livro.autor_nome || 'Autor Clássico')}</p>
+          <p class="reader-work-title">${this.escape(livro.titulo)} — ${this.escape(livro.autor_nome || t('books.defaultAuthor'))}</p>
         </div>
       `;
       indicePrimeiroParagrafoNarrativo = 1;
     } else {
       html += `
         <div class="reader-chapter-heading">
-          <h2 class="reader-chapter-title">Capítulo I</h2>
-          <p class="reader-work-title">${this.escape(livro.titulo)} — ${this.escape(livro.autor_nome || 'Autor Clássico')}</p>
+          <h2 class="reader-chapter-title">${t('reader.chapter')}</h2>
+          <p class="reader-work-title">${this.escape(livro.titulo)} — ${this.escape(livro.autor_nome || t('books.defaultAuthor'))}</p>
         </div>
       `;
     }
@@ -423,7 +486,7 @@ const app = {
 
   alternarPlayAudio() {
     if (!('speechSynthesis' in window)) {
-      this.mostrarToast('Seu navegador não possui suporte a síntese de voz nativa.');
+      this.mostrarToast(t('reader.noSpeech'));
       return;
     }
 
@@ -441,7 +504,7 @@ const app = {
 
     if (indice >= this.speechState.paragrafos.length) {
       this.pararAudio();
-      this.mostrarToast('Leitura concluída!');
+      this.mostrarToast(t('reader.done'));
       return;
     }
 
@@ -461,11 +524,11 @@ const app = {
     if (audioBar) audioBar.classList.add('speaking');
 
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = '<span id="icone-play">⏸</span> Pausar';
+    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">⏸</span> <span id="audio-play-label">${t('reader.pause')}</span>`;
 
     const statusEl = document.getElementById('audio-status-texto');
     if (statusEl) {
-      statusEl.textContent = `Lendo parágrafo ${indice + 1} de ${this.speechState.paragrafos.length}...`;
+      statusEl.textContent = t('reader.readingParagraph', { a: indice + 1, b: this.speechState.paragrafos.length });
     }
 
     window.speechSynthesis.cancel();
@@ -506,9 +569,9 @@ const app = {
     const audioBar = document.getElementById('player-audio-bar');
     if (audioBar) audioBar.classList.remove('speaking');
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = '<span id="icone-play">▶</span> Retomar';
+    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">▶</span> <span id="audio-play-label">${t('reader.resume')}</span>`;
     const statusEl = document.getElementById('audio-status-texto');
-    if (statusEl) statusEl.textContent = 'Leitura em áudio pausada';
+    if (statusEl) statusEl.textContent = t('reader.audioPaused');
   },
 
   retomarAudio() {
@@ -519,10 +582,13 @@ const app = {
     const audioBar = document.getElementById('player-audio-bar');
     if (audioBar) audioBar.classList.add('speaking');
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = '<span id="icone-play">⏸</span> Pausar';
+    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">⏸</span> <span id="audio-play-label">${t('reader.pause')}</span>`;
     const statusEl = document.getElementById('audio-status-texto');
     if (statusEl) {
-      statusEl.textContent = `Lendo parágrafo ${this.speechState.indiceAtual + 1} de ${this.speechState.paragrafos.length}...`;
+      statusEl.textContent = t('reader.readingParagraph', {
+        a: this.speechState.indiceAtual + 1,
+        b: this.speechState.paragrafos.length
+      });
     }
   },
 
@@ -538,9 +604,9 @@ const app = {
     const audioBar = document.getElementById('player-audio-bar');
     if (audioBar) audioBar.classList.remove('speaking');
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = '<span id="icone-play">▶</span> Ouvir';
+    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">▶</span> <span id="audio-play-label">${t('reader.listen')}</span>`;
     const statusEl = document.getElementById('audio-status-texto');
-    if (statusEl) statusEl.textContent = 'Voz do navegador pronta para leitura';
+    if (statusEl) statusEl.textContent = t('reader.audioReady');
   },
 
   alterarVelocidadeAudio(vel, btnEl) {
@@ -556,7 +622,7 @@ const app = {
   verificarEconomiaDeDados() {
     const conexao = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (conexao && (conexao.saveData || /2g|3g/.test(conexao.effectiveType))) {
-      this.mostrarToast('⚡ Conexão móvel detectada: Leitura online priorizada para economizar seu plano de dados.');
+      this.mostrarToast(t('general.connection'));
     }
   },
 
@@ -568,7 +634,7 @@ const app = {
 
     if (this.totalPaginas > 1) {
       pagEl.classList.remove('hidden');
-      textoEl.textContent = `Página ${this.paginaAtual} de ${this.totalPaginas}`;
+      textoEl.textContent = t('books.pageOf', { p: this.paginaAtual, t: this.totalPaginas });
       btnAnt.disabled = this.paginaAtual <= 1;
       btnProx.disabled = this.paginaAtual >= this.totalPaginas;
     } else {
@@ -605,6 +671,7 @@ const app = {
     this.areaCursoAtiva = area;
     this.fonteCursoAtiva = '';
     this.plataformaCursoAtiva = '';
+    this.youtubeCursoAtivo = false;
     document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-filtro') === area);
     });
@@ -615,8 +682,21 @@ const app = {
     this.fonteCursoAtiva = fonte;
     this.areaCursoAtiva = '';
     this.plataformaCursoAtiva = '';
+    this.youtubeCursoAtivo = false;
+    const filtroAlvo = (fonte || '').toLowerCase().includes('trilha') ? 'trilhainfo' : 'guiadeti';
     document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-filtro') === 'guiadeti');
+      btn.classList.toggle('active', btn.getAttribute('data-filtro') === filtroAlvo);
+    });
+    this.carregarCursos();
+  },
+
+  filtrarCursosYouTube() {
+    this.youtubeCursoAtivo = true;
+    this.areaCursoAtiva = '';
+    this.fonteCursoAtiva = '';
+    this.plataformaCursoAtiva = '';
+    document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-filtro') === 'youtube');
     });
     this.carregarCursos();
   },
@@ -625,6 +705,7 @@ const app = {
     this.plataformaCursoAtiva = plataforma;
     this.areaCursoAtiva = '';
     this.fonteCursoAtiva = '';
+    this.youtubeCursoAtivo = false;
     document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-filtro') === plataforma);
     });
@@ -633,10 +714,11 @@ const app = {
 
   async carregarCursos() {
     const grid = document.getElementById('grade-cursos');
-    grid.innerHTML = `<div class="loading">Carregando catálogo de cursos e roadmaps...</div>`;
+    grid.innerHTML = `<div class="loading">${t('courses.loadingRoadmaps')}</div>`;
 
     try {
       const params = new URLSearchParams();
+      if (this.youtubeCursoAtivo) params.append('youtube', 'true');
       if (this.areaCursoAtiva) params.append('area', this.areaCursoAtiva);
       if (this.fonteCursoAtiva) params.append('fonte', this.fonteCursoAtiva);
       if (this.plataformaCursoAtiva) params.append('plataforma', this.plataformaCursoAtiva);
@@ -649,7 +731,7 @@ const app = {
 
       this.renderizarCursos(cursos);
     } catch (err) {
-      grid.innerHTML = `<div class="loading" style="color:#b91c1c">Erro ao carregar cursos: ${err.message}</div>`;
+      grid.innerHTML = `<div class="loading" style="color:#b91c1c">${this.escape(t('courses.error', { msg: err.message }))}</div>`;
     }
   },
 
@@ -657,39 +739,47 @@ const app = {
     const grid = document.getElementById('grade-cursos');
 
     if (!lista || lista.length === 0) {
-      grid.innerHTML = `<div class="loading">Nenhum curso ou roadmap encontrado para os filtros selecionados.</div>`;
+      grid.innerHTML = `<div class="loading">${t('courses.empty')}</div>`;
       return;
     }
 
     grid.innerHTML = lista.map(c => {
+      const isYouTube = (c.plataforma || '').includes('YouTube') || (c.descricao || '').toLowerCase().includes('youtube');
+      const isTrilha = (c.plataforma || '').includes('Trilha Info');
       const isGuiaDeTI = (c.plataforma || '').includes('Guia de TI');
       const isBradesco = (c.plataforma || '').includes('Fundação Bradesco');
-      let btnTexto = 'Acessar Curso Gratuito ↗';
+      let btnTexto = t('courses.btnFree');
       let extraBadge = '';
 
-      if (isGuiaDeTI) {
-        btnTexto = 'Acessar no Guia de TI ↗';
-        extraBadge = '<span class="badge-guiadeti-pill">⭐ Guia de TI</span>';
+      if (isYouTube) {
+        btnTexto = t('courses.btnYoutube');
+        extraBadge = `<span class="badge-youtube-cert">${t('courses.badgeYoutube')}</span>`;
+      } else if (isTrilha) {
+        btnTexto = t('courses.btnTrilha');
+        extraBadge = `<span class="badge-trilha-pill">${t('courses.badgeTrilha')}</span>`;
+      } else if (isGuiaDeTI) {
+        btnTexto = t('courses.btnGuiadeti');
+        extraBadge = `<span class="badge-guiadeti-pill">${t('courses.badgeGuiadeti')}</span>`;
       } else if (isBradesco) {
-        btnTexto = 'Acessar na Fundação Bradesco ↗';
-        extraBadge = '<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">🏛️ Bradesco</span>';
+        btnTexto = t('courses.btnBradesco');
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">${t('courses.badgeBradesco')}</span>`;
       }
 
       return `
-        <article class="course-card ${isGuiaDeTI ? 'card-featured-guiadeti' : (isBradesco ? 'card-featured-bradesco' : '')}">
+        <article class="course-card ${isYouTube ? 'card-featured-youtube' : (isGuiaDeTI ? 'card-featured-guiadeti' : (isBradesco ? 'card-featured-bradesco' : ''))}">
           <div class="course-top">
-            <span class="course-area">${this.escape(c.area)}</span>
-            <div style="display: flex; gap: 0.35rem; align-items: center;">
+            <span class="course-area">${this.escape(traduzirArea(c.area))}</span>
+            <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
               ${extraBadge}
-              <span class="course-level">${this.escape(c.nivel || 'Livre')}</span>
+              <span class="course-level">${this.escape(c.nivel ? traduzirNivel(c.nivel) : t('courses.levelDefault'))}</span>
             </div>
           </div>
 
           <h3 class="course-title">${this.escape(c.titulo)}</h3>
           <p class="course-platform">🏛️ ${this.escape(c.plataforma)}</p>
-          <p class="course-desc">${this.escape(c.descricao || 'Curso aberto com acesso gratuito e materiais didáticos.')}</p>
+          <p class="course-desc">${this.escape(c.descricao || t('courses.descFallback'))}</p>
 
-          <a class="btn ${isGuiaDeTI ? 'btn-primary' : 'btn-secondary'} course-btn" href="/api/cursos/${c.id}/acessar" target="_blank" rel="noopener noreferrer">
+          <a class="btn ${isYouTube || isGuiaDeTI ? 'btn-primary' : 'btn-secondary'} course-btn" href="/api/cursos/${c.id}/acessar" target="_blank" rel="noopener noreferrer">
             ${btnTexto}
           </a>
         </article>
@@ -700,7 +790,7 @@ const app = {
   // ==================== DASHBOARD & MÉTRICAS ====================
   async carregarDashboard() {
     const container = document.getElementById('dashboard-content');
-    container.innerHTML = `<div class="loading">Carregando estatísticas do acervo...</div>`;
+    container.innerHTML = `<div class="loading">${t('dashboard.loading')}</div>`;
 
     try {
       const res = await fetch('/api/dashboard');
@@ -716,66 +806,66 @@ const app = {
         <div class="stat-cards-row">
           <div class="stat-card">
             <div class="stat-val">${r.total_livros || 0}</div>
-            <div class="stat-label">Títulos Digitais</div>
+            <div class="stat-label">${t('dashboard.titles')}</div>
           </div>
           <div class="stat-card">
             <div class="stat-val">${r.total_leituras || 0}</div>
-            <div class="stat-label">Leituras / Acessos</div>
+            <div class="stat-label">${t('dashboard.reads')}</div>
           </div>
           <div class="stat-card">
             <div class="stat-val">${r.total_cursos || 0}</div>
-            <div class="stat-label">Cursos Gratuitos</div>
+            <div class="stat-label">${t('dashboard.courses')}</div>
           </div>
           <div class="stat-card">
             <div class="stat-val">${r.total_autores || 0}</div>
-            <div class="stat-label">Autores Clássicos</div>
+            <div class="stat-label">${t('dashboard.authors')}</div>
           </div>
         </div>
 
         <div class="dash-sections-row">
           <div class="dash-box">
-            <h3>Formatos Disponíveis</h3>
+            <h3>${t('dashboard.formats')}</h3>
             <div class="dash-list">
               ${formatos.map(f => `
                 <div class="dash-list-item">
                   <span>📄 ${f.formato.toUpperCase()}</span>
-                  <span class="dash-list-badge">${f.total} obras</span>
+                  <span class="dash-list-badge">${f.total} ${t('dashboard.works')}</span>
                 </div>
               `).join('')}
             </div>
           </div>
 
           <div class="dash-box">
-            <h3>Distribuição por Área</h3>
+            <h3>${t('dashboard.distribution')}</h3>
             <div class="dash-list">
               ${areas.map(a => `
                 <div class="dash-list-item">
-                  <span>📚 ${this.escape(a.area)}</span>
-                  <span class="dash-list-badge">${a.total} obras</span>
+                  <span>📚 ${this.escape(traduzirArea(a.area))}</span>
+                  <span class="dash-list-badge">${a.total} ${t('dashboard.works')}</span>
                 </div>
               `).join('')}
             </div>
           </div>
 
           <div class="dash-box">
-            <h3>Fontes Abertas Conectadas</h3>
+            <h3>${t('dashboard.sources')}</h3>
             <div class="dash-list">
               ${fontes.map(f => `
                 <div class="dash-list-item">
                   <span>🌐 ${this.escape(f.nome)}</span>
-                  <span class="dash-list-badge">${f.total_livros} obras</span>
+                  <span class="dash-list-badge">${f.total_livros} ${t('dashboard.works')}</span>
                 </div>
               `).join('')}
             </div>
           </div>
 
           <div class="dash-box">
-            <h3>Obras Mais Lidas</h3>
+            <h3>${t('dashboard.mostRead')}</h3>
             <div class="dash-list">
               ${maisLidos.map(l => `
                 <div class="dash-list-item">
                   <span>📖 ${this.escape(l.titulo)}</span>
-                  <span class="dash-list-badge">${l.leituras} leituras</span>
+                  <span class="dash-list-badge">${l.leituras} ${t('dashboard.readsShort')}</span>
                 </div>
               `).join('')}
             </div>
@@ -783,7 +873,7 @@ const app = {
         </div>
       `;
     } catch (err) {
-      container.innerHTML = `<div class="loading" style="color:#b91c1c">Erro ao carregar métricas: ${err.message}</div>`;
+      container.innerHTML = `<div class="loading" style="color:#b91c1c">${this.escape(t('dashboard.error', { msg: err.message }))}</div>`;
     }
   },
 
@@ -930,14 +1020,15 @@ const app = {
       });
 
       const dataLivro = await resLivro.json();
-      if (!resLivro.ok) throw new Error(dataLivro.erro || 'Falha ao cadastrar');
+      if (!resLivro.ok) throw new Error(dataLivro.erro || t('form.errorSave'));
 
-      this.mostrarToast(`"${titulo}" adicionado com sucesso ao acervo!`);
+      this.mostrarToast(t('form.savedOk', { t: titulo }));
       this.fecharModais();
       e.target.reset();
+      this.carregarCategoriasSelect();
       this.carregarLivros();
     } catch (err) {
-      this.mostrarToast('Erro ao cadastrar livro: ' + err.message);
+      this.mostrarToast(t('form.error', { msg: err.message }));
     }
   },
 

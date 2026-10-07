@@ -6,7 +6,7 @@ function listar(req, res) {
   try {
     const db = getDatabase();
     const { 
-      busca, categoria_id, autor_id, idioma, formato, licenca, 
+      busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug,
       page = 1, limit = 24 
     } = req.query;
 
@@ -35,8 +35,13 @@ function listar(req, res) {
     }
 
     if (categoria_id) {
-      baseQuery += ` AND l.categoria_id = ?`;
-      params.push(categoria_id);
+      if (/^\d+$/.test(categoria_id)) {
+        baseQuery += ` AND l.categoria_id = ?`;
+        params.push(categoria_id);
+      } else {
+        baseQuery += ` AND c.nome = ?`;
+        params.push(categoria_id);
+      }
     }
 
     if (autor_id) {
@@ -52,6 +57,12 @@ function listar(req, res) {
     if (licenca) {
       baseQuery += ` AND l.licenca = ?`;
       params.push(licenca);
+    }
+
+    const fonteFiltro = fonte_slug || fonte;
+    if (fonteFiltro) {
+      baseQuery += ` AND (f.slug = ? OR f.slug LIKE ?)`;
+      params.push(fonteFiltro, `%${fonteFiltro}%`);
     }
 
     if (formato) {

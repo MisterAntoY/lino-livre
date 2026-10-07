@@ -3,7 +3,7 @@ const { getDatabase } = require('../database');
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const { area, nivel, plataforma, fonte, busca } = req.query;
+    const { area, nivel, plataforma, fonte, busca, youtube, certificado } = req.query;
 
     let query = 'SELECT * FROM cursos WHERE 1=1';
     const params = [];
@@ -22,6 +22,14 @@ function listar(req, res) {
     } else if (fonte && (fonte.toLowerCase() === 'guiadeti' || fonte.toLowerCase() === 'guia de ti')) {
       query += ' AND plataforma LIKE ?';
       params.push('%Guia de TI%');
+    }
+    if (youtube === '1' || youtube === 'true' || (plataforma && plataforma.toLowerCase() === 'youtube')) {
+      query += ' AND plataforma LIKE ?';
+      params.push('%YouTube%');
+    }
+    if (certificado === 'gratuito' || certificado === '1' || certificado === 'true') {
+      query += ' AND (descricao LIKE ? OR plataforma LIKE ?)';
+      params.push('%certifica%', '%certifica%');
     }
     if (busca && busca.trim()) {
       const termo = `%${busca.trim()}%`;

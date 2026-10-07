@@ -11,92 +11,92 @@ const cursosData = [
   [
     "Curso de Python 2025",
     "Tecnologia",
-    "Guia de TI / Hashtag Programação",
+    "Guia de TI / YouTube (Hashtag Programação)",
     "https://guiadeti.com.br/cursos/curso-de-python-2025/",
     "gratuito",
     "Iniciante",
-    "Curso gratuito de Python para iniciantes cobrindo variáveis, estruturas condicionais, listas, dicionários e lógica de programação moderna."
+    "Curso gratuito de Python no YouTube com certificação gratuita oficial. Cobre variáveis, estruturas condicionais, listas, dicionários e lógica de programação moderna."
   ],
   [
     "Curso DevOps: Cloud, Linux, Docker e Marketplace",
     "Tecnologia",
-    "Guia de TI / Iago Ferreira TI",
+    "Guia de TI / YouTube (Iago Ferreira TI)",
     "https://guiadeti.com.br/cursos/curso-devops-cloud-linux-docker-e-projeto-marketplace/",
     "gratuito",
     "Intermediário",
-    "Formação completa com 14 aulas sobre DevOps, SRE, Cloud Computing, Linux, Git, Docker, observabilidade e projeto de Marketplace."
+    "Formação completa em vídeo no YouTube com 14 aulas e certificação gratuita. Aborda DevOps, SRE, Cloud Computing, Linux, Git, Docker, observabilidade e projeto de Marketplace."
   ],
   [
     "Curso Básico de Power BI 2025: Do Zero ao Dashboard",
     "Tecnologia",
-    "Guia de TI / Hashtag Treinamentos",
+    "Guia de TI / YouTube (Hashtag Treinamentos)",
     "https://guiadeti.com.br/cursos/curso-basico-de-power-bi-2025-do-zero-ao-dashboard/",
     "gratuito",
     "Iniciante",
-    "Aulas introdutórias práticas de Power BI com Power Query, modelagem de dados relacionais, fórmulas DAX, gráficos dinâmicos e dashboards."
+    "Aulas introdutórias no YouTube com certificação gratuita. Power Query, modelagem de dados relacionais, fórmulas DAX, gráficos dinâmicos e dashboards."
   ],
   [
     "Curso Básico e Gratuito de Claude & Engenharia de IA",
     "Tecnologia",
-    "Guia de TI",
+    "Guia de TI / YouTube",
     "https://guiadeti.com.br/cursos/curso-basico-e-gratuito-de-claude/",
     "gratuito",
     "Iniciante",
-    "Curso completo de Claude abordando Artefatos, Cowork, Claude Code, Skills e automação de fluxos de trabalho com IA generativa."
+    "Curso completo de Claude no YouTube com certificação gratuita. Aborda Artefatos, Cowork, Claude Code, Skills e automação de fluxos com IA generativa."
   ],
   [
     "Curso de Streamlit: Dashboards e Web Apps em Python",
     "Tecnologia",
-    "Guia de TI",
+    "Guia de TI / YouTube",
     "https://guiadeti.com.br/cursos/curso-de-streamlit/",
     "gratuito",
     "Intermediário",
-    "Criação ágil de aplicações de dados e dashboards interativos em Python com filtros, gráficos interativos e integração com APIs."
+    "Criação de web apps de dados e dashboards em Python com filtros e gráficos no YouTube, com certificação gratuita validável."
   ],
   [
     "Curso Gratuito de HTML e CSS: Landing Page do Zero",
     "Tecnologia",
-    "Guia de TI",
+    "Guia de TI / YouTube",
     "https://guiadeti.com.br/cursos/curso-basico-de-html-e-css/",
     "gratuito",
     "Iniciante",
-    "Treinamento prático com 13 videoaulas abordando HTML semântico, CSS moderno, Flexbox, layout responsivo e formulários."
+    "13 videoaulas práticas no YouTube com certificação gratuita. HTML semântico, CSS moderno, Flexbox, layout responsivo e formulários."
   ],
   [
     "Curso de Introdução ao TypeScript",
     "Tecnologia",
-    "Guia de TI",
+    "Guia de TI / YouTube",
     "https://guiadeti.com.br/cursos/curso-de-introducao-ao-typescript/",
     "gratuito",
     "Iniciante",
-    "Fundamentos de tipagem estática para JavaScript, interfaces, generics, classes, configuração de tsconfig e compilação para Node e Web."
+    "Fundamentos de TypeScript no YouTube com certificação gratuita. Tipagem estática, interfaces, generics, classes, configuração tsconfig e Node."
   ],
   [
     "Curso de Laravel 11 - Completo e Gratuito",
     "Tecnologia",
-    "Guia de TI / Especializa TI",
+    "Guia de TI / YouTube (Especializa TI)",
     "https://guiadeti.com.br/cursos/curso-de-laravel-11-completo-e-gratuito/",
     "gratuito",
     "Intermediário",
-    "Desenvolvimento moderno com Laravel 11, Docker, arquitetura MVC, autenticação, Eloquent ORM, Blade, validações e APIs REST."
+    "Desenvolvimento moderno com Laravel 11 e Docker no YouTube com certificação gratuita. MVC, autenticação, Eloquent, Blade e APIs REST."
   ],
   [
     "Curso de Linux - Primeiros Passos e Terminal",
     "Tecnologia",
-    "Guia de TI / Curso em Vídeo",
+    "Guia de TI / YouTube (Curso em Vídeo)",
     "https://guiadeti.com.br/cursos/curso-de-linux-primeiros-passos/",
     "gratuito",
     "Iniciante",
-    "Domínio do terminal Linux, comandos essenciais, manipulação de arquivos, permissões, usuários e administração básica do sistema operacional."
+    "Curso em vídeo no YouTube com certificação gratuita. Domínio do terminal Linux, comandos essenciais, manipulação de arquivos e administração."
   ],
   [
-    "Curso de Redes de Computadores Grátis",
+    "Curso Redes de Computadores Grátis",
     "Tecnologia",
-    "Guia de TI / Curso em Vídeo",
+    "Guia de TI / YouTube (Curso em Vídeo)",
     "https://guiadeti.com.br/cursos/curso-redes-de-computadores-gratis/",
     "gratuito",
     "Iniciante",
-    "Conceitos fundamentais de redes: arquitetura TCP/IP, endereçamento IPv4/IPv6, sub-redes, DNS, roteamento e segurança básica."
+    "Conceitos fundamentais de redes no YouTube com certificação gratuita. TCP/IP, IPv4/IPv6, sub-redes, roteamento e Packet Tracer."
   ],
   [
     "AI Expert Roadmap: Trilha de IA & Ciência de Dados",
@@ -916,6 +916,80 @@ const cursosData = [
     "cc-by-nc",
     "Ensino Médio",
     "Propriedades de triângulos, círculos, polígonos, trigonometria e demonstrações geométricas."
+  ],
+
+  // ==================== Trilha Info (flaviojmendes / GitHub) ====================
+  [
+    "Trilha Info: Formação Desenvolvedor Frontend",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/frontend",
+    "gratuito",
+    "Iniciante",
+    "Roteiro interativo aberto para formação Frontend cobrindo HTML, CSS, JavaScript, React, acessibilidade e performance web."
+  ],
+  [
+    "Trilha Info: Formação Desenvolvedor Backend",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/backend",
+    "gratuito",
+    "Intermediário",
+    "Trilha aberta de estudos para Backend: arquitetura REST, microsserviços, mensageria, modelagem de banco de dados e segurança."
+  ],
+  [
+    "Trilha Info: Formação Engenheiro DevOps",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/devops",
+    "gratuito",
+    "Intermediário",
+    "Guia estruturado cobrindo Linux, containers Docker, orquestração com Kubernetes, automação CI/CD e infraestrutura como código."
+  ],
+  [
+    "Trilha Info: Engenharia de Dados & Big Data",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/data-engineer",
+    "gratuito",
+    "Avançado",
+    "Trilha aberta para engenharia de dados: pipelines distribuídos, Data Lakes, Apache Spark, Airflow, governança e streaming."
+  ],
+  [
+    "Trilha Info: Testes de Software & Garantia de Qualidade (QA)",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/test",
+    "gratuito",
+    "Intermediário",
+    "Formação em pirâmide de testes, automação de testes E2E, testes unitários, Cypress, Selenium e boas práticas de QA."
+  ],
+  [
+    "Trilha Info: Formação Full Stack Developer",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/fullstack",
+    "gratuito",
+    "Intermediário",
+    "Caminho completo conectando desenvolvimento de interfaces com APIs, bancos de dados, deploys em nuvem e arquitetura web."
+  ],
+  [
+    "Trilha Info: Formação Especialista React",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/react",
+    "gratuito",
+    "Intermediário",
+    "Trilha especializada no ecossistema React: Hooks, gerenciamento de estado global, Next.js, Server Components e ecossistema moderno."
+  ],
+  [
+    "Trilha Info: Preparação para Entrevistas Técnicas",
+    "Tecnologia",
+    "Trilha Info (Flávio Mendes / GitHub)",
+    "https://trilha.info/roadmap/entrevistas",
+    "gratuito",
+    "Iniciante",
+    "Guia estratégico para estudantes e desenvolvedores: algoritmos, live coding, perguntas comportamentais e testes práticos."
   ]
 ];
 
@@ -923,5 +997,6 @@ module.exports = {
   cursosData,
   guiaDeTICursosCount: 15,
   fundacaoBradescoCount: 61,
-  oerCount: 25
+  oerCount: 25,
+  trilhaInfoCount: 8
 };
