@@ -22,6 +22,8 @@
     "tabs": {
       "books": "📚 电子书籍",
       "courses": "🎓 免费课程",
+      "roadmaps": "🗺️ 学习路线图",
+      "tips": "💡 学习技巧与工具",
       "dashboard": "📊 数据与来源"
     },
     "books": {
@@ -64,16 +66,15 @@
       "errorDetails": "无法加载书籍详情"
     },
     "courses": {
-      "bannerBadge": "⭐ 主要来源：Guia de TI",
-      "bannerTitle": "免费课程、技术书籍与学习路线图目录",
+      "bannerBadge": "⭐ 免费在线课程与认证",
+      "bannerTitle": "免费在线课程目录",
       "bannerDescBefore": "与 ",
-      "bannerDescAfter": " 及全球最大的开放机构合作，提供技术、人工智能、编程与开放教育资源培训。",
-      "searchPlaceholder": "搜索课程、路线图或技术（Python、DevOps、AI、Power BI、Linux……）",
+      "bannerDescAfter": " 及 Fundação Bradesco 合作，提供带免费官方证书的视频课程与开放培训。",
+      "searchPlaceholder": "搜索课程与技术（Python、DevOps、AI、Power BI、Linux……）",
       "filters": "筛选与分类：",
       "all": "全部",
-      "guiadeti": "🚀 Guia de TI（主要来源）",
+      "guiadeti": "🚀 Guia de TI",
       "youtube": "📺 YouTube（免费证书）",
-      "trilhainfo": "🗺️ 学习路线图（Trilha Info）",
       "areaTech": "通用技术",
       "areaExact": "精密科学",
       "areaMath": "数学",
@@ -81,20 +82,38 @@
       "areaHuman": "人文科学",
       "areaLang": "语言",
       "loading": "正在加载课程目录……",
-      "loadingRoadmaps": "正在加载课程与路线图目录……",
-      "empty": "没有符合所选筛选条件的课程或路线图。",
+      "loadingRoadmaps": "正在加载课程目录……",
+      "empty": "没有找到符合所选筛选条件的课程。",
       "error": "加载课程失败：{msg}",
       "btnFree": "访问免费课程 ↗",
       "btnGuiadeti": "前往 Guia de TI ↗",
       "btnBradesco": "前往 Fundação Bradesco ↗",
       "btnYoutube": "观看并获取证书 ↗",
-      "btnTrilha": "打开互动路线图 ↗",
       "badgeGuiadeti": "⭐ Guia de TI",
       "badgeBradesco": "🏛️ Bradesco",
       "badgeYoutube": "📺 YouTube • 🎓 免费证书",
-      "badgeTrilha": "🗺️ Trilha Info",
       "levelDefault": "不限级别",
       "descFallback": "免费开放课程，提供学习资料。"
+    },
+    "roadmaps": {
+      "bannerTitle": "职业学习路线图与进阶指南",
+      "bannerDesc": "与 Roadmap.sh、Trilha Info 和 Guia de TI 合作提供的互动式技能树与职业成长路线图。",
+      "searchPlaceholder": "搜索路线图（前端、后端、DevOps、人工智能、React、QA、Python……）",
+      "filters": "路线图筛选：",
+      "all": "全部路线图",
+      "loading": "正在加载互动学习路线图……",
+      "empty": "没有找到符合所选筛选条件的路线图。",
+      "error": "加载路线图失败：{msg}"
+    },
+    "tips": {
+      "bannerTitle": "学习方法、专注技巧与开放工具",
+      "bannerDesc": "精选高效学习法、番茄钟、间隔重复、语法润色工具、Markdown 笔记管理及学生支持服务。",
+      "searchPlaceholder": "搜索技巧与工具（番茄钟、Anki、Obsidian、Zotero、LaTeX、语法……）",
+      "filters": "技巧分类：",
+      "all": "全部技巧",
+      "loading": "正在加载学习技巧与工具……",
+      "empty": "没有找到符合所选筛选条件的技巧。",
+      "error": "加载技巧失败：{msg}"
     },
     "dashboard": {
       "loading": "正在加载书库统计……",
