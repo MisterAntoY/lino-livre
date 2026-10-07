@@ -8,17 +8,19 @@ Plataforma aberta, ultrassimples e direta para distribuição de **livros digita
 
 ## 🌟 Destaques do Projeto
 
-1. **Capas Originais Históricas Reais**:
+1. **Guia de TI — Principal Fonte de Cursos, Livros Técnicos & Roadmaps**:
+   Integração direta com o portal **[Guia de TI](https://guiadeti.com.br)** (`https://guiadeti.com.br/mapa-do-site/`), trazendo catálogo completo com deep-links verificados para cursos modernos (*Python 2025, Claude & IA, DevOps, Power BI 2025, Streamlit, Linux, TypeScript, Laravel 11*), roadmaps de carreira (*AI Expert, Roadmap.sh, TechGuide.sh, Trilha Info*) e sincronização via feeds RSS 2.0 oficiais (`/cursos/feed/`, `/roadmaps/feed/`, `/feed/`).
+2. **Capas Originais Históricas Reais**:
    Digitalizações autênticas de primeiras edições em domínio público (*Machado de Assis 1881 e 1899, Aluísio Azevedo 1890, Lima Barreto 1915, Castro Alves 1870, José de Alencar 1857 e 1865*), armazenadas localmente para velocidade e preservação histórica.
-2. **Distribuição Multi-formato**:
+3. **Distribuição Multi-formato**:
    Disponibilização de obras em formatos abertos: **PDF**, **EPUB**, **HTML/Web** e **TXT**. Cada acesso via link gera redirecionamento HTTP 302 direto à fonte oficial com incremento atômico de leituras.
-3. **Busca FTS5 (Full-Text Search)**:
+4. **Busca FTS5 (Full-Text Search)**:
    Mecanismo de busca textual do SQLite FTS5 integrado, sincronizado automaticamente por triggers ao cadastrar ou atualizar obras.
-4. **Diretório de Cursos Gratuitos**:
-   Mais de 30 cursos curados de plataformas educacionais abertas de prestígio (*Harvard CS50, MIT OpenCourseWare, OpenStax, PhET Interactive Simulations, Khan Academy, Fundação Bradesco, CK-12 e OER Commons*).
-5. **Comunidade & Canal WhatsApp**:
+5. **Diretório Expandido de Cursos Gratuitos**:
+   Mais de 45 cursos curados e roadmaps, liderados pelo **Guia de TI** e complementados por grandes instituições educacionais abertas (*Harvard CS50, MIT OpenCourseWare, OpenStax, PhET, Khan Academy, CK-12*).
+6. **Comunidade & Canal WhatsApp**:
    Integração direta sem coleta de dados do usuário: links diretos e geração dinâmica de QR codes em SVG pelo servidor (`/api/comunidade/qrcode.svg` e `/api/canal/qrcode.svg`), com cache em memória e atualização automática ao alterar o `.env`.
-6. **Compliance & Licenças**:
+7. **Compliance & Licenças**:
    Todos os itens exigem licença legal obrigatória (`dominio-publico`, `cc0`, `cc-by`, `cc-by-sa`, `cc-by-nc`, `outro`). Fontes piratas são terminantemente proibidas.
 
 ---

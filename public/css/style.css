@@ -762,14 +762,63 @@ body {
   color: var(--text-muted);
 }
 
-/* Cursos Gratuitos */
+/* Cursos Gratuitos & Guia de TI */
 .cursos-header-banner {
   background: #ffffff;
   border: 1px solid var(--border);
-  border-left: 4px solid #10b981;
+  border-left: 4px solid #0284c7;
   padding: 1.25rem 1.5rem;
   border-radius: var(--radius-md);
   margin-bottom: 0.5rem;
+}
+
+.banner-badge-primary {
+  display: inline-block;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.03em;
+}
+
+.link-destaque {
+  color: #0284c7;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.pill-guiadeti {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border-color: #93c5fd !important;
+  font-weight: 700 !important;
+}
+
+.pill-guiadeti.active {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
+}
+
+.card-featured-guiadeti {
+  border-color: #bfdbfe !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.badge-guiadeti-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #1e40af;
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
 }
 
 .cursos-header-banner h2 {

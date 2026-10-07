@@ -65,6 +65,7 @@
         <span class="filter-label">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
           <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')">Todas</button>
+          <button class="pill" data-categoria="Tecnologia & Guias Digitais" onclick="app.filtrarPorCategoria('Tecnologia & Guias Digitais')">💻 Guias & Tecnologia</button>
           <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')">Clássicos Brasileiros</button>
           <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')">Romances</button>
           <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')">Poesia</button>
@@ -105,20 +106,27 @@
   <div id="aba-cursos" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner">
-        <h2>Diretório de Cursos Livres & Gratuitos</h2>
-        <p>Acesse cursos universitários e recursos educacionais abertos (OER) das maiores instituições do mundo.</p>
+        <div class="banner-badge-primary">⭐ Fonte Principal: Guia de TI</div>
+        <h2>Diretório de Cursos Livres, Livros Técnicos & Roadmaps</h2>
+        <p>Formação em tecnologia, inteligência artificial, programação e recursos educacionais abertos em parceria com o <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a> e as maiores instituições abertas do mundo.</p>
+      </div>
+
+      <div class="search-bar" style="margin-bottom: 1.25rem;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos, roadmaps ou tecnologias (Python, DevOps, IA, Power BI, Linux...)..." oninput="app.buscarCursosComDebounce()">
       </div>
 
       <div class="filter-row">
-        <span class="filter-label">Área do Conhecimento:</span>
+        <span class="filter-label">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
-          <button class="pill active" data-area="" onclick="app.filtrarCursosPorArea('')">Todas</button>
-          <button class="pill" data-area="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')">Tecnologia</button>
-          <button class="pill" data-area="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')">Ciências Exatas</button>
-          <button class="pill" data-area="Matemática" onclick="app.filtrarCursosPorArea('Matemática')">Matemática</button>
-          <button class="pill" data-area="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')">Biológicas</button>
-          <button class="pill" data-area="Ciências Humanas" onclick="app.filtrarCursosPorArea('Ciências Humanas')">Humanas</button>
-          <button class="pill" data-area="Linguagens" onclick="app.filtrarCursosPorArea('Linguagens')">Linguagens</button>
+          <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')">Todos</button>
+          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')">🚀 Guia de TI (Principal)</button>
+          <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')">Tecnologia Geral</button>
+          <button class="pill" data-filtro="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')">Ciências Exatas</button>
+          <button class="pill" data-filtro="Matemática" onclick="app.filtrarCursosPorArea('Matemática')">Matemática</button>
+          <button class="pill" data-filtro="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')">Biológicas</button>
+          <button class="pill" data-filtro="Ciências Humanas" onclick="app.filtrarCursosPorArea('Ciências Humanas')">Humanas</button>
+          <button class="pill" data-filtro="Linguagens" onclick="app.filtrarCursosPorArea('Linguagens')">Linguagens</button>
         </div>
       </div>
     </section>
@@ -246,6 +254,7 @@
               <option value="3">Teatro & Poesia</option>
               <option value="4">Apoio Pedagógico & Filosofia</option>
               <option value="5">Literatura Infantojuvenil</option>
+              <option value="6">Tecnologia & Guias Digitais</option>
             </select>
           </div>
           <div class="form-group">

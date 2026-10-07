@@ -3,7 +3,7 @@ const { getDatabase } = require('../database');
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const { area, nivel } = req.query;
+    const { area, nivel, plataforma, fonte, busca } = req.query;
 
     let query = 'SELECT * FROM cursos WHERE 1=1';
     const params = [];
@@ -16,8 +16,21 @@ function listar(req, res) {
       query += ' AND nivel = ?';
       params.push(nivel);
     }
+    if (plataforma) {
+      query += ' AND plataforma LIKE ?';
+      params.push(`%${plataforma}%`);
+    } else if (fonte && (fonte.toLowerCase() === 'guiadeti' || fonte.toLowerCase() === 'guia de ti')) {
+      query += ' AND plataforma LIKE ?';
+      params.push('%Guia de TI%');
+    }
+    if (busca && busca.trim()) {
+      const termo = `%${busca.trim()}%`;
+      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      params.push(termo, termo, termo);
+    }
 
-    query += ' ORDER BY area ASC, titulo ASC';
+    // Guia de TI como fonte principal destacada no topo
+    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, area ASC, titulo ASC";
     const cursos = db.prepare(query).all(...params);
     res.json(cursos);
   } catch (err) {

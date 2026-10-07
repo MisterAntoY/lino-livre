@@ -7,10 +7,13 @@ const app = {
   categoriaAtiva: '',
   formatoAtivo: '',
   areaCursoAtiva: '',
+  fonteCursoAtiva: '',
   termoBusca: '',
+  termoBuscaCursos: '',
   paginaAtual: 1,
   totalPaginas: 1,
   debounceTimer: null,
+  debounceCursosTimer: null,
   tamanhoFonte: 18,
   livroAtual: null,
 
@@ -101,7 +104,8 @@ const app = {
       'Romance & Crônicas': 2,
       'Teatro & Poesia': 3,
       'Apoio Pedagógico & Filosofia': 4,
-      'Literatura Infantojuvenil': 5
+      'Literatura Infantojuvenil': 5,
+      'Tecnologia & Guias Digitais': 6
     };
     return mapa[nome] || '';
   },
@@ -233,16 +237,44 @@ const app = {
   },
 
   // ==================== CURSOS GRATUITOS ====================
+  buscarCursosComDebounce() {
+    clearTimeout(this.debounceCursosTimer);
+    this.debounceCursosTimer = setTimeout(() => {
+      this.termoBuscaCursos = (document.getElementById('filtro-busca-cursos')?.value || '').trim();
+      this.carregarCursos();
+    }, 250);
+  },
+
+  filtrarCursosPorArea(area) {
+    this.areaCursoAtiva = area;
+    this.fonteCursoAtiva = '';
+    document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-filtro') === area);
+    });
+    this.carregarCursos();
+  },
+
+  filtrarCursosPorFonte(fonte) {
+    this.fonteCursoAtiva = fonte;
+    this.areaCursoAtiva = '';
+    document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-filtro') === 'guiadeti');
+    });
+    this.carregarCursos();
+  },
+
   async carregarCursos() {
     const grid = document.getElementById('grade-cursos');
-    grid.innerHTML = `<div class="loading">Carregando diretório de cursos gratuitos...</div>`;
+    grid.innerHTML = `<div class="loading">Carregando catálogo de cursos e roadmaps...</div>`;
 
     try {
-      const url = this.areaCursoAtiva 
-        ? `/api/cursos?area=${encodeURIComponent(this.areaCursoAtiva)}`
-        : '/api/cursos';
-      
-      const res = await fetch(url);
+      const params = new URLSearchParams();
+      if (this.areaCursoAtiva) params.append('area', this.areaCursoAtiva);
+      if (this.fonteCursoAtiva) params.append('fonte', this.fonteCursoAtiva);
+      if (this.termoBuscaCursos) params.append('busca', this.termoBuscaCursos);
+
+      const qs = params.toString() ? `?${params.toString()}` : '';
+      const res = await fetch(`/api/cursos${qs}`);
       const cursos = await res.json();
       this.cursos = cursos;
 
@@ -252,38 +284,36 @@ const app = {
     }
   },
 
-  filtrarCursosPorArea(area) {
-    this.areaCursoAtiva = area;
-    document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-area') === area);
-    });
-    this.carregarCursos();
-  },
-
   renderizarCursos(lista) {
     const grid = document.getElementById('grade-cursos');
 
     if (!lista || lista.length === 0) {
-      grid.innerHTML = `<div class="loading">Nenhum curso encontrado nesta área.</div>`;
+      grid.innerHTML = `<div class="loading">Nenhum curso ou roadmap encontrado para os filtros selecionados.</div>`;
       return;
     }
 
-    grid.innerHTML = lista.map(c => `
-      <article class="course-card">
-        <div class="course-top">
-          <span class="course-area">${this.escape(c.area)}</span>
-          <span class="course-level">${this.escape(c.nivel || 'Livre')}</span>
-        </div>
+    grid.innerHTML = lista.map(c => {
+      const isGuiaDeTI = (c.plataforma || '').includes('Guia de TI');
+      return `
+        <article class="course-card ${isGuiaDeTI ? 'card-featured-guiadeti' : ''}">
+          <div class="course-top">
+            <span class="course-area">${this.escape(c.area)}</span>
+            <div style="display: flex; gap: 0.35rem; align-items: center;">
+              ${isGuiaDeTI ? '<span class="badge-guiadeti-pill">⭐ Guia de TI</span>' : ''}
+              <span class="course-level">${this.escape(c.nivel || 'Livre')}</span>
+            </div>
+          </div>
 
-        <h3 class="course-title">${this.escape(c.titulo)}</h3>
-        <p class="course-platform">🏛️ ${this.escape(c.plataforma)}</p>
-        <p class="course-desc">${this.escape(c.descricao || 'Curso aberto com acesso gratuito e materiais didáticos.')}</p>
+          <h3 class="course-title">${this.escape(c.titulo)}</h3>
+          <p class="course-platform">🏛️ ${this.escape(c.plataforma)}</p>
+          <p class="course-desc">${this.escape(c.descricao || 'Curso aberto com acesso gratuito e materiais didáticos.')}</p>
 
-        <a class="btn btn-primary course-btn" href="${c.url}" target="_blank" rel="noopener noreferrer">
-          Acessar Curso Gratuito ↗
-        </a>
-      </article>
-    `).join('');
+          <a class="btn ${isGuiaDeTI ? 'btn-primary' : 'btn-secondary'} course-btn" href="${c.url}" target="_blank" rel="noopener noreferrer">
+            ${isGuiaDeTI ? 'Acessar no Guia de TI ↗' : 'Acessar Curso Gratuito ↗'}
+          </a>
+        </article>
+      `;
+    }).join('');
   },
 
   // ==================== DASHBOARD & MÉTRICAS ====================

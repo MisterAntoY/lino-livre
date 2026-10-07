@@ -45,6 +45,26 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
           })
         };
       }
+      if (urlStr.includes('guiadeti.com.br')) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () => `<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel>
+  <title>Cursos — Guia de TI</title>
+  <item>
+    <title>Curso de Python 2025</title>
+    <link>https://guiadeti.com.br/cursos/curso-de-python-2025/</link>
+    <description>Curso gratuito de Python para iniciantes com variáveis e lógica.</description>
+  </item>
+  <item>
+    <title>AI Expert Roadmap</title>
+    <link>https://guiadeti.com.br/roadmaps/ai-expert-roadmap/</link>
+    <description>Trilha completa de inteligência artificial e aprendizado de máquina.</description>
+  </item>
+</channel></rss>`
+        };
+      }
       return originalFetch(url, options);
     };
 
@@ -298,5 +318,38 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Restaurar
     process.env.WHATSAPP_COMMUNITY_URL = backupCom;
     process.env.WHATSAPP_CHANNEL_URL = backupCan;
+  });
+
+  // Teste 9: Integração do Guia de TI (importação assíncrona, cursos e fonte oficial)
+  test('9. Integração do Guia de TI: importação assíncrona, filtragem por fonte e busca de cursos', async () => {
+    // 9.1 - Verificar se Guia de TI está listado nas fontes
+    const resFontes = await request('/api/fontes');
+    assert.equal(resFontes.status, 200);
+    const fonteGti = resFontes.data.find(f => f.slug === 'guiadeti');
+    assert.ok(fonteGti, 'Guia de TI deve constar nas fontes oficiais');
+    assert.equal(fonteGti.tipo, 'rss');
+
+    // 9.2 - Disparar importação para o Guia de TI
+    const resImport = await request('/api/import', {
+      method: 'POST',
+      body: JSON.stringify({
+        fonte: 'guiadeti',
+        query: 'python'
+      })
+    });
+    assert.equal(resImport.status, 202);
+    assert.ok(resImport.data.job_id);
+    assert.equal(resImport.data.fonte, 'guiadeti');
+
+    // 9.3 - Filtragem de cursos por fonte guiadeti
+    const resCursosGti = await request('/api/cursos?fonte=guiadeti');
+    assert.equal(resCursosGti.status, 200);
+    assert.ok(resCursosGti.data.length > 0, 'Deve retornar cursos do Guia de TI');
+    assert.ok(resCursosGti.data.every(c => c.plataforma.includes('Guia de TI')));
+
+    // 9.4 - Busca de cursos por termo
+    const resBuscaPython = await request('/api/cursos?busca=python');
+    assert.equal(resBuscaPython.status, 200);
+    assert.ok(resBuscaPython.data.some(c => c.titulo.toLowerCase().includes('python')));
   });
 });

@@ -16,8 +16,9 @@ function seed(dbInstance = null) {
     DELETE FROM sqlite_sequence;
   `);
 
-  // 1. Inserir Fontes Oficiais
+  // 1. Inserir Fontes Oficiais (Guia de TI como principal fonte técnica)
   const insertFonte = db.prepare('INSERT INTO fontes (slug, nome, tipo, url_base, ativa) VALUES (?, ?, ?, ?, ?)');
+  const fGuiaDeTI = insertFonte.run('guiadeti', 'Guia de TI', 'rss', 'https://guiadeti.com.br', 1).lastInsertRowid;
   const fGutenberg = insertFonte.run('gutenberg', 'Project Gutenberg', 'api', 'https://gutendex.com', 1).lastInsertRowid;
   const fOpenLib = insertFonte.run('openlibrary', 'Open Library', 'api', 'https://openlibrary.org', 1).lastInsertRowid;
   const fDomPub = insertFonte.run('dominiopublico', 'Portal Domínio Público (MEC)', 'manual', 'https://www.dominiopublico.gov.br', 1).lastInsertRowid;
@@ -31,6 +32,7 @@ function seed(dbInstance = null) {
   const catPoesia = insertCat.run('Teatro & Poesia', 'Dramaturgia e coletâneas poéticas clássicas').lastInsertRowid;
   const catIndianismo = insertCat.run('Romance Indianista', 'Obras da vertente indianista do romantismo brasileiro').lastInsertRowid;
   const catDidaticos = insertCat.run('Apoio Pedagógico & Filosofia', 'Textos formativos e reflexões sociopolíticas').lastInsertRowid;
+  const catTecnologia = insertCat.run('Tecnologia & Guias Digitais', 'Manuais técnicos, guias de programação, inteligência artificial e roadmaps abertos').lastInsertRowid;
 
   // 3. Inserir Autores
   const insertAutor = db.prepare('INSERT INTO autores (nome, nacionalidade, biografia) VALUES (?, ?, ?)');
@@ -39,6 +41,7 @@ function seed(dbInstance = null) {
   const autAluisio = insertAutor.run('Aluísio Azevedo', 'Brasileiro', 'Pioneiro do Naturalismo no Brasil e autor consagrado de O Cortiço.').lastInsertRowid;
   const autLimaBarreto = insertAutor.run('Lima Barreto', 'Brasileiro', 'Importante escritor e cronista pré-modernista, crítico da Primeira República.').lastInsertRowid;
   const autCastroAlves = insertAutor.run('Castro Alves', 'Brasileiro', 'O Poeta dos Escravos, célebre por sua lírica romântica e poesia abolicionista.').lastInsertRowid;
+  const autGuiaTI = insertAutor.run('Guia de TI & Comunidade', 'Brasileiro/Internacional', 'Curadoria e produção aberta de conteúdos, roadmaps e cursos de tecnologia.').lastInsertRowid;
 
   // 4. Inserir Livros Digitais
   const insertLivro = db.prepare(`
@@ -222,13 +225,91 @@ function seed(dbInstance = null) {
   insertLink.run(l8, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000186.pdf', 2800000, 1);
   insertLink.run(l8, 'epub', 'https://www.gutenberg.org/ebooks/38496.epub3.images', 1900000, 1);
 
-  // 5. Inserir Cursos Gratuitos Curados (Fase 7 - mais de 30 cursos de plataformas abertas)
+  // Livro 9 (Guia de TI): AI Expert Roadmap & Guia de IA
+  const l9 = insertLivro.run(
+    'AI Expert Roadmap & Guia de IA',
+    'Trilha Completa de Inteligência Artificial e Data Science',
+    '978-0000000001',
+    2026,
+    'pt',
+    'Guia estruturado e prático para o estudo e domínio de Inteligência Artificial, Machine Learning, Deep Learning e Engenharia de Prompts.',
+    '/capas/o_alienista.png',
+    150,
+    autGuiaTI,
+    catTecnologia,
+    fGuiaDeTI,
+    'guiadeti-ai-expert',
+    'outro',
+    450,
+    `AI EXPERT ROADMAP & GUIA DE INTELIGÊNCIA ARTIFICIAL\n\nUma trilha aberta e orientada à prática para dominar IA, modelos generativos, Python para dados e automações inteligentes com ferramentas de ponta.`
+  ).lastInsertRowid;
+  insertLink.run(l9, 'html', 'https://guiadeti.com.br/roadmaps/ai-expert-roadmap/', 0, 1);
+
+  // Livro 10 (Guia de TI): Guia Completo de Carreiras e Roadmaps de TI
+  const l10 = insertLivro.run(
+    'Guia Completo de Carreiras e Roadmaps de TI',
+    'Trilhas para Frontend, Backend, DevOps e Dados',
+    '978-0000000002',
+    2026,
+    'pt',
+    'Coleção abrangente de mapas de estudo para profissionais e estudantes de computação navegarem com clareza em suas jornadas de aprendizado.',
+    '/capas/policarpo_quaresma.png',
+    180,
+    autGuiaTI,
+    catTecnologia,
+    fGuiaDeTI,
+    'guiadeti-roadmaps-carreiras',
+    'outro',
+    390,
+    `ROADMAPS DE CARREIRAS EM TECNOLOGIA\n\nGuias de habilidades indispensáveis para o mercado moderno de TI: arquitetura de software, computação em nuvem, ferramentas e boas práticas de engenharia.`
+  ).lastInsertRowid;
+  insertLink.run(l10, 'html', 'https://guiadeti.com.br/roadmaps/awesome-roadmaps/', 0, 1);
+
+  // Livro 11 (Guia de TI): Manual de Fundamentos DevOps, Cloud & Linux
+  const l11 = insertLivro.run(
+    'Manual de Fundamentos DevOps, Cloud & Linux',
+    'Linux, Containers Docker, Git e Arquitetura de Nuvem',
+    '978-0000000003',
+    2026,
+    'pt',
+    'Manual formativo sobre cultura DevOps, administração de sistemas Linux, automação e orquestração de servidores para infraestrutura moderna.',
+    '/capas/o_cortico.png',
+    220,
+    autGuiaTI,
+    catTecnologia,
+    fGuiaDeTI,
+    'guiadeti-devops-linux',
+    'outro',
+    520,
+    `FUNDAMENTOS DEVOPS, LINUX E NUVEM\n\nAprenda a administrar ambientes operacionais Linux no terminal, empacotar aplicações com Docker e implementar pipelines de entrega contínua.`
+  ).lastInsertRowid;
+  insertLink.run(l11, 'html', 'https://guiadeti.com.br/cursos/curso-devops-cloud-linux-docker-e-projeto-marketplace/', 0, 1);
+
+  // 5. Inserir Cursos Gratuitos Curados (Guia de TI como principal fonte + OER internacionais)
   const insertCurso = db.prepare(`
     INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
   const cursosData = [
+    // Guia de TI — Cursos Oficiais e Roadmaps em Destaque Primário
+    ['Curso de Python 2025', 'Tecnologia', 'Guia de TI / Hashtag Programação', 'https://guiadeti.com.br/cursos/curso-de-python-2025/', 'gratuito', 'Iniciante', 'Curso gratuito de Python para iniciantes cobrindo variáveis, estruturas condicionais, listas, dicionários e lógica de programação moderna.'],
+    ['Curso DevOps: Cloud, Linux, Docker e Marketplace', 'Tecnologia', 'Guia de TI / Iago Ferreira TI', 'https://guiadeti.com.br/cursos/curso-devops-cloud-linux-docker-e-projeto-marketplace/', 'gratuito', 'Intermediário', 'Formação completa com 14 aulas sobre DevOps, SRE, Cloud Computing, Linux, Git, Docker, observabilidade e projeto de Marketplace.'],
+    ['Curso Básico de Power BI 2025: Do Zero ao Dashboard', 'Tecnologia', 'Guia de TI / Hashtag Treinamentos', 'https://guiadeti.com.br/cursos/curso-basico-de-power-bi-2025-do-zero-ao-dashboard/', 'gratuito', 'Iniciante', 'Aulas introdutórias práticas de Power BI com Power Query, modelagem de dados relacionais, fórmulas DAX, gráficos dinâmicos e dashboards.'],
+    ['Curso Básico e Gratuito de Claude & Engenharia de IA', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-basico-e-gratuito-de-claude/', 'gratuito', 'Iniciante', 'Curso completo de Claude abordando Artefatos, Cowork, Claude Code, Skills e automação de fluxos de trabalho com IA generativa.'],
+    ['Curso de Streamlit: Dashboards e Web Apps em Python', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-de-streamlit/', 'gratuito', 'Intermediário', 'Criação ágil de aplicações de dados e dashboards interativos em Python com filtros, gráficos interativos e integração com APIs.'],
+    ['Curso Gratuito de HTML e CSS: Landing Page do Zero', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-basico-de-html-e-css/', 'gratuito', 'Iniciante', 'Treinamento prático com 13 videoaulas abordando HTML semântico, CSS moderno, Flexbox, layout responsivo e formulários.'],
+    ['Curso de Introdução ao TypeScript', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/cursos/curso-de-introducao-ao-typescript/', 'gratuito', 'Iniciante', 'Fundamentos de tipagem estática para JavaScript, interfaces, generics, classes, configuração de tsconfig e compilação para Node e Web.'],
+    ['Curso de Laravel 11 - Completo e Gratuito', 'Tecnologia', 'Guia de TI / Especializa TI', 'https://guiadeti.com.br/cursos/curso-de-laravel-11-completo-e-gratuito/', 'gratuito', 'Intermediário', 'Desenvolvimento moderno com Laravel 11, Docker, arquitetura MVC, autenticação, Eloquent ORM, Blade, validações e APIs REST.'],
+    ['Curso de Linux - Primeiros Passos e Terminal', 'Tecnologia', 'Guia de TI / Curso em Vídeo', 'https://guiadeti.com.br/cursos/curso-de-linux-primeiros-passos/', 'gratuito', 'Iniciante', 'Domínio do terminal Linux, comandos essenciais, manipulação de arquivos, permissões, usuários e administração básica do sistema operacional.'],
+    ['Curso de Redes de Computadores Grátis', 'Tecnologia', 'Guia de TI / Curso em Vídeo', 'https://guiadeti.com.br/cursos/curso-redes-de-computadores-gratis/', 'gratuito', 'Iniciante', 'Conceitos fundamentais de redes: arquitetura TCP/IP, endereçamento IPv4/IPv6, sub-redes, DNS, roteamento e segurança básica.'],
+    ['AI Expert Roadmap: Trilha de IA & Ciência de Dados', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/ai-expert-roadmap/', 'gratuito', 'Avançado', 'Guia completo e aberto para estudo de Machine Learning, Deep Learning, Engenharia de Dados, MLOps e Inteligência Artificial.'],
+    ['Awesome Roadmaps: Guias de Desenvolvimento de Software', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/awesome-roadmaps/', 'gratuito', 'Livre', 'Coleção consolidada de roteiros de estudo cobrindo frontend, backend, DevOps, cibersegurança e arquitetura de software.'],
+    ['TechGuide.sh - Guia de Carreiras e Tecnologias', 'Tecnologia', 'Guia de TI / Alura', 'https://guiadeti.com.br/roadmaps/techguidesh-guia-de-carreiras-e-tecnologias/', 'gratuito', 'Livre', 'Mapeamento das competências técnicas e caminhos de aprendizado para profissionais de tecnologia em diversas especialidades.'],
+    ['Trilha Info - Trilhas Gratuitas em Português', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/trilha-info-trilhas-gratuitas-de-tecnologia/', 'gratuito', 'Iniciante', 'Trilhas colaborativas e abertas para formação de desenvolvedores Frontend, Backend, Full Stack, DevOps e QA no Brasil.'],
+    ['Roadmap.sh - Developer Roadmaps Traduzidos', 'Tecnologia', 'Guia de TI', 'https://guiadeti.com.br/roadmaps/roadmapsh-developer-roadmaps/', 'gratuito', 'Livre', 'Mapas interativos de carreiras e habilidades para desenvolvimento de software, computação em nuvem e inteligência artificial.'],
+    
+    // Acervo Complementar OER & Aberto
     ['Introdução à Ciência da Computação (CS50)', 'Tecnologia', 'Harvard / edX', 'https://cs50.harvard.edu/x/', 'gratuito', 'Iniciante', 'O curso de introdução à programação mais famoso do mundo, ensinando C, Python, SQL e algoritmos com acesso livre.'],
     ['Física Geral com Simulações PhET', 'Ciências Exatas', 'University of Colorado / PhET', 'https://phet.colorado.edu/pt_BR/', 'cc-by', 'Ensino Médio', 'Simulações interativas gratuitas de física, química e biologia com planos de aula abertos.'],
     ['Cálculo e Álgebra Linear Aberta', 'Matemática', 'MIT OpenCourseWare', 'https://ocw.mit.edu', 'cc-by-nc-sa', 'Intermediário', 'Materiais didáticos, videoaulas e provas completas dos cursos de graduação do MIT.'],

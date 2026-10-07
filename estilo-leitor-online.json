@@ -1,0 +1,215 @@
+{
+  "referencia": "UI/UX Leitor Digital e Catálogo Mobile - Estilo de Leitura Online",
+  "descricao_geral": "Análise técnica e estrutural detalhada da interface de aplicativo de leitura digital, composta por 3 telas: Descoberta/Catálogo, Detalhes da Obra e Ambiente de Leitura com Painel de Ajustes Tipográficos e de Conforto Visual.",
+  "proposito_aplicado": "Adaptação para o leitor web comum do Lino Livre, permitindo leitura direta no navegador com zero atrito (sem necessidade de download de PDF/EPUB), preservando estética acolhedora, legibilidade ajustável e fluidez.",
+  "telas": [
+    {
+      "id": "tela_01_catalogo",
+      "nome": "Tela de Descoberta / Início (Catálogo)",
+      "funcao": "Apresentação de obras recomendadas, autores em destaque e navegação por categorias.",
+      "elementos": {
+        "cabecalho": {
+          "tipo": "Header com Marca e Ação",
+          "titulo_marca": {
+            "texto": "Kidory",
+            "estilo": "Sans-serif geométrica em negrito, alta legibilidade",
+            "posicionamento": "Alinhado à esquerda"
+          },
+          "botao_filtro_rapido": {
+            "icone": "Ícone de sliders / alternador de busca / shuffle",
+            "estilo": "Botão circular flutuante branco com contorno suave",
+            "fundo_decorativo": "Mancha orgânica arredondada (shape assimétrico suave)"
+          }
+        },
+        "secao_recomendacoes": {
+          "titulo": "E-book Recommendations",
+          "formato_apresentacao": "Carrossel horizontal / grade de cards arredondados",
+          "cards": [
+            {
+              "id": "card_01",
+              "capa": "Ilustração estilizada de hipopótamo em lago",
+              "titulo_livro": "My Little Hippo",
+              "metadados": "8 Episodes / Capítulos",
+              "borda_raio": "Cantos fortemente arredondados (approx. 16px - 20px)"
+            },
+            {
+              "id": "card_02",
+              "capa": "Ilustração de pássaro azul na floresta",
+              "titulo_livro": "Bird In The Forest",
+              "metadados": "6 Episodes / Capítulos",
+              "borda_raio": "Cantos fortemente arredondados"
+            }
+          ]
+        },
+        "secao_autores": {
+          "titulo": "Top Authors",
+          "formato_apresentacao": "Lista horizontal de avatares circulares com nomes",
+          "itens": [
+            { "nome": "Agus S", "avatar": "Ilustração de personagem com fundo circular laranja" },
+            { "nome": "Ani A", "avatar": "Ilustração de personagem com fundo circular verde" },
+            { "nome": "Budi O", "avatar": "Ilustração de personagem com fundo circular mostarda" },
+            { "nome": "Susi", "avatar": "Ilustração de personagem com fundo circular rosado" }
+          ]
+        },
+        "secao_filtros_generos": {
+          "tipo": "Pills / Chips de navegação",
+          "itens": [
+            { "rotulo": "All", "estado": "Ativo / selecionado (destaque tonal)" },
+            { "rotulo": "Fantasy", "estado": "Inativo" },
+            { "rotulo": "Fiction", "estado": "Inativo" },
+            { "rotulo": "Mistery", "estado": "Inativo" }
+          ],
+          "estilo_pills": "Cápsulas arredondadas (pills) com preenchimento sutil e texto centralizado"
+        },
+        "barra_navegacao_inferior": {
+          "tipo": "Bottom Navigation Bar",
+          "itens": [
+            { "icone": "Home", "rotulo": "Home", "ativo": true },
+            { "icone": "Search (Lupa)", "rotulo": "Search", "ativo": false },
+            { "icone": "Bookmark (Marcador)", "rotulo": "Bookmark", "ativo": false },
+            { "icone": "User (Perfil)", "rotulo": "Profile", "ativo": false }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tela_02_detalhes",
+      "nome": "Tela de Apresentação / Ficha da Obra",
+      "funcao": "Introdução imersiva à obra com sinopse, capa estendida e atalhos rápidos para leitura e áudio.",
+      "elementos": {
+        "barra_superior": {
+          "botao_voltar": "Seta '<' no canto superior esquerdo",
+          "botao_salvar": "Ícone de marcador/favorito no canto superior direito"
+        },
+        "hero_capa": {
+          "tipo": "Arte visual ilustrada imersiva ocupando os 50% superiores",
+          "cenario": "Urso na montanha com menino montado, árvores e nuvens",
+          "transicao_inferior": "Linha orgânica ondulada contínua conectando a ilustração à cor de fundo da ficha técnica"
+        },
+        "conteudo_livro": {
+          "titulo": {
+            "texto": "The Boy and The Mountain Bear",
+            "hierarquia": "H1 de grande escala em negrito, cor de alto contraste contra o fundo escuro"
+          },
+          "botao_ouvir_audio": {
+            "tipo": "Botão circular flutuante de ação rápida (FAB)",
+            "icone": "Orelha com ondas sonoras (reprodução de audiolivro / audiodescrição)",
+            "posicionamento": "Alinhado à direita, ao lado do título"
+          },
+          "autoria": {
+            "texto": "by Paperpillar Studio",
+            "estilo": "Subtítulo atenuado com peso regular"
+          },
+          "tags_genero": {
+            "tipo": "Etiquetas / Tags de categoria",
+            "itens": ["Fantasy", "Fiction", "Mistery"],
+            "estilo": "Pills com fundo translúcido suave"
+          },
+          "metricas_sociais": {
+            "tipo": "Barra de estatísticas em linha",
+            "itens": [
+              { "icone": "Olho / Visualizações", "valor": "1.2M Read" },
+              { "icone": "Coração / Curtidas", "valor": "2K Loved" },
+              { "icone": "Marcador / Salvamentos", "valor": "22 Saved" }
+            ]
+          },
+          "sinopse": {
+            "texto": "Read a joyous adventure between a boy and a mountain bear deep in a rural village!",
+            "gatilho_expansao": "see more (link sublinhado para expandir descrição completa)"
+          }
+        }
+      }
+    },
+    {
+      "id": "tela_03_leitor",
+      "nome": "Tela de Leitura Online com Painel de Conforto Visual",
+      "funcao": "Experiência de leitura fluida na tela sem rolagem confusa, com menu suspenso inferior para personalização em tempo real.",
+      "elementos": {
+        "barra_superior_leitor": {
+          "botao_voltar": "Seta '<' para retornar à tela anterior",
+          "seletor_midia": {
+            "tipo": "Segmented Control / Alternador tipo pílula dupla",
+            "opcoes": [
+              { "rotulo": "Audio", "ativo": false },
+              { "rotulo": "Text", "ativo": true, "destaque": "Chip contrastante ativo" }
+            ]
+          },
+          "botao_configuracoes": {
+            "icone": "Porca hexagonal / engrenagem de configurações",
+            "funcao": "Abertura de preferências avançadas do leitor"
+          }
+        },
+        "area_leitura": {
+          "titulo_capitulo": {
+            "texto": "Chapter 1",
+            "estilo": "Centralizado, peso semibold/bold, espaçamento generoso"
+          },
+          "tipografia_texto": {
+            "capitular": {
+              "letra": "L",
+              "estilo": "Drop Cap (letra capitular clássica editorial ocupando 2 a 3 linhas de altura)"
+            },
+            "corpo_texto": {
+              "estilo": "Tipografia limpa com espaçamento entre linhas generoso (line-height ~1.7)",
+              "paragrafos": [
+                "Long time ago, in a quiet village at foot of a tall mountain, there lived a cheerful boy who loved to wander and dream of adventures. He often gazed at the towering peak, wondering what secrets it held beyond the clouds.",
+                "One sunny morning, while exploring the forest, the boy heard a deep rumble. From behind the tall pines stepped a great Mountain Bear, its fur shining like snow and eyes glowing with kindness. The boy's heart skipped, but instead of fear..."
+              ]
+            }
+          }
+        },
+        "painel_ajuste_leitura": {
+          "tipo": "Bottom Sheet / Cartão flutuante inferior modal",
+          "estilo_container": "Cartão branco destacado com cantos arredondados (border-radius: 24px) e sombra suave",
+          "controles": {
+            "controle_01_brilho": {
+              "tipo": "Slider contínuo com ícones nas extremidades",
+              "icone_min": "Sol com raios curtos (brilho baixo / modo escuro suave)",
+              "icone_max": "Sol com raios expandidos (brilho alto)",
+              "slider": "Trilho fino com manipulador circular (thumb) arrastável"
+            },
+            "controle_02_paleta_fundo": {
+              "tipo": "Seleção de modo de contraste / temperatura de cor do papel",
+              "amostras": [
+                { "modo": "Sepia / Papel Antigo", "descricao": "Tonalidade terracota/creme para conforto diurno" },
+                { "modo": "Quente / Madeira", "descricao": "Tonalidade intermediária para descanso dos olhos" },
+                { "modo": "Escuro / Noturno", "descricao": "Fundo chocolate/escuro para leitura sem ofuscamento" }
+              ],
+              "estilo_botoes": "Retângulos arredondados horizontais atuando como seletores de tema"
+            },
+            "controle_03_tamanho_fonte": {
+              "tipo": "Controle numérico de escala com botões incrementais",
+              "botao_diminuir": "Quadrado arredondado com sinal de menos '-'",
+              "visor_tamanho": "Caixa central destacada exibindo valor numérico (ex: '24')",
+              "botao_aumentar": "Quadrado arredondado com sinal de mais '+'"
+            },
+            "controle_04_alinhamento_texto": {
+              "tipo": "Seletor de alinhamento em 4 botões de ícone",
+              "opcoes": [
+                { "alinhamento": "Esquerda", "icone": "Linhas alinhadas à esquerda" },
+                { "alinhamento": "Centro", "icone": "Linhas centralizadas" },
+                { "alinhamento": "Justificado", "icone": "Linhas preenchidas de margem a margem", "ativo": true },
+                { "alinhamento": "Direita", "icone": "Linhas alinhadas à direita" }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "diretrizes_estilisticas_para_o_leitor_online": {
+    "hierarquia_visual": "Foco primário no texto e no conforto de leitura; controles secundários recolhidos em painel acessível sob demanda.",
+    "detalhes_de_acabamento": [
+      "Drop cap (letra capitular inicial) confere elegância literária imediata a obras em domínio público.",
+      "Controles táteis simples (Aumentar/Diminuir fonte, alinhamento e tom do papel) eliminam a barreira técnica de ler online.",
+      "Transição fluida entre modo de texto e áudio/leitura guiada.",
+      "Ausência de distrações externas (banners, menus poluídos) durante o ato de leitura."
+    ],
+    "aplicacao_no_lino_livre": [
+      "Substituir o leitor modal atual simples por uma gaveta/modal responsiva inspirada nesta anatomia.",
+      "Adicionar a escolha entre fontes (Serifada clássica / Sans-serif legível / OpenDyslexic para acessibilidade escolar).",
+      "Manter o seletor de tamanho numérico e botões +/- rápidos.",
+      "Incorporar a capitular (drop-cap) no início dos capítulos de Machado de Assis, José de Alencar e outros clássicos."
+    ]
+  }
+}

@@ -137,4 +137,21 @@ describe('Testes de Domínio e Banco de Dados - Lino Livre', () => {
     assert.ok(cursosTech.length >= 1);
     assert.equal(cursosTech[0].titulo, 'CS50 Introdução à Computação');
   });
+
+  test('Guia de TI: cadastro de fonte primária e busca de cursos/roadmaps', async () => {
+    const { buscarGuiaDeTI } = require('../src/services/importer');
+
+    const insertFonte = db.prepare('INSERT OR IGNORE INTO fontes (slug, nome, tipo, url_base, ativa) VALUES (?, ?, ?, ?, ?)');
+    insertFonte.run('guiadeti', 'Guia de TI', 'rss', 'https://guiadeti.com.br', 1);
+
+    const fonte = db.prepare("SELECT * FROM fontes WHERE slug = 'guiadeti'").get();
+    assert.ok(fonte, 'Fonte guiadeti deve existir no banco');
+    assert.equal(fonte.nome, 'Guia de TI');
+    assert.equal(fonte.tipo, 'rss');
+
+    const itens = await buscarGuiaDeTI('python');
+    assert.ok(itens.length > 0, 'Deve retornar itens do Guia de TI');
+    assert.ok(itens.some(i => i.titulo.toLowerCase().includes('python')));
+    assert.equal(itens[0].autor_nome, 'Guia de TI & Comunidade');
+  });
 });
