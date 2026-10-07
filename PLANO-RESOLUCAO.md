@@ -1,4 +1,7 @@
-# Plano de Resolução — Biblioteca Digital Escolar
+# Plano de Resolução — Lino Livre (Biblioteca Digital Escolar)
+
+**Marca:** **Lino Livre**, usada no título do site, na comunidade do WhatsApp e no cartaz com o QR code.
+**Slogan sugerido:** *"Livros livres, para todos."*
 
 **Escopo vigente (decisão do responsável):** apenas **distribuição de livros digitais online**. O modelo de empréstimos/devoluções foi **descartado por completo**.
 **Papel atual:** plano de auditoria e especificação. Implementação a cargo do agente Gemini 3.8 Flash.
@@ -178,7 +181,10 @@ Requisitos de cada importador:
 **Decisão do responsável:** só um **link** e um **QR code** que levam à comunidade do WhatsApp. Sem bot, sem Cloud API da Meta, sem webhook e sem guardar dados no servidor. As recomendações de livros acontecem dentro do grupo da comunidade, entre pessoas.
 
 **Passos manuais (administrador, no telemóvel):**
-1. No WhatsApp: separador **Comunidades** → criar "Biblioteca Digital" (o grupo de avisos é criado automaticamente) → adicionar o grupo **"Recomendações de Livros"**
+1. No WhatsApp: separador **Comunidades** → criar a comunidade **"Lino Livre"** (descrição: *"Livros livres, para todos. Livros digitais e cursos gratuitos."*) e adicionar os grupos:
+   - 📢 **Avisos Lino Livre**: o grupo de avisos que o WhatsApp cria sozinho (só administradores escrevem), para divulgar livros e cursos novos
+   - 💡 **Lino, quero ler!**: recomendações e pedidos de livros pelos membros
+   - 🎓 **Cursos Livres**: partilha de cursos gratuitos
 2. Comunidade → **Convidar membros** → **Convidar por link** → copiar o link (`https://chat.whatsapp.com/XXXXXXXX`)
 3. Guardar o link em `.env` como `WHATSAPP_COMMUNITY_URL=`
 
@@ -188,7 +194,7 @@ Requisitos de cada importador:
 - `GET /api/comunidade/qrcode.svg` → QR gerado no servidor com o pacote npm `qrcode` (`QRCode.toString(url, { type: 'svg' })`), com cache em memória
   - **Porquê gerar no servidor:** se o administrador **redefinir o link** no WhatsApp (o link antigo deixa de funcionar), basta mudar o `.env`; o QR atualiza-se sozinho. Um PNG estático exportado do app ficaria inválido.
   - Alternativa sem dependências: exportar o QR do próprio WhatsApp (Convidar por link → QR code) para `public/img/comunidade-qr.png`, aceitando o risco acima
-- Frontend: botão verde **"Entrar na comunidade WhatsApp"** (`<a href="{url}" target="_blank" rel="noopener noreferrer">`) + `<img src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp">` (QR útil para quem está no computador; em telemóvel o botão basta)
+- Frontend: botão verde **"Entrar na comunidade Lino Livre"** (`<a href="{url}" target="_blank" rel="noopener noreferrer">`) + `<img src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp">` (QR útil para quem está no computador; em telemóvel o botão basta)
 - Opcional: página `/comunidade` para imprimir (cartaz para a escola, com o QR em tamanho grande)
 
 **Cuidados:**
@@ -222,6 +228,7 @@ Requisitos de cada importador:
 
 ## Fase 10 — Documentação e arranque (P1)
 
+- Nome **Lino Livre** aplicado ao `<title>` e ao cabeçalho de `public/index.html`, ao `README.md` e ao campo `name` do `package.json` (`lino-livre`)
 - README atualizado ao novo escopo (funções, endpoints, fontes, licenças, como importar)
 - `.env.example` com `WHATSAPP_COMMUNITY_URL` e a chave opcional da Google Books — sem segredos commitados
 - `git commit` por fase, no ramo `main` existente

@@ -1,5 +1,5 @@
 {
-  "name": "i-am-abc",
+  "name": "lino-livre",
   "version": "1.0.0",
   "description": "Sistema de Gestão de Biblioteca Escolar — Livros, Autores, Categorias e Empréstimos",
   "main": "src/server.js",

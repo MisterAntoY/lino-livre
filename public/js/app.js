@@ -58,12 +58,12 @@ const app = {
     }
 
     grid.innerHTML = lista.map(l => {
-      const capaUrl = l.capa_url || '/capas/dom_casmurro.svg';
+      const capaUrl = l.capa_url || '/capas/dom_casmurro.jpg';
 
       return `
         <article class="book-card">
           <div class="book-cover-container">
-            <img src="${capaUrl}" alt="Capa original de ${this.escape(l.titulo)}" class="book-cover" onerror="this.src='/capas/dom_casmurro.svg'">
+            <img src="${capaUrl}" alt="Capa original de ${this.escape(l.titulo)}" class="book-cover" onerror="this.src='/capas/dom_casmurro.jpg'">
             <span class="badge-format">${l.formato}</span>
           </div>
 
@@ -206,7 +206,7 @@ const app = {
           formato,
           ano_publicacao: ano ? parseInt(ano, 10) : null,
           arquivo_url: arquivoUrl || null,
-          capa_url: '/capas/dom_casmurro.svg',
+          capa_url: '/capas/dom_casmurro.jpg',
           sinopse: sinopse || null,
           conteudo_texto: conteudo || null
         })
