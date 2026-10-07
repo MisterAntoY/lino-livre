@@ -2,6 +2,14 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
 const fs = require('node:fs');
 
+// Carregar variáveis de ambiente do .env se existir
+try {
+  const envPath = path.join(__dirname, '../../.env');
+  if (fs.existsSync(envPath) && typeof process.loadEnvFile === 'function') {
+    process.loadEnvFile(envPath);
+  }
+} catch (_) {}
+
 let instance = null;
 
 function initDatabase(dbPath = null) {
@@ -11,14 +19,17 @@ function initDatabase(dbPath = null) {
   // Ativar verificação de chaves estrangeiras
   db.exec('PRAGMA foreign_keys = ON;');
 
-  // Migração defensiva: se houver tabela 'livros' antiga sem a coluna 'formato', resetar estrutura
+  // Migração defensiva: se houver tabela 'livros' antiga sem a coluna 'licenca', resetar
   try {
     const colunas = db.prepare("PRAGMA table_info(livros)").all();
-    if (colunas.length > 0 && !colunas.some(c => c.name === 'formato')) {
+    if (colunas.length > 0 && !colunas.some(c => c.name === 'licenca')) {
       db.exec(`
-        DROP TABLE IF EXISTS emprestimos;
-        DROP TABLE IF EXISTS acessos_digitais;
+        DROP TABLE IF EXISTS links_livros;
+        DROP TABLE IF EXISTS import_jobs;
+        DROP TABLE IF EXISTS cursos;
+        DROP TABLE IF EXISTS livros_fts;
         DROP TABLE IF EXISTS livros;
+        DROP TABLE IF EXISTS fontes;
       `);
     }
   } catch (_) {}
@@ -28,7 +39,15 @@ function initDatabase(dbPath = null) {
   const schemaSql = fs.readFileSync(schemaPath, 'utf8');
   db.exec(schemaSql);
 
+  instance = db;
   return db;
+}
+
+function closeDatabase() {
+  if (instance) {
+    try { instance.close(); } catch (_) {}
+    instance = null;
+  }
 }
 
 function getDatabase(dbPath = null) {
@@ -43,5 +62,6 @@ function getDatabase(dbPath = null) {
 
 module.exports = {
   getDatabase,
-  initDatabase
+  initDatabase,
+  closeDatabase
 };

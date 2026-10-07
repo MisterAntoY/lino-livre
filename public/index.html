@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lino Livre — Livros Digitais Gratuitos</title>
+  <title>Lino Livre — Livros livres, para todos.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -11,7 +11,14 @@
 </head>
 <body>
 
-  <!-- Barra Superior / Header Limpo -->
+  <!-- Ícone do WhatsApp reutilizável -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" aria-hidden="true">
+    <symbol id="icon-whatsapp" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </symbol>
+  </svg>
+
+  <!-- Barra Superior / Header -->
   <header class="site-header">
     <div class="container header-content">
       <div class="brand">
@@ -21,38 +28,163 @@
           <p class="brand-subtitle">Livros livres, para todos.</p>
         </div>
       </div>
-      <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()">+ Adicionar Livro</button>
+      <div class="header-actions">
+        <a id="btn-header-comunidade" class="btn btn-whatsapp hidden" href="#" target="_blank" rel="noopener noreferrer" title="Entrar no grupo Lino Livre no WhatsApp">
+          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+          <span>Grupo</span>
+        </a>
+        <a id="btn-header-canal" class="btn btn-whatsapp-outline hidden" href="#" target="_blank" rel="noopener noreferrer" title="Seguir o canal Lino Livre no WhatsApp">
+          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+          <span>Canal</span>
+        </a>
+        <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()">+ Adicionar Livro</button>
+      </div>
     </div>
   </header>
 
-  <!-- Filtros e Busca Simples -->
-  <section class="container filter-section">
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." oninput="app.filtrar()">
+  <!-- Navegação Principal por Abas -->
+  <nav class="container nav-tabs-section">
+    <div class="nav-tabs">
+      <button class="tab-btn active" id="tab-btn-livros" onclick="app.trocarAba('livros')">📚 Livros Digitais</button>
+      <button class="tab-btn" id="tab-btn-cursos" onclick="app.trocarAba('cursos')">🎓 Cursos Gratuitos</button>
+      <button class="tab-btn" id="tab-btn-dashboard" onclick="app.trocarAba('dashboard')">📊 Métricas & Fontes</button>
     </div>
+  </nav>
 
-    <!-- Pílulas de filtro de formato e categoria -->
-    <div class="pills-container" id="pills-categorias">
-      <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')">Todos</button>
-      <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')">Clássicos Brasileiros</button>
-      <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')">Romances</button>
-      <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')">Poesia</button>
-      <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')">Ensaios</button>
+  <!-- ==================== ABA 1: LIVROS DIGITAIS ==================== -->
+  <div id="aba-livros" class="tab-content active">
+    <!-- Filtros e Busca -->
+    <section class="container filter-section">
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." oninput="app.buscarComDebounce()">
+      </div>
+
+      <!-- Filtros de Categorias -->
+      <div class="filter-row">
+        <span class="filter-label">Categorias:</span>
+        <div class="pills-container" id="pills-categorias">
+          <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')">Todas</button>
+          <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')">Clássicos Brasileiros</button>
+          <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')">Romances</button>
+          <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')">Poesia</button>
+          <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')">Didáticos & Ensaios</button>
+          <button class="pill" data-categoria="Literatura Infantojuvenil" onclick="app.filtrarPorCategoria('Literatura Infantojuvenil')">Infantojuvenil</button>
+        </div>
+      </div>
+
+      <!-- Filtros de Formato e Licença -->
+      <div class="filter-row">
+        <span class="filter-label">Formato:</span>
+        <div class="pills-container" id="pills-formatos">
+          <button class="pill active" data-formato="" onclick="app.filtrarPorFormato('')">Todos</button>
+          <button class="pill" data-formato="pdf" onclick="app.filtrarPorFormato('pdf')">PDF</button>
+          <button class="pill" data-formato="epub" onclick="app.filtrarPorFormato('epub')">EPUB</button>
+          <button class="pill" data-formato="html" onclick="app.filtrarPorFormato('html')">Web / HTML</button>
+          <button class="pill" data-formato="txt" onclick="app.filtrarPorFormato('txt')">TXT</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catálogo de Livros -->
+    <main class="container main-container">
+      <div id="grade-livros" class="books-grid">
+        <div class="loading">Carregando acervo digital...</div>
+      </div>
+
+      <!-- Paginação -->
+      <div id="paginacao" class="pagination-container hidden">
+        <button id="btn-pag-ant" class="btn btn-secondary btn-sm" onclick="app.paginaAnterior()">← Anterior</button>
+        <span id="texto-paginacao" class="pagination-info">Página 1 de 1</span>
+        <button id="btn-pag-prox" class="btn btn-secondary btn-sm" onclick="app.proximaPagina()">Próxima →</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== ABA 2: CURSOS GRATUITOS ==================== -->
+  <div id="aba-cursos" class="tab-content hidden">
+    <section class="container filter-section">
+      <div class="cursos-header-banner">
+        <h2>Diretório de Cursos Livres & Gratuitos</h2>
+        <p>Acesse cursos universitários e recursos educacionais abertos (OER) das maiores instituições do mundo.</p>
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label">Área do Conhecimento:</span>
+        <div class="pills-container" id="pills-cursos-areas">
+          <button class="pill active" data-area="" onclick="app.filtrarCursosPorArea('')">Todas</button>
+          <button class="pill" data-area="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')">Tecnologia</button>
+          <button class="pill" data-area="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')">Ciências Exatas</button>
+          <button class="pill" data-area="Matemática" onclick="app.filtrarCursosPorArea('Matemática')">Matemática</button>
+          <button class="pill" data-area="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')">Biológicas</button>
+          <button class="pill" data-area="Ciências Humanas" onclick="app.filtrarCursosPorArea('Ciências Humanas')">Humanas</button>
+          <button class="pill" data-area="Linguagens" onclick="app.filtrarCursosPorArea('Linguagens')">Linguagens</button>
+        </div>
+      </div>
+    </section>
+
+    <main class="container main-container">
+      <div id="grade-cursos" class="courses-grid">
+        <div class="loading">Carregando catálogo de cursos...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== ABA 3: DASHBOARD & MÉTRICAS ==================== -->
+  <div id="aba-dashboard" class="tab-content hidden">
+    <section class="container main-container">
+      <div id="dashboard-content" class="dashboard-grid">
+        <div class="loading">Carregando estatísticas do acervo...</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Comunidade WhatsApp: grupo e canal -->
+  <section id="secao-whatsapp" class="container whatsapp-section hidden" aria-labelledby="whatsapp-titulo">
+    <h2 id="whatsapp-titulo" class="whatsapp-section-title">
+      <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+      Junte-se ao Lino Livre no WhatsApp
+    </h2>
+    <p class="whatsapp-section-subtitle">Peça livros, receba novidades e partilhe leituras com a comunidade escolar.</p>
+
+    <div class="whatsapp-cards">
+      <div id="card-comunidade" class="whatsapp-card hidden">
+        <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" width="160" height="160" loading="lazy">
+        <h3>💬 Grupo Lino Livre</h3>
+        <p>Converse, peça e recomende livros que quer ler.</p>
+        <a id="link-card-comunidade" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+          Entrar no grupo
+        </a>
+      </div>
+
+      <div id="card-canal" class="whatsapp-card hidden">
+        <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" width="160" height="160" loading="lazy">
+        <h3>📢 Canal Livros e Cursos</h3>
+        <p>Receba as novidades de livros e cursos gratuitos.</p>
+        <a id="link-card-canal" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+          Seguir o canal
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- Catálogo de Livros -->
-  <main class="container main-container">
-    <div id="grade-livros" class="books-grid">
-      <div class="loading">Carregando acervo digital...</div>
-    </div>
-  </main>
-
-  <!-- Rodapé Simples -->
+  <!-- Rodapé -->
   <footer class="site-footer">
     <div class="container footer-content">
-      <p>Biblioteca Digital Escolar • Obras em Domínio Público • Acesso Livre e Gratuito</p>
+      <p><strong>Lino Livre</strong> • Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</p>
+      <p id="footer-links-container" class="footer-links hidden">
+        <a id="link-footer-comunidade" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+          Grupo WhatsApp
+        </a>
+        <span id="footer-separator" aria-hidden="true">•</span>
+        <a id="link-footer-canal" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+          Canal WhatsApp
+        </a>
+      </p>
     </div>
   </footer>
 
@@ -67,7 +199,6 @@
         <div class="reader-actions">
           <button class="btn-text" onclick="app.alterarFonte(-2)">A-</button>
           <button class="btn-text" onclick="app.alterarFonte(2)">A+</button>
-          <button id="btn-leitor-download" class="btn btn-sm btn-primary">⬇ Baixar Arquivo</button>
           <button class="btn-close" onclick="app.fecharModais()">&times;</button>
         </div>
       </div>
@@ -77,47 +208,77 @@
     </div>
   </div>
 
-  <!-- MODAL: ADICIONAR NOVO LIVRO -->
+  <!-- MODAL: ADICIONAR NOVO LIVRO DIGITAL -->
   <div id="modal-novo-livro" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-card-header">
-        <h3>Adicionar Novo Livro Digital</h3>
+        <h3>Adicionar Livro Digital ao Acervo</h3>
         <button class="btn-close" onclick="app.fecharModais()">&times;</button>
       </div>
       <form onsubmit="app.salvarNovoLivro(event)" class="modal-card-body">
         <div class="form-group">
           <label>Título *</label>
-          <input type="text" id="novo-titulo" class="form-input" required placeholder="Ex: Dom Casmurro">
-        </div>
-        <div class="form-group">
-          <label>Autor *</label>
-          <input type="text" id="novo-autor" class="form-input" required placeholder="Ex: Machado de Assis">
+          <input type="text" id="novo-titulo" class="form-input" required placeholder="Ex: Grande Sertão: Veredas">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Formato *</label>
-            <select id="novo-formato" class="form-input">
-              <option value="PDF">PDF</option>
-              <option value="EPUB">EPUB</option>
-              <option value="Web">Web</option>
+            <label>Autor *</label>
+            <input type="text" id="novo-autor" class="form-input" required placeholder="Ex: Guimarães Rosa">
+          </div>
+          <div class="form-group">
+            <label>Licença Obrigatória *</label>
+            <select id="novo-licenca" class="form-input" required>
+              <option value="dominio-publico" selected>Domínio Público</option>
+              <option value="cc0">CC0 (Dedicação Pública)</option>
+              <option value="cc-by">CC BY (Atribuição)</option>
+              <option value="cc-by-sa">CC BY-SA (Compartilha Igual)</option>
+              <option value="cc-by-nc">CC BY-NC (Não Comercial)</option>
+              <option value="outro">Outro (Livre Acesso)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="novo-categoria-select" class="form-input">
+              <option value="1">Clássicos Brasileiros</option>
+              <option value="2">Romance & Crônicas</option>
+              <option value="3">Teatro & Poesia</option>
+              <option value="4">Apoio Pedagógico & Filosofia</option>
+              <option value="5">Literatura Infantojuvenil</option>
             </select>
           </div>
           <div class="form-group">
             <label>Ano de Publicação</label>
-            <input type="number" id="novo-ano" class="form-input" placeholder="Ex: 1899">
+            <input type="number" id="novo-ano" class="form-input" placeholder="Ex: 1956">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Formato do Link</label>
+            <select id="novo-formato-link" class="form-input">
+              <option value="pdf">PDF</option>
+              <option value="epub">EPUB</option>
+              <option value="html">Web / HTML</option>
+              <option value="txt">TXT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>URL do Link para Leitura/Download</label>
+            <input type="url" id="novo-url-link" class="form-input" placeholder="https://exemplo.org/livro.pdf">
           </div>
         </div>
         <div class="form-group">
-          <label>URL do Arquivo para Download</label>
-          <input type="url" id="novo-arquivo-url" class="form-input" placeholder="https://exemplo.com/livro.pdf">
+          <label>URL da Capa Original</label>
+          <input type="text" id="novo-capa-url" class="form-input" placeholder="/capas/nome_capa.jpg">
         </div>
         <div class="form-group">
           <label>Sinopse</label>
-          <textarea id="novo-sinopse" class="form-input" rows="2" placeholder="Breve resumo da obra..."></textarea>
+          <textarea id="novo-sinopse" class="form-input" rows="2" placeholder="Breve apresentação da obra..."></textarea>
         </div>
         <div class="form-group">
-          <label>Texto da Obra para Leitura Online</label>
-          <textarea id="novo-conteudo" class="form-input" rows="4" placeholder="Cole aqui o texto dos capítulos..."></textarea>
+          <label>Texto da Obra (opcional para leitura rápida)</label>
+          <textarea id="novo-conteudo" class="form-input" rows="3" placeholder="Texto inicial ou capítulo introdutório..."></textarea>
         </div>
         <div class="modal-card-footer">
           <button type="button" class="btn btn-secondary" onclick="app.fecharModais()">Cancelar</button>

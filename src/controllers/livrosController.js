@@ -1,51 +1,98 @@
 const { getDatabase } = require('../database');
 
+const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
+
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const { busca, categoria_id, autor_id, formato } = req.query;
+    const { 
+      busca, categoria_id, autor_id, idioma, formato, licenca, 
+      page = 1, limit = 24 
+    } = req.query;
 
-    let query = `
-      SELECT 
-        l.id, l.titulo, l.subtitulo, l.sinopse, l.isbn, l.ano_publicacao,
-        l.formato, l.arquivo_url, l.capa_url, l.tamanho_mb,
-        l.downloads_count, l.leituras_count, l.autor_id, l.categoria_id,
-        a.nome AS autor_nome,
-        c.nome AS categoria_nome
+    const numPage = Math.max(1, parseInt(page, 10) || 1);
+    const numLimit = Math.min(100, Math.max(1, parseInt(limit, 10) || 24));
+    const offset = (numPage - 1) * numLimit;
+
+    let baseQuery = `
       FROM livros l
       LEFT JOIN autores a ON a.id = l.autor_id
       LEFT JOIN categorias c ON c.id = l.categoria_id
+      LEFT JOIN fontes f ON f.id = l.fonte_id
       WHERE 1=1
     `;
     const params = [];
 
+    // Busca FTS5 se o termo de busca for informado
     if (busca && busca.trim()) {
-      query += ` AND (l.titulo LIKE ? OR l.subtitulo LIKE ? OR l.sinopse LIKE ? OR a.nome LIKE ?)`;
-      const term = `%${busca.trim()}%`;
-      params.push(term, term, term, term);
+      const termoLimpo = busca.trim().replace(/['"*]/g, '');
+      if (termoLimpo) {
+        baseQuery += ` AND l.id IN (
+          SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
+        )`;
+        params.push(`${termoLimpo}*`);
+      }
     }
 
     if (categoria_id) {
-      query += ` AND l.categoria_id = ?`;
+      baseQuery += ` AND l.categoria_id = ?`;
       params.push(categoria_id);
     }
 
     if (autor_id) {
-      query += ` AND l.autor_id = ?`;
+      baseQuery += ` AND l.autor_id = ?`;
       params.push(autor_id);
     }
 
-    if (formato) {
-      query += ` AND l.formato = ?`;
-      params.push(formato);
+    if (idioma) {
+      baseQuery += ` AND l.idioma = ?`;
+      params.push(idioma);
     }
 
-    query += ` ORDER BY l.downloads_count + l.leituras_count DESC, l.titulo ASC`;
+    if (licenca) {
+      baseQuery += ` AND l.licenca = ?`;
+      params.push(licenca);
+    }
 
-    const livros = db.prepare(query).all(...params);
-    res.json(livros);
+    if (formato) {
+      baseQuery += ` AND l.id IN (SELECT livro_id FROM links_livros WHERE formato = ?)`;
+      params.push(formato.toLowerCase());
+    }
+
+    // Contar total para paginação
+    const totalRow = db.prepare(`SELECT COUNT(DISTINCT l.id) AS total ${baseQuery}`).get(...params);
+    const total = totalRow ? totalRow.total : 0;
+
+    // Buscar itens paginados
+    const selectQuery = `
+      SELECT 
+        l.id, l.titulo, l.subtitulo, l.isbn, l.ano_publicacao, l.idioma,
+        l.sinopse, l.capa_url, l.paginas, l.licenca, l.leituras, l.criado_em,
+        a.id AS autor_id, a.nome AS autor_nome,
+        c.id AS categoria_id, c.nome AS categoria_nome,
+        f.slug AS fonte_slug, f.nome AS fonte_nome
+      ${baseQuery}
+      ORDER BY l.leituras DESC, l.titulo ASC
+      LIMIT ? OFFSET ?
+    `;
+
+    const livros = db.prepare(selectQuery).all(...params, numLimit, offset);
+
+    // Anexar links para cada livro
+    const getLinksStmt = db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?');
+    for (const livro of livros) {
+      livro.links = getLinksStmt.all(livro.id);
+    }
+
+    res.json({
+      page: numPage,
+      limit: numLimit,
+      total,
+      total_pages: Math.ceil(total / numLimit),
+      data: livros
+    });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar catálogo digital: ' + err.message });
+    res.status(500).json({ erro: 'Erro ao buscar livros: ' + err.message });
   }
 }
 
@@ -56,128 +103,178 @@ function obterPorId(req, res) {
       SELECT 
         l.*,
         a.nome AS autor_nome,
-        c.nome AS categoria_nome
+        c.nome AS categoria_nome,
+        f.slug AS fonte_slug, f.nome AS fonte_nome, f.url_base AS fonte_url
       FROM livros l
       LEFT JOIN autores a ON a.id = l.autor_id
       LEFT JOIN categorias c ON c.id = l.categoria_id
+      LEFT JOIN fontes f ON f.id = l.fonte_id
       WHERE l.id = ?
     `).get(req.params.id);
 
     if (!livro) {
-      return res.status(404).json({ erro: 'Livro digital não encontrado' });
+      return res.status(404).json({ erro: 'Livro não encontrado' });
     }
+
+    livro.links = db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').all(livro.id);
 
     res.json(livro);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao carregar livro digital: ' + err.message });
+    res.status(500).json({ erro: 'Erro ao carregar livro: ' + err.message });
+  }
+}
+
+function lerRedirect(req, res) {
+  try {
+    const db = getDatabase();
+    const { id, linkId } = req.params;
+
+    const link = db.prepare(`
+      SELECT ll.*, l.titulo, l.conteudo_texto
+      FROM links_livros ll
+      JOIN livros l ON l.id = ll.livro_id
+      WHERE ll.livro_id = ? AND ll.id = ?
+    `).get(id, linkId);
+
+    if (!link) {
+      return res.status(404).json({ erro: 'Link de leitura não encontrado' });
+    }
+
+    // Incrementar contador de leituras atômico
+    db.prepare('UPDATE livros SET leituras = leituras + 1 WHERE id = ?').run(id);
+
+    // Redirect 302 para a fonte externa
+    if (link.url && link.url.startsWith('http')) {
+      return res.redirect(302, link.url);
+    }
+
+    // Se for formato web local
+    res.json({
+      mensagem: 'Leitura iniciada',
+      url: link.url,
+      conteudo_texto: link.conteudo_texto
+    });
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao processar leitura: ' + err.message });
   }
 }
 
 function criar(req, res) {
   try {
     const { 
-      titulo, subtitulo, sinopse, isbn, ano_publicacao, formato, 
-      arquivo_url, capa_url, conteudo_texto, tamanho_mb, autor_id, categoria_id 
+      titulo, subtitulo, isbn, ano_publicacao, idioma, sinopse, capa_url,
+      paginas, autor_id, categoria_id, fonte_id, fonte_id_externo, licenca,
+      conteudo_texto, links 
     } = req.body;
 
     if (!titulo || !titulo.trim()) {
       return res.status(400).json({ erro: 'O título do livro é obrigatório' });
     }
 
-    const fmt = formato && ['PDF', 'EPUB', 'Web'].includes(formato) ? formato : 'PDF';
-    const db = getDatabase();
+    if (!licenca || !LICENCAS_VALIDAS.includes(licenca)) {
+      return res.status(400).json({ 
+        erro: `Licença inválida ou obrigatória. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` 
+      });
+    }
 
-    const result = db.prepare(`
+    const db = getDatabase();
+    const insertLivro = db.prepare(`
       INSERT INTO livros (
-        titulo, subtitulo, sinopse, isbn, ano_publicacao, formato,
-        arquivo_url, capa_url, conteudo_texto, tamanho_mb, autor_id, categoria_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
+        titulo, subtitulo, isbn, ano_publicacao, idioma, sinopse, capa_url,
+        paginas, autor_id, categoria_id, fonte_id, fonte_id_externo, licenca, conteudo_texto
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const result = insertLivro.run(
       titulo.trim(),
       subtitulo ? subtitulo.trim() : null,
-      sinopse ? sinopse.trim() : null,
       isbn ? isbn.trim() : null,
       ano_publicacao ? parseInt(ano_publicacao, 10) : null,
-      fmt,
-      arquivo_url ? arquivo_url.trim() : null,
+      idioma ? idioma.trim() : 'pt',
+      sinopse ? sinopse.trim() : null,
       capa_url ? capa_url.trim() : null,
-      conteudo_texto ? conteudo_texto.trim() : null,
-      tamanho_mb ? parseFloat(tamanho_mb) : 1.5,
+      paginas ? parseInt(paginas, 10) : null,
       autor_id || null,
-      categoria_id || null
+      categoria_id || null,
+      fonte_id || null,
+      fonte_id_externo || null,
+      licenca,
+      conteudo_texto ? conteudo_texto.trim() : null
     );
 
-    const novo = db.prepare(`
-      SELECT l.*, a.nome AS autor_nome, c.nome AS categoria_nome
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      WHERE l.id = ?
-    `).get(result.lastInsertRowid);
+    const livroId = result.lastInsertRowid;
+
+    // Inserir links se fornecidos
+    if (Array.isArray(links)) {
+      const insertLink = db.prepare(`
+        INSERT INTO links_livros (livro_id, formato, url, tamanho_bytes, link_externo)
+        VALUES (?, ?, ?, ?, ?)
+      `);
+      for (const l of links) {
+        if (l.formato && l.url) {
+          insertLink.run(livroId, l.formato.toLowerCase(), l.url, l.tamanho_bytes || 0, l.link_externo ?? 1);
+        }
+      }
+    }
+
+    const novo = db.prepare('SELECT * FROM livros WHERE id = ?').get(livroId);
+    novo.links = db.prepare('SELECT * FROM links_livros WHERE livro_id = ?').all(livroId);
 
     res.status(201).json(novo);
   } catch (err) {
-    if (err.message.includes('UNIQUE')) {
-      return res.status(400).json({ erro: 'Já existe um livro digital cadastrado com este ISBN' });
-    }
-    res.status(500).json({ erro: 'Erro ao cadastrar livro digital: ' + err.message });
+    res.status(500).json({ erro: 'Erro ao cadastrar livro: ' + err.message });
   }
 }
 
 function atualizar(req, res) {
   try {
     const { 
-      titulo, subtitulo, sinopse, isbn, ano_publicacao, formato, 
-      arquivo_url, capa_url, conteudo_texto, tamanho_mb, autor_id, categoria_id 
+      titulo, subtitulo, isbn, ano_publicacao, idioma, sinopse, capa_url,
+      paginas, autor_id, categoria_id, licenca, conteudo_texto 
     } = req.body;
 
     const db = getDatabase();
     const livroAtual = db.prepare('SELECT id FROM livros WHERE id = ?').get(req.params.id);
     if (!livroAtual) {
-      return res.status(404).json({ erro: 'Livro digital não encontrado' });
+      return res.status(404).json({ erro: 'Livro não encontrado' });
     }
 
     if (!titulo || !titulo.trim()) {
       return res.status(400).json({ erro: 'O título do livro é obrigatório' });
     }
 
-    const fmt = formato && ['PDF', 'EPUB', 'Web'].includes(formato) ? formato : 'PDF';
+    if (licenca && !LICENCAS_VALIDAS.includes(licenca)) {
+      return res.status(400).json({ 
+        erro: `Licença inválida. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` 
+      });
+    }
 
     db.prepare(`
       UPDATE livros
-      SET titulo = ?, subtitulo = ?, sinopse = ?, isbn = ?, ano_publicacao = ?, formato = ?,
-          arquivo_url = ?, capa_url = ?, conteudo_texto = ?, tamanho_mb = ?, autor_id = ?, categoria_id = ?
+      SET titulo = ?, subtitulo = ?, isbn = ?, ano_publicacao = ?, idioma = ?,
+          sinopse = ?, capa_url = ?, paginas = ?, autor_id = ?, categoria_id = ?,
+          licenca = COALESCE(?, licenca), conteudo_texto = ?
       WHERE id = ?
     `).run(
       titulo.trim(),
       subtitulo ? subtitulo.trim() : null,
-      sinopse ? sinopse.trim() : null,
       isbn ? isbn.trim() : null,
       ano_publicacao ? parseInt(ano_publicacao, 10) : null,
-      fmt,
-      arquivo_url ? arquivo_url.trim() : null,
+      idioma ? idioma.trim() : 'pt',
+      sinopse ? sinopse.trim() : null,
       capa_url ? capa_url.trim() : null,
-      conteudo_texto ? conteudo_texto.trim() : null,
-      tamanho_mb ? parseFloat(tamanho_mb) : 1.5,
+      paginas ? parseInt(paginas, 10) : null,
       autor_id || null,
       categoria_id || null,
+      licenca || null,
+      conteudo_texto ? conteudo_texto.trim() : null,
       req.params.id
     );
 
-    const atualizado = db.prepare(`
-      SELECT l.*, a.nome AS autor_nome, c.nome AS categoria_nome
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      WHERE l.id = ?
-    `).get(req.params.id);
-
+    const atualizado = db.prepare('SELECT * FROM livros WHERE id = ?').get(req.params.id);
     res.json(atualizado);
   } catch (err) {
-    if (err.message.includes('UNIQUE')) {
-      return res.status(400).json({ erro: 'Já existe um livro digital cadastrado com este ISBN' });
-    }
-    res.status(500).json({ erro: 'Erro ao atualizar livro digital: ' + err.message });
+    res.status(500).json({ erro: 'Erro ao atualizar livro: ' + err.message });
   }
 }
 
@@ -186,101 +283,19 @@ function remover(req, res) {
     const db = getDatabase();
     const result = db.prepare('DELETE FROM livros WHERE id = ?').run(req.params.id);
     if (result.changes === 0) {
-      return res.status(404).json({ erro: 'Livro digital não encontrado' });
+      return res.status(404).json({ erro: 'Livro não encontrado' });
     }
-    res.json({ mensagem: 'Livro digital removido do catálogo com sucesso' });
+    res.json({ mensagem: 'Livro e links removidos com sucesso' });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao remover livro digital: ' + err.message });
-  }
-}
-
-// ----------------------------------------------------------------------
-// Distribuição Digital: Download e Leitura Online
-// ----------------------------------------------------------------------
-function registrarDownload(req, res) {
-  try {
-    const db = getDatabase();
-    const livroId = req.params.id;
-    const { aluno_nome, aluno_turma } = req.body || {};
-
-    const livro = db.prepare('SELECT id, titulo, formato, arquivo_url, downloads_count FROM livros WHERE id = ?').get(livroId);
-    if (!livro) {
-      return res.status(404).json({ erro: 'Livro digital não encontrado' });
-    }
-
-    // Incrementar contador de downloads
-    db.prepare('UPDATE livros SET downloads_count = downloads_count + 1 WHERE id = ?').run(livroId);
-
-    // Registrar log de acesso digital
-    db.prepare(`
-      INSERT INTO acessos_digitais (livro_id, tipo_acesso, aluno_nome, aluno_turma)
-      VALUES (?, 'download', ?, ?)
-    `).run(livroId, aluno_nome ? aluno_nome.trim() : 'Aluno Escolar', aluno_turma ? aluno_turma.trim() : null);
-
-    res.json({
-      mensagem: 'Download iniciado com sucesso!',
-      arquivo_url: livro.arquivo_url || '#',
-      titulo: livro.titulo,
-      formato: livro.formato,
-      total_downloads: livro.downloads_count + 1
-    });
-  } catch (err) {
-    res.status(500).json({ erro: 'Erro ao processar download: ' + err.message });
-  }
-}
-
-function lerOnline(req, res) {
-  try {
-    const db = getDatabase();
-    const livroId = req.params.id;
-    const { aluno_nome, aluno_turma } = req.body || {};
-
-    const livro = db.prepare(`
-      SELECT l.*, a.nome AS autor_nome, c.nome AS categoria_nome
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      WHERE l.id = ?
-    `).get(livroId);
-
-    if (!livro) {
-      return res.status(404).json({ erro: 'Livro digital não encontrado' });
-    }
-
-    // Incrementar contador de leituras online
-    db.prepare('UPDATE livros SET leituras_count = leituras_count + 1 WHERE id = ?').run(livroId);
-
-    // Registrar log de acesso digital
-    db.prepare(`
-      INSERT INTO acessos_digitais (livro_id, tipo_acesso, aluno_nome, aluno_turma)
-      VALUES (?, 'leitura_online', ?, ?)
-    `).run(livroId, aluno_nome ? aluno_nome.trim() : 'Aluno Escolar', aluno_turma ? aluno_turma.trim() : null);
-
-    res.json({
-      livro: {
-        id: livro.id,
-        titulo: livro.titulo,
-        subtitulo: livro.subtitulo,
-        autor_nome: livro.autor_nome,
-        categoria_nome: livro.categoria_nome,
-        ano_publicacao: livro.ano_publicacao,
-        formato: livro.formato,
-        arquivo_url: livro.arquivo_url,
-        conteudo_texto: livro.conteudo_texto || 'Conteúdo para leitura disponibilizado no formato ' + livro.formato + '.',
-        leituras_count: livro.leituras_count + 1
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ erro: 'Erro ao abrir livro para leitura: ' + err.message });
+    res.status(500).json({ erro: 'Erro ao remover livro: ' + err.message });
   }
 }
 
 module.exports = {
   listar,
   obterPorId,
+  lerRedirect,
   criar,
   atualizar,
-  remover,
-  registrarDownload,
-  lerOnline
+  remover
 };

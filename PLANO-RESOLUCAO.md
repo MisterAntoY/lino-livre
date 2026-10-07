@@ -188,8 +188,12 @@ Requisitos de cada importador:
 2. Comunidade → **Convidar membros** → **Convidar por link** → copiar o link (`https://chat.whatsapp.com/XXXXXXXX`)
 3. Guardar o link em `.env` como `WHATSAPP_COMMUNITY_URL=`
 
+**Canal do WhatsApp (já criado):** "Livros e Cursos-Lino Livre", em `WHATSAPP_CHANNEL_URL`. O canal é de sentido único: só o administrador publica, e os seguidores não veem o número uns dos outros. Usar o **canal** para divulgar livros e cursos novos e o **grupo** para conversar e pedir livros ("Lino, quero ler!").
+
 **Implementação (pequena):**
-- `.env.example`: `WHATSAPP_COMMUNITY_URL=https://chat.whatsapp.com/SEU_CODIGO`
+- O canal segue o mesmo padrão: `GET /api/canal` → `{ url }` e `GET /api/canal/qrcode.svg`, com o botão **"Seguir o canal Lino Livre"** ao lado do botão do grupo. Se a variável não estiver definida, o botão não aparece.
+- `.env.example` (já criado): `WHATSAPP_COMMUNITY_URL` e `WHATSAPP_CHANNEL_URL`; os valores reais estão em `.env`
+- QR codes estáticos já gerados em `materiais/` (grupo e canal, PNG 1024 px e SVG) para cartazes
 - `GET /api/comunidade` → `{ url }`; devolve 404 se a variável não estiver definida (o frontend esconde o bloco)
 - `GET /api/comunidade/qrcode.svg` → QR gerado no servidor com o pacote npm `qrcode` (`QRCode.toString(url, { type: 'svg' })`), com cache em memória
   - **Porquê gerar no servidor:** se o administrador **redefinir o link** no WhatsApp (o link antigo deixa de funcionar), basta mudar o `.env`; o QR atualiza-se sozinho. Um PNG estático exportado do app ficaria inválido.
@@ -215,7 +219,7 @@ Requisitos de cada importador:
 5. Importação idempotente (segunda execução não duplica; mock HTTP)
 6. DELETE de livro remove links em cascata
 7. Dashboard retorna métricas por área/idioma
-8. `GET /api/comunidade` devolve o URL configurado e 404 sem configuração; `qrcode.svg` devolve `Content-Type: image/svg+xml`
+8. `GET /api/comunidade` e `GET /api/canal` devolvem o URL configurado e 404 sem configuração; os `qrcode.svg` devolvem `Content-Type: image/svg+xml`
 
 **Manual:**
 1. `npm run seed && npm start` → `http://localhost:3000`

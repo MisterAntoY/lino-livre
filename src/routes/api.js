@@ -1,35 +1,54 @@
 const express = require('express');
 const router = express.Router();
 
+const dashboardController = require('../controllers/dashboardController');
 const categoriasController = require('../controllers/categoriasController');
 const autoresController = require('../controllers/autoresController');
 const livrosController = require('../controllers/livrosController');
-const dashboardController = require('../controllers/dashboardController');
+const fontesController = require('../controllers/fontesController');
+const cursosController = require('../controllers/cursosController');
+const comunidadeController = require('../controllers/comunidadeController');
 
-// Dashboard de Distribuição Digital
+// 1. Dashboard de Acervo e Leituras
 router.get('/dashboard', dashboardController.metricas);
 
-// Categorias
+// 2. Categorias / Áreas do Conhecimento
 router.get('/categorias', categoriasController.listar);
 router.get('/categorias/:id', categoriasController.obterPorId);
 router.post('/categorias', categoriasController.criar);
 router.put('/categorias/:id', categoriasController.atualizar);
 router.delete('/categorias/:id', categoriasController.remover);
 
-// Autores
+// 3. Autores
 router.get('/autores', autoresController.listar);
 router.get('/autores/:id', autoresController.obterPorId);
 router.post('/autores', autoresController.criar);
 router.put('/autores/:id', autoresController.atualizar);
 router.delete('/autores/:id', autoresController.remover);
 
-// Livros Digitais (Catálogo, Download e Leitura Online)
+// 4. Livros Digitais (Catálogo, FTS5, Leitura com Redirect 302, CRUD)
 router.get('/livros', livrosController.listar);
 router.get('/livros/:id', livrosController.obterPorId);
+router.get('/livros/:id/ler/:linkId', livrosController.lerRedirect);
 router.post('/livros', livrosController.criar);
 router.put('/livros/:id', livrosController.atualizar);
 router.delete('/livros/:id', livrosController.remover);
-router.post('/livros/:id/download', livrosController.registrarDownload);
-router.post('/livros/:id/ler', livrosController.lerOnline);
+
+// 5. Fontes Abertas & Importações Assíncronas
+router.get('/fontes', fontesController.listar);
+router.post('/import', fontesController.iniciarImportacao);
+router.get('/import/:id', fontesController.obterStatusImportacao);
+
+// 6. Cursos Livres e Gratuitos
+router.get('/cursos', cursosController.listar);
+router.get('/cursos/:id', cursosController.obterPorId);
+router.post('/cursos', cursosController.criar);
+router.delete('/cursos/:id', cursosController.remover);
+
+// 7. Comunidade e Canal WhatsApp (Links diretos e QR Codes SVG)
+router.get('/comunidade', comunidadeController.getComunidade);
+router.get('/comunidade/qrcode.svg', comunidadeController.getComunidadeQrCode);
+router.get('/canal', comunidadeController.getCanal);
+router.get('/canal/qrcode.svg', comunidadeController.getCanalQrCode);
 
 module.exports = router;
