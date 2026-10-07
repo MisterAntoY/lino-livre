@@ -9,7 +9,17 @@ const {
   iracemaTexto,
   policarpoQuaresmaTexto,
   espumasFlutuantesTexto,
-  oGuaraniTexto
+  oGuaraniTexto,
+  quincasBorbaTexto,
+  senhoraTexto,
+  oAteneuTexto,
+  osSertoesTexto,
+  aMoreninhaTexto,
+  autoDaBarcaDoInfernoTexto,
+  osLusiadasTexto,
+  mensagemTexto,
+  noiteNaTavernaTexto,
+  claraDosAnjosTexto
 } = require('./textosObras');
 
 function seed(dbInstance = null) {
@@ -63,6 +73,13 @@ function seed(dbInstance = null) {
   const autAluisio = insertAutor.run('Aluísio Azevedo', 'Brasileiro', 'Pioneiro do Naturalismo no Brasil e autor consagrado de O Cortiço.').lastInsertRowid;
   const autLimaBarreto = insertAutor.run('Lima Barreto', 'Brasileiro', 'Importante escritor e cronista pré-modernista, crítico da Primeira República.').lastInsertRowid;
   const autCastroAlves = insertAutor.run('Castro Alves', 'Brasileiro', 'O Poeta dos Escravos, célebre por sua lírica romântica e poesia abolicionista.').lastInsertRowid;
+  const autPompeia = insertAutor.run('Raul Pompeia', 'Brasileiro', 'Romancista e cronista, autor de O Ateneu e expoente do Impressionismo e Naturalismo no Brasil.').lastInsertRowid;
+  const autEuclides = insertAutor.run('Euclides da Cunha', 'Brasileiro', 'Jornalista, historiador e escritor brasileiro, autor do clássico épico e sociológico Os Sertões.').lastInsertRowid;
+  const autMacedo = insertAutor.run('Joaquim Manuel de Macedo', 'Brasileiro', 'Médico, jornalista e romancista, fundador do romance urbano brasileiro com A Moreninha.').lastInsertRowid;
+  const autGilVicente = insertAutor.run('Gil Vicente', 'Português', 'Pai do teatro português e renascentista, autor dos autos de moralidade como o Auto da Barca do Inferno.').lastInsertRowid;
+  const autCamoes = insertAutor.run('Luís de Camões', 'Português', 'O maior poeta da língua portuguesa, autor do poema épico fundamental Os Lusíadas.').lastInsertRowid;
+  const autPessoa = insertAutor.run('Fernando Pessoa', 'Português', 'Um dos maiores gênios da literatura universal do século XX, criador dos heterônimos e autor de Mensagem.').lastInsertRowid;
+  const autAlvares = insertAutor.run('Álvares de Azevedo', 'Brasileiro', 'Principal representante da segunda geração romântica ultrarromântica (Mal do Século) no Brasil.').lastInsertRowid;
   const autGuiaTI = insertAutor.run('Guia de TI & Comunidade', 'Brasileiro/Internacional', 'Curadoria e produção aberta de conteúdos, roadmaps e cursos de tecnologia.').lastInsertRowid;
 
   // 4. Inserir Livros Digitais
@@ -247,127 +264,225 @@ function seed(dbInstance = null) {
   insertLink.run(l8, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000186.pdf', 2800000, 1);
   insertLink.run(l8, 'epub', 'https://www.gutenberg.org/ebooks/38496.epub3.images', 1900000, 1);
 
-  // Livro 9 (Guia de TI): AI Expert Roadmap & Guia de IA
-  const l9 = insertLivro.run(
-    'AI Expert Roadmap & Guia de IA',
-    'Trilha Completa de Inteligência Artificial e Data Science',
-    '978-0000000001',
-    2026,
+  // Livro: Quincas Borba
+  const lQuincas = insertLivro.run(
+    'Quincas Borba',
+    'Edição Original B. L. Garnier (1891)',
+    '978-8572323871',
+    1891,
     'pt',
-    'Guia estruturado e prático para o estudo e domínio de Inteligência Artificial, Machine Learning, Deep Learning e Engenharia de Prompts.',
-    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/AI_Expert_Roadmap/65927a0974e90c3df4e690236a471e89.webp',
-    150,
-    autGuiaTI,
-    catTecnologia,
-    fGuiaDeTI,
-    'guiadeti-ai-expert',
-    'outro',
-    450,
-    `AI EXPERT ROADMAP & GUIA DE INTELIGÊNCIA ARTIFICIAL\n\nUma trilha aberta e orientada à prática para dominar IA, modelos generativos, Python para dados e automações inteligentes com ferramentas de ponta.`
+    'A continuação espiritual de Memórias Póstumas, acompanhando Rubião, herdeiro da fortuna do filósofo Quincas Borba, e seu cão na corte imperial carioca.',
+    '/capas/quincas_borba.jpg',
+    240,
+    autMachado,
+    catClassicos,
+    fDomPub,
+    'dp-bv000234',
+    'dominio-publico',
+    275,
+    quincasBorbaTexto
   ).lastInsertRowid;
-  insertLink.run(l9, 'html', 'https://guiadeti.com.br/roadmaps/ai-expert-roadmap/', 0, 1);
+  insertLink.run(lQuincas, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000234.pdf', 1650000, 1);
+  insertLink.run(lQuincas, 'epub', 'https://www.gutenberg.org/ebooks/55682.epub3.images', 1150000, 1);
+  insertLink.run(lQuincas, 'html', 'https://pt.wikisource.org/wiki/Quincas_Borba', 0, 1);
 
-  // Livro 10 (Guia de TI): Guia Completo de Carreiras e Roadmaps de TI
-  const l10 = insertLivro.run(
-    'Guia Completo de Carreiras e Roadmaps de TI',
-    'Trilhas para Frontend, Backend, DevOps e Dados',
-    '978-0000000002',
-    2026,
+  // Livro: Senhora
+  const lSenhora = insertLivro.run(
+    'Senhora',
+    'Edição Original B. L. Garnier (1875)',
+    '978-8508119059',
+    1875,
     'pt',
-    'Coleção abrangente de mapas de estudo para profissionais e estudantes de computação navegarem com clareza em suas jornadas de aprendizado.',
-    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/awesome/2ed4a9e52da1d1c276d7a2df6f618d02.webp',
-    180,
-    autGuiaTI,
-    catTecnologia,
-    fGuiaDeTI,
-    'guiadeti-roadmaps-carreiras',
-    'outro',
-    390,
-    `ROADMAPS DE CARREIRAS EM TECNOLOGIA\n\nGuias de habilidades indispensáveis para o mercado moderno de TI: arquitetura de software, computação em nuvem, ferramentas e boas práticas de engenharia.`
+    'O célebre romance de costumes e perfil de mulher sobre Aurélia Camargo, a rica herdeira que compra seu antigo noivo Fernando Seixas.',
+    '/capas/senhora.png',
+    260,
+    autAlencar,
+    catRomance,
+    fDomPub,
+    'dp-bv000188',
+    'dominio-publico',
+    310,
+    senhoraTexto
   ).lastInsertRowid;
-  insertLink.run(l10, 'html', 'https://guiadeti.com.br/roadmaps/awesome-roadmaps/', 0, 1);
+  insertLink.run(lSenhora, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000188.pdf', 1820000, 1);
+  insertLink.run(lSenhora, 'epub', 'https://www.gutenberg.org/ebooks/48433.epub3.images', 1200000, 1);
+  insertLink.run(lSenhora, 'html', 'https://pt.wikisource.org/wiki/Senhora', 0, 1);
 
-  // Livro 11 (Guia de TI): Manual de Fundamentos DevOps, Cloud & Linux
-  const l11 = insertLivro.run(
-    'Manual de Fundamentos DevOps, Cloud & Linux',
-    'Linux, Containers Docker, Git e Arquitetura de Nuvem',
-    '978-0000000003',
-    2026,
+  // Livro: O Ateneu
+  const lAteneu = insertLivro.run(
+    'O Ateneu',
+    'Edição Original Gazeta de Notícias / Livraria Moderna (1888)',
+    '978-8572323888',
+    1888,
     'pt',
-    'Manual formativo sobre cultura DevOps, administração de sistemas Linux, automação e orquestração de servidores para infraestrutura moderna.',
-    'https://guiadeti.com.br/media/CACHE/images/library/2026/10/maestro-20261005-1a2d7f9a4897756f/cda1e67a527c2b1071b43c6290662c37.webp',
-    220,
-    autGuiaTI,
-    catTecnologia,
-    fGuiaDeTI,
-    'guiadeti-devops-linux',
-    'outro',
-    520,
-    `FUNDAMENTOS DEVOPS, LINUX E NUVEM\n\nAprenda a administrar ambientes operacionais Linux no terminal, empacotar aplicações com Docker e implementar pipelines de entrega contínua.`
-  ).lastInsertRowid;
-  insertLink.run(l11, 'html', 'https://guiadeti.com.br/cursos/curso-devops-cloud-linux-docker-e-projeto-marketplace/', 0, 1);
-
-  // Livro 12 (Guia de TI): TechGuide.sh - Guia de Carreiras e Tecnologias
-  const l12 = insertLivro.run(
-    'TechGuide.sh - Guia de Carreiras e Tecnologias',
-    'Mapeamento de Habilidades e Competências Técnicas',
-    '978-0000000004',
-    2026,
-    'pt',
-    'Guia com caminhos estruturados de aprendizado, níveis de proficiência e tecnologias para desenvolvimento profissional.',
-    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/techguide/d9eb488def2346638788a8b5e8c1448d.webp',
-    160,
-    autGuiaTI,
-    catTecnologia,
-    fGuiaDeTI,
-    'guiadeti-techguide',
-    'outro',
-    410,
-    `TECHGUIDE.SH - GUIA DE CARREIRAS\n\nNavegue pelas tecnologias mais requisitadas e construa um plano de estudos sólido e direcionado.`
-  ).lastInsertRowid;
-  insertLink.run(l12, 'html', 'https://guiadeti.com.br/roadmaps/techguidesh-guia-de-carreiras-e-tecnologias/', 0, 1);
-
-  // Livro 13 (Guia de TI): Trilha Info - Trilhas Gratuitas em Português
-  const l13 = insertLivro.run(
-    'Trilha Info - Trilhas Gratuitas em Português',
-    'Formação Colaborativa em Frontend, Backend e DevOps',
-    '978-0000000005',
-    2026,
-    'pt',
-    'Trilhas colaborativas abertas em língua portuguesa para formação de desenvolvedores e preparação para entrevistas técnicas.',
-    'https://guiadeti.com.br/media/CACHE/images/library/2026/09/trilha-info/dee73d5d3f6c492970dd6f466a3b77ad.webp',
-    190,
-    autGuiaTI,
-    catTecnologia,
-    fGuiaDeTI,
-    'guiadeti-trilha-info',
-    'outro',
-    375,
-    `TRILHA INFO\n\nAprenda a programar do zero e aprofunde seus conhecimentos em desenvolvimento web e engenharia de software em português.`
-  ).lastInsertRowid;
-  insertLink.run(l13, 'html', 'https://guiadeti.com.br/roadmaps/trilha-info-trilhas-gratuitas-de-tecnologia/', 0, 1);
-
-  // Livro 14 (Guia de TI): Roadmap.sh - Developer Roadmaps Traduzidos
-  const l14 = insertLivro.run(
-    'Roadmap.sh - Developer Roadmaps Traduzidos',
-    'Diretório Global de Guias de Estudo para Desenvolvedores',
-    '978-0000000006',
-    2026,
-    'pt',
-    'Mapas mentais e guias passo a passo cobrindo arquitetura de software, DevOps, segurança e stacks de programação.',
-    'https://guiadeti.com.br/seo/thumbnail/roadmaps/roadmap/f906b934-8cde-44f9-8f18-6822586aa9a5/fallback.webp?v=v2-1790651464',
+    'Crônica de saudades e sátira implacável à sociedade imperial através das memórias do internato colegial dirigido pelo Dr. Aristarco Argolo de Ramos.',
+    '/capas/o_ateneu.jpg',
     210,
-    autGuiaTI,
-    catTecnologia,
-    fGuiaDeTI,
-    'guiadeti-roadmapsh',
-    'outro',
-    490,
-    `ROADMAP.SH - MAPAS DE CARREIRA\n\nDiretório de referência com trilhas para Frontend, Backend, DevOps, Cyber Security e Inteligência Artificial.`
+    autPompeia,
+    catClassicos,
+    fDomPub,
+    'dp-bv000282',
+    'dominio-publico',
+    240,
+    oAteneuTexto
   ).lastInsertRowid;
-  insertLink.run(l14, 'html', 'https://guiadeti.com.br/roadmaps/roadmapsh-developer-roadmaps/', 0, 1);
+  insertLink.run(lAteneu, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000282.pdf', 1390000, 1);
+  insertLink.run(lAteneu, 'epub', 'https://www.gutenberg.org/ebooks/47824.epub3.images', 980000, 1);
+  insertLink.run(lAteneu, 'html', 'https://pt.wikisource.org/wiki/O_Ateneu', 0, 1);
 
-  // Inserir Livros Técnicos e Manuais Abertos do GitHub (BibliotecaDev, italo books e Trilha Info)
+  // Livro: Os Sertões
+  const lSertoes = insertLivro.run(
+    'Os Sertões',
+    'Campanha de Canudos — Edição Original Laemmert (1902)',
+    '978-8520921005',
+    1902,
+    'pt',
+    'Monumental obra jornalística, sociológica e épica dividida em A Terra, O Homem e A Luta, retratando a Guerra de Canudos liderada por Antônio Conselheiro.',
+    '/capas/os_sertoes.jpg',
+    520,
+    autEuclides,
+    catDidaticos,
+    fDomPub,
+    'dp-bv000091',
+    'dominio-publico',
+    430,
+    osSertoesTexto
+  ).lastInsertRowid;
+  insertLink.run(lSertoes, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000091.pdf', 4200000, 1);
+  insertLink.run(lSertoes, 'html', 'https://pt.wikisource.org/wiki/Os_Sertões', 0, 1);
+
+  // Livro: A Moreninha
+  const lMoreninha = insertLivro.run(
+    'A Moreninha',
+    'Edição Original Typographia Imparcial (1844)',
+    '978-8572323895',
+    1844,
+    'pt',
+    'Marco inaugural do romance brasileiro, relatando a aposta de Augusto e seus colegas na Ilha de Paquetá e o amor inesquecível pela jovem Carolina.',
+    '/capas/a_moreninha.png',
+    190,
+    autMacedo,
+    catRomance,
+    fDomPub,
+    'dp-bv000216',
+    'dominio-publico',
+    285,
+    aMoreninhaTexto
+  ).lastInsertRowid;
+  insertLink.run(lMoreninha, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000216.pdf', 1250000, 1);
+  insertLink.run(lMoreninha, 'epub', 'https://www.gutenberg.org/ebooks/55257.epub3.images', 870000, 1);
+  insertLink.run(lMoreninha, 'html', 'https://pt.wikisource.org/wiki/A_Moreninha', 0, 1);
+
+  // Livro: Auto da Barca do Inferno
+  const lBarca = insertLivro.run(
+    'Auto da Barca do Inferno',
+    'Auto de Moralidade (1517 / Copilaçam 1562)',
+    '978-8572323901',
+    1517,
+    'pt',
+    'A imortal sátira teatral de Gil Vicente no cais místico onde o Anjo e o Diabo julgam os vícios e hipocrisias dos mortais em busca de salvação.',
+    '/capas/auto_da_barca_do_inferno.jpg',
+    95,
+    autGilVicente,
+    catPoesia,
+    fDomPub,
+    'dp-bv000109',
+    'dominio-publico',
+    340,
+    autoDaBarcaDoInfernoTexto
+  ).lastInsertRowid;
+  insertLink.run(lBarca, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000109.pdf', 720000, 1);
+  insertLink.run(lBarca, 'epub', 'https://www.gutenberg.org/ebooks/37021.epub3.images', 550000, 1);
+  insertLink.run(lBarca, 'html', 'https://pt.wikisource.org/wiki/Auto_da_Barca_do_Inferno', 0, 1);
+
+  // Livro: Os Lusíadas
+  const lLusiadas = insertLivro.run(
+    'Os Lusíadas',
+    'Canto Épico dos Feitos Portugueses — Edição Original (1572)',
+    '978-8572323918',
+    1572,
+    'pt',
+    'O supremo poema épico da língua portuguesa, cantando a viagem marítima de Vasco da Gama à Índia e as façanhas históricas dos navegadores lusitanos.',
+    '/capas/os_lusiadas.jpg',
+    380,
+    autCamoes,
+    catPoesia,
+    fDomPub,
+    'dp-bv000088',
+    'dominio-publico',
+    510,
+    osLusiadasTexto
+  ).lastInsertRowid;
+  insertLink.run(lLusiadas, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000088.pdf', 2950000, 1);
+  insertLink.run(lLusiadas, 'epub', 'https://www.gutenberg.org/ebooks/3333.epub3.images', 1600000, 1);
+  insertLink.run(lLusiadas, 'html', 'https://pt.wikisource.org/wiki/Os_Lusíadas', 0, 1);
+
+  // Livro: Mensagem
+  const lMensagem = insertLivro.run(
+    'Mensagem',
+    'Único Livro de Poemas em Português Publicado em Vida (1934)',
+    '978-8572323925',
+    1934,
+    'pt',
+    'Obra-prima mística, simbólica e sebastianista de Fernando Pessoa, evocando o império espiritual do Quinto Império através de 44 poemas.',
+    '/capas/mensagem.jpg',
+    110,
+    autPessoa,
+    catPoesia,
+    fDomPub,
+    'dp-pe000004',
+    'dominio-publico',
+    470,
+    mensagemTexto
+  ).lastInsertRowid;
+  insertLink.run(lMensagem, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/pe000004.pdf', 890000, 1);
+  insertLink.run(lMensagem, 'epub', 'https://www.gutenberg.org/ebooks/54029.epub3.images', 620000, 1);
+  insertLink.run(lMensagem, 'html', 'https://pt.wikisource.org/wiki/Mensagem', 0, 1);
+
+  // Livro: Noite na Taverna
+  const lTaverna = insertLivro.run(
+    'Noite na Taverna',
+    'Edição Original Póstuma (1855)',
+    '978-8572323932',
+    1855,
+    'pt',
+    'Contos góticos e sombrios da boêmia romântica onde amigos reunidos numa taverna narram suas experiências de paixão mórbida, crime e desespero.',
+    '/capas/noite_na_taverna.png',
+    130,
+    autAlvares,
+    catRomance,
+    fDomPub,
+    'dp-bv000043',
+    'dominio-publico',
+    360,
+    noiteNaTavernaTexto
+  ).lastInsertRowid;
+  insertLink.run(lTaverna, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000043.pdf', 960000, 1);
+  insertLink.run(lTaverna, 'epub', 'https://www.gutenberg.org/ebooks/47822.epub3.images', 680000, 1);
+  insertLink.run(lTaverna, 'html', 'https://pt.wikisource.org/wiki/Noite_na_Taverna', 0, 1);
+
+  // Livro: Clara dos Anjos
+  const lClara = insertLivro.run(
+    'Clara dos Anjos',
+    'Edição Concluída em 1922 / Publicação Póstuma',
+    '978-8572323949',
+    1922,
+    'pt',
+    'A sensível e contundente narrativa de Lima Barreto sobre os subúrbios cariocas, o preconceito racial e as barreiras sociais enfrentadas pela jovem mulata Clara.',
+    '/capas/clara_dos_anjos.jpg',
+    180,
+    autLimaBarreto,
+    catRomance,
+    fDomPub,
+    'dp-bv000159',
+    'dominio-publico',
+    320,
+    claraDosAnjosTexto
+  ).lastInsertRowid;
+  insertLink.run(lClara, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000159.pdf', 1350000, 1);
+  insertLink.run(lClara, 'html', 'https://pt.wikisource.org/wiki/Clara_dos_Anjos', 0, 1);
+
+  // Inserir Livros Técnicos e Manuais Abertos do GitHub (BibliotecaDev, italo books)
   const catMap = {
     'Arquitetura & Engenharia de Software': catArq,
     'Desenvolvimento Web & Mobile': catWeb,
@@ -421,14 +536,80 @@ function seed(dbInstance = null) {
     }
   }
 
-  // 5. Inserir Cursos Gratuitos Curados (Guia de TI + Fundação Bradesco 61 cursos + OER + Trilha Info)
+  // 5. Inserir Cursos e Roadmaps (classificando com coluna 'tipo')
   const insertCurso = db.prepare(`
-    INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO cursos (titulo, tipo, area, plataforma, url, licenca, nivel, descricao)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   for (const c of cursosData) {
-    insertCurso.run(...c);
+    const titulo = c[0] || '';
+    const plataforma = c[2] || '';
+    const url = c[3] || '';
+    const isRoadmap = plataforma.includes('Trilha Info') ||
+                      titulo.toLowerCase().includes('roadmap') ||
+                      url.includes('/roadmaps/') ||
+                      titulo.toLowerCase().includes('techguide');
+    const tipo = isRoadmap ? 'roadmap' : 'curso';
+    insertCurso.run(c[0], tipo, c[1], c[2], c[3], c[4], c[5], c[6]);
+  }
+
+  // Roadmaps interativos oficiais complementares
+  const roadmapsOficiais = [
+    [
+      "Roadmap.sh: Formação Desenvolvedor Frontend",
+      "roadmap",
+      "Tecnologia",
+      "Roadmap.sh",
+      "https://roadmap.sh/frontend",
+      "gratuito",
+      "Iniciante a Avançado",
+      "Guia passo a passo interativo com árvore de habilidades para se tornar um desenvolvedor frontend moderno: HTML, CSS, JavaScript, React e Performance."
+    ],
+    [
+      "Roadmap.sh: Formação Desenvolvedor Backend",
+      "roadmap",
+      "Tecnologia",
+      "Roadmap.sh",
+      "https://roadmap.sh/backend",
+      "gratuito",
+      "Intermediário a Avançado",
+      "Árvore de competências essencial para arquitetura backend: Node.js, Python, bancos SQL/NoSQL, APIs RESTful, Caching e Microsserviços."
+    ],
+    [
+      "Roadmap.sh: Formação DevOps & Cloud Engineering",
+      "roadmap",
+      "Tecnologia",
+      "Roadmap.sh",
+      "https://roadmap.sh/devops",
+      "gratuito",
+      "Intermediário a Avançado",
+      "Guia completo cobrindo Linux, Git, Containers Docker, Kubernetes, CI/CD, Infraestrutura como Código (Terraform) e Observabilidade."
+    ],
+    [
+      "Roadmap.sh: Formação Inteligência Artificial & Ciência de Dados",
+      "roadmap",
+      "Tecnologia",
+      "Roadmap.sh",
+      "https://roadmap.sh/ai-data-scientist",
+      "gratuito",
+      "Intermediário a Avançado",
+      "Trilha para dominar fundamentos matemáticos, estatística, Python, Machine Learning, Redes Neurais, LLMs e Engenharia de Prompts com IA."
+    ],
+    [
+      "Roadmap.sh: Formação Cyber Security & Cibersegurança",
+      "roadmap",
+      "Tecnologia",
+      "Roadmap.sh",
+      "https://roadmap.sh/cyber-security",
+      "gratuito",
+      "Iniciante a Avançado",
+      "Roteiro interativo para segurança da informação, arquitetura de redes seguras, testes de penetração, conformidade e defesa cibernética."
+    ]
+  ];
+
+  for (const r of roadmapsOficiais) {
+    insertCurso.run(...r);
   }
 
     db.exec('COMMIT;');

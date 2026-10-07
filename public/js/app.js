@@ -4,17 +4,25 @@ const app = {
   abaAtiva: 'livros',
   livros: [],
   cursos: [],
+  roadmaps: [],
+  dicas: [],
   categoriaAtiva: '',
   formatoAtivo: '',
   areaCursoAtiva: '',
   fonteCursoAtiva: '',
   plataformaCursoAtiva: '',
+  origemRoadmapAtiva: '',
+  catDicaAtiva: '',
   termoBusca: '',
   termoBuscaCursos: '',
+  termoBuscaRoadmaps: '',
+  termoBuscaDicas: '',
   paginaAtual: 1,
   totalPaginas: 1,
   debounceTimer: null,
   debounceCursosTimer: null,
+  debounceRoadmapsTimer: null,
+  debounceDicasTimer: null,
   tamanhoFonte: 22,
   temaPapel: 'creme',
   brilho: 1,
@@ -64,6 +72,8 @@ const app = {
     }
 
     if (this.cursos.length > 0) this.renderizarCursos(this.cursos);
+    if (this.roadmaps.length > 0) this.renderizarRoadmaps(this.roadmaps);
+    if (this.dicas.length > 0) this.renderizarDicas(this.dicas);
 
     if (this.abaAtiva === 'dashboard') this.carregarDashboard();
 
@@ -105,12 +115,18 @@ const app = {
     });
 
     // Alternar visibilidade do conteúdo
-    document.getElementById('aba-livros').classList.toggle('hidden', nomeAba !== 'livros');
-    document.getElementById('aba-cursos').classList.toggle('hidden', nomeAba !== 'cursos');
-    document.getElementById('aba-dashboard').classList.toggle('hidden', nomeAba !== 'dashboard');
+    document.getElementById('aba-livros')?.classList.toggle('hidden', nomeAba !== 'livros');
+    document.getElementById('aba-cursos')?.classList.toggle('hidden', nomeAba !== 'cursos');
+    document.getElementById('aba-roadmaps')?.classList.toggle('hidden', nomeAba !== 'roadmaps');
+    document.getElementById('aba-dicas')?.classList.toggle('hidden', nomeAba !== 'dicas');
+    document.getElementById('aba-dashboard')?.classList.toggle('hidden', nomeAba !== 'dashboard');
 
     if (nomeAba === 'cursos' && this.cursos.length === 0) {
       this.carregarCursos();
+    } else if (nomeAba === 'roadmaps' && this.roadmaps.length === 0) {
+      this.carregarRoadmaps();
+    } else if (nomeAba === 'dicas' && this.dicas.length === 0) {
+      this.carregarDicas();
     } else if (nomeAba === 'dashboard') {
       this.carregarDashboard();
     }
@@ -215,12 +231,67 @@ const app = {
       }).join('');
 
       const pdfLink = links.find(lnk => lnk.formato.toLowerCase() === 'pdf');
+      const htmlLink = links.find(lnk => lnk.formato.toLowerCase() === 'html');
+      const epubLink = links.find(lnk => lnk.formato.toLowerCase() === 'epub');
+      const downloadLink = pdfLink || epubLink || links[0];
       const pdfTamanho = pdfLink && pdfLink.tamanho_bytes > 0
         ? ` (~${(pdfLink.tamanho_bytes / (1024 * 1024)).toFixed(1)} MB)`
         : '';
-      const downloadLink = links[0];
 
       const sinopse = I18N.sinopse(l.id, l.sinopse || t('books.synopsisFallback'));
+
+      const eGuiaWeb = (l.categoria_id === 6 || (htmlLink && !pdfLink && !epubLink));
+      const eLivroTecnicoPdf = (!eGuiaWeb && pdfLink && l.categoria_id > 5);
+
+      let badgeHtml = '';
+      let botoesAcaoHtml = '';
+
+      if (eGuiaWeb && htmlLink) {
+        badgeHtml = `
+          <div class="data-badge-card" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd" title="Recurso Educacional Aberto / Roadmap Interativo">
+            🚀 <span>Guia Interativo Web</span>
+          </div>
+        `;
+        botoesAcaoHtml = `
+          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${htmlLink.id}" target="_blank" rel="noopener noreferrer">
+            🌐 Acessar Guia Online
+          </a>
+        `;
+      } else if (eLivroTecnicoPdf) {
+        badgeHtml = `
+          <div class="data-badge-card" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0" title="Livro Técnico Completo Aberto">
+            📘 <span>Livro Digital Completo (PDF)</span>
+          </div>
+        `;
+        botoesAcaoHtml = `
+          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer">
+            📄 Ler Livro (PDF)
+          </a>
+          <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer">
+            ⬇ Baixar${pdfTamanho}
+          </a>
+        `;
+      } else {
+        badgeHtml = `
+          <div class="data-badge-card" title="${this.escape(t('books.ultralightTitle'))}">
+            ${t('books.ultralight')}
+          </div>
+        `;
+        botoesAcaoHtml = `
+          <button class="btn btn-primary" onclick="app.abrirLeitorOuLink(${l.id})">
+            ${t('books.readOnline')}
+          </button>
+          ${pdfLink ? `
+            <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.downloadFile'))}${pdfTamanho}">
+              📄 PDF Oficial${pdfTamanho}
+            </a>
+          ` : (downloadLink ? `
+            <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer">
+              ${t('books.download')}
+            </a>
+          ` : '')}
+        `;
+      }
 
       return `
         <article class="book-card">
@@ -247,23 +318,10 @@ const app = {
               <span>🏷️ ${this.escape(traduzirCategoria(l.categoria_nome) || t('books.defaultCategory'))}</span>
             </div>
 
-            <div class="data-badge-card" title="${this.escape(t('books.ultralightTitle'))}">
-              ${t('books.ultralight')}
-            </div>
+            ${badgeHtml}
 
             <div class="book-actions">
-              <button class="btn btn-primary" onclick="app.abrirLeitorOuLink(${l.id})">
-                ${t('books.readOnline')}
-              </button>
-              ${downloadLink ? `
-                <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.downloadFile'))}${pdfTamanho}">
-                  ${t('books.download')}${pdfTamanho}
-                </a>
-              ` : `
-                <button class="btn btn-secondary" onclick="app.abrirLeitorOuLink(${l.id})">
-                  ${t('books.view')}
-                </button>
-              `}
+              ${botoesAcaoHtml}
             </div>
           </div>
         </article>
@@ -277,6 +335,13 @@ const app = {
       if (!res.ok) throw new Error(t('books.errorDetails'));
       const livro = await res.json();
 
+      // Se for recurso web com formato html sem capítulos literários, abrir direto
+      const eGuiaWeb = (livro.categoria_id === 6 || (livro.links && livro.links[0]?.formato === 'html' && !livro.conteudo_texto?.includes('###')));
+      if (eGuiaWeb && livro.links && livro.links.length > 0) {
+        window.open(`/api/livros/${livro.id}/ler/${livro.links[0].id}`, '_blank');
+        return;
+      }
+
       if (livro.conteudo_texto && livro.conteudo_texto.trim().length > 0) {
         this.livroAtual = livro;
         this.pararAudio();
@@ -284,7 +349,23 @@ const app = {
         document.getElementById('leitor-titulo').textContent = livro.titulo;
         document.getElementById('leitor-autor').textContent = `${livro.autor_nome || t('books.defaultAuthor')} • ${traduzirLicenca(livro.licenca)}`;
 
-        this.renderizarConteudoLeitor(livro);
+        // Botão para abrir PDF Oficial se existir
+        const btnPdf = document.getElementById('btn-leitor-pdf');
+        const pdfLink = (livro.links || []).find(lnk => lnk.formato.toLowerCase() === 'pdf');
+        if (btnPdf) {
+          if (pdfLink) {
+            btnPdf.href = `/api/livros/${livro.id}/ler/${pdfLink.id}`;
+            btnPdf.classList.remove('hidden');
+          } else {
+            btnPdf.classList.add('hidden');
+          }
+        }
+
+        // Extrair e configurar múltiplos capítulos
+        this.capitulos = this.extrairCapitulos(livro.conteudo_texto, livro);
+        this.configurarBarraCapitulos();
+        this.carregarCapitulo(0);
+
         this.aplicarPreferenciasLeitor();
         this.ativarModoTexto();
 
@@ -299,44 +380,119 @@ const app = {
     }
   },
 
-  renderizarConteudoLeitor(livro) {
-    const textoEl = document.getElementById('leitor-texto');
-    const textoBruto = livro.conteudo_texto || '';
+  extrairCapitulos(textoBruto, livro) {
+    if (!textoBruto) return [];
 
-    const blocos = textoBruto.split(/\n\s*\n/).map(b => b.trim()).filter(b => b.length > 0);
+    // Divisão primária por delimitador markdown '### '
+    const partes = textoBruto.split(/(?:^|\n)(?=###\s+)/).map(p => p.trim()).filter(p => p.length > 0);
 
-    let html = '';
-    const paragrafosVoz = [];
-    let indicePrimeiroParagrafoNarrativo = 0;
-
-    if (blocos.length > 0 && /^(CAP[ÍI]TULO|PARTE|CANTO|PROCESSO|LIVRO|O\s+NAVIO)/i.test(blocos[0])) {
-      html += `
-        <div class="reader-chapter-heading">
-          <h2 class="reader-chapter-title">${this.escape(blocos[0])}</h2>
-          <p class="reader-work-title">${this.escape(livro.titulo)} — ${this.escape(livro.autor_nome || t('books.defaultAuthor'))}</p>
-        </div>
-      `;
-      indicePrimeiroParagrafoNarrativo = 1;
-    } else {
-      html += `
-        <div class="reader-chapter-heading">
-          <h2 class="reader-chapter-title">${t('reader.chapter')}</h2>
-          <p class="reader-work-title">${this.escape(livro.titulo)} — ${this.escape(livro.autor_nome || t('books.defaultAuthor'))}</p>
-        </div>
-      `;
+    if (partes.length > 1) {
+      return partes.map((parte, idx) => {
+        const linhas = parte.split('\n');
+        let titulo = linhas[0].replace(/^###\s*/, '').trim();
+        const corpo = linhas.slice(1).join('\n').trim();
+        const paragrafos = corpo.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
+        return {
+          id: idx,
+          titulo: titulo || `Capítulo ${idx + 1}`,
+          paragrafos: paragrafos.length > 0 ? paragrafos : [corpo]
+        };
+      });
     }
 
-    let narrativoCount = 0;
-    for (let i = 0; i < blocos.length; i++) {
-      const bloco = blocos[i];
-      if (i === 0 && indicePrimeiroParagrafoNarrativo === 1) {
-        continue;
-      }
+    // Divisão por CAPÍTULO / CANTO / PARTE em texto sem markdown
+    const blocosRegex = textoBruto.split(/(?:^|\n\n)(?=(?:CAP[ÍI]TULO|CANTO|PARTE|DEDICAT[ÓO]RIA|AO\s+LEITOR)\b)/i).map(b => b.trim()).filter(b => b.length > 0);
+    if (blocosRegex.length > 1) {
+      return blocosRegex.map((bloco, idx) => {
+        const linhas = bloco.split('\n');
+        const titulo = linhas[0].trim();
+        const corpo = linhas.slice(1).join('\n').trim();
+        const paragrafos = corpo.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
+        return {
+          id: idx,
+          titulo: titulo || `Capítulo ${idx + 1}`,
+          paragrafos: paragrafos.length > 0 ? paragrafos : [corpo]
+        };
+      });
+    }
 
+    // Fallback: texto corrido como capítulo único
+    const paragrafos = textoBruto.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
+    return [{
+      id: 0,
+      titulo: 'Capítulo I',
+      paragrafos
+    }];
+  },
+
+  configurarBarraCapitulos() {
+    const barra = document.getElementById('reader-chapter-bar');
+    const select = document.getElementById('leitor-capitulos-select');
+    if (!barra || !select) return;
+
+    if (this.capitulos && this.capitulos.length > 1) {
+      barra.classList.remove('hidden');
+      select.innerHTML = this.capitulos.map((c, idx) => `
+        <option value="${idx}">${this.escape(c.titulo)}</option>
+      `).join('');
+    } else {
+      barra.classList.add('hidden');
+    }
+  },
+
+  carregarCapitulo(indice) {
+    if (!this.capitulos || this.capitulos.length === 0) return;
+    this.capituloAtualIndex = Math.max(0, Math.min(this.capitulos.length - 1, indice));
+    const cap = this.capitulos[this.capituloAtualIndex];
+
+    const select = document.getElementById('leitor-capitulos-select');
+    if (select) select.value = this.capituloAtualIndex;
+
+    const btnAnt = document.getElementById('btn-cap-anterior');
+    const btnProx = document.getElementById('btn-cap-proximo');
+    if (btnAnt) btnAnt.disabled = (this.capituloAtualIndex === 0);
+    if (btnProx) btnProx.disabled = (this.capituloAtualIndex === this.capitulos.length - 1);
+
+    const proximoAction = document.getElementById('leitor-proximo-cap-container');
+    if (proximoAction) {
+      if (this.capituloAtualIndex < this.capitulos.length - 1) {
+        proximoAction.classList.remove('hidden');
+        const proxTitulo = this.capitulos[this.capituloAtualIndex + 1].titulo;
+        const btnAvancar = document.getElementById('btn-avancar-proximo-cap');
+        if (btnAvancar) {
+          btnAvancar.textContent = `Avançar para: ${proxTitulo} ➔`;
+        }
+      } else {
+        proximoAction.classList.add('hidden');
+      }
+    }
+
+    this.renderizarConteudoCapitulo(cap);
+
+    const scrollEl = document.getElementById('reader-body-scroll');
+    if (scrollEl) scrollEl.scrollTop = 0;
+  },
+
+  renderizarConteudoCapitulo(cap) {
+    const textoEl = document.getElementById('leitor-texto');
+    if (!textoEl) return;
+
+    let html = `
+      <div class="reader-chapter-heading">
+        <h2 class="reader-chapter-title">${this.escape(cap.titulo)}</h2>
+        <p class="reader-work-title">${this.escape(this.livroAtual?.titulo || '')} — ${this.escape(this.livroAtual?.autor_nome || t('books.defaultAuthor'))}</p>
+      </div>
+    `;
+
+    const paragrafosVoz = [];
+    let narrativoCount = 0;
+
+    for (let i = 0; i < cap.paragrafos.length; i++) {
+      const bloco = cap.paragrafos[i];
       paragrafosVoz.push(bloco);
       const pIdx = paragrafosVoz.length - 1;
 
-      if (narrativoCount === 0) {
+      if (narrativoCount === 0 && bloco.length > 2) {
         const primeiraLetra = bloco.charAt(0);
         const resto = bloco.slice(1);
         html += `
@@ -357,6 +513,36 @@ const app = {
     textoEl.innerHTML = html;
     this.speechState.paragrafos = paragrafosVoz;
     this.speechState.indiceAtual = 0;
+  },
+
+  proximoCapitulo() {
+    if (this.capitulos && this.capituloAtualIndex < this.capitulos.length - 1) {
+      this.pararAudio();
+      this.carregarCapitulo(this.capituloAtualIndex + 1);
+    } else {
+      this.mostrarToast('Você concluiu todos os capítulos desta obra!');
+    }
+  },
+
+  capituloAnterior() {
+    if (this.capitulos && this.capituloAtualIndex > 0) {
+      this.pararAudio();
+      this.carregarCapitulo(this.capituloAtualIndex - 1);
+    }
+  },
+
+  mudarCapituloPeloSelect(val) {
+    this.pararAudio();
+    this.carregarCapitulo(parseInt(val, 10) || 0);
+  },
+
+  fecharPainelSeAberto(event) {
+    const painel = document.getElementById('painel-ajustes-leitura');
+    if (painel && !painel.classList.contains('collapsed')) {
+      if (!painel.contains(event.target) && !event.target.closest('#btn-toggle-painel')) {
+        painel.classList.add('collapsed');
+      }
+    }
   },
 
   carregarPreferenciasLeitor() {
@@ -504,7 +690,17 @@ const app = {
 
     if (indice >= this.speechState.paragrafos.length) {
       this.pararAudio();
-      this.mostrarToast(t('reader.done'));
+      if (this.capitulos && this.capituloAtualIndex < this.capitulos.length - 1) {
+        this.mostrarToast('Fim do capítulo. Avançando para o próximo capítulo...');
+        setTimeout(() => {
+          this.proximoCapitulo();
+          if (this.modoMidia === 'audio') {
+            this.tocarParagrafo(0);
+          }
+        }, 1200);
+      } else {
+        this.mostrarToast(t('reader.done'));
+      }
       return;
     }
 
@@ -718,6 +914,7 @@ const app = {
 
     try {
       const params = new URLSearchParams();
+      params.append('excluir_roadmaps', 'true');
       if (this.youtubeCursoAtivo) params.append('youtube', 'true');
       if (this.areaCursoAtiva) params.append('area', this.areaCursoAtiva);
       if (this.fonteCursoAtiva) params.append('fonte', this.fonteCursoAtiva);
@@ -745,28 +942,46 @@ const app = {
 
     grid.innerHTML = lista.map(c => {
       const isYouTube = (c.plataforma || '').includes('YouTube') || (c.descricao || '').toLowerCase().includes('youtube');
-      const isTrilha = (c.plataforma || '').includes('Trilha Info');
       const isGuiaDeTI = (c.plataforma || '').includes('Guia de TI');
       const isBradesco = (c.plataforma || '').includes('Fundação Bradesco');
+      const isUsp = (c.plataforma || '').includes('USP');
+      const isEvg = (c.plataforma || '').includes('EV.G') || (c.plataforma || '').includes('ENAP');
+      const isIfrs = (c.plataforma || '').includes('IFRS') || (c.plataforma || '').includes('Instituto Federal');
       let btnTexto = t('courses.btnFree');
       let extraBadge = '';
 
       if (isYouTube) {
         btnTexto = t('courses.btnYoutube');
         extraBadge = `<span class="badge-youtube-cert">${t('courses.badgeYoutube')}</span>`;
-      } else if (isTrilha) {
-        btnTexto = t('courses.btnTrilha');
-        extraBadge = `<span class="badge-trilha-pill">${t('courses.badgeTrilha')}</span>`;
       } else if (isGuiaDeTI) {
         btnTexto = t('courses.btnGuiadeti');
         extraBadge = `<span class="badge-guiadeti-pill">${t('courses.badgeGuiadeti')}</span>`;
       } else if (isBradesco) {
         btnTexto = t('courses.btnBradesco');
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">${t('courses.badgeBradesco')}</span>`;
+      } else if (isUsp) {
+        btnTexto = '🎓 Aulas USP';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">🎓 USP Oficial</span>`;
+      } else if (isEvg) {
+        btnTexto = '📜 Inscrição EV.G';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#bbf7d0;">🏛️ EV.G / ENAP</span>`;
+      } else if (isIfrs) {
+        btnTexto = '📜 Inscrição IFRS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ede9fe; color:#5b21b6; border-color:#ddd6fe;">🏛️ IFRS Federal</span>`;
       }
 
+      const cardClass = isYouTube
+        ? 'card-featured-youtube'
+        : (isGuiaDeTI
+          ? 'card-featured-guiadeti'
+          : (isBradesco
+            ? 'card-featured-bradesco'
+            : (isUsp || isEvg || isIfrs ? 'card-featured-guiadeti' : '')));
+
+      const isBtnPrimary = isYouTube || isGuiaDeTI || isUsp || isEvg || isIfrs;
+
       return `
-        <article class="course-card ${isYouTube ? 'card-featured-youtube' : (isGuiaDeTI ? 'card-featured-guiadeti' : (isBradesco ? 'card-featured-bradesco' : ''))}">
+        <article class="course-card ${cardClass}">
           <div class="course-top">
             <span class="course-area">${this.escape(traduzirArea(c.area))}</span>
             <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
@@ -779,9 +994,172 @@ const app = {
           <p class="course-platform">🏛️ ${this.escape(c.plataforma)}</p>
           <p class="course-desc">${this.escape(c.descricao || t('courses.descFallback'))}</p>
 
-          <a class="btn ${isYouTube || isGuiaDeTI ? 'btn-primary' : 'btn-secondary'} course-btn" href="/api/cursos/${c.id}/acessar" target="_blank" rel="noopener noreferrer">
+          <a class="btn ${isBtnPrimary ? 'btn-primary' : 'btn-secondary'} course-btn" href="/api/cursos/${c.id}/acessar" target="_blank" rel="noopener noreferrer">
             ${btnTexto}
           </a>
+        </article>
+      `;
+    }).join('');
+  },
+
+  // ==================== ROADMAPS & TRILHAS ====================
+  buscarRoadmapsComDebounce() {
+    clearTimeout(this.debounceRoadmapsTimer);
+    this.debounceRoadmapsTimer = setTimeout(() => {
+      this.termoBuscaRoadmaps = (document.getElementById('filtro-busca-roadmaps')?.value || '').trim();
+      this.carregarRoadmaps();
+    }, 250);
+  },
+
+  filtrarRoadmapsPorOrigem(origem) {
+    this.origemRoadmapAtiva = origem;
+    this.termoBuscaRoadmaps = '';
+    const input = document.getElementById('filtro-busca-roadmaps');
+    if (input) input.value = '';
+    document.querySelectorAll('#pills-roadmaps-origem .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-filtro') === origem);
+    });
+    this.carregarRoadmaps();
+  },
+
+  filtrarRoadmapsPorTermo(termo) {
+    this.origemRoadmapAtiva = '';
+    this.termoBuscaRoadmaps = termo;
+    const input = document.getElementById('filtro-busca-roadmaps');
+    if (input) input.value = termo;
+    document.querySelectorAll('#pills-roadmaps-origem .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-filtro') === termo.toLowerCase());
+    });
+    this.carregarRoadmaps();
+  },
+
+  async carregarRoadmaps() {
+    const grid = document.getElementById('grade-roadmaps');
+    if (!grid) return;
+    grid.innerHTML = `<div class="loading">${t('roadmaps.loading')}</div>`;
+
+    try {
+      const params = new URLSearchParams();
+      if (this.origemRoadmapAtiva) params.append('plataforma', this.origemRoadmapAtiva);
+      if (this.termoBuscaRoadmaps) params.append('busca', this.termoBuscaRoadmaps);
+
+      const qs = params.toString() ? `?${params.toString()}` : '';
+      const res = await fetch(`/api/roadmaps${qs}`);
+      const roadmaps = await res.json();
+      this.roadmaps = roadmaps;
+      this.renderizarRoadmaps(roadmaps);
+    } catch (err) {
+      grid.innerHTML = `<div class="loading" style="color:#b91c1c">${this.escape(t('roadmaps.error', { msg: err.message }))}</div>`;
+    }
+  },
+
+  renderizarRoadmaps(lista) {
+    const grid = document.getElementById('grade-roadmaps');
+    if (!grid) return;
+
+    if (!lista || lista.length === 0) {
+      grid.innerHTML = `<div class="loading">${t('roadmaps.empty')}</div>`;
+      return;
+    }
+
+    grid.innerHTML = lista.map(r => {
+      const isRoadmapSh = (r.plataforma || '').includes('Roadmap.sh');
+      const isTrilha = (r.plataforma || '').includes('Trilha Info');
+      const isGuiaTI = (r.plataforma || '').includes('Guia de TI');
+      let badgeOrigem = '🗺️ Roadmap Aberto';
+      if (isRoadmapSh) badgeOrigem = '🌐 Roadmap.sh';
+      else if (isTrilha) badgeOrigem = '🗺️ Trilha Info (BR)';
+      else if (isGuiaTI) badgeOrigem = '🚀 Guia de TI';
+
+      return `
+        <article class="roadmap-card">
+          <div class="roadmap-top">
+            <span class="roadmap-badge-origem">${badgeOrigem}</span>
+            <span class="roadmap-nivel">${this.escape(r.nivel || 'Iniciante a Avançado')}</span>
+          </div>
+
+          <h3 class="roadmap-title">${this.escape(r.titulo)}</h3>
+          <p class="roadmap-platform">🧭 ${this.escape(r.plataforma)}</p>
+          <p class="roadmap-desc">${this.escape(r.descricao || 'Árvore de habilidades e guia passo a passo estruturado para desenvolvimento técnico.')}</p>
+
+          <a class="btn roadmap-btn" href="${this.escape(r.url)}" target="_blank" rel="noopener noreferrer">
+            🗺️ Acessar Roadmap Interativo ↗
+          </a>
+        </article>
+      `;
+    }).join('');
+  },
+
+  // ==================== DICAS & FERRAMENTAS ====================
+  buscarDicasComDebounce() {
+    clearTimeout(this.debounceDicasTimer);
+    this.debounceDicasTimer = setTimeout(() => {
+      this.termoBuscaDicas = (document.getElementById('filtro-busca-dicas')?.value || '').trim();
+      this.carregarDicas();
+    }, 250);
+  },
+
+  filtrarDicasPorCategoria(cat) {
+    this.catDicaAtiva = cat;
+    document.querySelectorAll('#pills-dicas-cat .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+    });
+    this.carregarDicas();
+  },
+
+  async carregarDicas() {
+    const grid = document.getElementById('grade-dicas');
+    if (!grid) return;
+    grid.innerHTML = `<div class="loading">${t('tips.loading')}</div>`;
+
+    try {
+      const params = new URLSearchParams();
+      if (this.catDicaAtiva) params.append('categoria', this.catDicaAtiva);
+      if (this.termoBuscaDicas) params.append('busca', this.termoBuscaDicas);
+
+      const qs = params.toString() ? `?${params.toString()}` : '';
+      const res = await fetch(`/api/dicas${qs}`);
+      const dicas = await res.json();
+      this.dicas = dicas;
+      this.renderizarDicas(dicas);
+    } catch (err) {
+      grid.innerHTML = `<div class="loading" style="color:#b91c1c">${this.escape(t('tips.error', { msg: err.message }))}</div>`;
+    }
+  },
+
+  renderizarDicas(lista) {
+    const grid = document.getElementById('grade-dicas');
+    if (!grid) return;
+
+    if (!lista || lista.length === 0) {
+      grid.innerHTML = `<div class="loading">${t('tips.empty')}</div>`;
+      return;
+    }
+
+    grid.innerHTML = lista.map(d => {
+      return `
+        <article class="dica-card">
+          <div class="dica-header">
+            <div class="dica-icon">${d.icone || '💡'}</div>
+            <div>
+              <span class="dica-categoria-badge">${this.escape(d.categoria_label || 'Dica')}</span>
+              <h3 class="dica-title">${this.escape(d.titulo)}</h3>
+            </div>
+          </div>
+
+          <p class="dica-desc">${this.escape(d.descricao)}</p>
+
+          <div class="dica-pratica-box">
+            <strong>🎯 Como aplicar nos estudos:</strong>
+            ${this.escape(d.dica_pratica)}
+          </div>
+
+          <div class="dica-footer">
+            <span class="dica-badge-gratis">✓ ${this.escape(d.gratuito || 'Gratuito')}</span>
+            <a class="dica-btn" href="${this.escape(d.url)}" target="_blank" rel="noopener noreferrer">
+              Acessar Recurso ↗
+            </a>
+          </div>
         </article>
       `;
     }).join('');

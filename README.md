@@ -22,6 +22,35 @@ Plataforma aberta, ultrassimples e direta para distribuição de **livros digita
    Integração direta sem coleta de dados do usuário: links diretos e geração dinâmica de QR codes em SVG pelo servidor (`/api/comunidade/qrcode.svg` e `/api/canal/qrcode.svg`), com cache em memória e atualização automática ao alterar o `.env`.
 7. **Compliance & Licenças**:
    Todos os itens exigem licença legal obrigatória (`dominio-publico`, `cc0`, `cc-by`, `cc-by-sa`, `cc-by-nc`, `outro`). Fontes piratas são terminantemente proibidas.
+8. **Site Multilíngue (i18n)**:
+   Interface traduzida em **5 idiomas** — Português, English, Deutsch, 中文 e Français — com seletor no cabeçalho, sinopses dos livros traduzidas, `<html lang>` e `<title>` atualizados, fontes Noto Sans/Serif SC para chinês e memória da escolha do visitante.
+
+---
+
+## 🌐 Idiomas (i18n)
+
+O site é uma única aplicação com seletor de idioma no cabeçalho.
+
+| Arquivo | Idioma |
+|---|---|
+| `public/locales/pt.json` | Português (base / fallback) |
+| `public/locales/en.json` | English |
+| `public/locales/de.json` | Deutsch |
+| `public/locales/zh.json` | 中文 (Mandarim) |
+| `public/locales/fr.json` | Français |
+
+**Como funciona**
+
+- `public/js/i18n.js` carrega o JSON do idioma, aplica os atributos `data-i18n` / `data-i18n-ph` / `data-i18n-title` / `data-i18n-alt` / `data-i18n-aria` do HTML e expõe `t('chave')` para o JavaScript.
+- A escolha fica salva em `localStorage` (`lino_lang`) e também na URL (`?lang=de`), permitindo compartilhar links em um idioma específico.
+- Padrão: **português**. A detecção automática pelo navegador está comentada em `detectarIdioma()` — basta descomentar para ativar.
+- `synopses` no JSON traduz as sinopses por `id` do livro; se um id não existir, o texto do banco é usado automaticamente.
+- As seções `categories`, `areas`, `levels` e `licenses` traduzem os rótulos vindos do banco mantendo o valor original como chave de filtro.
+
+**Para adicionar um 6º idioma**
+
+1. Copie `public/locales/pt.json` para `public/locales/<código>.json` e traduza os valores.
+2. Adicione o código em `IDIOMAS`, `FLAGS` e `LABELS_PADRAO` em `public/js/i18n.js` (o seletor é montado sozinho).
 
 ---
 

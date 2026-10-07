@@ -57,6 +57,8 @@
     <div class="nav-tabs">
       <button class="tab-btn active" id="tab-btn-livros" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books">📚 Livros Digitais</button>
       <button class="tab-btn" id="tab-btn-cursos" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses">🎓 Cursos Gratuitos</button>
+      <button class="tab-btn" id="tab-btn-roadmaps" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps">🗺️ Roadmaps & Trilhas</button>
+      <button class="tab-btn" id="tab-btn-dicas" onclick="app.trocarAba('dicas')" data-i18n="ui.tabs.tips">💡 Dicas & Ferramentas</button>
       <button class="tab-btn" id="tab-btn-dashboard" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard">📊 Métricas & Fontes</button>
     </div>
   </nav>
@@ -75,17 +77,16 @@
         <span class="filter-label" data-i18n="ui.books.categories">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
           <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')" data-i18n="ui.books.all">Todas</button>
-          <button class="pill" data-categoria="Tecnologia & Guias Digitais" onclick="app.filtrarPorCategoria('Tecnologia & Guias Digitais')" data-i18n="ui.books.catGuides">💻 Guias & Tecnologia</button>
+          <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')" data-i18n="ui.books.catClassics">Clássicos Brasileiros</button>
+          <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')" data-i18n="ui.books.catRomance">Romances</button>
+          <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')" data-i18n="ui.books.catPoetry">Poesia</button>
+          <button class="pill" data-categoria="Romance Indianista" onclick="app.filtrarPorCategoria('Romance Indianista')">Romance Indianista</button>
+          <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')" data-i18n="ui.books.catEssays">Didáticos & Ensaios</button>
           <button class="pill" data-categoria="Arquitetura & Engenharia de Software" onclick="app.filtrarPorCategoria('Arquitetura & Engenharia de Software')">📐 Arquitetura & Engenharia</button>
           <button class="pill" data-categoria="Desenvolvimento Web & Mobile" onclick="app.filtrarPorCategoria('Desenvolvimento Web & Mobile')">📱 Web & Mobile</button>
           <button class="pill" data-categoria="DevOps, Cloud & Infraestrutura" onclick="app.filtrarPorCategoria('DevOps, Cloud & Infraestrutura')">☁️ DevOps & Nuvem</button>
           <button class="pill" data-categoria="Ciência de Dados & Inteligência Artificial" onclick="app.filtrarPorCategoria('Ciência de Dados & Inteligência Artificial')">🤖 Dados & IA</button>
           <button class="pill" data-categoria="Metodologias Ágeis & Carreira Tech" onclick="app.filtrarPorCategoria('Metodologias Ágeis & Carreira Tech')">🚀 Ágil & Carreira</button>
-          <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')" data-i18n="ui.books.catClassics">Clássicos Brasileiros</button>
-          <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')" data-i18n="ui.books.catRomance">Romances</button>
-          <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')" data-i18n="ui.books.catPoetry">Poesia</button>
-          <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')" data-i18n="ui.books.catEssays">Didáticos & Ensaios</button>
-          <button class="pill" data-categoria="Romance Indianista" onclick="app.filtrarPorCategoria('Romance Indianista')">Romance Indianista</button>
         </div>
       </div>
 
@@ -121,24 +122,30 @@
   <div id="aba-cursos" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner">
-        <div class="banner-badge-primary" data-i18n="ui.courses.bannerBadge">⭐ Fonte Principal: Guia de TI</div>
-        <h2 data-i18n="ui.courses.bannerTitle">Diretório de Cursos Livres, Livros Técnicos & Roadmaps</h2>
-        <p><span data-i18n="ui.courses.bannerDescBefore">Formação em tecnologia, inteligência artificial, programação e recursos educacionais abertos em parceria com o </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e as maiores instituições abertas do mundo.</span></p>
+        <div class="banner-badge-primary" data-i18n="ui.courses.bannerBadge">⭐ Cursos Livres & Certificações Gratuitas</div>
+        <h2 data-i18n="ui.courses.bannerTitle">Diretório de Cursos Online Gratuitos</h2>
+        <p><span data-i18n="ui.courses.bannerDescBefore">Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas em parceria com o </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e a Fundação Bradesco.</span></p>
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
         <span class="search-icon">🔍</span>
-        <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos, roadmaps ou tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()">
+        <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()">
       </div>
 
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
           <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')" data-i18n="ui.courses.all">Todos</button>
-          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti">🚀 Guia de TI (Principal)</button>
           <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube">📺 YouTube (Certificado Gratuito)</button>
-          <button class="pill pill-trilha" data-filtro="trilhainfo" onclick="app.filtrarCursosPorFonte('Trilha Info')" data-i18n="ui.courses.trilhainfo">🗺️ Roadmaps (Trilha Info)</button>
+          <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')">🏛️ Fundação Bradesco</button>
+          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti">🚀 Guia de TI</button>
+          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')">🎓 USP Oficial</button>
+          <button class="pill" data-filtro="EV.G" onclick="app.filtrarCursosPorPlataforma('EV.G')">🏛️ EV.G / ENAP</button>
+          <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')">🏛️ IFRS Federal</button>
           <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')" data-i18n="ui.courses.areaTech">Tecnologia Geral</button>
+          <button class="pill" data-filtro="Gestão & Negócios" onclick="app.filtrarCursosPorArea('Gestão & Negócios')">💼 Gestão & Negócios</button>
+          <button class="pill" data-filtro="Desenvolvimento Pessoal" onclick="app.filtrarCursosPorArea('Desenvolvimento Pessoal')">🌱 Desenvolvimento Pessoal</button>
+          <button class="pill" data-filtro="Educação & Pedagogia" onclick="app.filtrarCursosPorArea('Educação & Pedagogia')">📚 Educação & Pedagogia</button>
           <button class="pill" data-filtro="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')" data-i18n="ui.courses.areaExact">Ciências Exatas</button>
           <button class="pill" data-filtro="Matemática" onclick="app.filtrarCursosPorArea('Matemática')" data-i18n="ui.courses.areaMath">Matemática</button>
           <button class="pill" data-filtro="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')" data-i18n="ui.courses.areaBio">Biológicas</button>
@@ -155,7 +162,78 @@
     </main>
   </div>
 
-  <!-- ==================== ABA 3: DASHBOARD & MÉTRICAS ==================== -->
+  <!-- ==================== ABA 3: ROADMAPS & TRILHAS ==================== -->
+  <div id="aba-roadmaps" class="tab-content hidden">
+    <section class="container filter-section">
+      <div class="cursos-header-banner roadmap-banner">
+        <div class="banner-badge-primary" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe;">🗺️ Árvores de Habilidades & Carreiras Tech</div>
+        <h2 data-i18n="ui.roadmaps.bannerTitle">Roadmaps e Trilhas Guiadas de Aprendizado</h2>
+        <p data-i18n="ui.roadmaps.bannerDesc">Mapas interativos passo a passo e caminhos estruturados de formação profissional em parceria com <a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer" class="link-destaque">Roadmap.sh</a>, <a href="https://trilha.info" target="_blank" rel="noopener noreferrer" class="link-destaque">Trilha Info</a> e o <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a>.</p>
+      </div>
+
+      <div class="search-bar" style="margin-bottom: 1.25rem;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="filtro-busca-roadmaps" placeholder="Pesquisar roadmaps (Frontend, Backend, DevOps, IA, React, QA, Python...)..." data-i18n-ph="ui.roadmaps.searchPlaceholder" oninput="app.buscarRoadmapsComDebounce()">
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label" data-i18n="ui.roadmaps.filters">Filtros de Trilha:</span>
+        <div class="pills-container" id="pills-roadmaps-origem">
+          <button class="pill active" data-filtro="" onclick="app.filtrarRoadmapsPorOrigem('')" data-i18n="ui.roadmaps.all">Todos os Roadmaps</button>
+          <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')">🗺️ Trilha Info (BR)</button>
+          <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')">🌐 Roadmap.sh</button>
+          <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')">🚀 Guia de TI</button>
+          <button class="pill" data-filtro="frontend" onclick="app.filtrarRoadmapsPorTermo('Frontend')">💻 Frontend</button>
+          <button class="pill" data-filtro="backend" onclick="app.filtrarRoadmapsPorTermo('Backend')">⚙️ Backend</button>
+          <button class="pill" data-filtro="devops" onclick="app.filtrarRoadmapsPorTermo('DevOps')">☁️ DevOps & Cloud</button>
+          <button class="pill" data-filtro="dados" onclick="app.filtrarRoadmapsPorTermo('Dados')">🤖 IA & Dados</button>
+        </div>
+      </div>
+    </section>
+
+    <main class="container main-container">
+      <div id="grade-roadmaps" class="roadmaps-grid">
+        <div class="loading" data-i18n="ui.roadmaps.loading">Carregando roadmaps e trilhas interativas...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== ABA 4: DICAS & FERRAMENTAS ==================== -->
+  <div id="aba-dicas" class="tab-content hidden">
+    <section class="container filter-section">
+      <div class="cursos-header-banner dicas-banner">
+        <div class="banner-badge-primary" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">💡 Métodos Comprovados & Recursos Abertos</div>
+        <h2 data-i18n="ui.tips.bannerTitle">Dicas de Estudo, Técnicas de Foco & Ferramentas</h2>
+        <p data-i18n="ui.tips.bannerDesc">Seleção prática de metodologias de aprendizagem, temporizadores Pomodoro, repetição espaçada, corretores gramaticais, gestores de anotações e apoios ao estudante.</p>
+      </div>
+
+      <div class="search-bar" style="margin-bottom: 1.25rem;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="filtro-busca-dicas" placeholder="Pesquisar dicas e ferramentas (Pomodoro, Anki, Obsidian, Zotero, LaTeX, Gramática...)..." data-i18n-ph="ui.tips.searchPlaceholder" oninput="app.buscarDicasComDebounce()">
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label" data-i18n="ui.tips.filters">Categorias de Dicas:</span>
+        <div class="pills-container" id="pills-dicas-cat">
+          <button class="pill active" data-cat="" onclick="app.filtrarDicasPorCategoria('')" data-i18n="ui.tips.all">Todas as Dicas</button>
+          <button class="pill" data-cat="estudo" onclick="app.filtrarDicasPorCategoria('estudo')">🧠 Técnicas de Estudo & Foco</button>
+          <button class="pill" data-cat="organizacao" onclick="app.filtrarDicasPorCategoria('organizacao')">📓 Organização & Notas</button>
+          <button class="pill" data-cat="escrita" onclick="app.filtrarDicasPorCategoria('escrita')">✍️ Escrita & Revisão</button>
+          <button class="pill" data-cat="idiomas" onclick="app.filtrarDicasPorCategoria('idiomas')">🗣️ Idiomas & Dicionários</button>
+          <button class="pill" data-cat="criacao" onclick="app.filtrarDicasPorCategoria('criacao')">🎨 Mídia Livre & Criação</button>
+          <button class="pill" data-cat="carreira" onclick="app.filtrarDicasPorCategoria('carreira')">💼 Carreira & Apoio</button>
+        </div>
+      </div>
+    </section>
+
+    <main class="container main-container">
+      <div id="grade-dicas" class="dicas-grid">
+        <div class="loading" data-i18n="ui.tips.loading">Carregando dicas e ferramentas...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== ABA 5: DASHBOARD & MÉTRICAS ==================== -->
   <div id="aba-dashboard" class="tab-content hidden">
     <section class="container main-container">
       <div id="dashboard-content" class="dashboard-grid">
@@ -245,8 +323,26 @@
           <button id="btn-toggle-painel" class="reader-action-btn" onclick="app.togglePainelAjustes()" data-i18n-title="ui.reader.settingsTitle" title="Ajustes de Leitura e Conforto">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </button>
+          <a id="btn-leitor-pdf" class="btn-pdf-header hidden" target="_blank" rel="noopener noreferrer" title="Abrir Edição Oficial Completa (PDF)" data-i18n-title="ui.reader.officialPdf">
+            📄 <span class="btn-pdf-label" data-i18n="ui.reader.officialPdf">PDF Oficial</span>
+          </a>
           <button class="reader-action-btn" onclick="app.fecharModais()" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor">✕</button>
         </div>
+      </div>
+
+      <!-- Barra de Navegação de Capítulos -->
+      <div id="reader-chapter-bar" class="reader-chapter-bar hidden">
+        <button id="btn-cap-anterior" class="btn-cap-nav" onclick="app.capituloAnterior()" title="Capítulo Anterior">
+          ❮ <span class="cap-nav-text">Anterior</span>
+        </button>
+        <div class="chapter-select-wrapper">
+          <span class="chapter-icon">📖</span>
+          <select id="leitor-capitulos-select" class="chapter-nav-select" onchange="app.mudarCapituloPeloSelect(this.value)" aria-label="Selecionar capítulo">
+          </select>
+        </div>
+        <button id="btn-cap-proximo" class="btn-cap-nav" onclick="app.proximoCapitulo()" title="Próximo Capítulo">
+          <span class="cap-nav-text">Próximo</span> ❯
+        </button>
       </div>
 
       <!-- Barra de Controle de Voz / Audiolivro (Web Speech API) -->
@@ -276,14 +372,21 @@
           <!-- Conteúdo gerado dinamicamente com capitular e parágrafos estruturados -->
         </div>
 
-        <!-- Indicador de Economia de Dados no Rodapé da Leitura -->
-        <div class="data-saver-notice">
-          <span>⚡ <strong data-i18n="ui.reader.dataSaverStrong">Modo Leitura Ultra Leve</strong> <span data-i18n="ui.reader.dataSaverText">• Consumo de ~25 KB de dados móveis (economia de mais de 98% em relação ao download de PDF).</span></span>
+        <!-- Ação de Avanço no Fim do Capítulo -->
+        <div id="leitor-proximo-cap-container" class="next-chapter-action hidden">
+          <button id="btn-avancar-proximo-cap" class="btn-next-cap" onclick="app.proximoCapitulo()">
+            Avançar para o Próximo Capítulo ➔
+          </button>
+        </div>
+
+        <!-- Indicador Sutil no Rodapé da Leitura -->
+        <div class="reader-footer-note">
+          <span>⚡ Modo Leitura Ultraleve • Obras de domínio público para leitura contínua no navegador.</span>
         </div>
       </div>
 
-      <!-- Painel Flutuante de Conforto Visual (Bottom Sheet / Floating Card) -->
-      <div id="painel-ajustes-leitura" class="reader-bottom-panel" data-i18n-aria="ui.reader.settingsLabel" aria-label="Ajustes de leitura">
+      <!-- Painel Flutuante de Conforto Visual (Bottom Sheet / Inicia Recolhido) -->
+      <div id="painel-ajustes-leitura" class="reader-bottom-panel collapsed" data-i18n-aria="ui.reader.settingsLabel" aria-label="Ajustes de leitura">
         <div class="panel-handle-bar" onclick="app.togglePainelAjustes()">
           <span class="panel-drag-pill"></span>
         </div>

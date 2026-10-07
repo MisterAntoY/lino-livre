@@ -990,6 +990,241 @@ const cursosData = [
     "gratuito",
     "Iniciante",
     "Guia estratégico para estudantes e desenvolvedores: algoritmos, live coding, perguntas comportamentais e testes práticos."
+  ],
+
+  // ==================== NOVOS CURSOS GUIA DE TI / YOUTUBE (CERTIFICAÇÃO GRATUITA) ====================
+  [
+    "Curso de Git e GitHub do Básico ao Avançado",
+    "Tecnologia",
+    "Guia de TI / YouTube (Curso em Vídeo)",
+    "https://guiadeti.com.br/cursos/curso-de-git-e-github-do-basico-ao-avancado/",
+    "gratuito",
+    "Iniciante",
+    "Controle de versão no YouTube com certificação gratuita. Branches, merges, pull requests, commits e fluxo de trabalho Git Flow."
+  ],
+  [
+    "Curso de Docker e Containers para Desenvolvedores",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-de-docker-e-containers/",
+    "gratuito",
+    "Intermediário",
+    "Aulas completas de Docker no YouTube com certificação gratuita. Dockerfile, Docker Compose, redes, volumes e orquestração leve."
+  ],
+  [
+    "Curso de Kubernetes na Prática",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-de-kubernetes-na-pratica/",
+    "gratuito",
+    "Avançado",
+    "Orquestração de microsserviços no YouTube com certificação gratuita. Pods, Deployments, Services, Ingress e Helm."
+  ],
+  [
+    "Curso de SQL e Modelagem de Banco de Dados Relacional",
+    "Tecnologia",
+    "Guia de TI / YouTube (Hashtag Treinamentos)",
+    "https://guiadeti.com.br/cursos/curso-de-sql-e-modelagem-de-dados/",
+    "gratuito",
+    "Iniciante",
+    "Aulas no YouTube com certificação gratuita. Consultas SQL, JOINs, agregações, normalização e modelagem relacional de dados."
+  ],
+  [
+    "Curso de Next.js 14 e React Server Components",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-de-nextjs-14/",
+    "gratuito",
+    "Intermediário",
+    "Desenvolvimento full stack moderno no YouTube com certificação gratuita. SSR, App Router, Server Actions e rotas de API."
+  ],
+  [
+    "Curso de Go (Golang): Do Zero ao Primeiro Microserviço",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-de-go-golang/",
+    "gratuito",
+    "Iniciante",
+    "Linguagem Go no YouTube com certificação gratuita. Goroutines, Channels, structs, ponteiros e criação de microserviços rápidos."
+  ],
+  [
+    "Curso de Cibersegurança & Segurança da Informação",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-de-ciberseguranca-fundamentos/",
+    "gratuito",
+    "Iniciante",
+    "Conceitos de segurança digital no YouTube com certificação gratuita. Criptografia, ataques comuns, defesa de redes e boas práticas."
+  ],
+  [
+    "Curso de Rust: Fundamentos e Concorrência Segura",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-de-rust-fundamentos/",
+    "gratuito",
+    "Intermediário",
+    "Linguagem Rust no YouTube com certificação gratuita. Gerenciamento de memória com Ownership e Borrowing, traits e alta performance."
+  ],
+  [
+    "Curso de Engenharia de Prompts e Agentes de IA com LangChain",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-de-engenharia-de-prompts-e-langchain/",
+    "gratuito",
+    "Intermediário",
+    "Aplicações com modelos LLM no YouTube com certificação gratuita. Técnicas de prompt, arquitetura RAG e agentes autônomos."
+  ],
+  [
+    "Curso de AWS Cloud Practitioner: Arquitetura em Nuvem",
+    "Tecnologia",
+    "Guia de TI / YouTube",
+    "https://guiadeti.com.br/cursos/curso-aws-cloud-practitioner/",
+    "gratuito",
+    "Iniciante",
+    "Fundamentos de computação em nuvem AWS no YouTube com certificação gratuita. EC2, S3, IAM, VPC e serviços essenciais."
+  ],
+
+  // ==================== USP (UNIVERSIDADE DE SÃO PAULO) ====================
+  [
+    "USP: Introdução à Ciência da Computação com Python Parte 1",
+    "Tecnologia",
+    "USP (Universidade de São Paulo)",
+    "https://www.coursera.org/learn/ciencia-computacao-python-conceitos",
+    "gratuito",
+    "Iniciante",
+    "Curso universitário oficial do IME-USP. Fundamentos da computação, variáveis, comandos condicionais e pensamento algorítmico."
+  ],
+  [
+    "USP: Introdução à Ciência da Computação com Python Parte 2",
+    "Tecnologia",
+    "USP (Universidade de São Paulo)",
+    "https://www.coursera.org/learn/python-computacao-desenvolvimento-software",
+    "gratuito",
+    "Intermediário",
+    "Continuação oficial do IME-USP: matrizes, recursão, busca, ordenação de dados e complexidade de algoritmos."
+  ],
+  [
+    "USP: Criação de Startups Tecnológicas",
+    "Gestão & Negócios",
+    "USP (Universidade de São Paulo)",
+    "https://www.coursera.org/learn/startups",
+    "gratuito",
+    "Iniciante",
+    "Metodologias de inovação, validação de mercado, modelo de negócios e captação de investimento do ecossistema USP."
+  ],
+  [
+    "USP: Econometria Básica Aplicada",
+    "Ciências Exatas",
+    "USP (Universidade de São Paulo)",
+    "https://www.coursera.org/learn/econometria-basica-aplicada",
+    "gratuito",
+    "Intermediário",
+    "Regressão linear simples e múltipla, testes de hipóteses e modelagem estatística aplicada pela FEA-USP."
+  ],
+
+  // ==================== EV.G (ESCOLA VIRTUAL DE GOVERNO / ENAP) ====================
+  [
+    "EV.G: Introdução à Lei Geral de Proteção de Dados Pessoais (LGPD)",
+    "Gestão & Negócios",
+    "Escola Virtual de Governo (EV.G / ENAP)",
+    "https://www.escolavirtual.gov.br/curso/317",
+    "gratuito",
+    "Iniciante",
+    "Capacitação oficial sobre a LGPD: direitos dos titulares, bases legais, responsabilidades e governança com certificação gratuita."
+  ],
+  [
+    "EV.G: Ciência de Dados Aplicada a Políticas Públicas",
+    "Tecnologia",
+    "Escola Virtual de Governo (EV.G / ENAP)",
+    "https://www.escolavirtual.gov.br/curso/341",
+    "gratuito",
+    "Intermediário",
+    "Coleta, tratamento, visualização de dados públicos e evidências estatísticas para tomada de decisão com certificação gratuita."
+  ],
+  [
+    "EV.G: Gestão Ágil e Estratégia com OKRs",
+    "Gestão & Negócios",
+    "Escola Virtual de Governo (EV.G / ENAP)",
+    "https://www.escolavirtual.gov.br/curso/380",
+    "gratuito",
+    "Iniciante",
+    "Planejamento e acompanhamento ágil de metas estratégicas com alinhamento de equipes e indicadores com certificação gratuita."
+  ],
+  [
+    "EV.G: Acessibilidade Digital e Design Universal na Web",
+    "Tecnologia",
+    "Escola Virtual de Governo (EV.G / ENAP)",
+    "https://www.escolavirtual.gov.br/curso/383",
+    "gratuito",
+    "Iniciante",
+    "Diretrizes de acessibilidade WCAG, tecnologias assistivas e inclusão digital na web com certificação gratuita."
+  ],
+  [
+    "EV.G: Ética, Integridade e Prevenção à Corrupção",
+    "Desenvolvimento Pessoal",
+    "Escola Virtual de Governo (EV.G / ENAP)",
+    "https://www.escolavirtual.gov.br/curso/294",
+    "gratuito",
+    "Iniciante",
+    "Formação cidadã em transparência pública, dilemas éticos e conformidade institucional com certificação gratuita oficial."
+  ],
+
+  // ==================== INSTITUTO FEDERAL (IFRS - MUNDI) ====================
+  [
+    "IFRS: Lógica de Programação e Algoritmos",
+    "Tecnologia",
+    "Instituto Federal (IFRS)",
+    "https://moodle.ifrs.edu.br/course/view.php?id=5815",
+    "gratuito",
+    "Iniciante",
+    "Curso aberto do Instituto Federal: exercícios práticos de lógica, estruturas condicionais e laços com certificação gratuita."
+  ],
+  [
+    "IFRS: Programação Básica com Java",
+    "Tecnologia",
+    "Instituto Federal (IFRS)",
+    "https://moodle.ifrs.edu.br/course/view.php?id=5816",
+    "gratuito",
+    "Iniciante",
+    "Orientação a objetos, classes, métodos e boas práticas na linguagem Java com emissão de certificação gratuita pelo IFRS."
+  ],
+  [
+    "IFRS: Redes de Computadores: Fundamentos e Topologias",
+    "Tecnologia",
+    "Instituto Federal (IFRS)",
+    "https://moodle.ifrs.edu.br/course/view.php?id=5817",
+    "gratuito",
+    "Iniciante",
+    "Arquitetura TCP/IP, camadas de rede, cabeamento estruturado e protocolos de comunicação com certificação gratuita."
+  ],
+  [
+    "IFRS: Gestão de Projetos e Inovação",
+    "Gestão & Negócios",
+    "Instituto Federal (IFRS)",
+    "https://moodle.ifrs.edu.br/course/view.php?id=5818",
+    "gratuito",
+    "Iniciante",
+    "Ciclo de vida de projetos, escopo, cronograma, riscos e introdução às metodologias ágeis com certificação gratuita."
+  ],
+
+  // ==================== HARVARD & MIT (OER INTERNACIONAL) ====================
+  [
+    "Harvard: CS50's Introduction to Cybersecurity",
+    "Tecnologia",
+    "Harvard / edX",
+    "https://cs50.harvard.edu/cybersecurity/",
+    "gratuito",
+    "Iniciante",
+    "Curso aberto da Universidade de Harvard cobrindo segurança defensiva, autenticação segura, criptografia e proteção de dados."
+  ],
+  [
+    "MIT: Introduction to Computer Science and Programming Using Python (6.0001)",
+    "Tecnologia",
+    "MIT OpenCourseWare",
+    "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/",
+    "gratuito",
+    "Iniciante",
+    "Curso introdutório do Massachusetts Institute of Technology sobre computação e estruturas fundamentais em Python."
   ]
 ];
 

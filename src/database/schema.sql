@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS import_jobs (
 CREATE TABLE IF NOT EXISTS cursos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titulo TEXT NOT NULL,
+    tipo TEXT DEFAULT 'curso',
     area TEXT NOT NULL,
     plataforma TEXT NOT NULL,
     url TEXT NOT NULL,

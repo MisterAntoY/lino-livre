@@ -33,6 +33,11 @@ function initDatabase(dbPath = null, setAsInstance = true) {
         DROP TABLE IF EXISTS fontes;
       `);
     }
+
+    const colunasCursos = db.prepare("PRAGMA table_info(cursos)").all();
+    if (colunasCursos.length > 0 && !colunasCursos.some(c => c.name === 'tipo')) {
+      db.exec("ALTER TABLE cursos ADD COLUMN tipo TEXT DEFAULT 'curso';");
+    }
   } catch (_) {}
 
   // Carregar e executar o esquema

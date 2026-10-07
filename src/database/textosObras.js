@@ -289,6 +289,174 @@ Abandonara a sua tribo e os seus guerreiros para viver perto de Cecília. Era á
 
 Dona Lauriana desconfiava daquele selvagem altivo e calado; mas Dom Antônio admirava a sua lealdade sem jaça, e Cecília tratava-o com a doçura e a gratidão de uma irmã. Peri nada pedia em troca: bastava-lhe um olhar agradecido daquela a quem chamava de "sua senhora", e estava pronto a enfrentar exércitos inteiros para garantir a sua felicidade e a paz do nobre solar do Paquequer.`;
 
+const quincasBorbaTexto = `### CAPÍTULO I
+
+Rubião fitava o horizonte da enseada de Botafogo, na sala de visitas da sua casa nova, com as mãos cruzadas sob o colete de seda. Olhava para si mesmo e para o luxo que o cercava, pasmado ainda da sua própria fortuna.
+
+— Vejam só o que é o destino! — murmurava ele consigo mesmo. — Há seis meses eu era um mestre-escola pobre lá em Barbacena, a viver de favores e de uma mesada magra. Hoje sou rico, tenho carruagem, criados de libré, títulos da dívida pública e um palacete no Rio de Janeiro!
+
+A herança caíra-lhe das mãos do filósofo Quincas Borba, seu conterrâneo e amigo de infância, que morrera louco, deixando-lhe todos os seus bens com uma única condição sagrada: cuidar até a morte do seu cão fidelíssimo, também batizado de Quincas Borba.
+
+O cão dormia a seus pés, sobre uma rica esteira de veludo. Rubião abaixou-se e afagou-lhe o focinho:
+
+— Pobre Quincas Borba! Teu dono era um gênio incompreendido. Criou o Humanitismo, a filosofia da luta universal, e deixou-me com o fardo de ser feliz neste Rio de Janeiro de tantas tentações.
+
+### CAPÍTULO II: AO VENCEDOR, AS BATATAS!
+
+Lembrou-se então da doutrina que o filósofo lhe inculcara nas noites calmas de Minas Gerais. O Humanitismo resumia-se numa parábola célebre e cruel:
+
+"Imagina duas tribos famintas no meio de um deserto árido. Descobrem de repente um pequeno campo com batatas suficientes apenas para alimentar uma das tribos. Se as duas tribos dividirem as batatas fraternalmente, nenhuma terá forças bastantes para atravessar o deserto e ambas perecerão. A paz, nesse caso, é a destruição mútua. A guerra, porém, é a salvação: a tribo mais forte extermina a outra, alimenta-se fartamente das batatas e cruza o deserto vitoriosa. Ao vencido, o ódio ou a compaixão; ao vencedor, as batatas!"
+
+Rubião sorriu com complacência. Sentia-se o vencedor do banquete da vida. Não percebia, coitado, que na capital do Império outros homens e mulheres de sorriso fino e maneiras fidalgas — como o esperto Cristiano Palha e a deslumbrante Sofia — já preparavam a mesa para devorar, uma a uma, todas as suas ricas batatas.`;
+
+const senhoraTexto = `### PARTE I: O LEILÃO
+
+### CAPÍTULO I
+
+Há anos raiou no céu fluminense uma daquelas estrelas que surgem de súbito para ofuscar o brilho das constelações ordinárias: Aurélia Camargo. Era uma jovem de dezoito anos, rica, formosíssima e orfã de pai e mãe, senhora absoluta de si e da sua imensa fortuna.
+
+A sociedade curvava-se a seus pés. Os salões mais aristocráticos do Rio de Janeiro disputavam a sua presença, e os pretendentes mais ilustres cercavam-na com protestos ardentes de afeto. Mas Aurélia olhava para aquele cortejo com um sorriso frio e desdenhoso. Sabia que todos aqueles galanteios não eram dirigidos à mulher, mas sim aos seus milhões de réis.
+
+Aquele desdém tinha uma história íntima e amarga. Tempos atrás, quando vivia na modéstia e na pobreza com sua pobre mãe viúva, Aurélia amara com paixão pura e desinteressada um jovem talentoso e elegante chamado Fernando Seixas. Fernando jurara-lhe amor eterno; mas, ambicioso e frívolo, trocara-a sem piedade pelo dote faustoso de outra noiva rica.
+
+Agora a sorte mudara. O avô paterno de Aurélia, fazendeiro riquíssimo do interior, morrera subitamente e fizera dela herdeira única de uma fortuna colossal. E Aurélia concebeu uma vingança implacável e grandiosa: comprar o homem que a vendera.
+
+### CAPÍTULO II
+
+Chamou o seu tutor, o discreto conselheiro Lemos, e ordenou-lhe que procurasse Fernando Seixas com uma proposta singular. Fernando acabara de romper o noivado por intrigas financeiras e achava-se endividado até o pescoço. O conselheiro Lemos propôs-lhe um dote de cem contos de réis para casar-se com uma noiva misteriosa, cujo nome só lhe seria revelado após a assinatura do contrato.
+
+Fernando hesitou um instante diante da honra ferida; mas a vaidade, as dívidas urgentes e a ambição falaram mais alto. Aceitou a transação comercial.
+
+Na noite de núpcias, a sós na suntuosa alcova nupcial, Fernando caiu de joelhos aos pés da esposa, fascinado pela sua beleza esplêndida. Aurélia olhou-o de alto a baixo com desprezo soberano, arrancou a máscara de doçura e atirou-lhe à face a verdade esmagadora:
+
+— Levante-se, senhor Seixas! O senhor não está diante de uma mulher que o ama, mas de uma compradora que o adquiriu no mercado como se adquire um escravo. O senhor custou-me cem contos de réis!`;
+
+const oAteneuTexto = `### CAPÍTULO I
+
+— "Vais encontrar o mundo, disse-me meu pai, à porta do Ateneu. Coragem para a luta!"
+
+Bastante esperançoso, com a minha bagagem de menino e o coração a palpitar de curiosidade, transpus pela primeira vez o portão de ferro do célebre colégio de Aristarco Argolo de Ramos. O Ateneu era o templo da educação da mocidade brasileira daquele tempo, um império pedagógico onde os filhos da alta sociedade eram moldados segundo as teorias e a vaidade do seu diretor onipotente.
+
+Aristarco era a encarnação do colégio. Figura majestosa, de suíças grisalhas e olhar dominador, gesticulava como um tribuno romano e recebia os pais de família com vénias aparatosas e promessas de virtude e severidade. Mas por trás daquela fachada imponente de disciplina e moralidade, o colégio era uma reprodução em miniatura da sociedade hipócrita e implacável dos adultos.
+
+Ali dentro, nos dormitórios sombrios e nos pátios barulhentos, reinava a lei do mais forte. Os pequenos e tímidos eram esmagados; os bajuladores prosperavam; e a inocência infantil transformava-se rapidamente em cálculo, crueldade e cinismo. Foi ali que perdi para sempre as ilusões da infância e aprendi a dura arte da sobrevivência.`;
+
+const osSertoesTexto = `### PARTE I: A TERRA
+
+O sertão é uma paragem agreste, talhada pela fúria dos elementos. A terra esturricada pelo sol calcinante do meio-dia estende-se em chapadões infindáveis, onde a caatinga cinzenta se ergue como um bosque de espinhos e desolação. Durante a seca implacável, a natureza parece morta: as folhas caem, os rios transformam-se em leitos de pedra e a poeira sufoca a respiração do viajor.
+
+Mas basta o romper das primeiras chuvas de inverno para que o milagre se opere. Como por encanto, a caatinga reveste-se de um verde vívido e luxuriante, as flores silvestres desabrocham entre as fendas das rochas e a terra revive com vigor indomável.
+
+### PARTE II: O HOMEM
+
+O sertanejo é, antes de tudo, um forte. Não tem o raquitismo dos desnutridos da costa. É desengonçado, torto, caminha hesitante como se vacilasse a cada passo; mas basta a aproximação do perigo ou o tropel do novilho espavorido na mata fechada para que o homem se transfigure.
+
+Montado em seu cavalo ligeiro, couraçado de perneiras e gibão de couro cru, ele mergulha de cabeça nas brenhas impenetráveis da caatinga. Não há espinho que o detenha, não há despenhadeiro que o atemorize. O sertanejo é o resultado supremo da adaptação ao meio bravio: solitário, supersticioso, valente até a loucura e capaz de resistir às provações mais atrozes sem soltar um gemido.`;
+
+const aMoreninhaTexto = `### CAPÍTULO I: A APOSTA
+
+Numa bela manhã de sábado, quatro jovens estudantes de medicina do Rio de Janeiro — Augusto, Leopoldo, Fabrício e Filipe — conversavam alegremente à mesa de um café sobre os encantos e as contradições do sexo feminino.
+
+Augusto orgulhava-se da sua inconstância lendária. Gabava-se de nunca ter amado uma mulher por mais de três dias:
+
+— O amor eterno é uma quimera poética! — exclamava ele entre risos. — Hoje amo uma loira, amanhã suspiro por uma morena, e no domingo já me esqueci de ambas para cortejar uma terceira. Meu coração é um hotel onde os hóspedes mudam a cada estação!
+
+Filipe, indignado com tanto cinismo, propôs-lhe então uma aposta arrojada. Convidou os amigos para passar o feriado de Santana na fazenda de sua avó, na formosa Ilha de Paquetá, onde estariam reunidas várias moças distintas da melhor sociedade:
+
+— Aposto, meu caro Augusto, que não passarás três dias naquela ilha sem te apaixonares perdidamente por uma donzela! E se isso acontecer, terás de pagar a aposta escrevendo um romance confessional para narrar a tua derrota!
+
+Augusto aceitou a aposta com bravata. Mal suspeitava ele que, sob as mangueiras floridas e as praias calmas de Paquetá, encontraria Dona Carolina — a Moreninha de olhos travessos e coração puro — que haveria de prender para sempre a sua liberdade volúvel.`;
+
+const autoDaBarcaDoInfernoTexto = `### CENA I: O ANJO E O DIABO
+
+À beira do rio do além, onde as almas dos mortos vêm ter após a despedida da carne terrena, estão ancoradas duas barcas singulares. A primeira, negra e medonha, tem por arrais o Diabo e conduz sem remissão ao fogo eterno do Inferno; a segunda, pura e resplandecente, tem por piloto o Anjo do Senhor e navega rumo às delícias do Paraíso.
+
+Chega primeiro um Fidalgo pomposo, trazendo uma capa de veludo com cauda infindável e um pajem que lhe carrega a cadeira de espaldar. Dirige-se à barca do Inferno:
+
+DIABO: — Esta barca que cá jaz é para vós, nobre senhor! Entrai, entrai com vossa tirania!
+FIDALGO: — Para onde leva esta barca tão medonha?
+DIABO: — Para a terra dos tormentos, onde pagareis pelos vossos pecados de soberba e presunção!
+FIDALGO: — Mas eu sou homem de fidalguia! Rezei missas, deixei riquezas e tive quem me beijasse as mãos em terra! Onde está a barca da glória?
+DIABO: — Não há fidalguia que vos livre aqui, senhor meu! Vivestes na vaidade, desprezastes os pobres e cuidastes que a salvação se comprava com brasões. Entrai, que a maré não espera e a fornalha já está acesa!`;
+
+const osLusiadasTexto = `### CANTO I
+
+As armas e os barões assinalados,
+Que da ocidental praia Lusitana,
+Por mares nunca de antes navegados,
+Passaram ainda além da Taprobana,
+Em perigos e guerras esforçados,
+Mais do que prometia a força humana,
+E entre gente remota edificaram
+Novo Reino, que tanto sublimaram;
+
+E também as memórias gloriosas
+Daqueles Reis, que foram dilatando
+A Fé, o Império, e as terras viciosas
+De África e de Ásia andaram devastando;
+E aqueles, que por obras valerosas
+Se vão da lei da morte libertando;
+Cantando espalharei por toda parte,
+Se a tanto me ajudar o engenho e arte.
+
+Cessem do sábio Grego e do Troiano
+As navegações grandes que fizeram;
+Cale-se de Alexandre e de Trajano
+A fama das vitórias que tiveram;
+Que eu canto o peito ilustre Lusitano,
+A quem Neptuno e Marte obedeceram:
+Cesse tudo o que a Musa antiga canta,
+Que outro valor mais alto se alevanta!`;
+
+const mensagemTexto = `### BRASÃO: OS CASTELOS
+
+A Europa jaz, posta nos cotovelos:
+De Leste a Oeste jaz, fitando, e toldam
+De gregas e romanas os cabelos
+Olhos com que fita.
+O cotovelo esquerdo é recuado;
+O direito é em ângulo disposto.
+Aquele diz Itália onde é pousado;
+Este diz Inglaterra onde, afastado,
+A mão sustenta, em que se apoia o rosto.
+
+Fita, com olhar límpido e nevoento,
+Portugal, rosto com que fita!
+
+### MAR PORTUGUÊS
+
+Ó mar salgado, quanto do teu sal
+São lágrimas de Portugal!
+Por te cruzarmos, quantas mães choraram,
+Quantos filhos em vão rezaram!
+Quantas noivas ficaram por casar
+Para que fosses nosso, ó mar!
+
+Valeu a pena? Tudo vale a pena
+Se a alma não é pequena.
+Quem quer passar além do Bojador
+Tem que passar além da dor.
+Deus ao mar o perigo e o abismo deu,
+Mas nele é que espelhou o céu.`;
+
+const noiteNaTavernaTexto = `### INTRODUÇÃO: O BANQUETE DA SOMBRA
+
+A noite ia adiantada. Numa taverna sombria e esfumaçada, fechada a sete chaves aos olhares dos homens comuns, cinco jovens pálidos e ébrios reuniam-se em torno de uma mesa coberta de taças de vinho e garrafas quebradas: Solfieri, Bertram, Gennaro, Claudius e Johann.
+
+Fora, a tempestade rugia com estrondo; dentro, as risadas roucas e os brindes desesperados desafiavam a morte e os céus.
+
+— Bebamos! — gritou Solfieri, erguendo a taça vermelha. — Bebamos ao esquecimento, aos delírios da febre e aos amores sepulcrais! Que cada um de nós, antes que rompa a aurora fúnebre, conte a história mais sinistra e terrível da sua juventude!
+
+E ali, entre os vapores do álcool e o silêncio lúgubre da noite, começaram a desfilar narrativas de veneno, ciúme, sepulturas violadas e paixões desesperadas, revelando os recantos mais negros e fascinantes da alma humana.`;
+
+const claraDosAnjosTexto = `### CAPÍTULO I
+
+A casa do carteiro Joaquim dos Anjos ficava no subúrbio humilde de Todos os Santos, no Rio de Janeiro. Joaquim era um homem de bem, cumpridor dos seus deveres na repartição dos Correios, modesto e amante da boa música popular. Tocava violão com sentimento raro e reunia nos fins de semana velhos seresteiros para cantar modinhas chorosas à sombra das mangueiras do quintal.
+
+Sua filha única, Clara dos Anjos, era uma jovem mulata de beleza meiga e ingênua, criada no recato quase absoluto do lar doméstico. Os pais velavam por ela com desvelo maternal; mas, por timidez e preconceito, mantinham-na ignorante das maldades do mundo e das armadilhas da sociedade carioca.
+
+Nesse ambiente pacato insinuou-se Cassi Jones, um rapaz branco de família abastada, vadio e sedutor contumaz, célebre pelos escândalos que causava entre as jovens pobres dos arrabaldes da cidade. Cassi viu em Clara uma presa fácil para o seu orgulho perverso, e a tragédia da ingênua suburbaninha começou a ser tecida com as linhas implacáveis do preconceito de raça e da hipocrisia social.`;
+
 module.exports = {
   domCasmurroTexto,
   memoriasPosthumasTexto,
@@ -297,5 +465,15 @@ module.exports = {
   iracemaTexto,
   policarpoQuaresmaTexto,
   espumasFlutuantesTexto,
-  oGuaraniTexto
+  oGuaraniTexto,
+  quincasBorbaTexto,
+  senhoraTexto,
+  oAteneuTexto,
+  osSertoesTexto,
+  aMoreninhaTexto,
+  autoDaBarcaDoInfernoTexto,
+  osLusiadasTexto,
+  mensagemTexto,
+  noiteNaTavernaTexto,
+  claraDosAnjosTexto
 };

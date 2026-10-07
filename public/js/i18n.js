@@ -21,10 +21,8 @@
     ouvintes: [],
 
     idiomas() {
-      return IDIOMAS.map(c => {
-        const d = (c === this.lang && this.dict) ? this.dict : null;
-        return { code: c, label: (d && d.meta && d.meta.label) || LABELS_PADRAO[c], flag: FLAGS[c] };
-      });
+      // labels nos próprios idiomas (endônimos) — adicionar um idioma = novo arquivo em /locales
+      return IDIOMAS.map(code => ({ code, label: LABELS_PADRAO[code], flag: FLAGS[code] }));
     },
 
     async init() {
@@ -40,6 +38,7 @@
     },
 
     detectarIdioma() {
+      // 1. ?lang= na URL tem prioridade (links compartilhados por idioma)
       try {
         const url = new URL(window.location.href);
         const q = (url.searchParams.get('lang') || '').toLowerCase().slice(0, 2);
@@ -49,14 +48,17 @@
         }
       } catch (_) {}
 
+      // 2. escolha salva pelo visitante
       try {
         const salvo = (localStorage.getItem(CHAVE_LS) || '').toLowerCase().slice(0, 2);
         if (IDIOMAS.includes(salvo)) return salvo;
       } catch (_) {}
 
-      const nav = (navigator.languages && navigator.languages[0]) || navigator.language || 'pt';
-      const curto = String(nav).toLowerCase().slice(0, 2);
-      if (IDIOMAS.includes(curto)) return curto;
+      // 3. idioma do navegador — desligado por padrão (o site abre em português).
+      //    Para ativar a detecção automática, descomente as linhas abaixo.
+      // const nav = (navigator.languages && navigator.languages[0]) || navigator.language || 'pt';
+      // const curto = String(nav).toLowerCase().slice(0, 2);
+      // if (IDIOMAS.includes(curto)) return curto;
 
       return 'pt';
     },
@@ -183,7 +185,18 @@
         el.setAttribute('aria-label', this.t(el.getAttribute('data-i18n-aria')));
       });
 
+      this.montarSeletor();
       this.sincronizarSeletor();
+    },
+
+    // monta as opções do seletor a partir de IDIOMAS (adicionar idioma = só criar o JSON)
+    montarSeletor() {
+      const sel = document.getElementById('seletor-idioma');
+      if (!sel || sel.dataset.montado === '1') return;
+      sel.innerHTML = this.idiomas()
+        .map(i => `<option value="${i.code}">${i.flag} ${i.label}</option>`)
+        .join('');
+      sel.dataset.montado = '1';
     },
 
     sincronizarSeletor() {

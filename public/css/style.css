@@ -535,6 +535,103 @@ body {
   background: var(--reader-border);
 }
 
+.btn-pdf-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid var(--reader-border);
+  color: var(--reader-text);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-pdf-header:hover {
+  background: var(--reader-border);
+}
+
+/* Barra de Navegação de Capítulos */
+.reader-chapter-bar {
+  background: var(--reader-header-bg);
+  border-bottom: 1px solid var(--reader-border);
+  padding: 0.45rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  z-index: 8;
+  flex-shrink: 0;
+}
+
+.btn-cap-nav {
+  background: var(--reader-card-bg);
+  color: var(--reader-text);
+  border: 1px solid var(--reader-border);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.btn-cap-nav:hover:not(:disabled) {
+  background: var(--reader-border);
+}
+
+.btn-cap-nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.chapter-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  max-width: 480px;
+  justify-content: center;
+}
+
+.chapter-icon {
+  font-size: 0.95rem;
+}
+
+.chapter-nav-select {
+  background: var(--reader-card-bg);
+  color: var(--reader-text);
+  border: 1px solid var(--reader-border);
+  border-radius: var(--radius-md);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  max-width: 380px;
+}
+
+.reader-footer-note {
+  max-width: 680px;
+  margin: 3.5rem auto 1.5rem auto;
+  padding: 0.75rem 1rem;
+  background: var(--reader-header-bg);
+  border: 1px dashed var(--reader-border);
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  color: var(--reader-text-muted);
+  text-align: center;
+}
+
 /* Barra de Audiolivro / Sintetizador de Voz (Web Speech API) */
 .reader-audio-bar {
   background: var(--reader-card-bg);
@@ -1284,6 +1381,13 @@ body {
   display: flex;
   gap: 0.5rem;
   border-bottom: 2px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-btn {
@@ -1298,6 +1402,7 @@ body {
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
@@ -1747,4 +1852,253 @@ html[lang^="zh"] .reader-work-title {
 html[lang^="zh"] .book-title,
 html[lang^="zh"] .course-title {
   letter-spacing: 0;
+}
+
+/* ==================== ROADMAPS & TRILHAS ==================== */
+.roadmap-banner {
+  background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+  border: 1px solid #c7d2fe;
+}
+
+.roadmaps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1.5rem;
+}
+
+.roadmap-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.roadmap-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: #818cf8;
+}
+
+.roadmap-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+}
+
+.roadmap-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.roadmap-badge-origem {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #4338ca;
+  background: #e0e7ff;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid #c7d2fe;
+}
+
+.roadmap-nivel {
+  font-size: 0.725rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 0.25rem 0.55rem;
+  border-radius: 9999px;
+}
+
+.roadmap-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.35;
+  margin: 0.4rem 0 0.35rem 0;
+}
+
+.roadmap-platform {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4f46e5;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.roadmap-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
+.roadmap-btn {
+  margin-top: auto;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  background: #4f46e5;
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+}
+
+.roadmap-btn:hover {
+  background: #4338ca;
+  color: #ffffff;
+}
+
+/* ==================== DICAS & FERRAMENTAS ==================== */
+.dicas-banner {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid #fde68a;
+}
+
+.dicas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1.5rem;
+}
+
+.dica-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.dica-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: #f59e0b;
+}
+
+.dica-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.dica-icon {
+  font-size: 1.85rem;
+  line-height: 1;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dica-categoria-badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid #fde68a;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.dica-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.dica-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.85rem;
+}
+
+.dica-pratica-box {
+  background: #f8fafc;
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.825rem;
+  color: #334155;
+  line-height: 1.45;
+  margin-bottom: 1.15rem;
+}
+
+.dica-pratica-box strong {
+  color: #b45309;
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dica-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.85rem;
+}
+
+.dica-badge-gratis {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #059669;
+  background: #ecfdf5;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.dica-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #92400e;
+  text-decoration: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  transition: all 0.2s ease;
+}
+
+.dica-btn:hover {
+  background: #fde68a;
+  color: #78350f;
 }

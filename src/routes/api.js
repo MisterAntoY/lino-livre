@@ -46,6 +46,14 @@ router.get('/cursos/:id/acessar', cursosController.acessarRedirect);
 router.post('/cursos', cursosController.criar);
 router.delete('/cursos/:id', cursosController.remover);
 
+// 6.1 Roadmaps & Trilhas de Carreira
+router.get('/roadmaps', cursosController.listarRoadmaps);
+
+// 6.2 Dicas & Ferramentas de Estudo
+const dicasController = require('../controllers/dicasController');
+router.get('/dicas', dicasController.listar);
+router.get('/dicas/:id', dicasController.obterPorId);
+
 // 7. Comunidade e Canal WhatsApp (Links diretos e QR Codes SVG)
 router.get('/comunidade', comunidadeController.getComunidade);
 router.get('/comunidade/qrcode.svg', comunidadeController.getComunidadeQrCode);

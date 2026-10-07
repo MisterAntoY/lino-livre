@@ -54,11 +54,15 @@ async function executarImportacao(jobId, fonteSlug, query) {
               existente.id
             );
           } else {
+            const isRoadmap = (item.titulo && item.titulo.toLowerCase().includes('roadmap')) ||
+                              (cursoUrl && cursoUrl.includes('/roadmaps/'));
+            const tipo = isRoadmap ? 'roadmap' : 'curso';
             db.prepare(`
-              INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
-              VALUES (?, ?, ?, ?, ?, ?, ?)
+              INSERT INTO cursos (titulo, tipo, area, plataforma, url, licenca, nivel, descricao)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             `).run(
               item.titulo,
+              tipo,
               item.area || 'Tecnologia',
               item.plataforma || 'Guia de TI',
               cursoUrl,

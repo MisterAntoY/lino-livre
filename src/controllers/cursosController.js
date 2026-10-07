@@ -3,11 +3,18 @@ const { getDatabase } = require('../database');
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const { area, nivel, plataforma, fonte, busca, youtube, certificado } = req.query;
+    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps } = req.query;
 
     let query = 'SELECT * FROM cursos WHERE 1=1';
     const params = [];
 
+    if (tipo) {
+      query += ' AND tipo = ?';
+      params.push(tipo);
+    }
+    if (excluir_roadmaps === '1' || excluir_roadmaps === 'true') {
+      query += " AND (tipo != 'roadmap' OR tipo IS NULL)";
+    }
     if (area) {
       query += ' AND area = ?';
       params.push(area);
@@ -43,6 +50,35 @@ function listar(req, res) {
     res.json(cursos);
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao buscar cursos: ' + err.message });
+  }
+}
+
+function listarRoadmaps(req, res) {
+  try {
+    const db = getDatabase();
+    const { busca, plataforma, area } = req.query;
+    let query = "SELECT * FROM cursos WHERE tipo = 'roadmap'";
+    const params = [];
+
+    if (plataforma) {
+      query += ' AND plataforma LIKE ?';
+      params.push(`%${plataforma}%`);
+    }
+    if (area) {
+      query += ' AND area = ?';
+      params.push(area);
+    }
+    if (busca && busca.trim()) {
+      const termo = `%${busca.trim()}%`;
+      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      params.push(termo, termo, termo);
+    }
+
+    query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
+    const roadmaps = db.prepare(query).all(...params);
+    res.json(roadmaps);
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao buscar roadmaps: ' + err.message });
   }
 }
 
@@ -112,6 +148,7 @@ function acessarRedirect(req, res) {
 
 module.exports = {
   listar,
+  listarRoadmaps,
   obterPorId,
   acessarRedirect,
   criar,

@@ -407,6 +407,316 @@ const githubBooks = [
         url: 'https://trilha.info/roadmap/test'
       }
     ]
+  },
+
+  // ==================== NOVOS LIVROS KAYOKG / BibliotecaDev ====================
+  {
+    titulo: 'HTML5 e CSS3: Domine a Web do Futuro',
+    subtitulo: 'Aprenda os novos elementos estruturais do HTML5, formulários e estilo com CSS3',
+    autor: 'Lucas Mazza (Casa do Código)',
+    categoria: 'Desenvolvimento Web & Mobile',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-html5-css3',
+    ano: 2019,
+    paginas: 285,
+    sinopse: 'Guia completo e prático sobre as tags semânticas do HTML5, recursos de multimídia, seletores CSS3 e desenvolvimento web moderno.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/HTML5%20e%20CSS3%20-%20domine%20a%20web%20do%20futuro.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/HTML5%20e%20CSS3%20-%20domine%20a%20web%20do%20futuro%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Guia Prático de TypeScript: Melhore Suas Aplicações JavaScript',
+    subtitulo: 'Adicione tipagem estática, interfaces e classes seguras no seu código',
+    autor: 'Thiago da Silva Adriano (Casa do Código)',
+    categoria: 'Desenvolvimento Web & Mobile',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-typescript',
+    ano: 2020,
+    paginas: 195,
+    sinopse: 'Como migrar de JavaScript para TypeScript com segurança, configurando tsconfig, tipando APIs REST, generics e decorators.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Guia%20pr%C3%A1tico%20de%20TypeScript%20-%20Melhore%20suas%20aplica%C3%A7%C3%B5es%20JavaScript.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Guia%20pr%C3%A1tico%20de%20TypeScript%20-%20Melhore%20suas%20aplica%C3%A7%C3%B5es%20JavaScript%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Kubernetes: Tudo Sobre Orquestração de Contêineres',
+    subtitulo: 'Gerenciamento, escalabilidade e resiliência de microsserviços em produção',
+    autor: 'Gibran Rosa (Casa do Código)',
+    categoria: 'DevOps, Cloud & Infraestrutura',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-kubernetes',
+    ano: 2021,
+    paginas: 250,
+    sinopse: 'Domine a orquestração de contêineres com Kubernetes: Pods, Services, Deployments, ReplicaSets, volumes persistentes e alta disponibilidade.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Kubernetes%20-%20Tudo%20sobre%20orquestra%C3%A7%C3%A3o%20de%20cont%C3%AAineres.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Kubernetes%20-%20Tudo%20sobre%20orquestra%C3%A7%C3%A3o%20de%20cont%C3%AAineres%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'REST: Construa APIs Inteligentes de Maneira Simples',
+    subtitulo: 'Princípios da arquitetura RESTful, HATEOAS e boas práticas de design de endpoints',
+    autor: 'Alexandre Saudate (Casa do Código)',
+    categoria: 'Desenvolvimento Web & Mobile',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-rest-apis',
+    ano: 2019,
+    paginas: 220,
+    sinopse: 'Diretrizes essenciais para criação de APIs web modernas: métodos HTTP, códigos de status, autenticação, cache e versionamento sem atrito.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/REST%20-%20Construa%20API\'s%20inteligentes%20de%20maneira%20simples.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/REST%20-%20Construa%20API\'s%20inteligentes%20de%20maneira%20simples%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'MongoDB: Construa Novas Aplicações com Novas Tecnologias',
+    subtitulo: 'Banco de dados orientado a documentos para aplicações escaláveis',
+    autor: 'Fernando Boaglio (Casa do Código)',
+    categoria: 'Ciência de Dados & Inteligência Artificial',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-mongodb',
+    ano: 2020,
+    paginas: 240,
+    sinopse: 'Fundamentos práticos do MongoDB: documentos BSON, consultas avançadas, pipelines de agregação, sharding e réplicas.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/MongoDB%20-%20Construa%20Novas%20Aplica%C3%A7%C3%B5es%20com%20Novas%20Tecnologias.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/MongoDB%20-%20Construa%20Novas%20Aplica%C3%A7%C3%B5es%20com%20Novas%20Tecnologias%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'O Programador Pragmático: De Aprendiz a Mestre',
+    subtitulo: 'Conselhos indispensáveis e práticas essenciais para a excelência na programação',
+    autor: 'Andrew Hunt & David Thomas',
+    categoria: 'Arquitetura & Engenharia de Software',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-programador-pragmatico',
+    ano: 2019,
+    paginas: 350,
+    sinopse: 'Um dos maiores clássicos da computação: DRY (Don\'t Repeat Yourself), ortogonalidade, automação, depuração eficaz e ética no código.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/O%20Programador%20Pragm%C3%A1tico.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/O%20Programador%20Pragm%C3%A1tico%20-%20Autor%20(Andrew%20Hunt%20e%20David%20Thomas).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Padrões de Projetos (Design Patterns - GoF)',
+    subtitulo: 'Soluções reutilizáveis de software orientado a objetos',
+    autor: 'Erich Gamma, Richard Helm, Ralph Johnson & John Vlissides',
+    categoria: 'Arquitetura & Engenharia de Software',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-gof-patterns',
+    ano: 2020,
+    paginas: 400,
+    sinopse: 'O tratado clássico da Gangue dos Quatro (GoF) definindo padrões criacionais, estruturais e comportamentais com diagramas e soluções comprovadas.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Padr%C3%B5es%20de%20Projetos%20-%20Solu%C3%A7%C3%B5es%20Reutiliz%C3%A1veis%20de%20Software%20Orientados%20a%20Objetos.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Padr%C3%B5es%20de%20Projetos%20-%20Solu%C3%A7%C3%B5es%20Reutiliz%C3%A1veis%20de%20Software%20Orientados%20a%20Objetos%20-%20Autor%20(Erich%20Gamma).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Trabalho Eficaz com Código Legado',
+    subtitulo: 'Como alterar e melhorar sistemas grandes e complexos sem testes automatizados',
+    autor: 'Michael C. Feathers',
+    categoria: 'Arquitetura & Engenharia de Software',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-codigo-legado',
+    ano: 2020,
+    paginas: 450,
+    sinopse: 'Estratégias práticas de Michael Feathers para isolar pontos de alteração, introduzir testes em código legado e quebrar dependências tóxicas.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Trabalho%20Eficaz%20com%20C%C3%B3digo%20Legado.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Trabalho%20Eficaz%20com%20C%C3%B3digo%20Legado%20-%20Autor%20(Michael%20C.%20Feathers).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'TDD: Desenvolvimento Guiado por Testes',
+    subtitulo: 'Escreva código limpo que funciona através do ciclo Red-Green-Refactor',
+    autor: 'Kent Beck',
+    categoria: 'Arquitetura & Engenharia de Software',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-tdd-kent-beck',
+    ano: 2018,
+    paginas: 260,
+    sinopse: 'O manifesto seminal de Kent Beck apresentando a disciplina do TDD: testes automatizados antes do código, design evolutivo e confiança técnica.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/TDD%20-%20Desenvolvimento%20Guiado%20por%20Testes.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/TDD%20-%20Desenvolvimento%20Guiado%20por%20Testes%20-%20Autor%20(Ken%20Beck).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Scrum: Gestão Ágil para Projetos de Sucesso',
+    subtitulo: 'Como liderar equipes auto-organizadas e entregar valor iterativamente',
+    autor: 'Mariana Zaparolli (Casa do Código)',
+    categoria: 'Metodologias Ágeis & Carreira Tech',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-scrum-projetos',
+    ano: 2020,
+    paginas: 210,
+    sinopse: 'Aplicação prática do framework Scrum: papéis (Product Owner, Scrum Master, Devs), cerimônias (Sprint Planning, Daily, Retro) e métricas.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Scrum%20-%20Gest%C3%A3o%20%C3%A1gil%20para%20projetos%20de%20sucesso.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Scrum%20-%20Gest%C3%A3o%20%C3%A1gil%20para%20projetos%20de%20sucesso%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Algoritmos: Teoria e Prática',
+    subtitulo: 'Fundamentos de análise de complexidade, ordenação, grafos e estruturas de dados',
+    autor: 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest & Clifford Stein',
+    categoria: 'Ciência de Dados & Inteligência Artificial',
+    fonteSlug: 'github-bibliotecadev',
+    fonteIdExterno: 'bdev-algoritmos-cormen',
+    ano: 2021,
+    paginas: 1300,
+    sinopse: 'A "Bíblia dos Algoritmos": notação assintótica O(n), árvores de busca, programação dinâmica, algoritmos gulosos e NP-completude.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Algoritmos%20-%20Teoria%20e%20Pr%C3%A1tica.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Algoritmos%20-%20Teoria%20e%20Pr%C3%A1tica%20-%20Autor%20(Thomas%20Cormen).pdf'
+      }
+    ]
+  },
+
+  // ==================== NOVOS LIVROS ITALOCAMIL0 ====================
+  {
+    titulo: 'Shell Script Profissional',
+    subtitulo: 'Aprenda a programar rotinas no terminal Linux com segurança e elegância',
+    autor: 'Aurélio Marinho Jargas',
+    categoria: 'DevOps, Cloud & Infraestrutura',
+    fonteSlug: 'github-italocamilo',
+    fonteIdExterno: 'italo-shell-script',
+    ano: 2020,
+    paginas: 480,
+    sinopse: 'O clássico de Aurélio Jargas sobre criação de scripts profissionais em Bash: argumentos, expressões regulares, modularização e depuração.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Guia%20pr%C3%A1tico%20do%20servidor%20Linux%20-%20Administra%C3%A7%C3%A3o%20Linux%20para%20iniciantes.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/italocamil0/books/main/books/Aur%C3%A9lio%20Marinho%20Jargas%20-%20Shell%20Script%20Profissional.pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Caixa de Ferramentas DevOps: Construção, Administração e Arquitetura',
+    subtitulo: 'Práticas modernas de automação, CI/CD, infraestrutura como código e monitoramento',
+    autor: 'Gibran Rosa & Comunidade (Casa do Código)',
+    categoria: 'DevOps, Cloud & Infraestrutura',
+    fonteSlug: 'github-italocamilo',
+    fonteIdExterno: 'italo-caixa-devops',
+    ano: 2021,
+    paginas: 320,
+    sinopse: 'Ferramental indispensável para engenheiros DevOps: automação de builds, containers, provisionamento e observabilidade contínua.',
+    capaUrl: 'https://guiadeti.com.br/media/CACHE/images/library/2026/10/maestro-20261005-1a2d7f9a4897756f/cda1e67a527c2b1071b43c6290662c37.webp',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/italocamil0/books/main/books/Caixa%20de%20Ferramentas%20DevOps%20Um%20guia%20para%20construcao,%20administracao%20e%20arquitetura%20de%20sistemas%20modernos%20-%20Casa%20do%20Codigo.pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Armazenando Dados com Redis: Performance em Memória',
+    subtitulo: 'Chave-valor de altíssima velocidade para cache, sessões e pub/sub',
+    autor: 'Tiago Albineli Motta (Casa do Código)',
+    categoria: 'Ciência de Dados & Inteligência Artificial',
+    fonteSlug: 'github-italocamilo',
+    fonteIdExterno: 'italo-redis',
+    ano: 2020,
+    paginas: 180,
+    sinopse: 'Como acelerar suas aplicações usando Redis: estruturas em memória (strings, hashes, sets, sorted sets), persistência e clusters.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/MongoDB%20-%20Construa%20Novas%20Aplica%C3%A7%C3%B5es%20com%20Novas%20Tecnologias.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/italocamil0/books/main/books/Armazenando%20dados%20com%20Redis%20-%20Casa%20do%20Codigo.pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Começando com o Linux: Comandos, Serviços e Administração',
+    subtitulo: 'Guia prático para dominar o sistema operacional do servidor moderno',
+    autor: 'Daniel Romero (Casa do Código)',
+    categoria: 'DevOps, Cloud & Infraestrutura',
+    fonteSlug: 'github-italocamilo',
+    fonteIdExterno: 'italo-comecando-linux',
+    ano: 2020,
+    paginas: 230,
+    sinopse: 'Passo a passo no terminal Linux: sistema de arquivos, permissões (chmod/chown), processos, systemd e rede.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Guia%20pr%C3%A1tico%20do%20servidor%20Linux%20-%20Administra%C3%A7%C3%A3o%20Linux%20para%20iniciantes.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/italocamil0/books/main/books/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos,%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o%20-%20Casa%20do%20Codigo.pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Coletânea Front-End: Uma Antologia da Comunidade Brasileira',
+    subtitulo: 'Artigos, técnicas e experiências dos principais desenvolvedores web do Brasil',
+    autor: 'Comunidade Front-End Brasil (Casa do Código)',
+    categoria: 'Desenvolvimento Web & Mobile',
+    fonteSlug: 'github-italocamilo',
+    fonteIdExterno: 'italo-coletanea-frontend',
+    ano: 2020,
+    paginas: 270,
+    sinopse: 'Compilação de artigos práticos sobre CSS avançado, performance web, acessibilidade, JavaScript modular e ecossistema front-end.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/A%20Web%20Mobile%20-%20Programe%20para%20um%20Mundo%20de%20Muitos%20Dispositivos.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/italocamil0/books/main/books/Coletanea%20Front-End%20-%20Uma%20Antologia%20da%20Comunidade%20Front%20End%20Brasileira%20-%20Casa%20do%20Codigo.pdf'
+      }
+    ]
+  },
+  {
+    titulo: 'Aplicações Java para a Web com JSF e JPA',
+    subtitulo: 'Desenvolvimento corporativo robusto com padrões Java EE e persistência relacional',
+    autor: 'Gilliard Cordeiro (Casa do Código)',
+    categoria: 'Desenvolvimento Web & Mobile',
+    fonteSlug: 'github-italocamilo',
+    fonteIdExterno: 'italo-java-web-jpa',
+    ano: 2019,
+    paginas: 290,
+    sinopse: 'Aplicações empresariais em Java: ciclo de vida de componentes JSF, mapeamento objeto-relacional com JPA/Hibernate e transações.',
+    capaUrl: 'https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/.github/img/Azure%20-%20Coloque%20suas%20plataformas%20e%20servi%C3%A7os%20no%20cloud.svg',
+    links: [
+      {
+        formato: 'pdf',
+        url: 'https://raw.githubusercontent.com/italocamil0/books/main/books/Aplicacoes%20Java%20para%20a%20Web%20Com%20JDF%20e%20JPA%20-%20Casa%20do%20Codigo.pdf'
+      }
+    ]
   }
 ];
 
