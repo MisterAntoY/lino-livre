@@ -90,6 +90,19 @@
         </div>
       </div>
 
+      <!-- Filtros de Repositórios & Fontes Oficiais -->
+      <div class="filter-row">
+        <span class="filter-label">Fonte / Acervo:</span>
+        <div class="pills-container" id="pills-fontes">
+          <button class="pill active" data-fonte="" onclick="app.filtrarPorFonteLivro('')">Todos os Acervos</button>
+          <button class="pill" data-fonte="github-bibliotecadev" onclick="app.filtrarPorFonteLivro('github-bibliotecadev')">📂 BibliotecaDev (109 livros)</button>
+          <button class="pill" data-fonte="github-italocamilo" onclick="app.filtrarPorFonteLivro('github-italocamilo')">📂 Books Tech / italocamil0 (219 livros)</button>
+          <button class="pill" data-fonte="dominiopublico" onclick="app.filtrarPorFonteLivro('dominiopublico')">🏛️ Domínio Público (18 obras)</button>
+          <button class="pill" data-fonte="trilhainfo" onclick="app.filtrarPorFonteLivro('trilhainfo')">🗺️ Trilha Info (12 guias)</button>
+          <button class="pill" data-fonte="guiadeti" onclick="app.filtrarPorFonteLivro('guiadeti')">🚀 Guia de TI (6 roadmaps)</button>
+        </div>
+      </div>
+
       <!-- Filtros de Formato e Licença -->
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.books.format">Formato:</span>

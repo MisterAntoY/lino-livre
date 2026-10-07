@@ -7,6 +7,7 @@ const app = {
   roadmaps: [],
   dicas: [],
   categoriaAtiva: '',
+  fonteLivroAtiva: '',
   formatoAtivo: '',
   areaCursoAtiva: '',
   fonteCursoAtiva: '',
@@ -159,6 +160,15 @@ const app = {
     this.carregarLivros();
   },
 
+  filtrarPorFonteLivro(slug) {
+    this.fonteLivroAtiva = slug;
+    document.querySelectorAll('#pills-fontes .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-fonte') === slug);
+    });
+    this.paginaAtual = 1;
+    this.carregarLivros();
+  },
+
   async carregarLivros() {
     const grid = document.getElementById('grade-livros');
     grid.innerHTML = `<div class="loading">${t('books.searching')}</div>`;
@@ -167,6 +177,7 @@ const app = {
       const params = new URLSearchParams();
       if (this.termoBusca) params.append('busca', this.termoBusca);
       if (this.categoriaAtiva) params.append('categoria_id', this.obterCategoriaId(this.categoriaAtiva));
+      if (this.fonteLivroAtiva) params.append('fonte_slug', this.fonteLivroAtiva);
       if (this.formatoAtivo) params.append('formato', this.formatoAtivo);
       params.append('page', this.paginaAtual);
       params.append('limit', 12);

@@ -376,23 +376,33 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
 
   // Teste 11: Livros técnicos e manuais via GitHub (BibliotecaDev, italocamil0, Trilha Info)
   test('11. Livros técnicos e manuais via GitHub com capas originais e links diretos', async () => {
-    // 11.1 - Livros da BibliotecaDev com capas vetoriais SVG
+    // 11.1 - Livros da BibliotecaDev com capas vetoriais SVG (todos os 109 livros)
     const resBDev = await request('/api/livros?fonte_slug=github-bibliotecadev');
     assert.equal(resBDev.status, 200);
-    assert.ok(resBDev.data.data.length >= 8, 'Deve retornar os livros da BibliotecaDev');
+    assert.ok(resBDev.data.total >= 100, 'Deve conter todos os livros da BibliotecaDev (>= 100)');
     const livroSvg = resBDev.data.data.find(l => l.titulo.includes('Arquitetura Limpa'));
     assert.ok(livroSvg, 'Deve encontrar Arquitetura Limpa');
     assert.ok(livroSvg.capa_url.endsWith('.svg'), 'Capa deve ser vetor SVG original');
     assert.ok(livroSvg.links.some(lnk => lnk.url.includes('raw.githubusercontent.com')), 'Link deve ser direto do GitHub raw');
 
-    // 11.2 - Livros do italocamil0/books
+    // 11.2 - Livros do italocamil0/books (todos os 219 livros)
     const resItalo = await request('/api/livros?fonte_slug=github-italocamilo');
     assert.equal(resItalo.status, 200);
-    assert.ok(resItalo.data.data.length >= 4, 'Deve retornar livros do acervo italocamil0');
+    assert.ok(resItalo.data.total >= 200, 'Deve conter todos os livros do acervo italocamil0 (>= 200)');
+    assert.ok(resItalo.data.data.some(l => l.links.some(lnk => lnk.url.includes('italocamil0/books'))));
 
-    // 11.3 - Filtragem por categoria técnica
+    // 11.3 - Guias visuais e roadmaps da Trilha Info
+    const resTrilha = await request('/api/livros?fonte_slug=trilhainfo');
+    assert.equal(resTrilha.status, 200);
+    assert.ok(resTrilha.data.total >= 10, 'Deve conter os guias e roadmaps da Trilha Info');
+
+    // 11.4 - Filtragem por categoria técnica
     const resCatArq = await request('/api/livros?categoria_id=Arquitetura%20%26%20Engenharia%20de%20Software');
     assert.equal(resCatArq.status, 200);
     assert.ok(resCatArq.data.data.length > 0, 'Deve retornar livros de engenharia/arquitetura');
+
+    // 11.5 - Volume consolidado de livros
+    const resTodos = await request('/api/livros');
+    assert.ok(resTodos.data.total >= 350, 'Acervo deve conter mais de 350 livros cadastrados');
   });
 });

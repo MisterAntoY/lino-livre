@@ -525,7 +525,7 @@ function seed(dbInstance = null) {
       fId,
       b.fonteIdExterno,
       'outro',
-      Math.floor(Math.random() * 80) + 120,
+      b.leituras || (Math.floor(Math.random() * 80) + 120),
       `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nMaterial disponível livremente para leitura e estudo no acervo Lino Livre.`
     ).lastInsertRowid;
 
