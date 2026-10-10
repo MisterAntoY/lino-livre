@@ -47,6 +47,9 @@
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.header.channel">Canal</span>
         </a>
+        <a id="btn-header-kofi" class="btn btn-kofi" href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" title="Apoiar o Lino Livre no Ko-fi">
+          ☕ <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
+        </a>
         <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()" data-i18n="ui.header.addBook">+ Adicionar Livro</button>
       </div>
     </div>
@@ -317,6 +320,15 @@
         <a id="link-card-canal" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.whatsapp.channelBtn">Seguir o canal</span>
+        </a>
+      </div>
+
+      <div id="card-kofi" class="whatsapp-card kofi-card">
+        <div class="whatsapp-qr kofi-qr" style="display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:#fff5f5;border-radius:var(--radius-sm);width:160px;height:160px;">☕</div>
+        <h3 data-i18n="ui.kofi.cardTitle">☕ Apoie no Ko-fi</h3>
+        <p data-i18n="ui.kofi.cardDesc">Contribua com qualquer valor para ajudar a manter o servidor e expandir o acervo livre.</p>
+        <a id="link-card-kofi" class="btn btn-kofi" href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer">
+          ☕ <span data-i18n="ui.kofi.cardBtn">Apoiar Projeto</span>
         </a>
       </div>
     </div>

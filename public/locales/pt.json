@@ -17,7 +17,13 @@
       "groupTitle": "Entrar no grupo Lino Livre no WhatsApp",
       "channel": "Canal",
       "channelTitle": "Seguir o canal Lino Livre no WhatsApp",
+      "kofi": "Apoiar Projeto",
       "addBook": "+ Adicionar Livro"
+    },
+    "kofi": {
+      "cardTitle": "☕ Apoie no Ko-fi",
+      "cardDesc": "Contribua com qualquer valor para ajudar a manter o servidor e expandir o acervo livre.",
+      "cardBtn": "Apoiar Projeto"
     },
     "tabs": {
       "books": "📚 Livros Digitais",

@@ -1,0 +1,67 @@
+{
+  // ╔══════════════════════════════════════════════════════════════╗
+  // ║  LINO LIVRE — Cloudflare Workers Configuration              ║
+  // ║  Livros livres, para todos. 🇦🇴                             ║
+  // ╚══════════════════════════════════════════════════════════════╝
+
+  "name": "lino-livre",
+  "compatibility_date": "2026-10-10",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "workers/src/index.ts",
+
+  // Static assets served by Cloudflare Pages-like functionality
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+
+  // Observability — structured logging and traces
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.01 }
+  },
+
+  // D1 Database — SQLite on the edge
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "lino-livre-db",
+      "database_id": "e63f1fb6-10b7-443e-b166-e355ec9e8f1c"
+    }
+  ],
+
+  // R2 Object Storage — covers, PDFs, audio (10 GB free)
+  // Enable R2 in dashboard first, then uncomment:
+  // "r2_buckets": [
+  //   {
+  //     "binding": "ASSETS_BUCKET",
+  //     "bucket_name": "lino-livre-assets"
+  //   }
+  // ],
+
+  // KV Namespace — cache, rate limiting, counters
+  // Create with: wrangler kv namespace create CACHE
+  // Then add the id here
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "CACHE",
+  //     "id": "<your-kv-namespace-id>"
+  //   }
+  // ],
+
+  // Non-secret environment variables
+  "vars": {
+    "ENVIRONMENT": "production",
+    "SITE_NAME": "Lino Livre",
+    "SITE_SLOGAN": "Livros livres, para todos.",
+    "DEFAULT_LOCALE": "pt",
+    "ITEMS_PER_PAGE": "24",
+    "MAX_ITEMS_PER_PAGE": "100"
+  }
+
+  // Secrets (set via: wrangler secret put <NAME>):
+  // - WHATSAPP_COMMUNITY_URL
+  // - WHATSAPP_CHANNEL_URL
+  // - GOOGLE_BOOKS_API_KEY (optional, for cover enrichment)
+}

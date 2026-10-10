@@ -55,6 +55,9 @@ venv/
 *.sqlite
 *.sqlite3
 
-# Arquivos temporários
+# Arquivos temporários e builds Cloudflare
 *.tmp
 *.temp
+.wrangler/
+seed.sql
+

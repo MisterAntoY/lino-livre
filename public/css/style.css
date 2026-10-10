@@ -1253,6 +1253,31 @@ body {
   background: #e9fbf0;
 }
 
+.btn-kofi {
+  background: #ff5f5f;
+  color: #ffffff !important;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-kofi:hover {
+  background: #e04b4b;
+  transform: translateY(-1px);
+}
+
+.whatsapp-card.kofi-card {
+  border-top-color: #ff5f5f;
+}
+
 .whatsapp-section {
   margin: 2rem auto 3rem auto;
   text-align: center;
