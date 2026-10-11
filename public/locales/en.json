@@ -23,8 +23,16 @@
       "books": "📚 Digital Books",
       "courses": "🎓 Free Courses",
       "roadmaps": "🗺️ Roadmaps & Tracks",
+      "podcasts": "🎙️ Podcasts & Spotify",
       "tips": "💡 Study Tips & Tools",
       "dashboard": "📊 Metrics & Sources"
+    },
+    "podcasts": {
+      "bannerTitle": "Podcasts, Literary Reviews & Oral Tradition",
+      "bannerDesc": "Listen to conversations with Angolan thinkers, audio reviews of great literary works, dramatized ancestral tales, and quick study tips. Free, without intrusive ads and available directly in the integrated player or on Spotify.",
+      "openApp": "Open in Spotify",
+      "searchPlaceholder": "Search podcasts or episodes...",
+      "categoryFilter": "Category:"
     },
     "books": {
       "searchPlaceholder": "Search by title or author...",
@@ -324,6 +332,29 @@
     "52": "Poetry by Jorge Barbosa (1941). Cape Verde: clarity, sea and saudade. Founder of Claridade Review, milestone of Cape Verdean modernism.",
     "53": "Novel by Fernando Monteiro de Castro Soromenho (1961). Colonial Angola: drought, famine and tragedy of forced railway workers.",
     "54": "Novel by Dina Salústio (2009). Cape Verde: women, tradition and modernity. First Cape Verdean woman to publish a novel. Camões Prize 2020.",
-    "55": "Novel by Germano Almeida (2018). Cape Verde: mystery, humour and social critique. Camões Prize 2018."
+    "55": "Novel by Germano Almeida (2018). Cape Verde: mystery, humour and social critique. Camões Prize 2018.",
+    "331": "Collaborative index of 500+ free programming books in Chinese. Python, Go, Java, JavaScript, Rust, C++, ML/AI, systems, databases, DevOps, security. Continuously updated.",
+    "332": "Ruanyf's personal curation: free books on Web, systems, languages, databases, AI, mathematics. Mostly English, growing Chinese section.",
+    "333": "Short practical books for quick onboarding: tutorials, tool guides, selected technical articles. Focus on 'learning by doing'.",
+    "334": "Curated Chinese translation of official Awesome lists (Python, Go, JS, React, Vue, Node, Java, Rust, ML/AI, etc.). Navigable index for 200+ tech categories.",
+    "335": "Frameworks, libraries, tools, Python learning resources — Chinese version of official awesome-python. 25k+ stars.",
+    "336": "Go ecosystem: web frameworks, ORM, CLI, microservices, testing, observability. Chinese version maintained by Jobbole community.",
+    "337": "Libraries, frameworks, engines, tools, articles, essential JS/TS resources. One of the oldest and most respected awesome lists.",
+    "338": "Components, hooks, state management, testing, SSR/SSG, UI kits, performance — all React. 60k+ stars.",
+    "339": "Official Vue ecosystem: UI libraries, routers, state, SSR, testing, build tools, components. Maintained by Vue team.",
+    "340": "Packages, frameworks, tools, articles, learning resources for Node.js. Curated by Sindre Sorhus (top npm contributor).",
+    "341": "Spring, microservices, build tools, testing, profiling, cloud, core Java libraries. Chinese version of awesome-java.",
+    "342": "Crates, frameworks, tools, books, articles, Rust courses. Maintained by Rust Foundation / unofficial community.",
+    "343": "500+ AI tools curated for Chinese users: LLMs, agents, RAG, image/audio/video generation, code assistants, productivity.",
+    "344": "Zero to full-stack: front-end, back-end, database, DevOps, deployment, architecture. Hands-on projects step by step in Chinese.",
+    "345": "Definitive guide for system design interviews: scalability, cache, sharding, message queues, CAP, consistent hashing, case studies. 250k+ stars.",
+    "346": "Complete notes for tech interviews: networks, OS, DB, Java, Go, Python, C++, algorithms, system design. 180k+ stars, Chinese gold standard.",
+    "347": "Commented Chinese solutions for 2000+ LeetCode problems: arrays, strings, trees, graphs, DP, backtracking, bit manipulation. Algorithmic thinking explained.",
+    "348": "Interactive visual career roadmaps: Frontend, Backend, DevOps, React, Node, Go, Java, Python, QA, Security, Data Science, Mobile. Updated annually.",
+    "349": "Tencent skill map: front-end, back-end, mobile, AI, security, architecture, engineering culture. Chinese reference for career growth.",
+    "350": "How to explore GitHub effectively: awesome lists, trending, topics, advanced search, project discovery, open source contribution. Practical Chinese guide.",
+    "351": "Interesting high-quality open source projects categorized by 'fun/utility'. CLI tools, games, utilities, experiments, generative art.",
+    "352": "Curated resources for TIOBE Top 20 languages: frameworks, libraries, tools, books, courses. Java, C#, Python, C++, JS, Go, Rust, TS, PHP, Swift, Kotlin, Ruby, Scala, R, Lua, Dart, Julia, Elixir, Haskell.",
+    "353": "Practical development resources: iOS demos, CSS tricks, HTML5, design patterns, architecture, performance, security, testing, debugging tools."
   }
 }

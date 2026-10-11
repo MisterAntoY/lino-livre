@@ -1,8 +1,11 @@
 const { getDatabase } = require('./index');
 const { cursosData } = require('./cursosSeedData');
 const { githubBooks } = require('./githubBooksSeedData');
+const { githubZhBooks } = require('./githubZhBooksSeedData');
+const { dioBootcampsList } = require('./dioBootcampsData');
 const { livrosAfricaData } = require('./livrosAfricaData');
 const { roadmapShList } = require('./roadmapShData');
+const { podcastsShowsData } = require('./podcastsSeedData');
 const {
   domCasmurroTexto,
   memoriasPosthumasTexto,
@@ -33,7 +36,9 @@ function seed(dbInstance = null) {
   try {
     db.exec(`
       DELETE FROM links_livros;
-    DELETE FROM import_jobs;
+      DELETE FROM podcasts_episodios;
+      DELETE FROM podcasts_shows;
+      DELETE FROM import_jobs;
     DELETE FROM cursos;
     DELETE FROM livros;
     DELETE FROM autores;
@@ -53,6 +58,10 @@ function seed(dbInstance = null) {
   const fDomPub = insertFonte.run('dominiopublico', 'Portal Domínio Público (MEC)', 'manual', 'https://www.dominiopublico.gov.br', 1).lastInsertRowid;
   const fWikisource = insertFonte.run('wikisource', 'Wikisource', 'api', 'https://pt.wikisource.org', 1).lastInsertRowid;
   const fManual = insertFonte.run('manual', 'Curadoria Lino Livre', 'manual', null, 1).lastInsertRowid;
+  // Novas fontes GitHub em Mandarim (apenas metadados + links externos)
+  const fFreeBooksZh = insertFonte.run('github-freebooks-zh', 'Free Programming Books ZH (GitHub)', 'manual', 'https://github.com/justjavac/free-programming-books-zh_CN', 1).lastInsertRowid;
+  const fAwesomeCn = insertFonte.run('github-awesome-cn', 'Awesome Lists Chinese (GitHub)', 'manual', 'https://github.com/gamedilong/awesome-cn', 1).lastInsertRowid;
+  const fRoadmapZh = insertFonte.run('github-roadmap-zh', 'Developer Roadmap ZH (GitHub)', 'manual', 'https://github.com/kamranahmedse/developer-roadmap', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -71,6 +80,11 @@ function seed(dbInstance = null) {
   const catAfricaContos = insertCat.run('🌍 Contos & Tradição Oral Africana', 'Folclore, fábulas bantas, lendas de Anansi e sabedoria oral ancestral').lastInsertRowid;
   const catAfricaHist = insertCat.run('🌍 História & Sociedade Africana', 'Civilizações antigas, impérios do Sahel, arqueologia e história pan-africana').lastInsertRowid;
   const catAfricaFilo = insertCat.run('🌍 Filosofia & Pensamento Africano', 'Négritude, libertação, dignidade humana e filosofia pan-africana').lastInsertRowid;
+  // Novas categorias de literatura angolana e africana lusófona
+  const catAngolana = insertCat.run('Literatura Angolana', 'Obras de autores angolanos: poesia, romance, teatro e tradição oral').lastInsertRowid;
+  const catAfricaLusofona = insertCat.run('Literatura Africana Lusófona', 'Literatura dos PALOP: Angola, Moçambique, Cabo Verde, Guiné-Bissau, São Tomé e Príncipe').lastInsertRowid;
+  const catPoesiaAfricana = insertCat.run('Poesia Africana', 'Poesia de autores africanos de língua portuguesa e outras línguas africanas').lastInsertRowid;
+  const catAutoresLusofonos = insertCat.run('Autores Lusófonos Clássicos', 'Grandes nomes da literatura em português: Camões, Pessoa, Eça, autores africanos e brasileiros clássicos').lastInsertRowid;
 
   // 3. Inserir Autores
   const insertAutor = db.prepare('INSERT INTO autores (nome, nacionalidade, biografia) VALUES (?, ?, ?)');
@@ -528,6 +542,63 @@ function seed(dbInstance = null) {
     }
   }
 
+  // Inserir Livros Técnicos em Mandarim (GitHub Awesome Lists & Free Books)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente
+  const catMapZh = {
+    'Tecnologia & Guias Digitais': catTecnologia,
+    'Desenvolvimento Web & Mobile': catWeb,
+    'Arquitetura & Engenharia de Software': catArq,
+    'Ciência de Dados & Inteligência Artificial': catData,
+    'Metodologias Ágeis & Carreira Tech': catAgil
+  };
+
+  const fonteMapZh = {
+    'github-freebooks-zh': fFreeBooksZh,
+    'github-awesome-cn': fAwesomeCn,
+    'github-roadmap-zh': fRoadmapZh
+  };
+
+  for (const b of githubZhBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Chinesa / Internacional', 'Curadoria de recursos técnicos open source em mandarim.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMapZh[b.categoria] || catTecnologia;
+    const fId = fonteMapZh[b.fonteSlug] || fManual;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2024,
+      'zh',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      'outro',  // licença: recursos open source / awesome lists
+      0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
   // Inserir a Coleção Monumental de África (5 idiomas: pt, en, fr, de, zh)
   const catAfricaMap = {
     '🌍 Literatura & Vozes de África': catAfricaLit,
@@ -594,6 +665,37 @@ function seed(dbInstance = null) {
   // Roadmaps interativos oficiais do Roadmap.sh (95 roadmaps oficiais extraídos de nilbuild/developer-roadmap)
   for (const r of roadmapShList) {
     insertCurso.run(r.titulo, 'roadmap', r.area, r.plataforma, r.url, r.licenca, r.nivel, r.descricao);
+  }
+
+  // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)
+  const insertShow = db.prepare(`
+    INSERT INTO podcasts_shows (titulo, slug, descricao, capa_url, spotify_url, spotify_uri, categoria, idioma, ativo)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+  `);
+
+  const insertEpisodio = db.prepare(`
+    INSERT INTO podcasts_episodios (show_id, numero, titulo, slug, descricao, duracao_minutos, spotify_url, spotify_embed_url, audio_url, publicado_em, reproducoes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+  `);
+
+  for (const s of podcastsShowsData) {
+    const showId = insertShow.run(s.titulo, s.slug, s.descricao, s.capa_url, s.spotify_url, s.spotify_uri, s.categoria, s.idioma).lastInsertRowid;
+    if (s.episodios && Array.isArray(s.episodios)) {
+      for (const ep of s.episodios) {
+        insertEpisodio.run(
+          showId,
+          ep.numero,
+          ep.titulo,
+          ep.slug,
+          ep.descricao,
+          ep.duracao_minutos,
+          ep.spotify_url,
+          ep.spotify_embed_url,
+          ep.audio_url || null,
+          ep.publicado_em || '2026-10-01'
+        );
+      }
+    }
   }
 
     db.exec('COMMIT;');

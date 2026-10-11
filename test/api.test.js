@@ -446,7 +446,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resDe.data.data.some(l => l.titulo.includes('Afrikanische') || l.titulo.includes('Bantu')));
 
     // 12.4 - Consulta por idioma 中文 (zh)
-    const resZh = await request('/api/livros?idioma=zh');
+    const resZh = await request('/api/livros?idioma=zh&limit=50');
     assert.equal(resZh.status, 200);
     assert.ok(resZh.data.total >= 8, 'Deve conter acervo em chinês (>= 8)');
     assert.ok(resZh.data.data.some(l => l.titulo.includes('非洲') || l.titulo.includes('曼德拉')));
@@ -464,4 +464,31 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resDetalhe.status, 200);
     assert.ok(resDetalhe.data.conteudo_texto.includes('### Chapter I'), 'Deve possuir múltiplos capítulos para leitura online');
   });
+
+  // Teste 13: Módulo de Podcasts e Audiolivros integrado ao Spotify
+  test('13. Módulo de Podcasts e Audiolivros integrado ao Spotify', async () => {
+    // 13.1 - Listar shows
+    const resShows = await request('/api/podcasts');
+    assert.equal(resShows.status, 200);
+    assert.ok(Array.isArray(resShows.data));
+    assert.ok(resShows.data.length >= 4, 'Deve conter pelo menos 4 programas de podcast');
+
+    const showLino = resShows.data.find(s => s.slug === 'lino-conversa');
+    assert.ok(showLino, 'Deve conter o podcast Lino Conversa');
+    assert.ok(showLino.spotify_url.includes('spotify.com'), 'Deve conter URL do Spotify');
+
+    // 13.2 - Detalhe do show com episódios
+    const resDetalheShow = await request('/api/podcasts/lino-conversa');
+    assert.equal(resDetalheShow.status, 200);
+    assert.ok(Array.isArray(resDetalheShow.data.episodios));
+    assert.ok(resDetalheShow.data.episodios.length >= 3, 'Lino Conversa deve conter episódios');
+
+    // 13.3 - Episódios recentes para o reprodutor
+    const resRecentes = await request('/api/podcasts/episodios/recentes');
+    assert.equal(resRecentes.status, 200);
+    assert.ok(Array.isArray(resRecentes.data));
+    assert.ok(resRecentes.data.length >= 10, 'Deve listar episódios recentes');
+    assert.ok(resRecentes.data[0].spotify_embed_url, 'Episódio deve conter URL de embed do Spotify');
+  });
 });
+

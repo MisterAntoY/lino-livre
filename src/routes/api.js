@@ -60,4 +60,12 @@ router.get('/comunidade/qrcode.svg', comunidadeController.getComunidadeQrCode);
 router.get('/canal', comunidadeController.getCanal);
 router.get('/canal/qrcode.svg', comunidadeController.getCanalQrCode);
 
+// 8. Podcasts & Audiolivros (Spotify for Creators)
+const podcastsController = require('../controllers/podcastsController');
+router.get('/podcasts', podcastsController.listarShows);
+router.get('/podcasts/episodios/recentes', podcastsController.listarEpisodiosRecentes);
+router.get('/podcasts/:slugOuId', podcastsController.obterShow);
+router.post('/podcasts/episodios/:id/ouvir', podcastsController.ouvirEpisodio);
+
 module.exports = router;
+

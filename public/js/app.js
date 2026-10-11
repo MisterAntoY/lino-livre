@@ -19,12 +19,17 @@ const app = {
   termoBuscaCursos: '',
   termoBuscaRoadmaps: '',
   termoBuscaDicas: '',
+  termoBuscaPodcasts: '',
+  catPodcastAtiva: '',
+  podcasts: [],
+  episodiosRecentes: [],
   paginaAtual: 1,
   totalPaginas: 1,
   debounceTimer: null,
   debounceCursosTimer: null,
   debounceRoadmapsTimer: null,
   debounceDicasTimer: null,
+  debouncePodcastsTimer: null,
   tamanhoFonte: 22,
   temaPapel: 'creme',
   brilho: 1,
@@ -120,6 +125,7 @@ const app = {
     document.getElementById('aba-livros')?.classList.toggle('hidden', nomeAba !== 'livros');
     document.getElementById('aba-cursos')?.classList.toggle('hidden', nomeAba !== 'cursos');
     document.getElementById('aba-roadmaps')?.classList.toggle('hidden', nomeAba !== 'roadmaps');
+    document.getElementById('aba-podcasts')?.classList.toggle('hidden', nomeAba !== 'podcasts');
     document.getElementById('aba-dicas')?.classList.toggle('hidden', nomeAba !== 'dicas');
     document.getElementById('aba-dashboard')?.classList.toggle('hidden', nomeAba !== 'dashboard');
 
@@ -127,6 +133,8 @@ const app = {
       this.carregarCursos();
     } else if (nomeAba === 'roadmaps' && this.roadmaps.length === 0) {
       this.carregarRoadmaps();
+    } else if (nomeAba === 'podcasts' && this.podcasts.length === 0) {
+      this.carregarPodcasts();
     } else if (nomeAba === 'dicas' && this.dicas.length === 0) {
       this.carregarDicas();
     } else if (nomeAba === 'dashboard') {
@@ -1163,6 +1171,165 @@ const app = {
             🗺️ Acessar Roadmap Interativo ↗
           </a>
         </article>
+      `;
+    }).join('');
+  },
+
+  // ==================== PODCASTS & SPOTIFY ====================
+  filtrarPodcastsComDebounce() {
+    clearTimeout(this.debouncePodcastsTimer);
+    this.debouncePodcastsTimer = setTimeout(() => {
+      this.termoBuscaPodcasts = (document.getElementById('filtro-busca-podcasts')?.value || '').trim();
+      this.carregarPodcasts();
+    }, 250);
+  },
+
+  filtrarPorCategoriaPodcast(cat) {
+    this.catPodcastAtiva = cat;
+    document.querySelectorAll('#pills-categorias-podcasts .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+    });
+    this.carregarPodcasts();
+  },
+
+  scrollParaEpisodiosRecentes() {
+    const el = document.getElementById('secao-episodios-recentes');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  },
+
+  tocarEpisodioSpotify(embedUrl, id, titulo, showTitulo) {
+    const frame = document.getElementById('spotify-embed-frame');
+    const statusText = document.getElementById('player-status-text');
+    if (frame && embedUrl) {
+      frame.src = embedUrl;
+    }
+    if (statusText) {
+      statusText.textContent = `🎧 A reproduzir: ${titulo}${showTitulo ? ' (' + showTitulo + ')' : ''}`;
+    }
+    const container = document.getElementById('spotify-player-container');
+    if (container) {
+      container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    // Registrar contagem atômica de reproduções
+    if (id) {
+      fetch(`/api/podcasts/episodios/${id}/ouvir`, { method: 'POST' }).catch(() => {});
+    }
+  },
+
+  async carregarPodcasts() {
+    const grid = document.getElementById('podcasts-grid');
+    if (!grid) return;
+    grid.innerHTML = `<div class="loading">Carregando programas de podcast e audiolivros...</div>`;
+
+    try {
+      const params = new URLSearchParams();
+      if (this.catPodcastAtiva) params.append('categoria', this.catPodcastAtiva);
+      if (this.termoBuscaPodcasts) params.append('busca', this.termoBuscaPodcasts);
+
+      const qs = params.toString() ? `?${params.toString()}` : '';
+      const [resShows, resEpisodios] = await Promise.all([
+        fetch(`/api/podcasts${qs}`).then(r => r.json()),
+        fetch('/api/podcasts/episodios/recentes').then(r => r.json())
+      ]);
+
+      this.podcasts = Array.isArray(resShows) ? resShows : [];
+      this.episodiosRecentes = Array.isArray(resEpisodios) ? resEpisodios : [];
+
+      this.renderizarShows(this.podcasts);
+      this.renderizarEpisodiosRecentes(this.episodiosRecentes);
+    } catch (err) {
+      grid.innerHTML = `<div class="loading" style="color:#b91c1c">Erro ao carregar podcasts: ${this.escape(err.message)}</div>`;
+    }
+  },
+
+  renderizarShows(lista) {
+    const grid = document.getElementById('podcasts-grid');
+    if (!grid) return;
+
+    if (!lista || lista.length === 0) {
+      grid.innerHTML = `<div class="loading">Nenhum programa de podcast encontrado para os filtros selecionados.</div>`;
+      return;
+    }
+
+    grid.innerHTML = lista.map(s => {
+      const totalEp = s.total_episodios || (s.episodios || []).length || 0;
+      return `
+        <article class="podcast-card">
+          <div class="podcast-cover-box">
+            <img src="${s.capa_url || 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80'}" alt="${this.escape(s.titulo)}" class="podcast-cover-img" loading="lazy">
+            <span class="podcast-category-badge">${this.escape(s.categoria || 'Educação')}</span>
+          </div>
+
+          <div class="podcast-body">
+            <h4 class="podcast-card-title">${this.escape(s.titulo)}</h4>
+            <p class="podcast-card-desc">${this.escape(s.descricao)}</p>
+
+            <div class="podcast-meta-row">
+              <span>🎙️ ${totalEp} ${totalEp === 1 ? 'Episódio' : 'Episódios'}</span>
+              <span>📻 Spotify for Creators</span>
+            </div>
+
+            <div class="podcast-card-actions">
+              ${s.spotify_url ? `
+                <a class="btn btn-spotify" href="${s.spotify_url}" target="_blank" rel="noopener noreferrer" style="flex:1; justify-content:center; font-size:0.85rem;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="vertical-align:middle;margin-right:4px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.352-.676.463-1.028.247-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.158-.893-.561-.092-.403.158-.802.561-.894 4.571-1.045 8.49-.606 11.649 1.336.352.217.462.678.247 1.029zm1.467-3.262c-.27.44-.848.58-1.288.31-3.224-1.982-8.139-2.555-11.952-1.398-.497.151-1.026-.135-1.177-.633-.151-.497.135-1.026.633-1.177 4.364-1.325 9.773-.687 13.473 1.589.44.27.58.848.311 1.309zm.126-3.41c-3.864-2.295-10.239-2.506-13.916-1.39-.594.18-1.222-.162-1.402-.756-.18-.594.162-1.222.756-1.402 4.23-1.284 11.272-1.037 15.702 1.593.535.317.71 1.01.393 1.545-.317.534-1.01.71-1.533.41z"/></svg>
+                  Spotify
+                </a>
+              ` : ''}
+              <button class="btn btn-outline" style="flex:1; justify-content:center; font-size:0.85rem;" onclick="app.ouvirShowCompleto('${s.slug}')">
+                ▶ Ouvir Show
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  },
+
+  ouvirShowCompleto(slug) {
+    const show = this.podcasts.find(s => s.slug === slug);
+    if (!show) return;
+    const showIdPart = (show.spotify_url || '').split('/show/')[1] || '';
+    const embedUrl = `https://open.spotify.com/embed/show/${showIdPart}?utm_source=generator&theme=0`;
+    this.tocarEpisodioSpotify(embedUrl, null, show.titulo, 'Programa Completo');
+  },
+
+  renderizarEpisodiosRecentes(lista) {
+    const container = document.getElementById('episodios-recentes-container');
+    if (!container) return;
+
+    if (!lista || lista.length === 0) {
+      container.innerHTML = `<div class="loading">Nenhum episódio recente disponível no momento.</div>`;
+      return;
+    }
+
+    container.innerHTML = lista.map(ep => {
+      const duracao = ep.duracao_minutos ? `${ep.duracao_minutos} min` : '';
+      const data = ep.publicado_em ? ep.publicado_em : '';
+      return `
+        <div class="episodio-card">
+          <div class="episodio-info">
+            <span class="episodio-show-tag">🎙️ ${this.escape(ep.show_titulo || 'Podcast Lino Livre')}</span>
+            <h4 class="episodio-title">${this.escape(ep.titulo)}</h4>
+            <p class="episodio-desc">${this.escape(ep.descricao || '')}</p>
+            <div class="episodio-meta">
+              ${duracao ? `<span>⏱️ ${duracao}</span>` : ''}
+              ${data ? `<span>📅 ${data}</span>` : ''}
+              ${ep.reproducoes > 0 ? `<span>🎧 ${ep.reproducoes} reproduções</span>` : ''}
+            </div>
+          </div>
+
+          <div class="episodio-actions">
+            <button class="btn-play-ep" onclick="app.tocarEpisodioSpotify('${ep.spotify_embed_url}', ${ep.id}, '${this.escape(ep.titulo)}', '${this.escape(ep.show_titulo)}')">
+              ▶ Tocar
+            </button>
+            ${ep.spotify_url ? `
+              <a class="btn btn-spotify" style="padding:0.45rem 0.85rem; font-size:0.8rem;" href="${ep.spotify_url}" target="_blank" rel="noopener noreferrer" title="Abrir na App Spotify">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:middle;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.352-.676.463-1.028.247-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.158-.893-.561-.092-.403.158-.802.561-.894 4.571-1.045 8.49-.606 11.649 1.336.352.217.462.678.247 1.029zm1.467-3.262c-.27.44-.848.58-1.288.31-3.224-1.982-8.139-2.555-11.952-1.398-.497.151-1.026-.135-1.177-.633-.151-.497.135-1.026.633-1.177 4.364-1.325 9.773-.687 13.473 1.589.44.27.58.848.311 1.309zm.126-3.41c-3.864-2.295-10.239-2.506-13.916-1.39-.594.18-1.222-.162-1.402-.756-.18-.594.162-1.222.756-1.402 4.23-1.284 11.272-1.037 15.702 1.593.535.317.71 1.01.393 1.545-.317.534-1.01.71-1.533.41z"/></svg>
+              </a>
+            ` : ''}
+          </div>
+        </div>
       `;
     }).join('');
   },

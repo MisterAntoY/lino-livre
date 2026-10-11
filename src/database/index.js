@@ -13,6 +13,10 @@ try {
 let instance = null;
 
 function initDatabase(dbPath = null, setAsInstance = true) {
+  if (setAsInstance && instance) {
+    try { instance.close(); } catch (_) {}
+    instance = null;
+  }
   const targetPath = dbPath || process.env.DATABASE_PATH || path.join(__dirname, '../../biblioteca.db');
   const db = new DatabaseSync(targetPath);
 

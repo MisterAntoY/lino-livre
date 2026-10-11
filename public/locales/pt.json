@@ -29,8 +29,16 @@
       "books": "📚 Livros Digitais",
       "courses": "🎓 Cursos Gratuitos",
       "roadmaps": "🗺️ Roadmaps & Trilhas",
+      "podcasts": "🎙️ Podcasts & Spotify",
       "tips": "💡 Dicas & Ferramentas",
       "dashboard": "📊 Métricas & Fontes"
+    },
+    "podcasts": {
+      "bannerTitle": "Podcasts, Resenhas Literárias e Tradição Oral",
+      "bannerDesc": "Ouça conversas com pensadores angolanos, resenhas em áudio de grandes obras literárias, fábulas ancestrais dramatizadas e dicas rápidas de estudo. Gratuito, sem anúncios invasivos e disponível diretamente no reprodutor integrado ou na app do Spotify.",
+      "openApp": "Abrir no Spotify",
+      "searchPlaceholder": "Pesquisar podcasts ou episódios...",
+      "categoryFilter": "Categoria:"
     },
     "books": {
       "languageFilter": "Idioma:",
@@ -340,6 +348,29 @@
     "52": "Poesia de Jorge Barbosa (1941). Cabo Verde: claridade, mar e saudade. Fundador da Revista Claridade, marco do modernismo cabo-verdiano.",
     "53": "Romance de Fernando Monteiro de Castro Soromenho (1961). Angola colonial: seca, fome e a tragédia dos trabalhadores forçados nos caminhos de ferro.",
     "54": "Romance de Dina Salústio (2009). Cabo Verde: mulheres, tradição e modernidade. Primeira mulher cabo-verdiana a publicar romance. Prémio Camões 2020.",
-    "55": "Romance de Germano Almeida (2018). Cabo Verde: mistério, humor e crítica social. Prémio Camões 2018."
+    "55": "Romance de Germano Almeida (2018). Cabo Verde: mistério, humor e crítica social. Prémio Camões 2018.",
+    "331": "Índice colaborativo de 500+ livros de programação gratuitos em chinês. Python, Go, Java, JavaScript, Rust, C++, ML/AI, sistemas, bancos de dados, DevOps, segurança. Atualizado continuamente.",
+    "332": "Curadoria pessoal de Ruanyf: livros gratuitos de Web, sistemas, linguagens, bancos de dados, IA, matemática. Maioria em inglês, seção chinesa crescente.",
+    "333": "Livros práticos de curta duração para entrada rápida: tutoriais, guias de ferramentas, artigos técnicos selecionados. Foco em 'aprender fazendo'.",
+    "334": "Tradução chinesa curada das listas Awesome oficiais (Python, Go, JS, React, Vue, Node, Java, Rust, ML/AI, etc.). Índice navegável para 200+ categorias técnicas.",
+    "335": "Framework, bibliotecas, ferramentas, recursos de aprendizado Python — versão chinesa do awesome-python oficial. 25k+ estrelas.",
+    "336": "Ecossistema Go: web frameworks, ORM, CLI, microservices, testing, observabilidade. Versão chinesa mantida pela comunidade Jobbole.",
+    "337": "Bibliotecas, frameworks, engines, ferramentas, artigos e recursos JS/TS essenciais. Uma das awesome lists mais antigas e respeitadas.",
+    "338": "Componentes, hooks, state management, testing, SSR/SSG, UI kits, performance — tudo React. 60k+ stars.",
+    "339": "Ecossistema oficial Vue: UI libraries, routers, state, SSR, testing, ferramentas de build, componentes. Mantido pela equipe Vue.",
+    "340": "Packages, frameworks, ferramentas, artigos, recursos de learning para Node.js. Curado por Sindre Sorhus (maior contribuidor npm).",
+    "341": "Spring, microservices, build tools, testing, profiling, cloud, bibliotecas core Java. Versão chinesa do awesome-java.",
+    "342": "Crates, frameworks, ferramentas, livros, artigos, cursos Rust. Mantido pela Rust Foundation / comunidade não-oficial.",
+    "343": "500+ ferramentas de IA selecionadas para usuários chineses: LLMs, agents, RAG, image/audio/video generation, code assistants, productivity.",
+    "344": "Do zero ao full-stack: front-end, back-end, database, DevOps, deployment, architecture. Projetos práticos passo a passo em chinês.",
+    "345": "Guia definitivo para entrevistas de system design: escalabilidade, cache, sharding, message queues, CAP, consistent hashing, case studies. 250k+ stars.",
+    "346": "Notas completas para entrevistas técnicas: redes, OS, DB, Java, Go, Python, C++, algoritmos, system design. 180k+ stars, padrão ouro chinês.",
+    "347": "Soluções comentadas em chinês para 2000+ problemas LeetCode: arrays, strings, trees, graphs, DP, backtracking, bit manipulation. Pensamento algorítmico explicado.",
+    "348": "Roteiros visuais interativos de carreira tech: Frontend, Backend, DevOps, React, Node, Go, Java, Python, QA, Security, Data Science, Mobile. Atualizados anualmente.",
+    "349": "Mapa de competências técnicas da Tencent: front-end, back-end, mobile, AI, security, architecture, engineering culture. Referência chinesa para crescimento de carreira.",
+    "350": "Como explorar GitHub eficientemente: awesome lists, trending, topics, search avançado, descoberta de projetos, contribuição open source. Guia prático em chinês.",
+    "351": "Projetos open source interessantes e de alta qualidade categorizados por 'diversão/utilidade'. Ferramentas CLI, games, utilitários, experiments, arte gerativa.",
+    "352": "Recursos curados para as 20 linguagens TIOBE: frameworks, bibliotecas, ferramentas, livros, cursos. Java, C#, Python, C++, JS, Go, Rust, TS, PHP, Swift, Kotlin, Ruby, Scala, R, Lua, Dart, Julia, Elixir, Haskell.",
+    "353": "Recursos práticos de desenvolvimento: iOS demos, CSS tricks, HTML5, design patterns, arquitetura, performance, security, testing, debugging tools."
   }
 }

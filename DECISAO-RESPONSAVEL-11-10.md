@@ -67,5 +67,10 @@ ser retirado. Quanto mais legal acervo houver, mais duradouro é o projeto.
 
 ---
 
+### 🛡️ Princípio Arquitetónico e Jurídico de Defesa (Adicionado em 11/10/2026):
+> **Posição do Responsável:** A infraestrutura e o banco de dados da aplicação **não armazenam nem guardam nenhum arquivo/livro**. O servidor atua unicamente como **intermediário e indexador de links**, apontando para URLs externas. Esta separação é a linha de defesa técnica e jurídica estabelecida caso ocorra qualquer processo ou disputa legal.
+
+---
+
 *Ficheiro emitido pela equipa de auditoria a pedido do responsável.
 A implementação segue a ordem da tabela do ponto 3.*

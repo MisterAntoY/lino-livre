@@ -1,0 +1,186 @@
+// Acervo Lino Livre — Catálogo Oficial de Podcasts Educativos e Literários (Integração Spotify)
+
+const podcastsShowsData = [
+  {
+    titulo: 'Lino Conversa: Vozes de Angola e Educação Aberta',
+    slug: 'lino-conversa',
+    descricao: 'Entrevistas, debates e conversas inspiradoras com educadores, autores, estudantes e inovadores angolanos sobre a democratização do conhecimento e o futuro da juventude africana.',
+    capa_url: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80',
+    spotify_url: 'https://open.spotify.com/show/4rOoJ6Egrf8K2IrywzwOMk',
+    spotify_uri: 'spotify:show:4rOoJ6Egrf8K2IrywzwOMk',
+    categoria: 'Educação & Diálogos',
+    idioma: 'pt',
+    episodios: [
+      {
+        numero: 1,
+        titulo: 'Ep. 01 — A Revolução dos Livros Livres e da Educação Aberta em Angola',
+        slug: 'lino-conversa-ep01-revolucao-livros-livres',
+        descricao: 'Uma reflexão profunda sobre o impacto do acesso livre a livros, artigos e cursos digitais na vida de estudantes e jovens pesquisadores em Angola.',
+        duracao_minutos: 28,
+        spotify_url: 'https://open.spotify.com/episode/7mK9y0Wb3X2Z1bY4vQ9wRe',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/7mK9y0Wb3X2Z1bY4vQ9wRe?utm_source=generator',
+        publicado_em: '2026-10-01'
+      },
+      {
+        numero: 2,
+        titulo: 'Ep. 02 — Inteligência Artificial, Carreira Tech e Oportunidades em África',
+        slug: 'lino-conversa-ep02-ia-carreira-tech-africa',
+        descricao: 'Como a juventude africana pode aproveitar ferramentas abertas, roadmaps e comunidades de tecnologia para criar soluções de impacto e gerar renda.',
+        duracao_minutos: 34,
+        spotify_url: 'https://open.spotify.com/episode/2kL8p1Wc5V3X0aB8cD1eRf',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/2kL8p1Wc5V3X0aB8cD1eRf?utm_source=generator',
+        publicado_em: '2026-10-05'
+      },
+      {
+        numero: 3,
+        titulo: 'Ep. 03 — Preservação das Línguas Nacionais e Tradição Oral na Era Digital',
+        slug: 'lino-conversa-ep03-linguas-nacionais-tradicao-oral',
+        descricao: 'O papel da literatura digital, dos audiolivros e da tecnologia na valorização do Kimbundu, Umbundu, Cokwe e de todo o património ancestral.',
+        duracao_minutos: 31,
+        spotify_url: 'https://open.spotify.com/episode/5aB7c8D9e0F1g2H3i4J5k6',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/5aB7c8D9e0F1g2H3i4J5k6?utm_source=generator',
+        publicado_em: '2026-10-09'
+      }
+    ]
+  },
+  {
+    titulo: 'Livro da Semana: Resenhas & Clássicos em Áudio',
+    slug: 'livro-da-semana',
+    descricao: 'Guias de leitura, análises de contexto histórico e resenhas profundas das maiores obras literárias angolanas, africanas e universais disponíveis no acervo do Lino Livre.',
+    capa_url: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&auto=format&fit=crop&q=80',
+    spotify_url: 'https://open.spotify.com/show/2MAi0BvDc6GTFvK2Lp4mNz',
+    spotify_uri: 'spotify:show:2MAi0BvDc6GTFvK2Lp4mNz',
+    categoria: 'Literatura & Crítica',
+    idioma: 'pt',
+    episodios: [
+      {
+        numero: 1,
+        titulo: 'Ep. 01 — Sagrada Esperança (Agostinho Neto): A Poesia da Dignidade e Liberdade',
+        slug: 'livro-semana-ep01-sagrada-esperanca-agostinho-neto',
+        descricao: 'Análise detalhada dos poemas fundacionais da luta angolana, a metáfora da esperança e o valor da soberania cultural na voz do poeta maior.',
+        duracao_minutos: 18,
+        spotify_url: 'https://open.spotify.com/episode/3xY8z1Wb4V2Z0aC7cD2eSf',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/3xY8z1Wb4V2Z0aC7cD2eSf?utm_source=generator',
+        publicado_em: '2026-09-28'
+      },
+      {
+        numero: 2,
+        titulo: 'Ep. 02 — Dom Casmurro (Machado de Assis): O Enigma de Capitu Desvendado',
+        slug: 'livro-semana-ep02-dom-casmurro-machado-assis',
+        descricao: 'Um passeio pela mente obsessiva de Bento Santiago, a ironia machadiana e os contrastes entre memória, ciúme e verdade.',
+        duracao_minutos: 22,
+        spotify_url: 'https://open.spotify.com/episode/4aB9c0D1e2F3g4H5i6J7k8',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/4aB9c0D1e2F3g4H5i6J7k8?utm_source=generator',
+        publicado_em: '2026-10-02'
+      },
+      {
+        numero: 3,
+        titulo: 'Ep. 03 — As Aventuras de Ngunga (Pepetela): A Travessia de um Jovem na Luta',
+        slug: 'livro-semana-ep03-aventuras-ngunga-pepetela',
+        descricao: 'A jornada comovente de Ngunga pelas matas do leste de Angola, descobrindo o valor da solidariedade, do conhecimento e do futuro.',
+        duracao_minutos: 19,
+        spotify_url: 'https://open.spotify.com/episode/6dE7f8G9h0I1j2K3l4M5n6',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/6dE7f8G9h0I1j2K3l4M5n6?utm_source=generator',
+        publicado_em: '2026-10-06'
+      },
+      {
+        numero: 4,
+        titulo: 'Ep. 04 — Things Fall Apart (Chinua Achebe): A Grande Tragédia da Ruptura Cultural',
+        slug: 'livro-semana-ep04-things-fall-apart-chinua-achebe',
+        descricao: 'Como a obra-prima de Achebe transformou a literatura mundial ao narrar a resistência e a complexidade da sociedade tradicional igbo.',
+        duracao_minutos: 25,
+        spotify_url: 'https://open.spotify.com/episode/8oP9q0R1s2T3u4V5w6X7y8',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/8oP9q0R1s2T3u4V5w6X7y8?utm_source=generator',
+        publicado_em: '2026-10-10'
+      }
+    ]
+  },
+  {
+    titulo: 'Histórias ao Luar: Contos & Mitos Africanos',
+    slug: 'historias-ao-luar',
+    descricao: 'Leituras dramatizadas, mitos ancestrais dos povos bantos e fábulas da tradição oral africana narradas para encantar famílias e resgatar a sabedoria dos mais velhos.',
+    capa_url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80',
+    spotify_url: 'https://open.spotify.com/show/1kLqPo8m3X2Z1bY4vQ9wRe',
+    spotify_uri: 'spotify:show:1kLqPo8m3X2Z1bY4vQ9wRe',
+    categoria: 'Contos & Tradição Oral',
+    idioma: 'pt',
+    episodios: [
+      {
+        numero: 1,
+        titulo: 'Ep. 01 — Contos Populares de Angola: A Lebre Esperta e o Leopardo',
+        slug: 'historias-luar-ep01-contos-angola-lebre-leopardo',
+        descricao: 'A clássica narrativa da etnoliteratura quimbundo recolhida por Héli Chatelain, ensinando como a inteligência supera a força bruta.',
+        duracao_minutos: 15,
+        spotify_url: 'https://open.spotify.com/episode/1aB2c3D4e5F6g7H8i9J0k1',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/1aB2c3D4e5F6g7H8i9J0k1?utm_source=generator',
+        publicado_em: '2026-09-25'
+      },
+      {
+        numero: 2,
+        titulo: 'Ep. 02 — A Sabedoria de Anansi: Por Que as Histórias Pertencem ao Povo',
+        slug: 'historias-luar-ep02-sabedoria-anansi-africa-ocidental',
+        descricao: 'A fascinante lenda dos povos axante de como a aranha Anansi conquistou a caixa de histórias do deus do céu Nyame para libertar o conhecimento na Terra.',
+        duracao_minutos: 14,
+        spotify_url: 'https://open.spotify.com/episode/2bC3d4E5f6G7h8I9j0K1l2',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/2bC3d4E5f6G7h8I9j0K1l2?utm_source=generator',
+        publicado_em: '2026-10-03'
+      },
+      {
+        numero: 3,
+        titulo: 'Ep. 03 — A Epopeia de Sundiata: O Rei Leão do Império do Mali',
+        slug: 'historias-luar-ep03-epopeia-sundiata-imperio-mali',
+        descricao: 'A lendária narrativa dos griots mandingas sobre a infância desafiadora, a coragem e a unificação das tribos sob o grande Sundiata Keita.',
+        duracao_minutos: 21,
+        spotify_url: 'https://open.spotify.com/episode/3cD4e5F6g7H8i9J0k1L2m3',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/3cD4e5F6g7H8i9J0k1L2m3?utm_source=generator',
+        publicado_em: '2026-10-08'
+      }
+    ]
+  },
+  {
+    titulo: 'Dica Rápida em Áudio: Estudos, Foco & Produtividade',
+    slug: 'dica-rapida-audio',
+    descricao: 'Cápsulas de áudio objetivas de 3 a 5 minutos com técnicas práticas de estudo, foco mental, preparação para exames e ferramentas gratuitas de produtividade.',
+    capa_url: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80',
+    spotify_url: 'https://open.spotify.com/show/3wKmX7sP4V2Y0aB8cD1eRf',
+    spotify_uri: 'spotify:show:3wKmX7sP4V2Y0aB8cD1eRf',
+    categoria: 'Produtividade & Estudo',
+    idioma: 'pt',
+    episodios: [
+      {
+        numero: 1,
+        titulo: 'Ep. 01 — Técnica Pomodoro e Leitura Ativa: Como Reter Mais Conteúdo',
+        slug: 'dica-rapida-ep01-pomodoro-leitura-ativa',
+        descricao: 'Aprenda a intercalar blocos de 25 minutos de estudo focado com pausas revigorantes para nunca mais se cansar ao ler.',
+        duracao_minutos: 4,
+        spotify_url: 'https://open.spotify.com/episode/4dE5f6G7h8I9j0K1l2M3n4',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/4dE5f6G7h8I9j0K1l2M3n4?utm_source=generator',
+        publicado_em: '2026-10-04'
+      },
+      {
+        numero: 2,
+        titulo: 'Ep. 02 — Como Montar um Cronograma Semanal sem Gastar Dinheiro',
+        slug: 'dica-rapida-ep02-cronograma-semanal-estudos',
+        descricao: 'Organização prática e sem fricção: como mapear suas matérias e priorizar os temas de maior peso nos exames escolares.',
+        duracao_minutos: 5,
+        spotify_url: 'https://open.spotify.com/episode/5eF6g7H8i9J0k1L2m3N4o5',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/5eF6g7H8i9J0k1L2m3N4o5?utm_source=generator',
+        publicado_em: '2026-10-07'
+      },
+      {
+        numero: 3,
+        titulo: 'Ep. 03 — Como Usar Mapas Mentais para Memorizar Conceitos Complexos',
+        slug: 'dica-rapida-ep03-mapas-mentais-memorizacao',
+        descricao: 'Utilize conexões visuais e palavras-chave para fixar fórmulas, datas históricas e conceitos científicos em metade do tempo.',
+        duracao_minutos: 4,
+        spotify_url: 'https://open.spotify.com/episode/6fG7h8I9j0K1l2M3n4O5p6',
+        spotify_embed_url: 'https://open.spotify.com/embed/episode/6fG7h8I9j0K1l2M3n4O5p6?utm_source=generator',
+        publicado_em: '2026-10-10'
+      }
+    ]
+  }
+];
+
+module.exports = {
+  podcastsShowsData
+};

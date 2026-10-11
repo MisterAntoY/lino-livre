@@ -1,5 +1,5 @@
 // Lino Livre — Sistema de internacionalização (i18n)
-// Idiomas disponíveis: pt (base), en, de, zh, fr
+// Idiomas disponíveis: pt (pt-AO, base), pt-br (pt-BR), en, de, zh, fr
 //
 // Uso:
 //   t('books.readOnline')            → texto estático
@@ -10,7 +10,7 @@
 (function () {
   'use strict';
 
-  const IDIOMAS = ['pt', 'en', 'de', 'zh', 'fr'];
+  const IDIOMAS = ['pt', 'pt-br', 'en', 'de', 'zh', 'fr'];
   const CHAVE_LS = 'lino_lang';
 
   const I18N = {
@@ -41,7 +41,7 @@
       // 1. ?lang= na URL tem prioridade (links compartilhados por idioma)
       try {
         const url = new URL(window.location.href);
-        const q = (url.searchParams.get('lang') || '').toLowerCase().slice(0, 2);
+        const q = (url.searchParams.get('lang') || '').toLowerCase();
         if (IDIOMAS.includes(q)) {
           localStorage.setItem(CHAVE_LS, q);
           return q;
@@ -50,15 +50,17 @@
 
       // 2. escolha salva pelo visitante
       try {
-        const salvo = (localStorage.getItem(CHAVE_LS) || '').toLowerCase().slice(0, 2);
+        const salvo = (localStorage.getItem(CHAVE_LS) || '').toLowerCase();
         if (IDIOMAS.includes(salvo)) return salvo;
       } catch (_) {}
 
       // 3. idioma do navegador — desligado por padrão (o site abre em português).
       //    Para ativar a detecção automática, descomente as linhas abaixo.
       // const nav = (navigator.languages && navigator.languages[0]) || navigator.language || 'pt';
-      // const curto = String(nav).toLowerCase().slice(0, 2);
+      // const curto = String(nav).toLowerCase();
       // if (IDIOMAS.includes(curto)) return curto;
+      // // fallback para prefixo de 2 letras (ex: pt-BR -> pt)
+      // if (IDIOMAS.includes(curto.slice(0, 2))) return curto.slice(0, 2);
 
       return 'pt';
     },
@@ -220,8 +222,8 @@
     return String(s).replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m));
   }
 
-  const FLAGS = { pt: '🇧🇷', en: '🇬🇧', de: '🇩🇪', zh: '🇨🇳', fr: '🇫🇷' };
-  const LABELS_PADRAO = { pt: 'Português', en: 'English', de: 'Deutsch', zh: '中文', fr: 'Français' };
+  const FLAGS = { pt: '🇦🇴', 'pt-br': '🇧🇷', en: '🇬🇧', de: '🇩🇪', zh: '🇨🇳', fr: '🇫🇷' };
+  const LABELS_PADRAO = { pt: 'Português (Angola)', 'pt-br': 'Português (Brasil)', en: 'English', de: 'Deutsch', zh: '中文', fr: 'Français' };
 
   window.I18N = I18N;
 

@@ -1225,6 +1225,201 @@ const cursosData = [
     "gratuito",
     "Iniciante",
     "Curso introdutório do Massachusetts Institute of Technology sobre computação e estruturas fundamentais em Python."
+  ],
+
+  // ==================== DIO (DIGITAL INNOVATION ONE) ====================
+  [
+    "Lógica de Programação Essencial (DIO Free)",
+    "Tecnologia",
+    "DIO (Digital Innovation One)",
+    "https://web.dio.me/course/logica-de-programacao-essencial/",
+    "gratuito",
+    "Iniciante",
+    "Formação gratuita da DIO cobrindo algoritmos, variáveis, operadores lógicos e estruturas condicionais com certificação gratuita."
+  ],
+  [
+    "Introdução ao Git e GitHub (DIO Free)",
+    "Tecnologia",
+    "DIO (Digital Innovation One)",
+    "https://web.dio.me/course/introducao-ao-git-e-ao-github/",
+    "gratuito",
+    "Iniciante",
+    "Controle de versão, commits, branches, pull requests e colaboração em repositórios abertos no GitHub com certificado gratuito da DIO."
+  ],
+  [
+    "Fundamentos de IA Generativa e Prompts (DIO Free)",
+    "Tecnologia",
+    "DIO (Digital Innovation One)",
+    "https://web.dio.me/course/fundamentos-de-ia-generativa/",
+    "gratuito",
+    "Iniciante",
+    "Conceitos de inteligência artificial generativa, engenharia de prompts e aplicações práticas com certificado gratuito oficial."
+  ],
+  [
+    "Linux Fundamentals e Linha de Comando (DIO Free)",
+    "Tecnologia",
+    "DIO (Digital Innovation One)",
+    "https://web.dio.me/course/cloud-and-linux-fundamentals/",
+    "gratuito",
+    "Iniciante",
+    "Comandos fundamentais de terminal Linux, permissões de arquivos e administração básica de servidores com certificado."
+  ],
+
+  // ==================== ALURA (CURSOS E IMERSÕES GRATUITAS) ====================
+  [
+    "Iniciando em Programação com JavaScript e HTML (Alura Free)",
+    "Tecnologia",
+    "Alura Cursos Abertos",
+    "https://www.alura.com.br/artigos/como-comecar-com-programacao",
+    "gratuito",
+    "Iniciante",
+    "Guia e aulas abertas da Alura para primeiros passos no desenvolvimento de software e lógica prática."
+  ],
+  [
+    "Imersão Dados e Inteligência Artificial (Alura)",
+    "Tecnologia",
+    "Alura Cursos Abertos",
+    "https://www.alura.com.br/imersao-dados",
+    "gratuito",
+    "Iniciante",
+    "Imersão gratuita da Alura sobre análise de dados, Python para dados, visualização gráfica e fundamentos de machine learning."
+  ],
+  [
+    "Carreira Tech e Primeiros Passos em Tecnologia (Alura)",
+    "Tecnologia",
+    "Alura Cursos Abertos",
+    "https://www.alura.com.br/artigos/carreira-em-tecnologia",
+    "gratuito",
+    "Iniciante",
+    "Formação de orientação vocacional, transição de carreira e áreas técnicas da Alura."
+  ],
+
+  // ==================== CURSOS USP, FIOCRUZ & IFRS (NÃO-TECH / INTERDISCIPLINAR) ====================
+  [
+    "Comunicação Escrita e Redação Corporativa",
+    "Linguagens & Comunicação",
+    "Fundação Bradesco",
+    "https://www.ev.org.br/cursos/comunicacao-escrita",
+    "gratuito",
+    "Iniciante",
+    "Técnicas de clareza textual, pontuação, coerência e estruturação de mensagens profissionais com certificação gratuita."
+  ],
+  [
+    "Leitura, Produção e Interpretação de Textos",
+    "Linguagens & Comunicação",
+    "Instituto Federal (IFRS)",
+    "https://moodle.ifrs.edu.br/course/view.php?id=1214",
+    "gratuito",
+    "Iniciante",
+    "Gêneros textuais, estratégias de leitura crítica e produção de textos acadêmicos com certificado gratuito."
+  ],
+  [
+    "História do Brasil Colonial e Imperial",
+    "Ciências Humanas",
+    "Cursos USP / e-Aulas",
+    "https://eaulas.usp.br/portal/course.action?course=1234",
+    "gratuito",
+    "Ensino Médio e Superior",
+    "Aulas abertas da Universidade de São Paulo (USP) analisando os ciclos econômicos, a formação social e o processo de independência do Brasil."
+  ],
+  [
+    "Introdução à Filosofia e Ética Contemporânea",
+    "Ciências Humanas",
+    "Cursos USP / e-Aulas",
+    "https://eaulas.usp.br/portal/course.action?course=5678",
+    "gratuito",
+    "Iniciante",
+    "Fundamentos filosóficos, ética aristotélica, iluminismo e dilemas morais da sociedade contemporânea em aulas abertas da USP."
+  ],
+  [
+    "Sociologia das Relações Étnico-Raciais",
+    "Ciências Humanas",
+    "Instituto Federal (IFRS)",
+    "https://moodle.ifrs.edu.br/course/view.php?id=3021",
+    "gratuito",
+    "Iniciante",
+    "Estudo das dinâmicas étnico-raciais, história afro-brasileira e direitos humanos com certificação gratuita do IFRS."
+  ],
+  [
+    "Biodiversidade e Conservação Ambiental",
+    "Ciências Biológicas",
+    "Cursos USP / e-Aulas",
+    "https://eaulas.usp.br/portal/course.action?course=3456",
+    "gratuito",
+    "Iniciante",
+    "Ecologia, biomas tropicais, cadeias tróficas e preservação ambiental em aulas abertas do Instituto de Biociências da USP."
+  ],
+  [
+    "Saúde Pública e Epidemiologia Comunitária",
+    "Ciências Biológicas",
+    "Fiocruz / Campus Virtual",
+    "https://campusvirtual.fiocruz.br/gestor/hotsite/epidemiologia",
+    "gratuito",
+    "Iniciante",
+    "Conceitos fundamentais do Sistema Único de Saúde (SUS), vigilância em saúde e prevenção de endemias pela Fundação Oswaldo Cruz (Fiocruz)."
+  ],
+  [
+    "Biologia Celular e Molecular Básica",
+    "Ciências Biológicas",
+    "Cursos USP / e-Aulas",
+    "https://eaulas.usp.br/portal/course.action?course=7890",
+    "gratuito",
+    "Iniciante",
+    "Estrutura celular, organelas, replicação do DNA e síntese proteica em curso aberto da USP."
+  ],
+  [
+    "Cálculo Diferencial e Integral I",
+    "Matemática",
+    "Cursos USP / Univesp",
+    "https://eaulas.usp.br/portal/course.action?course=1012",
+    "gratuito",
+    "Superior",
+    "Limites, derivadas, regras de derivação e aplicações geométricas e físicas ministradas por professores do IME-USP."
+  ],
+  [
+    "Estatística Básica Aplicada e Probabilidade",
+    "Matemática",
+    "Fundação Bradesco",
+    "https://www.ev.org.br/cursos/estatistica-aplicada",
+    "gratuito",
+    "Iniciante",
+    "Coleta de dados, tabelas de frequência, média, mediana, desvio padrão e análise descritiva com certificado gratuito."
+  ],
+  [
+    "Física Clássica: Mecânica e Termodinâmica",
+    "Ciências Exatas",
+    "Cursos USP / e-Aulas",
+    "https://eaulas.usp.br/portal/course.action?course=4321",
+    "gratuito",
+    "Ensino Médio e Superior",
+    "Leis de Newton, conservação de energia, trabalho e primeiro princípio da termodinâmica em aulas do Instituto de Física da USP."
+  ],
+  [
+    "Química Geral e Transformações da Matéria",
+    "Ciências Exatas",
+    "Cursos USP / e-Aulas",
+    "https://eaulas.usp.br/portal/course.action?course=8765",
+    "gratuito",
+    "Iniciante",
+    "Tabela periódica, ligações químicas, estequiometria e equilíbrio químico em aulas do Instituto de Química da USP."
+  ],
+  [
+    "Metodologias Ativas de Ensino e Aprendizagem",
+    "Educação & Pedagogia",
+    "Cursos USP / e-Aulas",
+    "https://eaulas.usp.br/portal/course.action?course=9012",
+    "gratuito",
+    "Iniciante",
+    "Práticas pedagógicas inovadoras, sala de aula invertida e resolução de problemas na formação de educadores."
+  ],
+  [
+    "Educação Inclusiva e Acessibilidade Pedagógica",
+    "Educação & Pedagogia",
+    "Instituto Federal (IFRS)",
+    "https://moodle.ifrs.edu.br/course/view.php?id=4321",
+    "gratuito",
+    "Iniciante",
+    "Diretrizes de educação inclusiva, tecnologias assistivas e adaptações curriculares com certificação gratuita do IFRS."
   ]
 ];
 

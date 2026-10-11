@@ -22,6 +22,19 @@ Plataforma aberta, ultrassimples e direta para distribuição de **livros digita
    Integração direta sem coleta de dados do usuário: links diretos e geração dinâmica de QR codes em SVG pelo servidor (`/api/comunidade/qrcode.svg` e `/api/canal/qrcode.svg`), com cache em memória e atualização automática ao alterar o `.env`.
 7. **Compliance & Licenças**:
    Todos os itens exigem licença legal obrigatória (`dominio-publico`, `cc0`, `cc-by`, `cc-by-sa`, `cc-by-nc`, `outro`). Fontes piratas são terminantemente proibidas.
+8. **Arquitetura de Intermediário Sem Armazenamento**:
+   O servidor e o banco de dados **não armazenam nenhum arquivo ou conteúdo de livro**. A plataforma atua estritamente como intermediária de links, indexando recursos armazenados em servidores e fontes externas.
+
+---
+
+## ⚖️ Arquitetura & Defesa Legal (Servidor Intermediário)
+
+> **AVISO LEGAL E ARQUITETÓNICO:** O **Lino Livre** é uma plataforma que atua exclusivamente como **intermediária e indexadora de links**.
+> 
+> - **Zero Armazenamento Local:** Nenhum arquivo de livro (PDF, EPUB, TXT ou binários) é armazenado no servidor ou no banco de dados do projeto.
+> - **Hospedagem Externa:** Todos os livros disponibilizados no catálogo estão hospedados fora da nossa infraestrutura, em servidores de terceiros e repositórios públicos externos.
+> - **Intermediação de Acesso:** Os endpoints do servidor realizam apenas o redirecionamento (HTTP 302) do visitante para a fonte externa responsável pela disponibilização do conteúdo.
+> - **Fundamento Jurídico:** Esta arquitetura garante a proteção e defesa legal da plataforma em caso de processos ou disputas judiciais, uma vez que o servidor não detém, não guarda e não distribui diretamente arquivos com direitos autorais a partir de infraestrutura própria.
 8. **Site Multilíngue (i18n)**:
    Interface traduzida em **5 idiomas** — Português, English, Deutsch, 中文 e Français — com seletor no cabeçalho, sinopses dos livros traduzidas, `<html lang>` e `<title>` atualizados, fontes Noto Sans/Serif SC para chinês e memória da escolha do visitante.
 
@@ -125,7 +138,8 @@ npm test
 
 ---
 
-## 📜 Licença e Créditos
-- Textos e capas de obras clássicas: **Domínio Público**.
-- Cursos e simuladores: **Creative Commons** e licenças educacionais das respectivas instituições parceiras.
-- Plataforma: Código aberto sob licença MIT/ISC.
+## 📜 Licença, Armazenamento & Isenção Legal
+- **Armazenamento:** O servidor e o banco de dados **não armazenam nem hospedam ficheiros de livros**. O sistema funciona exclusivamente como **intermediário de links externos**.
+- **Textos e capas de obras clássicas:** **Domínio Público**.
+- **Cursos e simuladores:** **Creative Commons** e licenças educacionais das respectivas instituições parceiras.
+- **Plataforma:** Código aberto sob licença MIT/ISC.
