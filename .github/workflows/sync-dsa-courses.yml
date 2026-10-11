@@ -1,0 +1,48 @@
+name: 🔬 Sincronização Semanal - Data Science Academy (DSA)
+
+on:
+  schedule:
+    # Executa toda segunda-feira às 09:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-dsa:
+    name: 🔬 Atualizar Catálogo Data Science Academy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Instalar dependências
+        run: npm install
+
+      - name: 🔄 Executar sincronizador Data Science Academy
+        run: node scripts/sync_dsa_courses.js
+
+      - name: 🧪 Validar integridade dos testes
+        run: npm test
+
+      - name: 💾 Commit e Push das atualizações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/database/dsaCoursesData.json DATA-SCIENCE-ACADEMY-STATUS.md
+          if git diff --staged --quiet; then
+            echo "Nenhum novo curso gratuito identificado nesta ronda da Data Science Academy."
+          else
+            git commit -m "chore(sync): atualizar catálogo de cursos gratuitos da Data Science Academy [skip ci]"
+            git push origin main
+          fi

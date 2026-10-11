@@ -1,0 +1,155 @@
+[
+  {
+    "idExterno": "66039200c33c36c9da096a94",
+    "titulo": "Fundamentos de Data Science e Inteligência Artificial",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/fundamentos-de-data-science-e-inteligencia-artificial",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Conheça os fundamentos essenciais e as técnicas modernas utilizadas nos campos da Ciência de Dados e IA. Carga horária estimada: 40h a 60h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Gratuito, Fundamentos, Data Science, Inteligência Artificial.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/8e1463379566a2fc392d3f4eaa8613cd.png",
+    "tags": [
+      "Gratuito",
+      "Fundamentos",
+      "Data Science",
+      "Inteligência Artificial"
+    ]
+  },
+  {
+    "idExterno": "63366140e32fc35c6a75c525",
+    "titulo": "Fundamentos de Engenharia de Dados",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/fundamentos-de-engenharia-de-dados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Conheça os fundamentos da engenharia de dados, principais técnicas, processos e ferramentas. Carga horária estimada: 40h a 60h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Gratuito, Engenharia de Dados, Fundamentos.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/9297c9451128e5e2ae8aa71e713f1762.png",
+    "tags": [
+      "Gratuito",
+      "Engenharia de Dados",
+      "Fundamentos"
+    ]
+  },
+  {
+    "idExterno": "68b0938851b398eadc0f16d3",
+    "titulo": "Fundamentos de Linguagem Python - Do Básico a Aplicações de IA",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/fundamentos-de-linguagem-python-do-basico-a-aplicacoes-de-ia",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Domine Python do básico à IA. O curso completo e gratuito que vai transformar sua carreira. Carga horária estimada: 60h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Gratuito, Linguagem Python, PyTorch, PydanticAI, Deep Learning, Inteligência Artificial, Reinforcement Learning, RAG.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/e2f140f633a8a30a3208574cdd7f59de.png",
+    "tags": [
+      "Gratuito",
+      "Linguagem Python",
+      "PyTorch",
+      "PydanticAI",
+      "Deep Learning",
+      "Inteligência Artificial",
+      "Reinforcement Learning",
+      "RAG"
+    ]
+  },
+  {
+    "idExterno": "63c080c208bce56ae60d0833",
+    "titulo": "Microsoft Power BI Para Business Intelligence e Data Science",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/microsoft-power-bi-para-business-intelligence-e-data-science",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Desenvolva suas habilidades de análise e visualização de dados com o Microsoft Power BI. Carga horária estimada: 72h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Gratuito, Fundamentos, Power BI, Data Science, Business, Business Intelligence.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/bbaf6af9eae0170d188653e362b94f00.png",
+    "tags": [
+      "Gratuito",
+      "Fundamentos",
+      "Power BI",
+      "Data Science",
+      "Business",
+      "Business Intelligence"
+    ]
+  },
+  {
+    "idExterno": "6a9f0c5ae638c764af03a3a8",
+    "titulo": "Cursos Bônus - Generative AI Engineer",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/cursos-bonus-de-aperfeicoamento-profissional-ia-generativa",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Cursos bônus gratuitos e exclusivos para alunos da Formação Generative AI Engineer 4.0. Carga horária estimada: 40h a 60h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Sistema Operacional Linux, Docker, Kubernetes, Governança de Dados, Soft Skills, E-Gov Analytics, Gratuito, Certificação Microsoft, Claude Code, CoPilot.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/5182f36d4e5472af42bc672acbedb8c3.png",
+    "tags": [
+      "Sistema Operacional Linux",
+      "Docker",
+      "Kubernetes",
+      "Governança de Dados",
+      "Soft Skills",
+      "E-Gov Analytics",
+      "Gratuito",
+      "Certificação Microsoft",
+      "Claude Code",
+      "CoPilot"
+    ]
+  },
+  {
+    "idExterno": "6a8b8b318029d1d16a0bc1a8",
+    "titulo": "Cursos Bônus - Microsoft Career e Certification Hub",
+    "tipo": "curso",
+    "area": "Metodologias Ágeis & Carreira Tech",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/cursos-bonus-de-aperfeicoamento-profissional-microsoft-career-e-certification-hub",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Cursos e simulados gratuitos e exclusivos para alunos da Formação Analista Microsoft 4.0. Carga horária estimada: 40h a 60h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Sistema Operacional Linux, Docker, Kubernetes, Governança de Dados, Soft Skills, E-Gov Analytics, Gratuito, Certificação Microsoft, Claude Code, CoPilot.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/fd28557877686754f610d0368af2db33.png",
+    "tags": [
+      "Sistema Operacional Linux",
+      "Docker",
+      "Kubernetes",
+      "Governança de Dados",
+      "Soft Skills",
+      "E-Gov Analytics",
+      "Gratuito",
+      "Certificação Microsoft",
+      "Claude Code",
+      "CoPilot"
+    ]
+  },
+  {
+    "idExterno": "64a32a07191fc37b3c016cc4",
+    "titulo": "Cursos Bônus de Aperfeiçoamento Profissional",
+    "tipo": "curso",
+    "area": "Metodologias Ágeis & Carreira Tech",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/cursos-de-aperfeicoamento-profissional-bonus-da-formacao",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Os cursos de Aperfeiçoamento Profissional são cursos de bônus complementares, gratuitos e exclusivos, para alunos das Formações e Pós-Graduações DSA. Carga horária estimada: 40h a 60h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Introdução à Programação, Sistema Operacional Linux, Docker, Kubernetes, Governança de Dados, Empreendedorismo, Web Scraping, Soft Skills, E-Gov Analytics, Machine Learning, Linguagem Go, Linguagem JavaScript, Linguagem Julia, Gratuito.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/b763d122d7960c41a3f19eabd7cdf41e.png",
+    "tags": [
+      "Introdução à Programação",
+      "Sistema Operacional Linux",
+      "Docker",
+      "Kubernetes",
+      "Governança de Dados",
+      "Empreendedorismo",
+      "Web Scraping",
+      "Soft Skills",
+      "E-Gov Analytics",
+      "Machine Learning",
+      "Linguagem Go",
+      "Linguagem JavaScript",
+      "Linguagem Julia",
+      "Gratuito"
+    ]
+  }
+]

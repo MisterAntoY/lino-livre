@@ -518,6 +518,15 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resGuanabara.data.some(c => c.titulo.includes('HTML5 e CSS3')), 'Deve conter módulos de HTML5 e CSS3');
     assert.ok(resGuanabara.data.some(c => c.descricao.includes('Gustavo Guanabara')), 'Deve creditar o Prof. Gustavo Guanabara');
     assert.ok(resGuanabara.data.some(c => c.descricao.includes('Certificado oficial gratuito')), 'Cursos devem garantir certificação 100% gratuita');
+
+    // 14.4 - Data Science Academy (DSA)
+    const resDsa = await request('/api/cursos?plataforma=Data+Science+Academy');
+    assert.equal(resDsa.status, 200);
+    assert.ok(Array.isArray(resDsa.data));
+    assert.ok(resDsa.data.length >= 7, 'Deve conter cursos gratuitos da Data Science Academy');
+    assert.ok(resDsa.data.some(c => c.titulo.includes('Python') || c.titulo.includes('Power BI')), 'Deve conter cursos de Python e Power BI');
+    assert.ok(resDsa.data.some(c => c.url.includes('datascienceacademy.com.br')), 'Deve apontar para URLs oficiais da DSA');
+    assert.ok(resDsa.data.some(c => c.descricao.includes('Data Science Academy')), 'Deve conter descrição oficial da DSA');
   });
 });
 

@@ -1645,6 +1645,11 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
 }
 
+.card-featured-dsa {
+  border-color: #bae6fd !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+}
+
 .pill-bradesco.active {
   background: #0284c7 !important;
   color: #ffffff !important;

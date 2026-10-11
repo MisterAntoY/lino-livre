@@ -1,9 +1,14 @@
 const { getDatabase } = require('./index');
 const { cursosData } = require('./cursosSeedData');
 const { githubBooks } = require('./githubBooksSeedData');
+const { githubZhBooks } = require('./githubZhBooksSeedData');
+const { githubFrBooks } = require('./githubFrBooksSeedData');
+const { githubEnBooks } = require('./githubEnBooksSeedData');
+const { romanceClassics } = require('./romanceClassicsSeedData');
 const { dioBootcampsList } = require('./dioBootcampsData');
 const { santanderAcademyList } = require('./santanderAcademyData');
 const { cursoEmVideoList } = require('./cursoEmVideoData');
+const { dsaCoursesList } = require('./dsaCoursesData');
 const { livrosAfricaData } = require('./livrosAfricaData');
 const { roadmapShList } = require('./roadmapShData');
 const { podcastsShowsData } = require('./podcastsSeedData');
@@ -636,6 +641,11 @@ function seed(dbInstance = null) {
   // Curso em Vídeo (Prof. Gustavo Guanabara - 25 cursos completos com certificados gratuitos)
   for (const v of cursoEmVideoList) {
     insertCurso.run(v.titulo, 'curso', v.area, v.plataforma, v.url, v.licenca, v.nivel, v.descricao);
+  }
+
+  // Data Science Academy (DSA - Cursos gratuitos oficiais com certificação gratuita de conclusão)
+  for (const d of dsaCoursesList) {
+    insertCurso.run(d.titulo, d.tipo || 'curso', d.area, d.plataforma, d.url, d.licenca, d.nivel, d.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

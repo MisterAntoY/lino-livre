@@ -1021,6 +1021,7 @@ const app = {
       const isSantander = (c.plataforma || '').includes('Santander') || (c.titulo || '').includes('Santander');
       const isDio = (c.plataforma || '').includes('DIO') || (c.titulo || '').includes('DIO');
       const isCursoEmVideo = (c.plataforma || '').includes('Curso em Vídeo') || (c.titulo || '').includes('Curso em Vídeo');
+      const isDsa = (c.plataforma || '').includes('Data Science Academy') || (c.plataforma || '').includes('DSA') || (c.titulo || '').includes('Data Science Academy');
       const isYouTube = !isCursoEmVideo && ((c.plataforma || '').includes('YouTube') || (c.descricao || '').toLowerCase().includes('youtube'));
       const isGuiaDeTI = (c.plataforma || '').includes('Guia de TI');
       const isBradesco = (c.plataforma || '').includes('Fundação Bradesco');
@@ -1052,6 +1053,9 @@ const app = {
       } else if (isCursoEmVideo) {
         btnTexto = '📺 Assistir no YouTube';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffedd5; color:#c2410c; border-color:#fdba74; font-weight:600;">📺 Curso em Vídeo</span>`;
+      } else if (isDsa) {
+        btnTexto = '🔬 Acessar DSA';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">🔬 Data Science Academy</span>`;
       } else if (isYouTube) {
         btnTexto = t('courses.btnYoutube');
         extraBadge = `<span class="badge-youtube-cert">${t('courses.badgeYoutube')}</span>`;
@@ -1081,15 +1085,17 @@ const app = {
           ? 'card-featured-dio'
           : (isCursoEmVideo
             ? 'card-featured-cursoemvideo'
-            : (isYouTube
-              ? 'card-featured-youtube'
-              : (isGuiaDeTI
-                ? 'card-featured-guiadeti'
-                : (isBradesco
-                  ? 'card-featured-bradesco'
-                  : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : ''))))));
+            : (isDsa
+              ? 'card-featured-dsa'
+              : (isYouTube
+                ? 'card-featured-youtube'
+                : (isGuiaDeTI
+                  ? 'card-featured-guiadeti'
+                  : (isBradesco
+                    ? 'card-featured-bradesco'
+                    : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')))))));
 
-      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
+      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
 
       let logoHtml = '🏛️';
       if (isDio) {
@@ -1098,6 +1104,8 @@ const app = {
         logoHtml = `<img src="/img/logos/santander.png" alt="Santander" class="course-platform-logo">`;
       } else if (isCursoEmVideo) {
         logoHtml = `<img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="course-platform-logo logo-round">`;
+      } else if (isDsa) {
+        logoHtml = `<img src="/img/logos/dsa.png" alt="Data Science Academy" class="course-platform-logo">`;
       } else if (isBradesco) {
         logoHtml = `<img src="/img/logos/bradesco.svg" alt="Fundação Bradesco" class="course-platform-logo">`;
       } else if (isGuiaDeTI) {
