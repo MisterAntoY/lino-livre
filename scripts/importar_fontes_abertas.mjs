@@ -574,63 +574,76 @@ async function importarChino(aplicar) {
 // Modelo intermediário: guardamos metadados e link de leitura em gutenberg.org (302).
 async function importarGutenberg(aplicar) {
   const UA = { 'User-Agent': 'LinoLivre/1.0 (educacional; lino-livre)' };
-  const buscar = async (params) => {
+  // Cursor de paginação: o Gutendex (Cloudflare) bloqueia após ~30 páginas seguidas.
+  // Guardamos a página seguinte por consulta em .scratch/gutenberg-cursor.json para que
+  // re-execuções retomem de onde pararam e acumulem progresso (import idempotente).
+  const CURSOR_FILE = '.scratch/gutenberg-cursor.json';
+  const resetar = process.argv.includes('--reset');
+  let cursor = {};
+  if (!resetar) { try { cursor = JSON.parse(fs.readFileSync(CURSOR_FILE, 'utf8')); } catch { cursor = {}; } }
+  const guardarCursor = () => { try { fs.writeFileSync(CURSOR_FILE, JSON.stringify(cursor, null, 2)); } catch {} };
+
+  const buscar = async (params, chave) => {
     const out = [];
-    let page = 1;
+    const rotuloQ = params.search || params.languages;
+    if (cursor[chave] === 'done') { console.log(`   ⏭ ${rotuloQ}: já completo (cursor) — a saltar`); return out; }
+    let page = Number(cursor[chave]) || 1;
+    const paginaInicial = page;
+    let bloqueado = false;
     for (;;) {
       const url = 'https://gutendex.com/books/?' + new URLSearchParams({ ...params, page });
       let j = null;
-      // retries pacientes com backoff exponencial (Gutendex faz rate-limit em série)
-      for (let a = 0; a < 6; a++) {
+      for (let a = 0; a < 3; a++) {
         try {
           const ctl = new AbortController();
-          const to = setTimeout(() => ctl.abort(), 25000);
+          const to = setTimeout(() => ctl.abort(), 12000);
           const r = await fetch(url, { headers: UA, signal: ctl.signal });
           clearTimeout(to);
           if (r.ok) { j = await r.json(); break; }
-          if (r.status === 429) { await new Promise(s => setTimeout(s, 2000 * (a + 1))); continue; }
-          // outro erro transitório: espera e tenta de novo
-          await new Promise(s => setTimeout(s, 1500 * (a + 1)));
-        } catch { await new Promise(s => setTimeout(s, 1500 * (a + 1))); }
-      }
-      if (!j) {
-        // não abandonar tudo: espera extra e tenta mais uma vez esta página
-        await new Promise(s => setTimeout(s, 4000));
-        for (let a = 0; a < 3 && !j; a++) {
-          try {
-            const ctl = new AbortController();
-            const to = setTimeout(() => ctl.abort(), 25000);
-            const r = await fetch(url, { headers: UA, signal: ctl.signal });
-            clearTimeout(to);
-            if (r.ok) { j = await r.json(); break; }
-          } catch {}
-          await new Promise(s => setTimeout(s, 3000 * (a + 1)));
+          if (r.status === 429) { await new Promise(s => setTimeout(s, 15000)); continue; }
+          await new Promise(s => setTimeout(s, 4000));
+        } catch {
+          await new Promise(s => setTimeout(s, 20000 * (a + 1)));
         }
       }
-      if (!j) { console.warn(`   ⚠ página ${page} (${params.search || params.languages}) desistiu — a saltar`); page++; continue; }
+      if (!j) { bloqueado = true; cursor[chave] = page; console.warn(`   ⚠ ${rotuloQ}: bloqueio na página ${page} — cursor guardado (re-executar retoma aqui)`); break; }
       out.push(...(j.results || []));
-      if (!j.next) break;
+      if (page % 25 === 0) console.log(`     … ${rotuloQ}: ${out.length} obtidos (página ${page})`);
+      if (!j.next) { cursor[chave] = 'done'; break; }
       page++;
-      await new Promise(s => setTimeout(s, 1200)); // respeitar rate limits
+      guardarCursor(); // persistir entre páginas p/ sobreviver a interrupções
+      await new Promise(s => setTimeout(s, 2500));
     }
+    if (!bloqueado) guardarCursor();
+    console.log(`   ✔ ${rotuloQ}: ${out.length} obtidos${bloqueado ? ` (parcial, págs ${paginaInicial}–${page - 1})` : ' (completo)'}`);
     return out;
   };
 
   console.log('📚 PROJECT GUTENBERG (Gutendex, domínio público)');
-  const consultas = [
-    { rotulo: 'africanos/tema África', params: { search: 'african' } },
-    { rotulo: 'portugueses (pt)', params: { languages: 'pt' } },
+  // Consultas-alvo. Dedup por ID Gutenberg torna re-execuções idempotentes.
+  // Use --langs=fr,de,zh para importar só idiomas específicos (evita re-buscar os já feitos).
+  const TODAS_LINGUAS = [
+    { rotulo: 'africanos/tema África', chave: 'africa', params: { search: 'african' } },
+    { rotulo: 'portugueses (pt)', chave: 'pt', params: { languages: 'pt' } },
+    { rotulo: 'franceses (fr) — inclui África francófona', chave: 'fr', params: { languages: 'fr' } },
+    { rotulo: 'alemães (de)', chave: 'de', params: { languages: 'de' } },
+    { rotulo: 'chineses (zh)', chave: 'zh', params: { languages: 'zh' } },
   ];
+  const argLangs = process.argv.find(a => a.startsWith('--langs='));
+  const soEstas = argLangs ? new Set(argLangs.slice(8).split(',').map(s => s.trim())) : null;
+  const consultas = soEstas ? TODAS_LINGUAS.filter(q => soEstas.has(q.chave)) : TODAS_LINGUAS;
+  if (soEstas && consultas.length === 0) { console.error(`❌ nenhum idioma válido em --langs (opções: ${TODAS_LINGUAS.map(q => q.chave).join(',')})`); process.exit(1); }
+
   const fonteId = await garantirFonte({ slug: 'gutenberg', nome: 'Project Gutenberg', tipo: 'api', url_base: 'https://gutendex.com' });
-  const catId = await garantirCategoria('📚 Project Gutenberg (Domínio Público)', 'Literatura e obras em domínio público do Project Gutenberg, incluindo títulos sobre África e literatura portuguesa. Leitura e download no próprio Gutenberg (redirect).');
+  const catId = await garantirCategoria('📚 Project Gutenberg (Domínio Público)', 'Literatura e obras em domínio público do Project Gutenberg, incluindo títulos sobre África e literatura portuguesa, francesa, alemã e chinesa. Leitura e download no próprio Gutenberg (redirect).');
 
   const c = novoConstrutor(fonteId, catId);
   await c.preparar();
   const vistos = new Set();
   let totalBruto = 0;
 
-  for (const { rotulo, params } of consultas) {
-    const books = await buscar(params);
+  for (const { rotulo, chave, params } of consultas) {
+    const books = await buscar(params, chave);
     totalBruto += books.length;
     let n = 0;
     for (const b of books) {
