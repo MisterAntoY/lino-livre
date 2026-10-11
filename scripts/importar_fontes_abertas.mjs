@@ -39,7 +39,10 @@ function esc(v) {
 }
 
 function wrangler(cmd) {
-  return execSync(`npx wrangler d1 execute ${DB} --remote ${cmd}`, { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'] });
+  // maxBuffer: o wrangler imprime um resumo JSON por execute; com lotes grandes
+  // (centenas de livros) ultrapassa o default de 1MB do Node e o spawnSync devolve
+  // ENOBUFS. Os restantes scripts do repo usam já 50MB — alinhar aqui.
+  return execSync(`npx wrangler d1 execute ${DB} --remote ${cmd}`, { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 50 * 1024 * 1024 });
 }
 
 /** INSERTs/DDL com emoji passam por ficheiro --file (imune a quoting de shell). */
@@ -583,40 +586,56 @@ async function importarGutenberg(aplicar) {
   if (!resetar) { try { cursor = JSON.parse(fs.readFileSync(CURSOR_FILE, 'utf8')); } catch { cursor = {}; } }
   const guardarCursor = () => { try { fs.writeFileSync(CURSOR_FILE, JSON.stringify(cursor, null, 2)); } catch {} };
 
-  const buscar = async (params, chave) => {
-    const out = [];
-    const rotuloQ = params.search || params.languages;
-    if (cursor[chave] === 'done') { console.log(`   ⏭ ${rotuloQ}: já completo (cursor) — a saltar`); return out; }
-    let page = Number(cursor[chave]) || 1;
-    const paginaInicial = page;
-    let bloqueado = false;
-    for (;;) {
-      const url = 'https://gutendex.com/books/?' + new URLSearchParams({ ...params, page });
-      let j = null;
-      for (let a = 0; a < 3; a++) {
+  // Paginação robusta por página. O timeout cobre fetch + json (o Cloudflare sob
+  // bloqueio envia headers e estagna o corpo — "slow-drip"; limpar o timeout após
+  // fetch faria r.json() pendurar para sempre). Devolve {results, next} ou null se bloqueado.
+  const fetchPagina = async (params, page) => {
+    const url = 'https://gutendex.com/books/?' + new URLSearchParams({ ...params, page });
+    for (let a = 0; a < 3; a++) {
+      try {
+        const ctl = new AbortController();
+        const to = setTimeout(() => ctl.abort(), 15000);
         try {
-          const ctl = new AbortController();
-          const to = setTimeout(() => ctl.abort(), 12000);
           const r = await fetch(url, { headers: UA, signal: ctl.signal });
-          clearTimeout(to);
-          if (r.ok) { j = await r.json(); break; }
+          if (r.ok) return await r.json();
           if (r.status === 429) { await new Promise(s => setTimeout(s, 15000)); continue; }
-          await new Promise(s => setTimeout(s, 4000));
-        } catch {
-          await new Promise(s => setTimeout(s, 20000 * (a + 1)));
+        } finally {
+          clearTimeout(to);
         }
+        await new Promise(s => setTimeout(s, 4000));
+      } catch {
+        await new Promise(s => setTimeout(s, 20000 * (a + 1)));
       }
-      if (!j) { bloqueado = true; cursor[chave] = page; console.warn(`   ⚠ ${rotuloQ}: bloqueio na página ${page} — cursor guardado (re-executar retoma aqui)`); break; }
-      out.push(...(j.results || []));
-      if (page % 25 === 0) console.log(`     … ${rotuloQ}: ${out.length} obtidos (página ${page})`);
-      if (!j.next) { cursor[chave] = 'done'; break; }
-      page++;
-      guardarCursor(); // persistir entre páginas p/ sobreviver a interrupções
-      await new Promise(s => setTimeout(s, 2500));
     }
-    if (!bloqueado) guardarCursor();
-    console.log(`   ✔ ${rotuloQ}: ${out.length} obtidos${bloqueado ? ` (parcial, págs ${paginaInicial}–${page - 1})` : ' (completo)'}`);
-    return out;
+    return null;
+  };
+
+  // Constrói e aplica um lote de livros Gutenberg (dedup por ID via INSERT OR IGNORE).
+  const aplicarLote = async (books, fonteId, catId) => {
+    const c = novoConstrutor(fonteId, catId);
+    await c.preparar();
+    const vistos = new Set();
+    for (const b of books) {
+      if (vistos.has(b.id)) continue;
+      vistos.add(b.id);
+      if (b.copyright !== false || b.media_type !== 'Text') continue; // só PD
+      const fmt = b.formats || {};
+      const leitura = fmt['text/html'] || fmt['text/plain; charset=utf-8'] || Object.values(fmt).find(u => /\.html?$|\.txt/i.test(u));
+      if (!leitura) continue;
+      const autor = (b.authors && b.authors[0] && b.authors[0].name) || 'Autor desconhecido';
+      const autorDisplay = autor.includes(',') ? autor.split(',').map(s => s.trim()).reverse().join(' ') : autor;
+      const sinopse = (b.summaries && b.summaries[0]) ? b.summaries[0].replace(/\s*\(This is an automatically generated summary\.\)\s*$/i, '').trim() : null;
+      c.add({
+        titulo: b.title, autor: autorDisplay, idioma: (b.languages && b.languages[0]) || 'en', licenca: 'dominio-publico',
+        capaUrl: fmt['image/jpeg'] || null, sinopse, ano: b.authors?.[0]?.birth_year || null,
+        urlLeitura: leitura, formato: 'html', fonteIdExterno: String(b.id),
+      });
+    }
+    if (c.livrosRegistos.length === 0) return 0;
+    const tabelas = await c.fechar();
+    const ficheiros = gerarSqlLotes(tabelas, 'gutenberg');
+    if (aplicar) ficheiros.forEach(applyFile); // lança em erro se a D1 falhar → não marca done
+    return c.livrosRegistos.length;
   };
 
   console.log('📚 PROJECT GUTENBERG (Gutendex, domínio público)');
@@ -637,44 +656,65 @@ async function importarGutenberg(aplicar) {
   const fonteId = await garantirFonte({ slug: 'gutenberg', nome: 'Project Gutenberg', tipo: 'api', url_base: 'https://gutendex.com' });
   const catId = await garantirCategoria('📚 Project Gutenberg (Domínio Público)', 'Literatura e obras em domínio público do Project Gutenberg, incluindo títulos sobre África e literatura portuguesa, francesa, alemã e chinesa. Leitura e download no próprio Gutenberg (redirect).');
 
-  const c = novoConstrutor(fonteId, catId);
-  await c.preparar();
-  const vistos = new Set();
-  let totalBruto = 0;
+  let totalInseridos = 0;
+  const LOTE_PAGINAS = 20; // aplicar a cada 20 páginas p/ progresso durável
 
   for (const { rotulo, chave, params } of consultas) {
-    const books = await buscar(params, chave);
-    totalBruto += books.length;
-    let n = 0;
-    for (const b of books) {
-      if (vistos.has(b.id)) continue;
-      vistos.add(b.id);
-      // só domínio público (copyright=false); ignora áudio/imagem
-      if (b.copyright !== false || b.media_type !== 'Text') continue;
-      const fmt = b.formats || {};
-      const leitura = fmt['text/html'] || fmt['text/plain; charset=utf-8'] || Object.values(fmt).find(u => /\.html?$|\.txt/i.test(u));
-      if (!leitura) continue;
-      const capa = fmt['image/jpeg'] || null;
-      const idioma = (b.languages && b.languages[0]) || 'en';
-      const autor = (b.authors && b.authors[0] && b.authors[0].name) || 'Autor desconhecido';
-      // inverter "Sobrenome, Primeiro" → "Primeiro Sobrenome" para display
-      const autorDisplay = autor.includes(',') ? autor.split(',').map(s => s.trim()).reverse().join(' ') : autor;
-      const sinopse = (b.summaries && b.summaries[0]) ? b.summaries[0].replace(/\s*\(This is an automatically generated summary\.\)\s*$/i, '').trim() : null;
-      c.add({
-        titulo: b.title, autor: autorDisplay, idioma, licenca: 'dominio-publico',
-        capaUrl: capa, sinopse, ano: b.authors?.[0]?.birth_year || null,
-        urlLeitura: leitura, formato: 'html', fonteIdExterno: String(b.id),
-      });
-      n++;
-    }
-    console.log(`   ✔ ${rotulo}: ${books.length} obtidos, ${n} novos elegíveis`);
-  }
-  console.log(`   ✔ ${c.livrosRegistos.length} livros prontos (de ${totalBruto} brutos, ${vistos.size} únicos)`);
+    if (cursor[chave] === 'done') { console.log(`   ⏭ ${rotulo}: já completo (cursor) — a saltar`); continue; }
+    let page = Number(cursor[chave]) || 1;
+    console.log(`   ▶ ${rotulo}: a iniciar na página ${page}`);
+    let acumulados = [];
+    let paginasNesteLote = 0;
+    let completa = false;
+    let bloqueado = false;
+    let obtidos = 0;
 
-  const tabelas = await c.fechar();
-  const ficheiros = gerarSqlLotes(tabelas, 'gutenberg');
-  if (aplicar) ficheiros.forEach(applyFile);
-  return c.livrosRegistos.length;
+    for (;;) {
+      const j = await fetchPagina(params, page);
+      if (!j) { bloqueado = true; break; }
+      acumulados.push(...(j.results || []));
+      obtidos += (j.results || []).length;
+      paginasNesteLote++;
+      if (!j.next) completa = true;
+
+      // aplicar em lotes p/ progresso durável: cada lote é aplicado ANTES de o
+      // cursor avançar, e o cursor só grava 'done' após o apply (que lança erro
+      // se a D1 falhar). Assim nunca há perda silenciosa de livros.
+      if (paginasNesteLote >= LOTE_PAGINAS || completa) {
+        const n = await aplicarLote(acumulados, fonteId, catId);
+        totalInseridos += n;
+        console.log(`     … ${rotulo}: ${obtidos} obtidos, ${n} elegíveis (até página ${page})`);
+        acumulados = [];
+        paginasNesteLote = 0;
+        if (aplicar) { // em dry-run não persistimos cursor (nada foi aplicado)
+          cursor[chave] = completa ? 'done' : page + 1;
+          guardarCursor();
+        }
+        if (completa) break;
+      }
+      page++;
+      await new Promise(s => setTimeout(s, 2500));
+    }
+
+    if (bloqueado) {
+      // aplicar o que já foi acumulado antes do bloqueio (páginas válidas já
+      // obtidas neste lote parcial). O cursor só avança para a página que falhou
+      // DEPOIS destas estarem aplicadas — senão 21–24 ficariam perdidas.
+      if (acumulados.length > 0) {
+        const n = await aplicarLote(acumulados, fonteId, catId);
+        totalInseridos += n;
+        console.log(`     … ${rotulo}: lote parcial aplicado (${n} elegíveis) antes do bloqueio`);
+      }
+      console.warn(`   ⚠ ${rotulo}: bloqueio na página ${page} — cursor guardado (re-executar retoma aqui)`);
+      if (aplicar) { cursor[chave] = page; guardarCursor(); }
+    } else {
+      console.log(`   ✔ ${rotulo}: ${obtidos} obtidos (completo)`);
+    }
+    if (completa) console.log(`   ✔ ${rotulo} concluído e aplicado.`);
+  }
+
+  console.log(`   ✔ ${totalInseridos} livros Gutenberg aplicados nesta execução`);
+  return totalInseridos;
 }
 
 // ───────────────── SIYAVULA (manuais sul-africanos, CC-BY) ─────────────────
