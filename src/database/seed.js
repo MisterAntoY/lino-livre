@@ -601,7 +601,7 @@ function seed(dbInstance = null) {
         insertLink.run(bId, fmt, lk.url, 0, 1);
       }
     }
-
+  }
 
   // Inserir a Coleção Monumental de África (5 idiomas: pt, en, fr, de, zh)
   const catAfricaMap = {
