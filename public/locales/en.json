@@ -19,6 +19,25 @@
       "channelTitle": "Follow the Lino Livre WhatsApp channel",
       "addBook": "+ Add Book"
     },
+    "goal": {
+      "badge": "🎯 Global Collective Goal",
+      "title": "Towards 10 Million Free Books",
+      "subtitle": "An open, universal and free library for all students, educators and readers worldwide. Track our real-time progress and be part of this historic journey!",
+      "currentIndexed": "Open Books Indexed",
+      "target": "10,000,000",
+      "pctOfTarget": "{p}% of goal",
+      "nextMilestone": "Next milestone",
+      "milestoneReached": "Reached",
+      "statIndexed": "Current Catalog",
+      "statTarget": "Global Target",
+      "statRemaining": "Remaining",
+      "statNextTarget": "Immediate Target",
+      "btnContribute": "Suggest Open Book",
+      "btnShare": "Share Journey",
+      "btnJoin": "Community",
+      "copied": "Journey link and message copied to clipboard!",
+      "shareText": "📚 Join Lino Livre on the journey towards 10 Million Free Books! We already have {n} open access books indexed. Read and contribute:"
+    },
     "tabs": {
       "books": "📚 Digital Books",
       "courses": "🎓 Free Courses",

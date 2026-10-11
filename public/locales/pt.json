@@ -25,6 +25,25 @@
       "cardDesc": "Contribua com qualquer valor para ajudar a manter o servidor e expandir o acervo livre.",
       "cardBtn": "Apoiar Projeto"
     },
+    "goal": {
+      "badge": "🎯 Meta Coletiva Global",
+      "title": "Rumo aos 10 Milhões de Livros Livres",
+      "subtitle": "Uma biblioteca aberta, universal e gratuita para todos os estudantes, professores e leitores do mundo. Acompanhe o avanço em tempo real e faça parte desta jornada histórica!",
+      "currentIndexed": "Obras Abertas Indexadas",
+      "target": "10.000.000",
+      "pctOfTarget": "{p}% da meta",
+      "nextMilestone": "Próximo marco",
+      "milestoneReached": "Atingido",
+      "statIndexed": "Acervo Atual",
+      "statTarget": "Alvo Global",
+      "statRemaining": "Faltam Indexar",
+      "statNextTarget": "Meta Imediata",
+      "btnContribute": "Indicar Livro Aberto",
+      "btnShare": "Partilhar a Jornada",
+      "btnJoin": "Comunidade",
+      "copied": "Link e mensagem da jornada copiados para a área de transferência!",
+      "shareText": "📚 Junte-se ao Lino Livre na jornada dos 10 Milhões de Livros Livres! Já temos {n} obras abertas e gratuitas indexadas. Venha ler e contribuir:"
+    },
     "tabs": {
       "books": "📚 Livros Digitais",
       "courses": "🎓 Cursos Gratuitos",

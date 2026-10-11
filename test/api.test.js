@@ -588,5 +588,71 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resAnssi.status, 200);
     assert.ok(resAnssi.data.length >= 1, 'Deve conter formação SecNumacadémie da ANSSI');
   });
+
+
+  // Teste 17: Recursos Técnicos e Livros de Programação em Espanhol (ES)
+  test('17. Acervo de Tecnologia e Programação em Espanhol (Livros e Recursos Open Access)', async () => {
+    // 17.1 - Consulta por idioma Espanhol (es)
+    const resEs = await request('/api/livros?idioma=es&limit=50');
+    assert.equal(resEs.status, 200);
+    assert.ok(resEs.data.total >= 25, 'Deve conter ao menos 25 livros técnicos em espanhol cadastrados');
+    assert.ok(resEs.data.data.some(l => l.titulo.includes('Pro Git')), 'Deve conter Pro Git em espanhol');
+    assert.ok(resEs.data.data.some(l => l.titulo.includes('Eloquent JavaScript')), 'Deve conter Eloquent JavaScript em espanhol');
+    assert.ok(resEs.data.data.some(l => l.titulo.includes('Python')), 'Deve conter livro de Python em espanhol');
+    assert.ok(resEs.data.data.some(l => l.titulo.includes('Rust')), 'Deve conter livro de Rust em espanhol');
+    assert.ok(resEs.data.data.some(l => l.titulo.includes('Docker') || l.titulo.includes('Kubernetes')), 'Deve conter guias DevOps em espanhol');
+
+    // 17.2 - Verificação de capas SVG e links externos
+    const esLivros = resEs.data.data;
+    assert.ok(esLivros.every(l => Array.isArray(l.links) && l.links.length > 0), 'Todos os livros em espanhol devem possuir links de acesso');
+    assert.ok(esLivros.every(l => l.capa_url && (l.capa_url.includes('tech_') || l.capa_url.startsWith('http'))), 'Todos os livros devem ter capa válida');
+  });
+
+  // Teste 18: Literatura Lusófona Clássica e Vozes dos PALOP
+  test('18. Acervo de Literatura Lusófona Clássica e Vozes dos PALOP (Angola, Cabo Verde, São Tomé, Moçambique)', async () => {
+    // 18.1 - Consulta por Autores Lusófonos Clássicos (Eça de Queirós, Camilo, Florbela Espanca)
+    const resLusofonos = await request('/api/livros?busca=' + encodeURIComponent('Eça de Queirós'));
+    assert.equal(resLusofonos.status, 200);
+    assert.ok(resLusofonos.data.total >= 5, 'Deve conter ao menos 5 obras de Eça de Queirós');
+    assert.ok(resLusofonos.data.data.some(l => l.titulo.includes('Os Maias')), 'Deve conter Os Maias');
+    assert.ok(resLusofonos.data.data.some(l => l.titulo.includes('O Crime do Padre Amaro')), 'Deve conter O Crime do Padre Amaro');
+
+    // 18.2 - Consulta por Literatura Angolana (Alfredo Troni, Cordeiro da Matta, Assis Júnior)
+    const resAngola = await request('/api/livros?busca=' + encodeURIComponent('Nga Muturi'));
+    assert.equal(resAngola.status, 200);
+    assert.ok(resAngola.data.total >= 1, 'Deve conter Nga Muturi de Alfredo Troni');
+    assert.equal(resAngola.data.data[0].autor_nome, 'Alfredo Troni');
+
+    // 18.3 - Consulta por Poesia Africana e Vozes Insulares (Cabo Verde, São Tomé, Moçambique)
+    const resPoesia = await request('/api/livros?busca=' + encodeURIComponent('Costa Alegre'));
+    assert.equal(resPoesia.status, 200);
+    assert.ok(resPoesia.data.total >= 1, 'Deve conter Versos de Caetano da Costa Alegre');
+
+    const resNoronha = await request('/api/livros?busca=' + encodeURIComponent('Rui de Noronha'));
+    assert.equal(resNoronha.status, 200);
+    assert.ok(resNoronha.data.total >= 1, 'Deve conter Sonetos de Rui de Noronha');
+  });
+
+  // Teste 19: Placar e Métricas da Meta dos 10 Milhões de Livros Livres
+  test('19. Placar e Métricas da Meta dos 10 Milhões de Livros Livres', async () => {
+    // 19.1 - Validação via /api/dashboard
+    const resDash = await request('/api/dashboard');
+    assert.equal(resDash.status, 200);
+    const totalLivros = resDash.data.resumo.total_livros;
+    assert.ok(typeof totalLivros === 'number' && totalLivros > 0, 'Total de livros deve ser número positivo');
+
+    // 19.2 - Cálculo da meta de 10 Milhões
+    const meta = 10000000;
+    const faltam = meta - totalLivros;
+    const porcentagem = (totalLivros / meta) * 100;
+
+    assert.ok(faltam > 0 && faltam < meta, 'Contagem regressiva deve ser válida');
+    assert.ok(porcentagem > 0 && porcentagem <= 100, 'Porcentagem de avanço deve ser positiva');
+
+    // 19.3 - Validação via /api/livros para alimentar placar em tempo real
+    const resLivros = await request('/api/livros?limit=1');
+    assert.equal(resLivros.status, 200);
+    assert.equal(resLivros.data.total, totalLivros, 'Total em /api/livros deve ser idêntico ao total do dashboard');
+  });
 });
 

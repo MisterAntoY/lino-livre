@@ -19,6 +19,25 @@
       "channelTitle": "关注 Lino Livre WhatsApp 频道",
       "addBook": "+ 添加书籍"
     },
+    "goal": {
+      "badge": "🎯 全球共同目标",
+      "title": "迈向 1000 万本自由开放图书",
+      "subtitle": "为全世界的学生、教师和读者打造的开放、通用且免费的数字图书馆。实时关注进展，加入这一历史性征程！",
+      "currentIndexed": "已收录开放图书",
+      "target": "10,000,000",
+      "pctOfTarget": "已达目标的 {p}%",
+      "nextMilestone": "下一个里程碑",
+      "milestoneReached": "已达成",
+      "statIndexed": "当前馆藏",
+      "statTarget": "全球总目标",
+      "statRemaining": "尚需收录",
+      "statNextTarget": "近期目标",
+      "btnContribute": "推荐开放图书",
+      "btnShare": "分享征程",
+      "btnJoin": "加入社群",
+      "copied": "征程链接与分享语已复制到剪贴板！",
+      "shareText": "📚 加入 Lino Livre 迈向 1000 万本自由图书的征程！目前已收录 {n} 本优质开放图书，欢迎阅读与共建："
+    },
     "tabs": {
       "books": "📚 电子书籍",
       "courses": "🎓 免费课程",

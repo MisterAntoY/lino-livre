@@ -45,6 +45,7 @@ const app = {
     velocidade: 1.0,
     utterance: null
   },
+  totalLivrosAcervo: 695,
 
   async init() {
     // 1. Internacionalização: carrega pt + idioma preferido e aplica ao DOM
@@ -58,6 +59,7 @@ const app = {
     this.verificarEconomiaDeDados();
     await Promise.all([
       this.carregarLivros(),
+      this.carregarPlacarMeta(),
       this.carregarCategoriasSelect(),
       this.verificarComunidadeECanal()
     ]);
@@ -83,6 +85,7 @@ const app = {
     if (this.dicas.length > 0) this.renderizarDicas(this.dicas);
 
     if (this.abaAtiva === 'dashboard') this.carregarDashboard();
+    this.atualizarPlacarMeta(this.totalLivrosAcervo);
 
     this.carregarCategoriasSelect();
 
@@ -1580,7 +1583,33 @@ const app = {
       const fontes = data.fontes || [];
       const maisLidos = data.mais_lidos || [];
 
+      const totalLivros = r.total_livros || 0;
+      const meta = 10000000;
+      const pct = ((totalLivros / meta) * 100);
+      const pctStr = (pct < 0.01) ? pct.toFixed(4) : pct.toFixed(2);
+      const visualWidth = Math.max(1.5, Math.min(100, pct));
+
       container.innerHTML = `
+        <div class="dash-goal-banner" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 45%, #1e3a8a 100%); color:#ffffff; border-radius:var(--radius-lg); padding:1.5rem 2rem; margin-bottom:1.5rem; border:1px solid rgba(255,255,255,0.18); box-shadow:0 10px 25px -5px rgba(15,23,42,0.35); position:relative; overflow:hidden;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1.25rem; margin-bottom:1rem; position:relative; z-index:1;">
+            <div>
+              <span style="background:#f59e0b; color:#451a03; font-size:0.75rem; font-weight:800; padding:0.25rem 0.75rem; border-radius:9999px; text-transform:uppercase; letter-spacing:0.5px;">🎯 Meta Coletiva Global</span>
+              <h2 style="font-size:1.6rem; font-weight:800; margin:0.4rem 0 0.2rem 0; color:#fff;">Rumo aos 10 Milhões de Livros Livres</h2>
+              <p style="color:#cbd5e1; font-size:0.9rem; margin:0; max-width:620px;">Acompanhamento oficial da jornada de indexação de obras livres e de domínio público para a humanidade.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:var(--radius-md); padding:0.75rem 1.5rem; text-align:center;">
+              <span style="display:block; font-size:0.7rem; font-weight:700; color:#94a3b8; text-transform:uppercase;">Acervo Atual / Meta</span>
+              <div style="font-size:1.85rem; font-weight:900; color:#38bdf8; font-variant-numeric:tabular-nums;">
+                ${totalLivros.toLocaleString()} <span style="font-size:1.1rem; color:#64748b;">/</span> <span style="color:#facc15; font-size:1.3rem;">10.000.000</span>
+              </div>
+              <span style="font-size:0.8rem; font-weight:700; color:#4ade80; background:rgba(74,222,128,0.15); padding:0.15rem 0.5rem; border-radius:9999px;">${pctStr}% da meta</span>
+            </div>
+          </div>
+          <div style="height:14px; background:rgba(255,255,255,0.15); border-radius:9999px; overflow:hidden; position:relative;">
+            <div style="height:100%; width:${visualWidth}%; background:linear-gradient(90deg, #38bdf8, #818cf8, #eab308, #f59e0b); border-radius:9999px; box-shadow:0 0 10px rgba(234,179,8,0.5);"></div>
+          </div>
+        </div>
+
         <div class="stat-cards-row">
           <div class="stat-card">
             <div class="stat-val">${r.total_livros || 0}</div>
@@ -1705,6 +1734,13 @@ const app = {
           // Link rodapé
           const linkFooter = document.getElementById('link-footer-comunidade');
           if (linkFooter) linkFooter.href = data.url;
+
+          // Botão no Placar da Meta 10M
+          const btnGoalComunidade = document.getElementById('btn-goal-comunidade');
+          if (btnGoalComunidade) {
+            btnGoalComunidade.href = data.url;
+            btnGoalComunidade.classList.remove('hidden');
+          }
         }
       }
     } catch (_) {}
@@ -1827,8 +1863,139 @@ const app = {
       e.target.reset();
       this.carregarCategoriasSelect();
       this.carregarLivros();
+      this.carregarPlacarMeta();
     } catch (err) {
       this.mostrarToast(t('form.error', { msg: err.message }));
+    }
+  },
+
+  // ==================== PLACAR DA JORNADA: RUMO AOS 10 MILHÕES ====================
+  async carregarPlacarMeta() {
+    try {
+      const res = await fetch('/api/dashboard');
+      if (res.ok) {
+        const data = await res.json();
+        const tot = data?.resumo?.total_livros || data?.total_livros;
+        if (tot) {
+          this.totalLivrosAcervo = tot;
+          this.atualizarPlacarMeta(tot);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    try {
+      const res = await fetch('/api/livros?limit=1');
+      if (res.ok) {
+        const json = await res.json();
+        if (json && typeof json.total === 'number') {
+          this.totalLivrosAcervo = json.total;
+          this.atualizarPlacarMeta(json.total);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    this.atualizarPlacarMeta(this.totalLivrosAcervo || 695);
+  },
+
+  atualizarPlacarMeta(total) {
+    if (!total || total < 1) total = this.totalLivrosAcervo || 695;
+    this.totalLivrosAcervo = total;
+
+    const meta = 10000000;
+    const faltam = Math.max(0, meta - total);
+    const porcentagem = ((total / meta) * 100);
+    const pctStr = (porcentagem < 0.01) ? porcentagem.toFixed(4) : porcentagem.toFixed(2);
+
+    const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
+    const localeMap = {
+      'pt': 'pt-AO',
+      'en': 'en-US',
+      'de': 'de-DE',
+      'fr': 'fr-FR',
+      'zh': 'zh-CN'
+    };
+    const locale = localeMap[lang] || 'pt-AO';
+    const fmt = new Intl.NumberFormat(locale);
+
+    const elTotal = document.getElementById('placar-total-livros');
+    const elPct = document.getElementById('placar-porcentagem');
+    const elBarra = document.getElementById('placar-barra-progresso');
+    const elStatAtual = document.getElementById('placar-stat-atual');
+    const elStatFaltam = document.getElementById('placar-stat-faltam');
+    const elNextTarget = document.getElementById('placar-stat-next-target');
+
+    if (elTotal) elTotal.textContent = fmt.format(total);
+    if (elStatAtual) elStatAtual.textContent = fmt.format(total);
+    if (elStatFaltam) elStatFaltam.textContent = fmt.format(faltam);
+
+    let proximoMarco = 1000;
+    if (total >= 1000) proximoMarco = 10000;
+    if (total >= 10000) proximoMarco = 100000;
+    if (total >= 100000) proximoMarco = 1000000;
+    if (total >= 1000000) proximoMarco = 10000000;
+    if (elNextTarget) elNextTarget.textContent = fmt.format(proximoMarco);
+
+    const m1k = document.getElementById('milestone-1k');
+    const m10k = document.getElementById('milestone-10k');
+    if (m1k) {
+      if (total >= 1000) {
+        m1k.classList.remove('active');
+        m1k.classList.add('reached');
+        const tag = m1k.querySelector('.milestone-tag');
+        if (tag) tag.textContent = '✓';
+      }
+    }
+    if (m10k) {
+      if (total >= 1000 && total < 10000) {
+        m10k.classList.add('active');
+      }
+    }
+
+    if (elPct) {
+      if (typeof t === 'function') {
+        const trad = t('goal.pctOfTarget', { p: pctStr });
+        elPct.textContent = (trad && !trad.startsWith('goal.')) ? trad : `${pctStr}% da meta`;
+      } else {
+        elPct.textContent = `${pctStr}% da meta`;
+      }
+    }
+
+    if (elBarra) {
+      const visualWidth = Math.max(1.5, Math.min(100, (total / meta) * 100));
+      elBarra.style.width = `${visualWidth}%`;
+    }
+  },
+
+  compartilharMeta10M() {
+    const total = this.totalLivrosAcervo || 695;
+    const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
+    const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
+    const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);
+
+    let texto = `📚 Junte-se ao Lino Livre na jornada dos 10 Milhões de Livros Livres! Já temos ${numFmt} obras abertas e gratuitas indexadas. Venha ler e contribuir:`;
+    if (typeof t === 'function') {
+      const trad = t('goal.shareText', { n: numFmt });
+      if (trad && !trad.startsWith('goal.')) texto = trad;
+    }
+    const url = window.location.origin;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Lino Livre — Rumo aos 10 Milhões de Livros Livres',
+        text: texto,
+        url: url
+      }).catch(() => {});
+    } else {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(`${texto} ${url}`).then(() => {
+          const msg = (typeof t === 'function' ? t('goal.copied') : '') || 'Link e mensagem copiados com sucesso!';
+          this.mostrarToast(msg);
+        }).catch(() => {});
+      }
+      const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto + ' ' + url)}`;
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
     }
   },
 

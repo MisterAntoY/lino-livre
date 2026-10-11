@@ -19,6 +19,25 @@
       "channelTitle": "Suivre le canal WhatsApp Lino Livre",
       "addBook": "+ Ajouter un livre"
     },
+    "goal": {
+      "badge": "🎯 Objectif Collectif Mondial",
+      "title": "En route vers les 10 Millions de Livres Libres",
+      "subtitle": "Une bibliothèque ouverte, universelle et gratuite pour tous les étudiants, enseignants et lecteurs du monde entier. Suivez les progrès en temps réel et participez à cette aventure !",
+      "currentIndexed": "Ouvrages Libres Indexés",
+      "target": "10 000 000",
+      "pctOfTarget": "{p}% de l'objectif",
+      "nextMilestone": "Prochaine étape",
+      "milestoneReached": "Atteint",
+      "statIndexed": "Collection Actuelle",
+      "statTarget": "Cible Mondiale",
+      "statRemaining": "Restant à indexer",
+      "statNextTarget": "Objectif Immédiat",
+      "btnContribute": "Proposer un Livre",
+      "btnShare": "Partager l'Aventure",
+      "btnJoin": "Communauté",
+      "copied": "Lien et message de la mission copiés dans le presse-papier !",
+      "shareText": "📚 Rejoignez Lino Livre vers les 10 Millions de Livres Libres ! Déjà {n} ouvrages en accès libre indexés. Lisez et contribuez :"
+    },
     "tabs": {
       "books": "📚 Livres numériques",
       "courses": "🎓 Cours gratuits",

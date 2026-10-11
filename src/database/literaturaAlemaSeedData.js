@@ -19,7 +19,7 @@ const literaturaAlema = [
     "idioma": "de",
     "licenca": "cc0",
     "sinopse": "Análogo alemão do tiny_shakespeare: onze obras dramáticas de Friedrich Schiller (1759–1805) em alemão, limpas e tokenizadas para estudo e para modelos de linguagem de escala didática. Corpus de ~2 MB com licença CC0, proveniente da exportação GerDraCor do DraCor — a maior coletânea de Schiller disponível como conjunto de dados aberto.",
-    "capaUrl": "https://raw.githubusercontent.com/schutera/tiny_schiller/main/README.md",
+    "capaUrl": "/capas/tech/tech_543.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/schutera/tiny_schiller" },
@@ -201,7 +201,7 @@ const literaturaAlema = [
     "idioma": "de",
     "licenca": "outro",
     "sinopse": "Listas de livros mais vendidos da Alemanha estruturadas como dados JSON prontos a usar: recurso raro para análise e descoberta da literatura contemporânea em alemão.",
-    "capaUrl": "https://raw.githubusercontent.com/tifa365/buecher-bestenlisten/main/README.md",
+    "capaUrl": "/capas/tech/tech_544.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/tifa365/buecher-bestenlisten" }

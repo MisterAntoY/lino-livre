@@ -100,3 +100,28 @@ Estes repositórios aparecem nas buscas e foram inspecionados. **Não recomendo 
 3. **Usar `chinese-poetry`** para dar corpo à secção chinesa.
 4. **Ligar o catálogo `EbookFoundation`** (ambos os ficheiros) às categorias de cursos e livros técnicos — são curadoria pronta, só com ligações oficiais.
 5. **Não importar** os quatro repositórios da tabela vermelha.
+
+---
+
+## 🚀 Expansão de Acervo Realizada: Espanhol (ES) e Literaturas dos PALOP / Clássicos Lusófonos
+
+### 1. Acervo Técnico em Espanhol (`es`) — 25 Livros
+- **Fonte Principal:** `EbookFoundation/free-programming-books-es`
+- **Capas:** Geradas em SVG vetorial (`public/capas/tech/tech_501.svg` a `tech_525.svg`)
+- **Tópicos:** Pro Git Oficial ES, Eloquent JavaScript ES, Inmersión en Python 3, El Libro de Rust Oficial, Think Python, Linux LuCAS, Bash Scripting, Docker, Kubernetes, IA com Python, R para Ciencia de Datos (R4DS), Deep Learning, Go Tour ES, TypeScript Deep Dive ES, APIs Node.js/Express, HTML5/CSS3 MDN, Arquitetura Limpa, SQL Moderno, Programação C ANSI, Estruturas de Dados em Java, Hacking Ético/Cibersegurança, Metodologias Ágeis/Scrum, Microserviços e GitLab CI/CD.
+
+### 2. Literatura Lusófona Clássica e Vozes dos PALOP (`pt`) — 26 Livros
+- **Autores Lusófonos Clássicos:** Eça de Queirós (*Os Maias*, *O Crime do Padre Amaro*, *O Primo Basílio*, *A Cidade e as Serras*, *A Relíquia*), Camilo Castelo Branco (*Amor de Perdição*, *A Queda dum Anjo*), Florbela Espanca (*Charneca em Flor*, *Livro de Mágoas*), Cesário Verde (*O Livro de Cesário Verde*), Antero de Quental (*Sonetos Completos*), Almeida Garrett (*Viagens na Minha Terra*, *Frei Luís de Sousa*), Mário de Sá-Carneiro (*A Confissão de Lúcio*, *Dispersão*), João de Deus (*Campo de Flores*).
+- **Literatura Angolana (Pioneiros Oitocentistas):** Alfredo Troni (*Nga Muturi* - a novela inaugural de Angola), Pedro Félix Machado (*Scenas d'Africa*), António de Assis Júnior (*O Segredo da Morta*), Joaquim Dias Cordeiro da Matta (*Philosophia Popular em Proverbios Angolenses*).
+- **Poesia Africana e Vozes Insulares:** Joaquim Dias Cordeiro da Matta (*Delírios*), Eugénio Tavares (*Mornas: Cantigas Crioulas* - Cabo Verde), Pedro Cardoso (*Folclore Caboverdiano*, *Algas e Corais* - Cabo Verde), Caetano da Costa Alegre (*Versos* - São Tomé e Príncipe), Rui de Noronha (*Sonetos* - Moçambique).
+
+---
+
+## 📊 Estatísticas Consolidadas Atuais do Acervo
+
+- **Total de Livros e Manuais:** **695**
+- **Total de Links Externos de Leitura (302):** **876**
+- **Total de Cursos, Bootcamps e Roadmaps:** **663**
+- **Suíte de Testes Automatizados:** **26/26 testes passando** (100% de sucesso)
+- **Conformidade Arquitetural ([AGENTS.md](file:///Users/mendes/Desktop/I%20am%20Abc/AGENTS.md)):** Estritamente respeitada (zero binários locais, apenas metadados e redirecionamentos).
+

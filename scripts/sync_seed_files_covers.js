@@ -16,7 +16,9 @@ const files = [
   'githubDeBooksSeedData.js',
   'githubFrBooksSeedData.js',
   'githubZhBooksSeedData.js',
-  'githubEnBooksSeedData.js'
+  'githubEnBooksSeedData.js',
+  'filosofiaSeedData.js',
+  'literaturaAlemaSeedData.js'
 ];
 
 files.forEach(fileName => {

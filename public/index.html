@@ -69,6 +69,118 @@
 
   <!-- ==================== ABA 1: LIVROS DIGITAIS ==================== -->
   <div id="aba-livros" class="tab-content active">
+    <!-- Placar da Jornada: Rumo aos 10 Milhões de Livros -->
+    <section class="container goal-scoreboard-section" id="secao-placar-meta">
+      <div class="goal-scoreboard-card">
+        <div class="goal-header">
+          <div class="goal-title-group">
+            <div class="goal-badge">
+              <span class="goal-badge-icon">🎯</span>
+              <span data-i18n="ui.goal.badge">Meta Coletiva Global</span>
+            </div>
+            <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
+            <p class="goal-subtitle" data-i18n="ui.goal.subtitle">Uma biblioteca aberta, universal e gratuita para todos os estudantes, professores e leitores do mundo. Acompanhe o avanço em tempo real e faça parte desta jornada histórica!</p>
+          </div>
+          <div class="goal-live-counter">
+            <div class="goal-counter-box">
+              <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
+              <div class="counter-number-row">
+                <span class="counter-odometer" id="placar-total-livros">695</span>
+                <span class="counter-divider">/</span>
+                <span class="counter-target">10.000.000</span>
+              </div>
+              <span class="counter-pct" id="placar-porcentagem">0.0069% da meta</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de Progresso Visual e Marcos Históricos -->
+        <div class="goal-progress-wrapper">
+          <div class="goal-progress-bar-bg" role="progressbar" aria-valuenow="695" aria-valuemin="0" aria-valuemax="10000000" id="placar-progressbar-container">
+            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 1.5%;">
+              <span class="goal-progress-glow"></span>
+            </div>
+          </div>
+          
+          <!-- Marcos da Jornada / Milestones -->
+          <div class="goal-milestones">
+            <div class="milestone-step reached" title="Marco Inicial: Lançamento da Plataforma">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">0</span>
+            </div>
+            <div class="milestone-step active" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">1.000</span>
+              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>
+            </div>
+            <div class="milestone-step" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">10.000</span>
+            </div>
+            <div class="milestone-step" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">100.000</span>
+            </div>
+            <div class="milestone-step" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">1.000.000</span>
+            </div>
+            <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
+              <span class="milestone-dot gold"></span>
+              <span class="milestone-text gold">10.000.000 👑</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas Rápidas e Ações da Comunidade -->
+        <div class="goal-footer">
+          <div class="goal-stats-grid">
+            <div class="goal-stat-pill">
+              <span class="stat-icon">📚</span>
+              <div>
+                <span class="stat-val" id="placar-stat-atual">695</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+              <span class="stat-icon">🎯</span>
+              <div>
+                <span class="stat-val">10.000.000</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statTarget">Alvo Global</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+              <span class="stat-icon">🚀</span>
+              <div>
+                <span class="stat-val" id="placar-stat-faltam">9.999.305</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+              <span class="stat-icon">⚡</span>
+              <div>
+                <span class="stat-val" id="placar-stat-next-target">1.000</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="goal-actions">
+            <button class="btn btn-goal-contrib" onclick="app.abrirModalNovoLivro()">
+              <span>+</span> <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
+            </button>
+            <button class="btn btn-goal-share" onclick="app.compartilharMeta10M()">
+              <span>📢</span> <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
+            </button>
+            <a class="btn btn-goal-whatsapp hidden" id="btn-goal-comunidade" href="#" target="_blank" rel="noopener noreferrer">
+              <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
+              <span data-i18n="ui.goal.btnJoin">Comunidade</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Destaque: Coleção Digital Monumental de África -->
     <section class="container">
       <div class="africa-collection-banner">
@@ -103,6 +215,7 @@
           <button class="pill active" data-lang="" onclick="app.filtrarPorIdiomaLivro('')" data-i18n="ui.books.allLanguages">Todos os Idiomas</button>
           <button class="pill" data-lang="pt" onclick="app.filtrarPorIdiomaLivro('pt')">🇧🇷 Português</button>
           <button class="pill" data-lang="en" onclick="app.filtrarPorIdiomaLivro('en')">🇬🇧 English</button>
+          <button class="pill" data-lang="es" onclick="app.filtrarPorIdiomaLivro('es')">🇪🇸 Español</button>
           <button class="pill" data-lang="fr" onclick="app.filtrarPorIdiomaLivro('fr')">🇫🇷 Français</button>
           <button class="pill" data-lang="de" onclick="app.filtrarPorIdiomaLivro('de')">🇩🇪 Deutsch</button>
           <button class="pill" data-lang="zh" onclick="app.filtrarPorIdiomaLivro('zh')">🇨🇳 中文</button>
@@ -115,6 +228,10 @@
         <div class="pills-container" id="pills-categorias">
           <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')" data-i18n="ui.books.all">Todas</button>
           <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')">🌟 Os 100 Mais Lidos do Mundo</button>
+          <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" onclick="app.filtrarPorCategoria('Autores Lusófonos Clássicos')">📜 Autores Lusófonos Clássicos</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" onclick="app.filtrarPorCategoria('Literatura Angolana')">🇦🇴 Literatura Angolana</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" onclick="app.filtrarPorCategoria('Literatura Africana Lusófona')">🇨🇻 Literatura Africana Lusófona</button>
+          <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" onclick="app.filtrarPorCategoria('Poesia Africana')">🇲🇿 Poesia Africana</button>
           <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" onclick="app.filtrarPorCategoria('🌍 Literatura & Vozes de África')">🌍 Literatura & Vozes de África</button>
           <button class="pill highlight-pill-africa" data-categoria="🌍 Contos & Tradição Oral Africana" onclick="app.filtrarPorCategoria('🌍 Contos & Tradição Oral Africana')">🌍 Contos & Tradição Oral</button>
           <button class="pill highlight-pill-africa" data-categoria="🌍 História & Sociedade Africana" onclick="app.filtrarPorCategoria('🌍 História & Sociedade Africana')">🌍 História de África</button>
@@ -137,10 +254,11 @@
         <span class="filter-label">Fonte / Acervo:</span>
         <div class="pills-container" id="pills-fontes">
           <button class="pill active" data-fonte="" onclick="app.filtrarPorFonteLivro('')">Todos os Acervos</button>
-          <button class="pill" data-fonte="dominiopublico" onclick="app.filtrarPorFonteLivro('dominiopublico')">🏛️ Domínio Público & África (25 obras)</button>
-          <button class="pill" data-fonte="gutenberg" onclick="app.filtrarPorFonteLivro('gutenberg')">🌐 Project Gutenberg África (12 obras)</button>
-          <button class="pill" data-fonte="github-bibliotecadev" onclick="app.filtrarPorFonteLivro('github-bibliotecadev')">📂 BibliotecaDev (109 livros)</button>
-          <button class="pill" data-fonte="github-italocamilo" onclick="app.filtrarPorFonteLivro('github-italocamilo')">📂 Books Tech / italocamil0 (185 livros)</button>
+          <button class="pill" data-fonte="dominiopublico" onclick="app.filtrarPorFonteLivro('dominiopublico')">🏛️ Domínio Público & África</button>
+          <button class="pill" data-fonte="gutenberg" onclick="app.filtrarPorFonteLivro('gutenberg')">🌐 Project Gutenberg</button>
+          <button class="pill" data-fonte="github-bibliotecadev" onclick="app.filtrarPorFonteLivro('github-bibliotecadev')">📂 BibliotecaDev</button>
+          <button class="pill" data-fonte="github-italocamilo" onclick="app.filtrarPorFonteLivro('github-italocamilo')">📂 Books Tech / italocamil0</button>
+          <button class="pill" data-fonte="github-freebooks-es" onclick="app.filtrarPorFonteLivro('github-freebooks-es')">🇪🇸 Free Programming Books ES</button>
           <button class="pill" data-fonte="rheinwerk-openbook" onclick="app.filtrarPorFonteLivro('rheinwerk-openbook')">🇩🇪 Rheinwerk Openbooks</button>
           <button class="pill" data-fonte="github-freebooks-de" onclick="app.filtrarPorFonteLivro('github-freebooks-de')">🇩🇪 Free Programming Books DE</button>
         </div>

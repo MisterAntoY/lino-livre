@@ -19,7 +19,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "O maior agregador de leituras do GitHub sobre filosofia, ciência, história e desenvolvimento pessoal: dezenas de listas temáticas (filosofia, física, mente, sociedade) com links para livros e recursos livres.",
-    "capaUrl": "https://raw.githubusercontent.com/Hackerkid/Mind-Expanding-Books/master/README.md",
+    "capaUrl": "/capas/tech/tech_526.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/Hackerkid/Mind-Expanding-Books" }
@@ -37,7 +37,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Lista awesome canónica de filosofia: podcasts, periódicos, enciclopédias (Stanford Encyclopedia, Internet Encyclopedia of Philosophy), bibliotecas digitais, cursos e canais de vídeo, organizados por tradição e período.",
-    "capaUrl": "https://raw.githubusercontent.com/HussainAther/awesome-philosophy/master/README.md",
+    "capaUrl": "/capas/tech/tech_527.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/HussainAther/awesome-philosophy" }
@@ -55,7 +55,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Lista estruturada de livros e recursos de filosofia, com obras fundamentais de Platão, Aristóteles, Kant, Nietzsche, Wittgenstein e autores contemporâneos, organizadas para leitura progressiva.",
-    "capaUrl": "https://raw.githubusercontent.com/Jfaler/Philosophy/master/README.md",
+    "capaUrl": "/capas/tech/tech_528.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/Jfaler/Philosophy" }
@@ -73,7 +73,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Recursos de estoicismo: Sêneca, Epicteto e Marco Aurélio, com traduções livres, aplicações práticas, podcasts e textos sobre a filosofia estoica como prática diária.",
-    "capaUrl": "https://raw.githubusercontent.com/DavidWells/awesome-stoicism/master/README.md",
+    "capaUrl": "/capas/tech/tech_529.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/DavidWells/awesome-stoicism" }
@@ -91,7 +91,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Lista de recursos que cruzam filosofia e ciência da computação: lógica, fundamentos da matemática, filosofia da mente, computabilidade, ética da IA e textos clássicos da teoria da computação.",
-    "capaUrl": "https://raw.githubusercontent.com/glennstreet/awesome-philosophy-compsci/master/README.md",
+    "capaUrl": "/capas/tech/tech_530.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/glennstreet/awesome-philosophy-compsci" }
@@ -109,7 +109,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Lista curada de ética: teorias normativas, ética aplicada, bioética, ética da tecnologia e da inteligência artificial, com periódicos, cursos e guias de debate.",
-    "capaUrl": "https://raw.githubusercontent.com/HussainAther/awesome-ethics/master/README.md",
+    "capaUrl": "/capas/tech/tech_531.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/HussainAther/awesome-ethics" }
@@ -127,7 +127,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Coleção sobre o Zen do Python (PEP 20): guias, traduções, análises e derivações da filosofia de projeto da linguagem Python — o elo entre programação e reflexão filosófica.",
-    "capaUrl": "https://raw.githubusercontent.com/filiplajszczak/awesome-zen-of-python/master/README.md",
+    "capaUrl": "/capas/tech/tech_532.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/filiplajszczak/awesome-zen-of-python" }
@@ -146,7 +146,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Curso aberto que une filosofia e agentes de IA: ética aplicada, simulações de diálogos filosóficos e experimentos com LLMs, com código, notebooks e material didático completo.",
-    "capaUrl": "https://raw.githubusercontent.com/neural-maze/philoagents-course/main/README.md",
+    "capaUrl": "/capas/tech/tech_533.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/neural-maze/philoagents-course" }
@@ -164,7 +164,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Repositório oficial do curso da CMU 'Philosophical Foundations of Machine Intelligence': experimentos mentais, agência, consciência, alinhamento e os limites do conhecimento do aprendizado automático.",
-    "capaUrl": "https://raw.githubusercontent.com/acmi-lab/cmu-10721-philosophy-machine-intelligence/main/README.md",
+    "capaUrl": "/capas/tech/tech_534.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/acmi-lab/cmu-10721-philosophy-machine-intelligence" }
@@ -182,7 +182,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Ferramentas para descarregar, analisar e filtrar dados de filosofia (PhilPapers) usados no corpus The Pile de treino de modelos de linguagem: um dos poucos grandes corpora filosóficos estruturados.",
-    "capaUrl": "https://raw.githubusercontent.com/thoppe/The-Pile-PhilPapers/master/README.md",
+    "capaUrl": "/capas/tech/tech_535.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/thoppe/The-Pile-PhilPapers" }
@@ -200,7 +200,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Servidor MCP (Model Context Protocol) que expõe textos e bibliografia filosófica — PhilPapers e PhilArchive — a assistentes de IA, permitindo pesquisa erudita a partir de ferramentas locais.",
-    "capaUrl": "https://raw.githubusercontent.com/sea9401/philosophy-mcp/main/README.md",
+    "capaUrl": "/capas/tech/tech_536.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/sea9401/philosophy-mcp" }
@@ -218,7 +218,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "'Uma biblioteca viva à conversa': trinta figuras históricas (filósofos, cientistas e pensadores) com as suas obras, acessíveis por diálogo — abordagem lúdica ao estudo da história das ideias.",
-    "capaUrl": "https://raw.githubusercontent.com/chipmates/agoracosmica/main/README.md",
+    "capaUrl": "/capas/tech/tech_537.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/chipmates/agoracosmica" }
@@ -237,7 +237,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Mapa mental interativo da Crítica da Razão Pura de Immanuel Kant: estrutura das doutrinas (estética transcendentais, analítica, dialética), conceitos e relações entre as partes da obra fundamental do idealismo alemão.",
-    "capaUrl": "https://raw.githubusercontent.com/ilalev/KdrV_mindmap/master/README.md",
+    "capaUrl": "/capas/tech/tech_538.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/ilalev/KdrV_mindmap" }
@@ -255,7 +255,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "dominio-publico",
     "sinopse": "Monografia sobre a Crítica da Razão Pura de Kant e obras correlatas, reunidas em repositório de monografias: material de consulta para o estudo do criticalismo kantiano.",
-    "capaUrl": "https://raw.githubusercontent.com/cartheur-monographs/Kant-Critique/main/README.md",
+    "capaUrl": "/capas/tech/tech_539.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/cartheur-monographs/Kant-Critique" }
@@ -273,7 +273,7 @@ const filosofiaBooks = [
     "idioma": "de",
     "licenca": "outro",
     "sinopse": "Conjunto de skills (no formato aberto de skills de agentes) dedicado ao Idealismo Alemão: filosofia crítica de Kant e a Fenomenologia do Espírito de Hegel, para uso com assistentes de IA em estudo e tradução.",
-    "capaUrl": "https://raw.githubusercontent.com/Equinox7379/german-idealism-codex-skills/master/README.md",
+    "capaUrl": "/capas/tech/tech_540.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/Equinox7379/german-idealism-codex-skills" }
@@ -422,7 +422,7 @@ const filosofiaBooks = [
     "idioma": "fr",
     "licenca": "outro",
     "sinopse": "Recursos gerais partilhados para o ensino de filosofia em francês: base de dados de sujets de dissertation do bac filosóphique, textos, exercícios e material de apoio para professores e estudantes.",
-    "capaUrl": "https://raw.githubusercontent.com/eyssette/ressources-generales-enseignement-philosophie/master/README.md",
+    "capaUrl": "/capas/tech/tech_541.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/eyssette/ressources-generales-enseignement-philosophie" },
@@ -441,7 +441,7 @@ const filosofiaBooks = [
     "idioma": "fr",
     "licenca": "outro",
     "sinopse": "Chatbots de filósofos construídos diretamente a partir das obras originais, em francês: diálogo simulado com pensadores clássicos como ferramenta de estudo e discussão.",
-    "capaUrl": "https://raw.githubusercontent.com/La-caverne-de-Platon/PhiloBots/main/README.md",
+    "capaUrl": "/capas/tech/tech_542.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/La-caverne-de-Platon/PhiloBots" }

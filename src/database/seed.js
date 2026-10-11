@@ -19,6 +19,8 @@ const { novasPlataformasCursos } = require('./novasPlataformasData');
 const { livrosAfricaData } = require('./livrosAfricaData');
 const { roadmapShList } = require('./roadmapShData');
 const { podcastsShowsData } = require('./podcastsSeedData');
+const { literaturaLusofonaClassica } = require('./literaturaLusofonaClassicaSeedData');
+const { githubEsBooks } = require('./githubEsBooksSeedData');
 const {
   domCasmurroTexto,
   memoriasPosthumasTexto,
@@ -91,6 +93,8 @@ function seed(dbInstance = null) {
   // Fontes de Filosofia (apenas metadados + links externos)
   const fFilosofia = insertFonte.run('github-filosofia', 'Filosofia no GitHub (Listas, Cursos e Ferramentas)', 'manual', 'https://github.com/topics/philosophy', 1).lastInsertRowid;
   const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'manual', 'https://www.standardebooks.org', 1).lastInsertRowid;
+  // Fonte de Livros Técnicos em Espanhol
+  const fFreeBooksEs = insertFonte.run('github-freebooks-es', 'Free Programming Books ES (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -523,7 +527,15 @@ function seed(dbInstance = null) {
     'Tecnologia & Guias Digitais': catTecnologia,
     'Romance & Crônicas': catRomance,
     'Teatro & Poesia': catPoesia,
-    'Apoio Pedagógico & Filosofia': catDidaticos
+    'Apoio Pedagógico & Filosofia': catDidaticos,
+    'Literatura Angolana': catAngolana,
+    'Literatura Africana Lusófona': catAfricaLusofona,
+    'Poesia Africana': catPoesiaAfricana,
+    'Autores Lusófonos Clássicos': catAutoresLusofonos,
+    '🌍 Literatura & Vozes de África': catAfricaLit,
+    '🌍 Contos & Tradição Oral Africana': catAfricaContos,
+    '🌍 História & Sociedade Africana': catAfricaHist,
+    '🌍 Filosofia & Pensamento Africano': catAfricaFilo
   };
 
   const fonteMap = {
@@ -549,7 +561,8 @@ function seed(dbInstance = null) {
     'github-de': fGithubDe,
     'github-literatura-de': fLiteraturaDe,
     'github-filosofia': fFilosofia,
-    'standardebooks': fStandardEbooks
+    'standardebooks': fStandardEbooks,
+    'github-freebooks-es': fFreeBooksEs
   };
 
   for (const b of githubBooks) {
@@ -999,6 +1012,100 @@ function seed(dbInstance = null) {
     if (b.links && Array.isArray(b.links)) {
       for (const lk of b.links) {
         insertLink.run(bId, lk.formato || 'html', encodeURI(lk.url), 0, 1);
+      }
+    }
+  }
+
+  // Inserir Literatura Lusófona Clássica e Vozes dos PALOP (Project Gutenberg / Wikisource)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of literaturaLusofonaClassica) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, b.nacionalidade || 'Lusófona', b.biografia || 'Autor clássico da literatura em língua portuguesa.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catRomance;
+    const fId = fonteMap[b.fonteSlug] || fGutenberg;
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano,
+      b.idioma || 'pt',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 200,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      b.licenca || 'dominio-publico',
+      0,
+      '' // ZERO conteúdo local - estritamente intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Recursos Técnicos e Livros de Programação em Espanhol (ES)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of githubEsBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Espanha / América Latina', 'Comunidade e autores de software e tecnologia em espanhol.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fFreeBooksEs;
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'outro';
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2023,
+      b.idioma || 'es',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      0,
+      `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nRecurso libre para estudio y lectura en línea.`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
       }
     }
   }
