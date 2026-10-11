@@ -10,6 +10,7 @@ const { literaturaAlema } = require('./literaturaAlemaSeedData');
 const { classicosAlema } = require('./classicosAlemaSeedData');
 const { wikisourceAlema } = require('./wikisourceAlemaSeedData');
 const { archiveAlema } = require('./archiveAlemaSeedData');
+const { archiveFrances } = require('./archiveFrancesSeedData');
 const { githubOrgsAlema } = require('./githubOrgsAlemaSeedData');
 const { romanceClassics } = require('./romanceClassicsSeedData');
 const { worldClassicsList } = require('./worldClassicsSeedData');
@@ -96,6 +97,7 @@ function seed(dbInstance = null) {
   const fWikibooksDe = insertFonte.run('wikibooks-de', 'Wikibooks Deutsch', 'manual', 'https://de.wikibooks.org', 1).lastInsertRowid;
   const fWikisourceDe = insertFonte.run('wikisource-de', 'Wikisource Alemã (Domínio Público)', 'manual', 'https://de.wikisource.org', 1).lastInsertRowid;
   const fArchiveDe = insertFonte.run('archive-de', 'Internet Archive — Cânone Clássico Alemão', 'manual', 'https://archive.org', 1).lastInsertRowid;
+  const fArchiveFr = insertFonte.run('archive-fr', 'Internet Archive — Cânone Clássico Francês', 'manual', 'https://archive.org', 1).lastInsertRowid;
   // Fontes de Filosofia (apenas metadados + links externos)
   const fFilosofia = insertFonte.run('github-filosofia', 'Filosofia no GitHub (Listas, Cursos e Ferramentas)', 'manual', 'https://github.com/topics/philosophy', 1).lastInsertRowid;
   const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'manual', 'https://www.standardebooks.org', 1).lastInsertRowid;
@@ -570,7 +572,8 @@ function seed(dbInstance = null) {
     'standardebooks': fStandardEbooks,
     'github-freebooks-es': fFreeBooksEs,
     'wikisource-de': fWikisourceDe,
-    'archive-de': fArchiveDe
+    'archive-de': fArchiveDe,
+    'archive-fr': fArchiveFr
   };
 
   for (const b of githubBooks) {
@@ -1097,6 +1100,53 @@ function seed(dbInstance = null) {
       null,
       b.ano || null,
       b.idioma || 'de',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      b.leituras || 0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir o Cânone Clássico Francês no Internet Archive (Molière, Voltaire, Rousseau, Hugo, Flaubert, Balzac, Dumas, Zola, Baudelaire...)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of archiveFrances) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Francesa', 'Autor clássico de obras em língua francesa em domínio público.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catDidaticos;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'outro';
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || null,
+      b.idioma || 'fr',
       b.sinopse,
       b.capaUrl,
       b.paginas || 0,
