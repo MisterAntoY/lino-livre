@@ -1,0 +1,59 @@
+url:	http://africanstorybook.org/reader.php?id=11481&d=0&a=1
+id:	11481
+title:	Inkende N'umugore W'umuhigi
+author:	Martin Arabaruta
+artist:	Jesse Breytenbach
+lang:	Kinyarwanda
+level:	First paragraphs
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/11481.png
+desc:	Abana inkende yabyaraga bose barapfaga
+
+page_text:
+
+P1	Mu ishyamba rya Nyungwe,  habagamo inkende yahoraga ibabaye. Impamvu ni uko igihe cyose yabyaraga umwana agapfa.
+P2	Agahinda ko gupfusha abana kateye iyo inkende guhora isimbuka mu biti, ngiyo hasi, ngiyo hejuru. Yavaga mu ishami rimwe igasimbukira mu rindi, ivuza induru iti "Kwi! Kwi! Kwi!"
+P3	Inkende iteka yahoranaga agahinda. Yashengurwaga n'agahinda kurushaho iyo yabonaga izindi nkende ziri kumwe n'abana bazo.
+P4	Kubera agahinda, iyi nkende yizunguzaga hirya no hino. Yavaga mu ishami rimwe ikajya mu rindi! Uko iminsi yagenda ishira niko inkende yarushagaho kurira.
+P5	Nyuma yaje kongera kubyara. Ifata icyemezo cyo kujyana umwana iruhande rw'inzira kugira ngo abahanyura bamubone maze bamwifurize amahirwe.
+P6	Maze ya nkende iva mu giti isiga umwana wayo ku nzira. Muri icyo gihe, umuhigi yarimo asubira imuhira avuye guhiga. Abona umwana w'inkende aryamye iruhande rw'inzira.
+P7	Uwo muhigi ajyana ako kana k'inkende mu rugo. Ageze mu rugo,  abahungu be batatu bashaka kugafata.
+P8	Nuko ba bahungu batatu batangira kugakinisha bavuga bati: "Kajugunye hejuru! Kajugunye hasi! Kanjugunyire! Kamujugunyire!" Nuko buri wese agenda akajugunyira mugenzi we. 
+P9	Uko abo bahungu batatu bakinaga n'akana k'inkende, nyina yari yihishe mu giti. Yarabarebaga. Yari ifite ubwoba ko ako kana na ko kashoboraga gupfa nk'uko utundi twari twarapfuye.
+P10	Nyuma umugore w'umuhigi yaraje ansanga abana barakina n'akana k'inkende. Arababwira ati,  "mwitonde! Nimukampereze mutaza kugatura hasi!"
+P11	Yafashe ako kana k'inkende mu maboko ye maze agasabira umugisha.
+P12	Wa mugore ashyira ako kana hasi. Nyina iraza ifata akana kayo. Irengera mu ishyamba. Kuva icyo gihe nta mwana wayo wongeye gupfa. 
+
+images:
+
+illustrations/pages/9057.png
+illustrations/pages/9042.png
+illustrations/pages/9043.png
+illustrations/pages/9044.png
+illustrations/pages/9045.png
+illustrations/pages/9046.png
+illustrations/pages/9047.png
+illustrations/pages/9048.png
+illustrations/pages/9054.png
+illustrations/pages/9058.png
+illustrations/pages/9059.png
+illustrations/pages/9057.png
+illustrations/pages/9060.png
+
+translations:
+
+Dhopadhola (Translation)	Oŋer Gi Cipa Jadwar	id=15764
+English (Original)	Monkey and the Hunter's Wife	id=9051
+English (Adaptation)	Monkey's Visit to the Hunter's Home	id=10273
+English (Adaptation)	Monkey's Child	id=16342
+French (Translation)	Maman Singe Et La Femme Du Chasseur	id=10183
+Gurene (Translation)	~Maaŋa La Tu’Usa Pↄga	id=12668
+isiZulu (Translation)	Umfene Nonkosikazi Womzingeli	id=10950
+Kiswahili (Translation)	Mwana Wa Tumbili	id=10166
+Kiswahili (Translation)	Mtoto Wa Kima	id=12915
+Kiswahili (Adaptation)	Mwana Wa Tumbili	id=16340
+Kiswahili (Adaptation)	Mtoto Wa Kima	id=16341
+Lunyole (Translation)	Ekima N’Omuhasi W’Omuŋiimi	id=11908
+Oluwanga (Translation)	Omwana Wa Lishene	id=12958
+Setswana (Translation)	Tshwene Le Mosadi Wa Motsomi	id=11155
+Setswana (Translation)	Tshwene Le Mosadi Wa Motsumi	id=14946

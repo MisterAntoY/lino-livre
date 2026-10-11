@@ -1,0 +1,70 @@
+url:	http://africanstorybook.org/reader.php?id=19760&d=0&a=1
+id:	19760
+title:	7 Colours Of A Rainbow
+author:	African Storybook and Jane Taylor
+artist:	Jesse Breytenbach
+lang:	English
+level:	First words
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/19760.png
+desc:	This story introduces numbers as well as colours. (Also available at Level 2.).
+
+page_text:
+
+P1	7 colours in a rainbow.
+P2	1 red.
+P3	He wears a red shirt.
+P4	2 orange.
+P5	What is orange in this picture?
+P6	3 yellow.
+P7	What is yellow in this picture?
+P8	4 green.
+P9	What is green in this picture?
+P10	5 blue.
+P11	What is blue in this picture?
+P12	6 indigo.
+P13	What is indigo in this picture?
+P14	7 violet.
+P15	Violet is the best colour! What colour do you like?
+P16	What are the 7 colours of a rainbow?
+
+images:
+
+illustrations/pages/9838.png
+illustrations/pages/9838.png
+illustrations/pages/9839.png
+illustrations/pages/9840.png
+illustrations/pages/9841.png
+illustrations/pages/9842.png
+illustrations/pages/9843.png
+illustrations/pages/9844.png
+illustrations/pages/9846.png
+illustrations/pages/9847.png
+illustrations/pages/9849.png
+illustrations/pages/9850.png
+illustrations/pages/9851.png
+illustrations/pages/9852.png
+illustrations/pages/9854.png
+illustrations/pages/9853.png
+illustrations/pages/9856.png
+
+translations:
+
+Afaan Oromo (Translation)	Halluu Sabbata Waaqayyo 7	id=20420
+Amharic (Translation)	7 የቀስተደመና ቀለማት 	id=20447
+Ateso (Translation)	 Iragin Ikanyikarei Lu Etaluka	id=20754
+Chinyanja (Translation)	Mautoto Asanu Ndi Awiri Autawaleza	id=20881
+Dhopadhola (Translation)	Lifudu Nitye Gi Cal Abiryo	id=19961
+English (Translation)	Colours of a Rainbow	id=10463
+Hausa (Nigeria) (Translation)	Launika Bakwai Na Bakan Gizo	id=20798
+isiZulu (Translation)	Imibala eyisikhombisa yothingo lwenkosazana	id=19954
+isiZulu (Translation)	Imibala Eyisikhombisa Yothingo  Lwenkosazana	id=20679
+Kikamba (Translation)	Utathi	id=15419
+Kiswahili (Original)	Rangi Za Upinde	id=10442
+Kiswahili (Translation)	Rangi 7 Za Upinde	id=20432
+Lunyole (Translation)	Amalangi G'olufudu	id=16557
+Lusoga (Translation)	Musoke Ali Na Langi 7	id=20396
+Ng’aturkana (Translation)	Alokakinet Akiru	id=20405
+Portuguese (Translation)	As Cores Do Arco-Íris	id=16561
+Sepedi (Translation)	Mebela ye mesupa ya molalatladi	id=19980
+Siswati (Translation)	Imibala Yemushi Wenkhosatane	id=13066

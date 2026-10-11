@@ -1,0 +1,3136 @@
+[
+  {
+    "results": [
+      {
+        "id": 1,
+        "livro_id": 1,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/55752.epub3.images",
+        "tamanho_bytes": 1250000,
+        "link_externo": 1
+      },
+      {
+        "id": 2,
+        "livro_id": 1,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Dom_Casmurro",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 3,
+        "livro_id": 2,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/54829.epub3.images",
+        "tamanho_bytes": 1100000,
+        "link_externo": 1
+      },
+      {
+        "id": 4,
+        "livro_id": 3,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/54575.epub3.images",
+        "tamanho_bytes": 1400000,
+        "link_externo": 1
+      },
+      {
+        "id": 5,
+        "livro_id": 4,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/O_Alienista",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 6,
+        "livro_id": 5,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/57530.epub3.images",
+        "tamanho_bytes": 980000,
+        "link_externo": 1
+      },
+      {
+        "id": 7,
+        "livro_id": 7,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/67705.epub3.images",
+        "tamanho_bytes": 850000,
+        "link_externo": 1
+      },
+      {
+        "id": 8,
+        "livro_id": 8,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/38496.epub3.images",
+        "tamanho_bytes": 1900000,
+        "link_externo": 1
+      },
+      {
+        "id": 9,
+        "livro_id": 9,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/55682.epub3.images",
+        "tamanho_bytes": 1150000,
+        "link_externo": 1
+      },
+      {
+        "id": 10,
+        "livro_id": 9,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Quincas_Borba",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 11,
+        "livro_id": 10,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/48433.epub3.images",
+        "tamanho_bytes": 1200000,
+        "link_externo": 1
+      },
+      {
+        "id": 12,
+        "livro_id": 10,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Senhora",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 13,
+        "livro_id": 11,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/47824.epub3.images",
+        "tamanho_bytes": 980000,
+        "link_externo": 1
+      },
+      {
+        "id": 14,
+        "livro_id": 11,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/O_Ateneu",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 15,
+        "livro_id": 12,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Os_Sertões",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 16,
+        "livro_id": 13,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/55257.epub3.images",
+        "tamanho_bytes": 870000,
+        "link_externo": 1
+      },
+      {
+        "id": 17,
+        "livro_id": 13,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/A_Moreninha",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 18,
+        "livro_id": 14,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/37021.epub3.images",
+        "tamanho_bytes": 550000,
+        "link_externo": 1
+      },
+      {
+        "id": 19,
+        "livro_id": 14,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Auto_da_Barca_do_Inferno",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 20,
+        "livro_id": 15,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/3333.epub3.images",
+        "tamanho_bytes": 1600000,
+        "link_externo": 1
+      },
+      {
+        "id": 21,
+        "livro_id": 15,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Os_Lusíadas",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 22,
+        "livro_id": 16,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/54029.epub3.images",
+        "tamanho_bytes": 620000,
+        "link_externo": 1
+      },
+      {
+        "id": 23,
+        "livro_id": 16,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Mensagem",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 24,
+        "livro_id": 17,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/47822.epub3.images",
+        "tamanho_bytes": 680000,
+        "link_externo": 1
+      },
+      {
+        "id": 25,
+        "livro_id": 17,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Noite_na_Taverna",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 26,
+        "livro_id": 18,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Clara_dos_Anjos",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 27,
+        "livro_id": 19,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/A%20Regra%20%C3%A9%20N%C3%A3o%20Ter%20Regras%20-%20A%20Netflix%20e%20a%20Cultura%20da%20Reinven%C3%A7%C3%A3o%20-%20Autor%20(Reed%20Hastings).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 28,
+        "livro_id": 20,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/A%20Startup%20Enxuta%20-%20Autor%20(Eric%20Ries).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 29,
+        "livro_id": 21,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/A%20Web%20Mobile%20-%20Programe%20para%20um%20Mundo%20de%20Muitos%20Dispositivos%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 30,
+        "livro_id": 22,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/A%20arte%20de%20dar%20feedback%20(Um%20guia%20acima%20da%20m%C3%A9dia%20-%20HBR)%20-%20Motive%20sua%20equipe.%20Melhore%20a%20comunica%C3%A7%C3%A3o.%20Estabele%C3%A7a%20objetivos%20claros.%20-%20Autor%20(Harvard%20Business%20Review).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 31,
+        "livro_id": 23,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/A%20jornada%20do%20empreendedor%20-%20O%20her%C3%B3i%20da%20nossa%20Era%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 32,
+        "livro_id": 24,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20Cloud%20Practitioner%20Exam%20-%20Autor%20(Jon%20Bonso%20and%20Adrian%20Formaran).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 33,
+        "livro_id": 25,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20DevOps%20Engineer%20-%20Professional%20Certification%20and%20Beyond%20-%20Autor%20(Adam%20Book).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 34,
+        "livro_id": 26,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20DevOps%20Professional%20Engineer%20-%20Autor%20(Jon%20Bonso%20and%20Kenneth%20Samonte).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 35,
+        "livro_id": 27,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20Developer%20Associate%20Exam%20-%20Autor%20(Jon%20Bonso%20and%20Adrian%20Formaran).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 36,
+        "livro_id": 28,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20Security%20Specialty%20Exam%20-%20Autor%20(Jon%20Bonso%20and%20Carlo%20Acebedo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 37,
+        "livro_id": 29,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20Solutions%20Architect%20Associate%20SAA-C03%20-%20Autor%20(Jon%20Bonso).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 38,
+        "livro_id": 30,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20Solutions%20Architect%20Professional%20-%20Autor%20(Jon%20Bonso%20and%20Adrian%20Formaran).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 39,
+        "livro_id": 31,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20Certified%20SysOps%20Administrator%20Associate%20Version%202%20-%20Autor%20(Jon%20Bonso%20and%20Lervin%20John%20Obando).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 40,
+        "livro_id": 32,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20For%20Beginners%20-%20The%20ultimate%20guide%20to%20the%20fundamentals%20of%20aws%20-%20Autor%20(Steve%20M%20Burnett).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 41,
+        "livro_id": 33,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/AWS%20for%20Non-Engineers%20-%20Autor%20(Hiroko%20Nishimura).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 42,
+        "livro_id": 34,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Agile%20-%20Desenvolvimento%20de%20Software%20com%20Entregas%20Frequentes%20e%20Foco%20no%20Valor%20de%20Neg%C3%B3cio%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 43,
+        "livro_id": 35,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Agile%20Estimating%20and%20Planning%20-%20Autor%20(Mike%20Cohn).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 44,
+        "livro_id": 36,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Agile%20Project%20Management%20with%20Scrum%20-%20Autor%20(Ken%20Schwaber).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 45,
+        "livro_id": 37,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Agile%20Retrospectives%20-%20Making%20Good%20Teams%20Great%20(Pragmatic%20Programmers)%20-%20Autor%20(Esther%20Derby).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 46,
+        "livro_id": 38,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Algoritmos%20-%20Teoria%20e%20Pr%C3%A1tica%20-%20Autor%20(Thomas%20Cormen).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 47,
+        "livro_id": 39,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Amazon%20AWS%20-%20Descomplicando%20a%20computa%C3%A7%C3%A3o%20na%20nuvem%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 48,
+        "livro_id": 40,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Aplica%C3%A7%C3%B5es%20web%20real%20time%20com%20Node-js%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 49,
+        "livro_id": 41,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Apprenticeship%20Patterns%20-%20Guidance%20for%20the%20Aspiring%20Software%20Craftsman%20-%20Autor%20(Dave%20Hoover%20e%20Adewale%20Oshineye).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 50,
+        "livro_id": 42,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Arquitetura%20Limpa%20-%20O%20Guia%20do%20Artes%C3%A3o%20para%20Estrutura%20e%20Design%20de%20Software%20-%20Autor%20(Robert%20C.%20Martin).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 51,
+        "livro_id": 43,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Azure%20-%20Coloque%20suas%20plataformas%20e%20servi%C3%A7os%20no%20cloud%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 52,
+        "livro_id": 44,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/BDD%20in%20Action%20-%20Behavior-Driven%20Development%20for%20the%20Whole%20Software%20Lifecycle%20-%20Autor%20(John%20Ferguson%20Smart).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 53,
+        "livro_id": 45,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Big%20Data%20-%20T%C3%A9cnicas%20e%20tecnologias%20para%20extra%C3%A7%C3%A3o%20de%20valor%20dos%20dados%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 54,
+        "livro_id": 46,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Business%20Intelligence%20-%20Implementar%20do%20jeito%20certo%20e%20a%20custo%20zero%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 55,
+        "livro_id": 47,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/But%20How%20Do%20It%20Know%20-%20The%20Basic%20Principles%20of%20Computers%20for%20Everyone%20-%20Author%20(J.%20Clark%20Scott).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 56,
+        "livro_id": 48,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/CSS%20Eficiente%20-%20T%C3%A9cnicas%20e%20ferramentas%20que%20fazem%20a%20diferen%C3%A7a%20nos%20seus%20estilos%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 57,
+        "livro_id": 49,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Caixa%20de%20Ferramentas%20DevOps%20-%20Um%20Guia%20para%20Constru%C3%A7%C3%A3o%2C%20Administra%C3%A7%C3%A3o%20e%20Arquitetura%20de%20Sistemas%20Modernos%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 58,
+        "livro_id": 50,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Canivete%20suico%20do%20desenvolvedor%20Node%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 59,
+        "livro_id": 51,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Clean%20Agile%20-%20Back%20to%20Basics%20-%20Autor%20(Robert%20Martin).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 60,
+        "livro_id": 52,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Clean%20Coder%2C%20The%20-%20A%20Code%20of%20Conduct%20for%20Professional%20Programmers%20-%20Autor%20(Robert%20C.%20Martin).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 61,
+        "livro_id": 53,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Coaching%20Agile%20Teams%20-%20A%20Companion%20for%20ScrumMasters%2C%20Agile%20Coaches%2C%20and%20Project%20Managers%20in%20Transition%20-%20Autor%20(Adkins%20Lyssa).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 62,
+        "livro_id": 54,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Come%C3%A7ando%20com%20o%20Linux%20-%20Comandos%2C%20servi%C3%A7os%20e%20administra%C3%A7%C3%A3o%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 63,
+        "livro_id": 55,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Como%20Melhorar%20o%20Desempenho%20da%20Sua%20Equipe%20de%20Desenvolvimento%20-%20Autor(Software%20House).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 64,
+        "livro_id": 56,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Como%20mentir%20com%20estat%C3%ADstica%20-%20Auto%20(Darrell-Heff).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 65,
+        "livro_id": 57,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Como%20ser%20um%20Programador%20Melhor%20-%20um%20Manual%20Para%20Programadores%20que%20se%20Importam%20com%20C%C3%B3digo%20-%20Autor%20(Pete%20Goodliffe).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 66,
+        "livro_id": 58,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Comunica%C3%A7%C3%A3o%20de%20Dados%20e%20Redes%20de%20Computadores%20-%20Autor%20(Behrouz%20A.%20Forouzan).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 67,
+        "livro_id": 59,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Construindo%20API%20REST%20com%20Node%20JS%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 68,
+        "livro_id": 60,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Containers%20com%20Docker%20-%20Do%20desenvolvimento%20%C3%A0%20produ%C3%A7%C3%A3o%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 69,
+        "livro_id": 61,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Controlando%20Vers%C3%B5es%20com%20Git%20e%20GitHub%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 70,
+        "livro_id": 62,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Cracking%20the%20Coding%20Interview%20-%20189%20Programming%20Questions%20and%20Solutions%20-%20Author%20(Gayle%20Laakmann%20McDowell).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 71,
+        "livro_id": 63,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Crystal%20Clear%20-%20A%20Human-Powered%20Methodology%20for%20Small%20Teams%20-%20Autor%20(Alistair%20Cockburn).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 72,
+        "livro_id": 64,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/C%C3%B3digo%20limpo%20-%20Habilidades%20pr%C3%A1ticas%20do%20Agile%20Software%20-%20Autor%20(Robert%20C.%20Martin).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 73,
+        "livro_id": 65,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/DSL%20-%20Quebre%20a%20barreira%20entre%20desenvolvimento%20e%20neg%C3%B3cios%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 74,
+        "livro_id": 66,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Desconstruindo%20a%20Web%20-%20As%20Tecnologias%20por%20Tr%C3%A1s%20de%20uma%20Requisi%C3%A7%C3%A3o%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 75,
+        "livro_id": 67,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/DevOps%20na%20Pr%C3%A1tica%20-%20Entrega%20de%20Software%20Confi%C3%A1vel%20e%20Automatizada%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 76,
+        "livro_id": 68,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Direto%20ao%20Ponto%20-%20Criando%20produtos%20de%20forma%20enxuta%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 77,
+        "livro_id": 69,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Domain%20Driven%20Design%20Rapido%20-%20Autor%20(Eric%20Evans).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 78,
+        "livro_id": 70,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Domain-Driven%20Design%20Refer%C3%AAncia%20-%20Sum%C3%A1rio%20de%20Padr%C3%B5es%20e%20Defini%C3%A7%C3%B5es%20-%20Autor%20(Eric%20Evans).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 79,
+        "livro_id": 71,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Entendendo%20Algoritmos%20-%20Um%20Guia%20Ilustrado%20Para%20Programadores%20e%20Outros%20Curiosos%20-%20Autor%20(Aditya%20Y.%20Bhargava).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 80,
+        "livro_id": 72,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Entrega%20Cont%C3%ADnua%20-%20Como%20Entregar%20Software%20de%20Forma%20R%C3%A1pida%20e%20Confi%C3%A1vel%20-%20Auto%20(Jez%20Humble).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 81,
+        "livro_id": 73,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Entrega%20cont%C3%ADnua%20em%20Android%20-%20Como%20automatizar%20a%20distribui%C3%A7%C3%A3o%20de%20apps%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 82,
+        "livro_id": 74,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Estatistica%20-%20O%20que%20e%2C%20para%20que%20serve%2C%20como%20funciona%20.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 83,
+        "livro_id": 75,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Express%C3%B5es%20Regulares%20-%20uma%20abordagem%20divertida%20-%20Autor%20(Aurelio%20Marinho).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 84,
+        "livro_id": 76,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Extreme%20Programming%20Explained%20-%20Embrace%20Change%20-%20Autor%20(Kent%20Beck).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 85,
+        "livro_id": 77,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Fragmentos%20de%20um%20programador%20-%20Artigos%20e%20insights%20da%20carreira%20de%20um%20profissional%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 86,
+        "livro_id": 78,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Gest%C3%A3o%20de%20produtos%20-%20Como%20aumentar%20as%20chances%20de%20sucesso%20do%20seu%20software%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 87,
+        "livro_id": 79,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Google%20Android%20-%20crie%20aplica%C3%A7%C3%B5es%20para%20celulares%20e%20tablets%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 88,
+        "livro_id": 80,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Guia%20da%20Startup%20-%20Como%20Startups%20e%20Empresas%20Estabelecidas%20Podem%20Criar%20Produtos%20Web%20Rent%C3%A1veis%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 89,
+        "livro_id": 81,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Guia%20do%20Mestre%20Programador%20-%20Pensando%20como%20pirata%2C%20evoluindo%20como%20jedi%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 90,
+        "livro_id": 82,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Guia%20pr%C3%A1tico%20de%20TypeScript%20-%20Melhore%20suas%20aplica%C3%A7%C3%B5es%20JavaScript%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 91,
+        "livro_id": 83,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Guia%20pr%C3%A1tico%20do%20servidor%20Linux%20-%20Administra%C3%A7%C3%A3o%20Linux%20para%20iniciantes%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 92,
+        "livro_id": 84,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/HTML5%20e%20CSS3%20-%20domine%20a%20web%20do%20futuro%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 93,
+        "livro_id": 85,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Introdu%C3%A7%C3%A3o%20a%20data%20science%20-%20Algoritmos%20de%20machine%20learning%20e%20m%C3%A9todos%20de%20an%C3%A1lise%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 94,
+        "livro_id": 86,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Introdu%C3%A7%C3%A3o%20e%20boas%20pr%C3%A1ticas%20em%20UX%20Design%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 95,
+        "livro_id": 87,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Introdu%C3%A7%C3%A3o%20%C3%A0%20arquitetura%20de%20design%20de%20software%20-%20Autor%20(Paulo%20Silveira).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 96,
+        "livro_id": 88,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Jenkins%20-%20Automatize%20Tudo%20sem%20Complica%C3%A7%C3%B5es%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 97,
+        "livro_id": 89,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Kubernetes%20-%20Tudo%20sobre%20orquestra%C3%A7%C3%A3o%20de%20cont%C3%AAineres%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 98,
+        "livro_id": 90,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/LEAN%20ENTERPRISE%20-%20Como%20empresas%20de%20alta%20performance%20inovam%20em%20escala%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 99,
+        "livro_id": 91,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Learning%203.0%20-%20Como%20os%20profissionais%20criativos%20aprendem%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 100,
+        "livro_id": 92,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Managing%20For%20Happiness%20-%20Autor%20(Jurgen%20Appelo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 101,
+        "livro_id": 93,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/MongoDB%20-%20Construa%20Novas%20Aplica%C3%A7%C3%B5es%20com%20Novas%20Tecnologias%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 102,
+        "livro_id": 94,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/More%20Agile%20Testing%20-%20Learning%20Journeys%20for%20the%20Whole%20Team%20-%20Autor%20(Lisa%20Crispin).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 103,
+        "livro_id": 95,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/M%C3%A9tricas%20%C3%A1geis%20-%20Obtenha%20melhores%20resultados%20em%20sua%20equipe%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 104,
+        "livro_id": 96,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/NoSQL%20-%20Como%20armazenar%20os%20dados%20de%20uma%20aplica%C3%A7%C3%A3o%20moderna%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 105,
+        "livro_id": 97,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/O%20Ego%20%C3%89%20Seu%20Inimigo.%20Como%20Dominar%20Seu%20Pior%20Advers%C3%A1rio%20-%20Autor%20(Ryan%20Holiday).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 106,
+        "livro_id": 98,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/O%20Programador%20Apaixonado%20-%20Construindo%20uma%20Carreira%20Not%C3%A1vel%20em%20Desenvolvimento%20de%20Software%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 107,
+        "livro_id": 99,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/O%20Programador%20Pragm%C3%A1tico%20-%20Autor%20(Andrew%20Hunt%20e%20David%20Thomas).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 108,
+        "livro_id": 100,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Oauth%202.0%20Proteja%20Suas%20Aplicacoes%20Com%20O%20Spring%20Security%20Oauth2%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 109,
+        "livro_id": 101,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Padr%C3%B5es%20de%20Projetos%20-%20Solu%C3%A7%C3%B5es%20Reutiliz%C3%A1veis%20de%20Software%20Orientados%20a%20Objetos%20-%20Autor%20(Erich%20Gamma).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 110,
+        "livro_id": 102,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Por%20que%20Os%20Generalistas%20Vencem%20Em%20um%20Mundo%20de%20Especialistas%20-%20Autor(David%20Epstein).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 111,
+        "livro_id": 103,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Princ%C3%ADpios%20de%20Design%20e%20Padr%C3%B5es%20de%20Projeto%20-%20Autor%20(Robert%20C.%20Martin).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 112,
+        "livro_id": 104,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Progressive%20web%20apps%20-%20Construa%20aplica%C3%A7%C3%B5es%20progressivas%20com%20React%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 113,
+        "livro_id": 105,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/REST%20-%20Construa%20API's%20inteligentes%20de%20maneira%20simples%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 114,
+        "livro_id": 106,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Range%20-%20Why%20Generalists%20Triumph%20in%20a%20Specialized%20World%20-%20Autor(David%20Epstein).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 115,
+        "livro_id": 107,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Real-World%20Kanban%20-%20Do%20Less%2C%20Accomplish%20More%20with%20Lean%20Thinking%20-%20Autor%20(Mattias%20Skarin).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 116,
+        "livro_id": 108,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Refatora%C3%A7%C3%A3o%20-%20Aperfei%C3%A7oando%20o%20Design%20de%20C%C3%B3digos%20Existentes%20-%20Autor%20(Martin%20Fowler).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 117,
+        "livro_id": 109,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/SEO%20Pr%C3%A1tico%20-%20Seu%20Site%20na%20Primeira%20P%C3%A1gina%20das%20Buscas%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 118,
+        "livro_id": 110,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/SOA%20Aplicado%20-%20Integrando%20com%20web%20services%20e%20al%C3%A9m%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 119,
+        "livro_id": 111,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Scrum%20-%20Gest%C3%A3o%20%C3%A1gil%20para%20projetos%20de%20sucesso%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 120,
+        "livro_id": 112,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Scrum%20360%20-%20Um%20guia%20completo%20e%20pra%CC%81tico%20de%20agilidade%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 121,
+        "livro_id": 113,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Secrets%20of%20a%20Buccaneer-Scholar%20-%20How%20Self-Education%20and%20the%20Pursuit%20of%20Passion%20Can%20Lead%20to%20a%20Lifetime%20of%20Success%20-%20Autor%20(James%20Marcus%20Bach).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 122,
+        "livro_id": 114,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Soft%20Skills%20-%20The%20Software%20Developer's%20Life%20Manual%20-%20Autor%20(John%20Sonmez).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 123,
+        "livro_id": 115,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Sprint%20-%20Autor%20(Jake%20Knapp).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 124,
+        "livro_id": 116,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/TDD%20-%20Desenvolvimento%20Guiado%20por%20Testes%20-%20Autor%20(Ken%20Beck).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 125,
+        "livro_id": 117,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Test-Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 126,
+        "livro_id": 118,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Testes%20Automatizados%20de%20Software%20-%20Um%20Guia%20Pr%C3%A1tico%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 127,
+        "livro_id": 119,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/The%20Cambridge%20Handbook%20of%20the%20Learning%20Sciences%20-%20Autor(R.%20Keith%20Sawyer).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 128,
+        "livro_id": 120,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/The%20Mythical%20Man-Month%20Essays%20On%20Software%20Engineering%20-%20Author%20(Frederick%20P.%20Brooks).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 129,
+        "livro_id": 121,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/The%20Passionate%20Programmer%20-%20Creating%20a%20Remarkable%20Career%20in%20Software%20Development%20-%20Autor%20(Chad%20Fowler).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 130,
+        "livro_id": 122,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/The%20Software%20Craftsman%20-%20Professionalism%2C%20Pragmatism%2C%20Pride%20-%20Autor%20(Sandro%20Mancuso).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 131,
+        "livro_id": 123,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/ThoughtWorks%20Antologia%20Brasil%20-%20Hist%C3%B3rias%20de%20aprendizado%20e%20inova%C3%A7%C3%A3o%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 132,
+        "livro_id": 124,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Trabalho%20Eficaz%20com%20C%C3%B3digo%20Legado%20-%20Autor%20(Michael%20C.%20Feathers).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 133,
+        "livro_id": 125,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/UX%20e%20Usabilidade%20Aplicados%20em%20Mobile%20e%20Web%20-%20Autor%20(Caelum).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 134,
+        "livro_id": 126,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/Web%20Design%20Responsivo%20-%20P%C3%A1ginas%20adapt%C3%A1veis%20para%20todos%20os%20dispositivos%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 135,
+        "livro_id": 127,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/KAYOKG/BibliotecaDev/main/LivrosDev/eXtreme%20Programming%20-%20Pr%C3%A1ticas%20para%20o%20dia%20a%20dia%20no%20desenvolvimento%20%C3%A1gil%20de%20software%20-%20Autor%20(Casa%20do%20C%C3%B3digo).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 136,
+        "livro_id": 128,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/(Arduino%20Descomplicado)%20Claudio%20Luis%20Vieira%20Oliveira_%20Humberto%20Augusto%20Piovesana%20Zanetti%20-%20Arduino%20Descomplicado_%20Como%20Elaborar%20Projetos%20de%20Eletr%C3%B4nica-%C3%89rica%20(2015).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 137,
+        "livro_id": 129,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/(Embedded%20Technology)%20Chris%20Nagy%20-%20Embedded%20Systems%20Design%20Using%20the%20TI%20MSP430%20Series-Newnes%20(2003).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 138,
+        "livro_id": 130,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/(EngineeringPro%20collection)%20Dan%20Harres%20(Auth.)%20-%20Msp430-based%20Robot%20Applications.%20A%20Guide%20to%20Developing%20Embedded%20Systems-Newnes%20(2013).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 139,
+        "livro_id": 131,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/(Make_%20Projects)%20Massimo%20Banzi%20-%20Getting%20Started%20with%20Arduino%20-Make%20(2008).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 140,
+        "livro_id": 132,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/A%20Startup%20Enxuta%20-%20Eric%20Ries.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 141,
+        "livro_id": 133,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Adrian%20Fernandez%20and%20Dung%20Dang%20(Auth.)%20-%20Getting%20Started%20with%20the%20MSP430%20Launchpad%20(2013).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 142,
+        "livro_id": 134,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Algorithms.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 143,
+        "livro_id": 135,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Aplicacoes%20Java%20para%20a%20Web%20Com%20JDF%20e%20JPA%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 144,
+        "livro_id": 136,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Aplicacoes%20web%20real%20time%20com%20Node-js%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 145,
+        "livro_id": 137,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Apostila%20de%20Administra%C3%A7%C3%A3o%20de%20Redes%20Linux.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 146,
+        "livro_id": 138,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Apostila%20de%20Computa%C3%A7%C3%A3o%20Qu%C3%A2ntica.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 147,
+        "livro_id": 139,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Apostila%20de%20Linux%20Ubuntu.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 148,
+        "livro_id": 140,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Apostila%20de%20computa%C3%A7%C3%A3o%20gr%C3%A1fica.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 149,
+        "livro_id": 141,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Armazenando%20dados%20com%20Redis%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 150,
+        "livro_id": 142,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Aur%C3%A9lio%20Marinho%20Jargas%20-%20Shell%20Script%20Profissional.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 151,
+        "livro_id": 143,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/C%23%20e%20Orienta%C3%A7%C3%A3o%20a%20Objetos%20-%20Caelum%2C%20FN-13.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 152,
+        "livro_id": 144,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/CDI%20Integre%20as%20dependencias%20e%20contextos%20do%20seu%20codigo%20Java%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 153,
+        "livro_id": 145,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/CSS%20Eficiente%20T%C3%A9cnicas%20e%20ferramentas%20que%20fazem%20a%20diferen%C3%A7a%20nos%20seus%20estilos%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 154,
+        "livro_id": 146,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/CURSO_WD_43_-_DESENVOLVIMENTO_WEB_COM_HT.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 155,
+        "livro_id": 147,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Caderno%20de%20Algoritmos.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 156,
+        "livro_id": 148,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Caixa%20de%20Ferramentas%20DevOps%20Um%20guia%20para%20construcao%2C%20administracao%20e%20arquitetura%20de%20sistemas%20modernos%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 157,
+        "livro_id": 149,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Codigo%20Limpo%20-%20Completo%20PT.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 158,
+        "livro_id": 150,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Cody%20Lindey%20-%20Front-End%20Handbook.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 159,
+        "livro_id": 151,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Coletanea%20Front-End%20-%20Uma%20Antologia%20da%20Comunidade%20Front%20End%20Brasileira%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 160,
+        "livro_id": 152,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Componentes%20Reutilizaveis%20em%20Java%20Com%20Reflexoes%20e%20Anotacoes%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 161,
+        "livro_id": 153,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Conhecendo%20o%20Adobe%20Photoshop%20CS6%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 162,
+        "livro_id": 154,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Containers%20com%20Docker%20do%20Desenvolvimento%20a%20Producao.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 163,
+        "livro_id": 155,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Criando%20aplica%C3%A7%C3%B5es%20para%20o%20seu%20Windows%20Phone%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 164,
+        "livro_id": 156,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Crypto101.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 165,
+        "livro_id": 157,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Cucumber%20e%20RSpec%20Construa%20aplica%C3%A7%C3%B5es%20Ruby%20com%20testes%20e%20especifica%C3%A7%C3%B5es%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 166,
+        "livro_id": 158,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/C%C3%A1lculo%20I.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 167,
+        "livro_id": 159,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Data%20Science%20do%20zero_%20Primeiras%20-%20Joel%20Grus.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 168,
+        "livro_id": 160,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desbravando%20Java%20e%20Orienta%C3%A7%C3%A3o%20a%20Objetos%20Um%20guia%20para%20o%20iniciante%20da%20linguagem%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 169,
+        "livro_id": 161,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desenvolva%20jogos%20com%20HTML5%20Canvas%20e%20JavaScript%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 170,
+        "livro_id": 162,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desenvolvimento%20Web%20com%20HTML%2C%20CSS%20e%20JavaScript%20-%20Caelum%2C%20Curso%20WD-43.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 171,
+        "livro_id": 163,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desenvolvimento%20de%20Jogos%20para%20Android%20-%20Explore%20sua%20imaginacao%20com%20o%20framework%20Cocos2D%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 172,
+        "livro_id": 164,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desenvolvimento%20de%20Jogos%20para%20iOS%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 173,
+        "livro_id": 165,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desenvolvimento%20web%20com%20ASP.NET%20MVC%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 174,
+        "livro_id": 166,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Desenvolvimento%20web%20com%20PHP%20e%20MySQL%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 175,
+        "livro_id": 167,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Design%20Patterns%20com%20Java%20-%20Projeto%20orientado%20a%20objetos%20guiado%20por%20padr%C3%B5es%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 176,
+        "livro_id": 168,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Design_Patterns.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 177,
+        "livro_id": 169,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/DevOps%20Na%20pr%C3%A1tica%20-%20Entrega%20de%20software%20confi%C3%A1vel%20e%20automatizada.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 178,
+        "livro_id": 170,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Diego%20Martins%20de%20Pinho%20-%20Javascript%20-%20ECMAScript%206%20Entre%20de%20cabe%C3%A7a%20no%20futuro%20do%20JavaScript.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 179,
+        "livro_id": 171,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Direto%20ao%20ponto%20-%20Criando%20aplicacoes%20de%20forma%20enxuta.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 180,
+        "livro_id": 172,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Dominando%20JavaScript%20Com%20Jquery%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 181,
+        "livro_id": 173,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/EBook%20-%20eMotion%20Studios%20-%20Como%20transformar%20sua%20ideia%20em%20startup%20em%204%20passos%20(1).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 182,
+        "livro_id": 174,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Ebook%20VirtualBox.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 183,
+        "livro_id": 175,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Ebook%20em%20games.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 184,
+        "livro_id": 176,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Edicao%20e%20organizacao%20de%20fotos%20com%20Adobe%20Lightroom.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 185,
+        "livro_id": 177,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Elasticsearch%20consumindo%20dados%20real%20time%20com%20ELK.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 186,
+        "livro_id": 178,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Eloquent%20javascript.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 187,
+        "livro_id": 179,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Estrutura%20de%20Dados%2C%20algoritmos%2C%20an%C3%A1lise%20da%20complexidade%20e%20implementa%C3%A7%C3%B5es%20em%20Java%20e%20C%2C%20C--.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 188,
+        "livro_id": 180,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Everton%20Coimbra%20de%20Ara%C3%BAjo%20-%20Asp.NET%20Core%20MVC%20-%20%20Aplica%C3%A7%C3%B5es%20Modernas%20em%20Conjunto%20com%20o%20Entity%20Framework.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 189,
+        "livro_id": 181,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Explorando%20APIs%20e%20bibliotecas%20Java%20JDBC%2C%20IO%2C%20Threads%2C%20JavaFX%20e%20mais%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 190,
+        "livro_id": 182,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Falando%20de%20Grails%20Alt%C3%ADssima%20produtividade%20no%20desenvolvimento%20web%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 191,
+        "livro_id": 183,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Gest%C3%A3o%20de%20produtos%20-%20Como%20aumentar%20as%20chances%20de%20sucesso%20do%20seu%20software.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 192,
+        "livro_id": 184,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Google%20Android%20-%20crie%20aplica%C3%A7%C3%B5es%20para%20celulares%20e%20tablets.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 193,
+        "livro_id": 185,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Google%20App%20Engine%20-%20Construindo%20Servicos%20na%20Nuvem.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 194,
+        "livro_id": 186,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Guia%20Front-End%20-%20O%20caminho%20das%20pedras%20para%20ser%20um%20dev%20front-end.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 195,
+        "livro_id": 187,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Guia%20da%20Startup%20Como%20startups%20e%20empresas%20estabelecidas%20podem%20criar%20produtos%20web%20rent%C3%A1veis%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 196,
+        "livro_id": 188,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Guilherme%20Silveira%2C%20M%C3%A1rio%20Amaral%20-%20Java%20SE%208%20Programmer%20I%20-%20O%20guia%20para%20sua%20Certifica%C3%A7%C3%A3o%20Oracle%20Certified%20Associate.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 197,
+        "livro_id": 189,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/HTML5%20e%20CSS3%20-%20Domine%20a%20web%20do%20futuro.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 198,
+        "livro_id": 190,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/HTML5_e_CSS3_com_farinha_e_pimenta.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 199,
+        "livro_id": 191,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Html5_e_css3_domine_a_web_do_futuro_fran%20(1).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 200,
+        "livro_id": 192,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Ian%20Sinclair%20-%20Sensors%20and%20Transducers-Newnes%20(2001).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 201,
+        "livro_id": 193,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Intelig%C3%AAncia%20Artificial.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 202,
+        "livro_id": 194,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introducao%20ao%20Calculo%20Diferencial.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 203,
+        "livro_id": 195,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introducao%20ao%20Calculo%20Integral.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 204,
+        "livro_id": 196,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introdu%C3%A7%C3%A3o%20a%20arquitetura%20e%20design%20de%20software%20-%20Uma%20vis%C3%A3o%20sobre%20a%20plataforma%20JAVA.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 205,
+        "livro_id": 197,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introdu%C3%A7%C3%A3o%20%C3%A0%20Arquitetura%20e%20Design%20de%20Software%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 206,
+        "livro_id": 198,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introdu%C3%A7%C3%A3o%20%C3%A0%20Computa%C3%A7%C3%A3o%20Da%20L%C3%B3gica%20aos%20jogos%20com%20Ruby%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 207,
+        "livro_id": 199,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Introdu%C3%A7%C3%A3o%20%C3%A0%20programa%C3%A7%C3%A3o%20em%20C%20-%20Os%20primeiros%20passos%20de%20um%20desenvolvedor.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 208,
+        "livro_id": 200,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/JPA%20Eficaz%20-%20As%20melhores%20praticas%20de%20persistencia%20de%20dados%20em%20Java%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 209,
+        "livro_id": 201,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/JSF%20Eficaz%20-%20As%20melhores%20pr%C3%A1ticas%20para%20o%20desenvolvedor%20web%20Java%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 210,
+        "livro_id": 202,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java%208%20Pratico%20Lambdas%20Streams%20e%20os%20Novos%20Recursos%20da%20Linguagem%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 211,
+        "livro_id": 203,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java%20SE%207%20Programmer%20I%20O%20guia%20para%20sua%20certifica%C3%A7%C3%A3o%20Oracle%20Certified%20Associate%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 212,
+        "livro_id": 204,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java%20e%20Orienta%C3%A7%C3%A3o%20a%20Objetos%20-%20Caelum%2C%20Curso%20FJ-11.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 213,
+        "livro_id": 205,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java%20e%20Orienta%C3%A7%C3%B5es%20a%20Objetos.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 214,
+        "livro_id": 206,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java%20para%20Desenvolvimento%20Web%20-%20Caelum%2C%20FJ-21.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 215,
+        "livro_id": 207,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/JavaFX%20-%20Interfaces%20com%20qualidade%20para%20aplicacoes%20desktop.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 216,
+        "livro_id": 208,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/JavaFX%20Interfaces%20com%20qualidade%20para%20aplicacoes%20desktop%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 217,
+        "livro_id": 209,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/JavaScript%20O%20Guia%20Definitivo_v2.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 218,
+        "livro_id": 210,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/JavaScriptNotesForProfessionals.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 219,
+        "livro_id": 211,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Java_Programming.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 220,
+        "livro_id": 212,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Javascript%20-%20Cangaceiro%20JavaScript%20-%20Uma%20Aventura%20no%20Sert%C3%A3o%20da%20Programacao.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 221,
+        "livro_id": 213,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Jenkins%20-%20%20Automatize%20tudo%20sem%20complicacoes.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 222,
+        "livro_id": 214,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Jerry%20Luecke%20-%20Analog%20and%20Digital%20Circuits%20for%20Electronic%20Control%20System%20Applications_%20Using%20the%20TI%20MSP430%20Microcontroller-Newnes%20(2004).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 223,
+        "livro_id": 215,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Jogos%20Android%20-%20Crie%20um%20game%20do%20zero%20usando%20classes%20nativas%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 224,
+        "livro_id": 216,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Jogos%20em%20HTML5%20Explore%20o%20mobile%20e%20f%C3%ADsica%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 225,
+        "livro_id": 217,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/John%20H.%20Davies-MSP430%20Microcontroller%20Basics-Newnes%20(2008).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 226,
+        "livro_id": 218,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/John%20Lovine-PIC%20Microcontroller%20Project%20Book-McGraw-Hill%20(2000).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 227,
+        "livro_id": 219,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/John%20Walkenbach%20-%20Programando%20%20Excel%20%C2%AE%20Vba%20Para%20Leigos.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 228,
+        "livro_id": 220,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Kenneth%20Lewenhagen%2C%20Anders%20%C3%85kesson%20-%20Node.js%20in%20Open%20Source%20projects%20on%20Github.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 229,
+        "livro_id": 221,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/LEAN%20ENTERPRISE%20-%20Como%20empresas%20de%20alta%20performance%20inovam%20em%20escala.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 230,
+        "livro_id": 222,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Linux-a-biblia-pt-br.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 231,
+        "livro_id": 223,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20A%20Computacao%20pessoal%20e%20o%20Sistema%20operacional%20Linux.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 232,
+        "livro_id": 224,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Arquitetura%20e%20Organiza%C3%A7%C3%A3o%20de%20Computadores(1).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 233,
+        "livro_id": 225,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Arquitetura%20e%20organiza%C3%A7%C3%A3o%20de%20computadores.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 234,
+        "livro_id": 226,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Big%20Data%20-%20Tecnicas%20extracao%20de%20valor%20dos%20dados.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 235,
+        "livro_id": 227,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Compilladores.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 236,
+        "livro_id": 228,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Comunica%C3%A7%C3%A3o%20de%20Dados%20e%20Redes%20de%20Computadores.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 237,
+        "livro_id": 229,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Desenvolvimento%20de%20jogos%203D.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 238,
+        "livro_id": 230,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Entendendo%20e%20Dominando%20o%20Linux.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 239,
+        "livro_id": 231,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Intelig%C3%AAncia%20Artificial.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 240,
+        "livro_id": 232,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Introdu%C3%A7%C3%A3o%20ao%20ambiente%20windows.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 241,
+        "livro_id": 233,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Introdu%C3%A7%C3%A3o%20%C3%A0%20Minera%C3%A7%C3%A3o%20de%20Dados.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 242,
+        "livro_id": 234,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Java.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 243,
+        "livro_id": 235,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Javascript.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 244,
+        "livro_id": 236,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Linux%20-%20A%20B%C3%ADblia.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 245,
+        "livro_id": 237,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Linux%20-%20o%20guia%20essencial.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 246,
+        "livro_id": 238,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Montagem%20e%20Manuten%C3%A7%C3%A3o%20de%20Computadores.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 247,
+        "livro_id": 239,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Montagtem%2C%20Manuten%C3%A7%C3%A3o%20e%20Configura%C3%A7%C3%A3o%20de%20Computadores.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 248,
+        "livro_id": 240,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20MySQL.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 249,
+        "livro_id": 241,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Oracle%20Database%2011g%20Sql.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 250,
+        "livro_id": 242,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Python%20(Automatize%20tarefas%20ma%C3%A7antes).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 251,
+        "livro_id": 243,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Python%20(desenvolvedores).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 252,
+        "livro_id": 244,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Python.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 253,
+        "livro_id": 245,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Rede%20de%20Computadores%20e%20a%20Internet.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 254,
+        "livro_id": 246,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Sistemas%20Operacionais.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 255,
+        "livro_id": 247,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Sistemas%20de%20Banco%20de%20Dados%20-%204%C2%AA%20Edi%C3%A7%C3%A3o.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 256,
+        "livro_id": 248,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Livro%20de%20Windows.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 257,
+        "livro_id": 249,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Logica%20de%20programacao%20-%20Crie%20seus%20primeiros%20programas%20usando%20javascript%20e%20html%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 258,
+        "livro_id": 250,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Luiz%20Eduardo%20Borges%20-%20Python%20para%20Desenvolvedores%20-%202%C2%B0%20Edi%C3%A7%C3%A3o.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 259,
+        "livro_id": 251,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Manuel%20Jim%C3%A9nez%2C%20Rogelio%20Palomera%2C%20Isidoro%20Couvertier%20(auth.)%20-%20Introduction%20to%20Embedded%20Systems_%20Using%20Microcontrollers%20and%20the%20MSP430-Springer-Verlag%20New%20York%20(2014).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 260,
+        "livro_id": 252,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Mean%20Full%20stack%20JavaScript%20para%20aplica%C3%A7%C3%B5es%20web%20com%20MongoDB%2C%20Express%2C%20Angular%20e%20Node%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 261,
+        "livro_id": 253,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Meteor%20-%20Criando%20aplica%C3%A7%C3%B5es%20web%20real-time%20com%20JavaScript%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 262,
+        "livro_id": 254,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Michael%20Barr%20-%20Programming%20Embedded%20Systems%20in%20C%20and%20C%20%2B%2B-O_Reilly%20Media%20(1999).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 263,
+        "livro_id": 255,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Michael%20J%20Pont%20-%20Embedded%20C-Addison-Wesley%20Professional%20(2002).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 264,
+        "livro_id": 256,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Michael%20McRoberts%20-%20Beginning%20Arduino-Apress%20(2010).pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 265,
+        "livro_id": 257,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/MongoDB%20Construa%20novas%20aplica%C3%A7%C3%B5es%20com%20novas%20tecnologias%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 266,
+        "livro_id": 258,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/MundoJ%20-%20Java%20efetivo%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 267,
+        "livro_id": 259,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/MundoJ%20Seguran%C3%A7a%20com%20Java%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 268,
+        "livro_id": 260,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/MySQL%20Comece%20com%20o%20principal%20banco%20de%20dados%20open%20source%20do%20mercado%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 269,
+        "livro_id": 261,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/NoSQL%20-%20Como%20armazenar%20os%20dados%20de%20uma%20aplica%C3%A7%C3%A3o%20moderna.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 270,
+        "livro_id": 262,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Node.js%20-%20Aplica%C3%A7%C3%B5es%20web%20real-tome%20com%20Node.js.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 271,
+        "livro_id": 263,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/O%20Canivete%20su%C3%AD%C3%A7o%20do%20desenvolvedor%20Node.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 272,
+        "livro_id": 264,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/O%20Mantra%20da%20Produtividade%20-%20Aprimore%20sua%20produtividade%20com%20t%C3%A9cnicas%20de%20foco%20e%20organiza%C3%A7%C3%A3o%20pessoal.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 273,
+        "livro_id": 265,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/O%20Programador%20Apaixonado%20-%20Construindo%20uma%20carreira%20notavel%20em%20desenvolvimento%20de%20software.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 274,
+        "livro_id": 266,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Octave%20-%20Seus%20primeiros%20passos%20na%20programacao%20cientifica.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 275,
+        "livro_id": 267,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Organiza%C3%A7%C3%A3o%20estruturada%20de%20computadores%20-%20Tanenbaum.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 276,
+        "livro_id": 268,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Orienta%C3%A7%C3%A3o%20a%20Objetos%20e%20SOLID%20para%20Ninjas%20Projetando%20classes%20flex%C3%ADveis%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 277,
+        "livro_id": 269,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/PLSQL%20-%20Domine%20a%20linguagem%20do%20banco%20de%20dados%20Oracle.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 278,
+        "livro_id": 270,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/PLSQL%20Domine%20a%20linguagem%20do%20banco%20de%20dados%20Oracle%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 279,
+        "livro_id": 271,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Paul%20Deitel%2C%20Harvey%20Deitel%20-%20Java%20como%20Programar%20-%2010%C2%B0%20Edi%C3%A7%C3%A3o.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 280,
+        "livro_id": 272,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Play%20Framework%20-%20Java%20para%20web%20sem%20servlets%20e%20com%20diversao%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 281,
+        "livro_id": 273,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Play%20Framework%20-%20Java%20para%20web%20sem%20servlets%20e%20com%20diversao.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 282,
+        "livro_id": 274,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/PostgreSQL%20-%20Banco%20de%20dados%20para%20aplica%C3%A7%C3%B5es%20web%20modernas.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 283,
+        "livro_id": 275,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Programando%20em%20Go%20-%20Crie%20aplica%C3%A7%C3%B5es%20com%20a%20linguagem%20do%20Google%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 284,
+        "livro_id": 276,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Python%20-%20Escreva%20seus%20primeiros%20programas%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 285,
+        "livro_id": 277,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Python%20-%20Escreva%20seus%20primeiros%20programas.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 286,
+        "livro_id": 278,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Python_Programming.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 287,
+        "livro_id": 279,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/RSpec%20-%20Crie%20especificacoes%20executaveis%20em%20Ruby.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 288,
+        "livro_id": 280,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Refatorando%20com%20padroes%20de%20projeto%20-%20Um%20guia%20em%20ruby.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 289,
+        "livro_id": 281,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Ruby%20-%20Aprenda%20a%20programar%20na%20linguagem%20mais%20divertida%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 290,
+        "livro_id": 282,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Ruby%20-%20Aprenda%20a%20programar%20na%20linguagem%20mais%20divertida.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 291,
+        "livro_id": 283,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Ruby%20on%20Rails%20-%20coloque%20sua%20aplicacao%20web%20nos%20trilhos%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 292,
+        "livro_id": 284,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/SEO%20Pr%C3%A1tico%20Seu%20site%20na%20primeira%20p%C3%A1gina%20das%20buscas.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 293,
+        "livro_id": 285,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/SOA%20aplicado%20-%20Integrando%20com%20web%20services%20e%20al%C3%A9m.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 294,
+        "livro_id": 286,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/SQL%20-%20Uma%20abordagem%20para%20bancos%20de%20dados%20Oracle%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 295,
+        "livro_id": 287,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/SQL%20-%20Uma%20abordagem%20para%20bancos%20de%20dados%20Oracle.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 296,
+        "livro_id": 288,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Sass%20-%20Aprendendo%20pr%C3%A9-processadores%20CSS.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 297,
+        "livro_id": 289,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Scrum%20360%20Um%20guia%20completo%20e%20pra%CC%81tico%20de%20agilidade.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 298,
+        "livro_id": 290,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Scrum%20Gest%C3%A3o%20%C3%A1gil%20para%20projetos%20de%20sucesso.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 299,
+        "livro_id": 291,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Seguranca%20em%20aplicacoes%20Web.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 300,
+        "livro_id": 292,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Spring%20MVC%20Domine%20o%20principal%20framework%20web%20Java%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 301,
+        "livro_id": 293,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Swift%20Programe%20para%20iPhone%20e%20iPad%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 302,
+        "livro_id": 294,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Test%20Driven%20Development%20-%20Teste%20e%20Design%20no%20Mundo%20Real%20com%20DotNet%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 303,
+        "livro_id": 295,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Think_Python.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 304,
+        "livro_id": 296,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Turbine%20seu%20CSS%20-%20folhas%20de%20estilo%20inteligentes%20com%20Sass.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 305,
+        "livro_id": 297,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Vire%20o%20jogo%20com%20Spring%20Framework.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 306,
+        "livro_id": 298,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Voce%20Sabe%20Estudar_%20-%20Claudio%20Moura%20Castro.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 307,
+        "livro_id": 299,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Vraptor%20-%20Desenvolvimento%20Agil%20para%20web%20com%20Java%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 308,
+        "livro_id": 300,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Web%20Services%20REST%20com%20ASP%20.NET%20Web%20API%20e%20Windows%20Azure.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 309,
+        "livro_id": 301,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/Windows%20Server%202012%20R2%20Estudo%20dirigido%20para%20MCSA%20prova%2070-410%20.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 310,
+        "livro_id": 302,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/arduino_b%C3%A1sico_Michael_McRoberts.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 311,
+        "livro_id": 303,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/caelum-algoritmos-estruturas-dados-java-cs14.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 312,
+        "livro_id": 304,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/eXtreme%20programming%20%20Praticas%20para%20o%20dia-a-dia%20no%20desenvolvimento%20agil%20de%20software%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 313,
+        "livro_id": 305,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/html5%20e%20css3%20domine%20a%20web%20do%20futuro%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 314,
+        "livro_id": 306,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/iOS%20Programe%20para%20iPhone%20e%20iPad%20-%20Casa%20do%20Codigo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 315,
+        "livro_id": 307,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/jQuery%20Mobile%20-%20Desenvolva%20interfaces%20para%20multiplos%20dispositivos.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 316,
+        "livro_id": 308,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/php.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 317,
+        "livro_id": 309,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/phptherightway.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 318,
+        "livro_id": 310,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/pythonoo.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 319,
+        "livro_id": 311,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/slyy138a.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 320,
+        "livro_id": 312,
+        "formato": "pdf",
+        "url": "https://raw.githubusercontent.com/italocamil0/books/main/books/wstg-v4.1.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 321,
+        "livro_id": 313,
+        "formato": "html",
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/bigO.jpg",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 322,
+        "livro_id": 314,
+        "formato": "html",
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/basicAuth.jpg",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 323,
+        "livro_id": 315,
+        "formato": "html",
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/onboarding.jpg",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 324,
+        "livro_id": 316,
+        "formato": "html",
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/sso.jpg",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 325,
+        "livro_id": 317,
+        "formato": "html",
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/star.jpg",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 326,
+        "livro_id": 318,
+        "formato": "html",
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/slaSloSli.jpg",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 327,
+        "livro_id": 319,
+        "formato": "html",
+        "url": "https://github.com/flaviojmendes/trilhainfo/blob/main/public/guides/jsAsyncDefer.jpg",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 328,
+        "livro_id": 320,
+        "formato": "html",
+        "url": "https://trilha.info/roadmap/frontend",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 329,
+        "livro_id": 321,
+        "formato": "html",
+        "url": "https://trilha.info/roadmap/backend",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 330,
+        "livro_id": 322,
+        "formato": "html",
+        "url": "https://trilha.info/roadmap/devops",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 331,
+        "livro_id": 323,
+        "formato": "html",
+        "url": "https://trilha.info/roadmap/data-engineer",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 332,
+        "livro_id": 324,
+        "formato": "html",
+        "url": "https://trilha.info/roadmap/test",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 333,
+        "livro_id": 325,
+        "formato": "html",
+        "url": "https://guiadeti.com.br/roadmaps/ai-expert-roadmap/",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 334,
+        "livro_id": 326,
+        "formato": "html",
+        "url": "https://guiadeti.com.br/roadmaps/awesome-roadmaps/",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 335,
+        "livro_id": 327,
+        "formato": "html",
+        "url": "https://guiadeti.com.br/cursos/curso-devops-cloud-linux-docker-e-projeto-marketplace/",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 336,
+        "livro_id": 328,
+        "formato": "html",
+        "url": "https://guiadeti.com.br/roadmaps/techguidesh-guia-de-carreiras-e-tecnologias/",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 337,
+        "livro_id": 329,
+        "formato": "html",
+        "url": "https://guiadeti.com.br/roadmaps/trilha-info-trilhas-gratuitas-de-tecnologia/",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 338,
+        "livro_id": 330,
+        "formato": "html",
+        "url": "https://guiadeti.com.br/roadmaps/roadmapsh-developer-roadmaps/",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 339,
+        "livro_id": 331,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/16474.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 340,
+        "livro_id": 331,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/16474",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 341,
+        "livro_id": 332,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/48512.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 342,
+        "livro_id": 332,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/48512",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 343,
+        "livro_id": 333,
+        "formato": "html",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000190249_por",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 344,
+        "livro_id": 333,
+        "formato": "pdf",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000190249_por.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 345,
+        "livro_id": 334,
+        "formato": "html",
+        "url": "https://www.africanstorybook.org",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 346,
+        "livro_id": 335,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Portal:Mo%C3%A7ambique",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 347,
+        "livro_id": 336,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Portal:Mo%C3%A7ambique",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 348,
+        "livro_id": 337,
+        "formato": "html",
+        "url": "https://pt.wikisource.org/wiki/Portal:Cabo_Verde",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 349,
+        "livro_id": 338,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/15399.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 350,
+        "livro_id": 338,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/15399",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 351,
+        "livro_id": 339,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/66988.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 352,
+        "livro_id": 339,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/66988",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 353,
+        "livro_id": 340,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/14541.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 354,
+        "livro_id": 340,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/14541",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 355,
+        "livro_id": 341,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/37060.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 356,
+        "livro_id": 341,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/37060",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 357,
+        "livro_id": 342,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/13463.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 358,
+        "livro_id": 342,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/13463",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 359,
+        "livro_id": 343,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/15359.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 360,
+        "livro_id": 343,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/15359",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 361,
+        "livro_id": 344,
+        "formato": "epub",
+        "url": "https://www.gutenberg.org/ebooks/60395.epub3.images",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 362,
+        "livro_id": 344,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/60395",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 363,
+        "livro_id": 345,
+        "formato": "html",
+        "url": "https://www.gutenberg.org/ebooks/author/37841",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 364,
+        "livro_id": 346,
+        "formato": "html",
+        "url": "https://fr.wikisource.org/wiki/L%C3%A9gendes_et_contes_merveilleux_de_la_Grande_Kabylie",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 365,
+        "livro_id": 347,
+        "formato": "html",
+        "url": "https://fr.wikisource.org/wiki/Voyage_%C3%A0_Tombouctou",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 366,
+        "livro_id": 348,
+        "formato": "html",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000042225_fre",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 367,
+        "livro_id": 348,
+        "formato": "pdf",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000042225_fre.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 368,
+        "livro_id": 349,
+        "formato": "html",
+        "url": "https://fr.wikisource.org/wiki/Auteur:L%C3%A9opold_S%C3%A9dar_Senghor",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 369,
+        "livro_id": 350,
+        "formato": "html",
+        "url": "https://fr.wikisource.org/wiki/Auteur:Birago_Diop",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 370,
+        "livro_id": 351,
+        "formato": "html",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000002447_fre",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 371,
+        "livro_id": 352,
+        "formato": "html",
+        "url": "https://fr.wikisource.org/wiki/Portail:Afrique",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 372,
+        "livro_id": 353,
+        "formato": "html",
+        "url": "https://www.projekt-gutenberg.org/autoren/namen/seidel.html",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 373,
+        "livro_id": 354,
+        "formato": "html",
+        "url": "https://www.projekt-gutenberg.org/meinhof/bantu/bantu.html",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 374,
+        "livro_id": 355,
+        "formato": "html",
+        "url": "https://www.projekt-gutenberg.org/froben/dekamer/dekamer.html",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 375,
+        "livro_id": 356,
+        "formato": "html",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000042225_ger",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 376,
+        "livro_id": 356,
+        "formato": "pdf",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000042225_ger.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 377,
+        "livro_id": 357,
+        "formato": "html",
+        "url": "https://www.projekt-gutenberg.org/froben/atlantis/atlantis.html",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 378,
+        "livro_id": 358,
+        "formato": "html",
+        "url": "https://www.un.org/depts/german/frieden/mandela.html",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 379,
+        "livro_id": 359,
+        "formato": "html",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000042225_ger",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 380,
+        "livro_id": 360,
+        "formato": "html",
+        "url": "https://zh.wikisource.org/wiki/%E7%80%9B%E6%B6%AF%E5%8B%9D%E8%A6%BD",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 381,
+        "livro_id": 361,
+        "formato": "html",
+        "url": "https://zh.wikisource.org/wiki/%E6%98%9F%E6%A7%8E%E5%8B%9D%E8%A6%BD",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 382,
+        "livro_id": 362,
+        "formato": "html",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000042225_chi",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 383,
+        "livro_id": 362,
+        "formato": "pdf",
+        "url": "https://unesdoc.unesco.org/ark:/48223/pf0000042225_chi.pdf",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 384,
+        "livro_id": 363,
+        "formato": "html",
+        "url": "https://zh.wikisource.org/wiki/%E9%9D%9E%E6%B4%B2%E6%B0%91%E9%97%B4%E6%95%85%E4%BA%8B",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 385,
+        "livro_id": 364,
+        "formato": "html",
+        "url": "https://zh.wikisource.org/wiki/%E6%9D%BE%E8%BF%AA%E4%BA%9A%E5%A1%94%E5%8F%B2%E8%AF%97",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 386,
+        "livro_id": 365,
+        "formato": "html",
+        "url": "https://zh.wikisource.org/wiki/%E9%9D%9E%E6%B4%B2%E6%96%87%E5%AD%A6",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 387,
+        "livro_id": 366,
+        "formato": "html",
+        "url": "https://www.un.org/zh/events/mandeladay/legacy.shtml",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 388,
+        "livro_id": 367,
+        "formato": "html",
+        "url": "https://zh.wikisource.org/wiki/%E6%96%AF%E7%93%A6%E5%B8%8C%E9%87%8C%E6%96%87%E6%98%8E",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      },
+      {
+        "id": 389,
+        "livro_id": 368,
+        "formato": "html",
+        "url": "https://zh.wikisource.org/wiki/%E9%9D%9E%E6%B4%B2%E8%AF%97%E6%AD%8C",
+        "tamanho_bytes": 0,
+        "link_externo": 1
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LHR",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 1.0945
+      },
+      "duration": 1.0945,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 888832,
+      "rows_read": 389,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]

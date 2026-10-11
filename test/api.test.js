@@ -490,5 +490,34 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resRecentes.data.length >= 10, 'Deve listar episódios recentes');
     assert.ok(resRecentes.data[0].spotify_embed_url, 'Episódio deve conter URL de embed do Spotify');
   });
+
+  // Teste 14: Bootcamps DIO, Santander Open Academy e Curso em Vídeo (Gustavo Guanabara)
+  test('14. Catálogo de Bootcamps DIO, Santander Open Academy e Curso em Vídeo com datas de finalização e certificados', async () => {
+    // 14.1 - Bootcamps Oficiais DIO com datas de finalização e habilidades
+    const resDio = await request('/api/cursos?plataforma=DIO');
+    assert.equal(resDio.status, 200);
+    assert.ok(Array.isArray(resDio.data));
+    assert.ok(resDio.data.length >= 200, 'Deve conter pelo menos 200 bootcamps da DIO');
+    assert.ok(resDio.data.some(b => b.descricao.includes('Finaliza em')), 'Bootcamps DIO devem conter data de finalização');
+    assert.ok(resDio.data.some(b => b.titulo.includes('Java') || b.titulo.includes('Python')), 'Deve conter bootcamps técnicos');
+
+    // 14.2 - Santander Open Academy (Bootcamps, Bolsas e Cursos On-Demand)
+    const resSantander = await request('/api/cursos?plataforma=Santander');
+    assert.equal(resSantander.status, 200);
+    assert.ok(Array.isArray(resSantander.data));
+    assert.ok(resSantander.data.length >= 30, 'Deve conter acervo expressivo do Santander Open Academy');
+    assert.ok(resSantander.data.some(s => s.descricao.includes('Finaliza em') || s.descricao.includes('INSCRIÇÕES ABERTAS')), 'Santander deve conter prazos e datas de finalização');
+    assert.ok(resSantander.data.some(s => s.descricao.includes('Banco Santander')), 'Deve conter certificação oficial do Banco Santander');
+
+    // 14.3 - Curso em Vídeo (Prof. Gustavo Guanabara)
+    const resGuanabara = await request('/api/cursos?plataforma=Curso+em+V%C3%ADdeo');
+    assert.equal(resGuanabara.status, 200);
+    assert.ok(Array.isArray(resGuanabara.data));
+    assert.ok(resGuanabara.data.length >= 20, 'Deve conter os cursos consagrados do Prof. Gustavo Guanabara');
+    assert.ok(resGuanabara.data.some(c => c.titulo.includes('Python 3')), 'Deve conter curso de Python 3');
+    assert.ok(resGuanabara.data.some(c => c.titulo.includes('HTML5 e CSS3')), 'Deve conter módulos de HTML5 e CSS3');
+    assert.ok(resGuanabara.data.some(c => c.descricao.includes('Gustavo Guanabara')), 'Deve creditar o Prof. Gustavo Guanabara');
+    assert.ok(resGuanabara.data.some(c => c.descricao.includes('Certificado oficial gratuito')), 'Cursos devem garantir certificação 100% gratuita');
+  });
 });
 

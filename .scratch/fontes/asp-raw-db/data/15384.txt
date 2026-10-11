@@ -1,0 +1,48 @@
+url:	http://africanstorybook.org/reader.php?id=15384&d=0&a=1
+id:	15384
+title:	Ħasbēn L-Qṭāṭes
+author:	Ramzi Hachani
+artist:	Jesse Breytenbach
+lang:	Tunisian
+level:	First words
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/15384.png
+desc:	Ktēb ħasbēn l-qṭāṭes
+
+page_text:
+
+P1	Qaddēc min qaṭṭūsa? 0 - Ṣfìr qaṭṭūsa.
+P2	Qaddēc min qaṭṭūsa? 1 - Qaṭṭūsa waħda.
+P3	Qaddēc min qaṭṭūsa? 2 - Zūz qṭāṭis.
+P4	Qaddēc min qaṭṭūsa? 3 - Ŧlēŧa qṭāṭes.
+P5	Qaddēc min qaṭṭūsa? 4 - Arbɛa qṭāṭes.
+P6	Qaddēc min qaṭṭūsa? 5 - Ҟamsa qṭāṭes.
+P7	Qaddēc min qaṭṭūsa? 6 - Sitta qṭāṭes.
+P8	Qaddēc min qaṭṭūsa? 7 - Sebɛa qṭāṭes.
+P9	Qaddēc min qaṭṭūsa? 8 - Ŧmenya qṭāṭes.
+P10	Ċnuwwa hēđa? Qṭīṭsa wēħila fi ċojra! "Tawwa nmennɛek!"
+P11	"Ommi, nistaħfđ̣u bīha?" Tawwa ɛandi 9 - tisɛa qṭāṭis
+
+images:
+
+illustrations/pages/12024.png
+illustrations/pages/12020.png
+illustrations/pages/12006.png
+illustrations/pages/12018.png
+illustrations/pages/12019.png
+illustrations/pages/12414.png
+illustrations/pages/12021.png
+illustrations/pages/12025.png
+illustrations/pages/12026.png
+illustrations/pages/12024.png
+illustrations/pages/12008.png
+illustrations/pages/12028.png
+
+translations:
+
+Amharic (Translation)	ድመቶችን እንቁጠር	id=13124
+Arabic (Translation)	عدد القطط	id=19919
+English (Adaptation)	Counting Cats	id=12693
+isiXhosa (Translation)	Bala Iikati	id=15023
+Lunyole (Translation)	Ohubala Epuusi	id=13559
+Portuguese (Translation)	Contar Gatos	id=16196

@@ -1,0 +1,1144 @@
+[
+  {
+    "results": [
+      {
+        "id": 1,
+        "nome": "Machado de Assis",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Fundador da Academia Brasileira de Letras e gênio do Realismo mundial.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 2,
+        "nome": "José de Alencar",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Patrono da literatura romântica brasileira e autor de Iracema e O Guarani.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 3,
+        "nome": "Aluísio Azevedo",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Pioneiro do Naturalismo no Brasil e autor consagrado de O Cortiço.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 4,
+        "nome": "Lima Barreto",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Importante escritor e cronista pré-modernista, crítico da Primeira República.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 5,
+        "nome": "Castro Alves",
+        "nacionalidade": "Brasileiro",
+        "biografia": "O Poeta dos Escravos, célebre por sua lírica romântica e poesia abolicionista.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 6,
+        "nome": "Raul Pompeia",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Romancista e cronista, autor de O Ateneu e expoente do Impressionismo e Naturalismo no Brasil.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 7,
+        "nome": "Euclides da Cunha",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Jornalista, historiador e escritor brasileiro, autor do clássico épico e sociológico Os Sertões.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 8,
+        "nome": "Joaquim Manuel de Macedo",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Médico, jornalista e romancista, fundador do romance urbano brasileiro com A Moreninha.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 9,
+        "nome": "Gil Vicente",
+        "nacionalidade": "Português",
+        "biografia": "Pai do teatro português e renascentista, autor dos autos de moralidade como o Auto da Barca do Inferno.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 10,
+        "nome": "Luís de Camões",
+        "nacionalidade": "Português",
+        "biografia": "O maior poeta da língua portuguesa, autor do poema épico fundamental Os Lusíadas.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 11,
+        "nome": "Fernando Pessoa",
+        "nacionalidade": "Português",
+        "biografia": "Um dos maiores gênios da literatura universal do século XX, criador dos heterônimos e autor de Mensagem.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 12,
+        "nome": "Álvares de Azevedo",
+        "nacionalidade": "Brasileiro",
+        "biografia": "Principal representante da segunda geração romântica ultrarromântica (Mal do Século) no Brasil.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 13,
+        "nome": "Guia de TI & Comunidade",
+        "nacionalidade": "Brasileiro/Internacional",
+        "biografia": "Curadoria e produção aberta de conteúdos, roadmaps e cursos de tecnologia.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 14,
+        "nome": "Reed Hastings",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 15,
+        "nome": "Eric Ries",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 16,
+        "nome": "Casa do Código",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 17,
+        "nome": "Harvard Business Review",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 18,
+        "nome": "Jon Bonso and Adrian Formaran",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 19,
+        "nome": "Adam Book",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 20,
+        "nome": "Jon Bonso and Kenneth Samonte",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 21,
+        "nome": "Jon Bonso and Carlo Acebedo",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 22,
+        "nome": "Jon Bonso",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 23,
+        "nome": "Jon Bonso and Lervin John Obando",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 24,
+        "nome": "Steve M Burnett",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 25,
+        "nome": "Hiroko Nishimura",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 26,
+        "nome": "Mike Cohn",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 27,
+        "nome": "Ken Schwaber",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 28,
+        "nome": "Esther Derby",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 29,
+        "nome": "Thomas Cormen",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 30,
+        "nome": "Dave Hoover e Adewale Oshineye",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 31,
+        "nome": "Robert C. Martin",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 32,
+        "nome": "John Ferguson Smart",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 33,
+        "nome": "Comunidade Tech",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 34,
+        "nome": "Robert Martin",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 35,
+        "nome": "Adkins Lyssa",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 36,
+        "nome": "Software House",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 37,
+        "nome": "Darrell-Heff",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 38,
+        "nome": "Pete Goodliffe",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 39,
+        "nome": "Behrouz A. Forouzan",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 40,
+        "nome": "Alistair Cockburn",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 41,
+        "nome": "Eric Evans",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 42,
+        "nome": "Aditya Y. Bhargava",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 43,
+        "nome": "Jez Humble",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 44,
+        "nome": "Aurelio Marinho",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 45,
+        "nome": "Kent Beck",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 46,
+        "nome": "Paulo Silveira",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 47,
+        "nome": "Jurgen Appelo",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 48,
+        "nome": "Lisa Crispin",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 49,
+        "nome": "Ryan Holiday",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 50,
+        "nome": "Andrew Hunt e David Thomas",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 51,
+        "nome": "Erich Gamma",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 52,
+        "nome": "David Epstein",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 53,
+        "nome": "Mattias Skarin",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 54,
+        "nome": "Martin Fowler",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 55,
+        "nome": "James Marcus Bach",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 56,
+        "nome": "John Sonmez",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 57,
+        "nome": "Jake Knapp",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 58,
+        "nome": "Ken Beck",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 59,
+        "nome": "R. Keith Sawyer",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 60,
+        "nome": "Chad Fowler",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 61,
+        "nome": "Sandro Mancuso",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 62,
+        "nome": "Michael C. Feathers",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 63,
+        "nome": "Caelum",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 64,
+        "nome": "Arduino Descomplicado_ Como Elaborar Projetos de Eletrônica-Érica",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 65,
+        "nome": "Chris Nagy",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 66,
+        "nome": "Dan Harres (Auth.)",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 67,
+        "nome": "Massimo Banzi",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 68,
+        "nome": "A Startup Enxuta",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 69,
+        "nome": "Getting Started with the MSP430 Launchpad",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 70,
+        "nome": "Aurélio Marinho Jargas",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 71,
+        "nome": "Codigo Limpo",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 72,
+        "nome": "Cody Lindey",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 73,
+        "nome": "Joel Grus",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 74,
+        "nome": "Maurício Aniche",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 75,
+        "nome": "DevOps Na prática",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 76,
+        "nome": "ECMAScript 6 Entre de cabeça no futuro do JavaScript",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 77,
+        "nome": "Direto ao ponto",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 78,
+        "nome": "Como transformar sua ideia em startup em 4 passos (1)",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 79,
+        "nome": "Aplicações Modernas em Conjunto com o Entity Framework",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 80,
+        "nome": "Gestão de produtos",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 81,
+        "nome": "Google Android",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 82,
+        "nome": "Google App Engine",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 83,
+        "nome": "Guia Front-End",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 84,
+        "nome": "O guia para sua Certificação Oracle Certified Associate",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 85,
+        "nome": "HTML5 e CSS3",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 86,
+        "nome": "Ian Sinclair",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 87,
+        "nome": "Uma visão sobre a plataforma JAVA",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 88,
+        "nome": "Os primeiros passos de um desenvolvedor",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 89,
+        "nome": "JavaFX",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 90,
+        "nome": "Uma Aventura no Sertão da Programacao",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 91,
+        "nome": "Jenkins",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 92,
+        "nome": "Jerry Luecke",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 93,
+        "nome": "John Walkenbach",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 94,
+        "nome": "Node.js in Open Source projects on Github",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 95,
+        "nome": "LEAN ENTERPRISE",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 96,
+        "nome": "Tecnicas extracao de valor dos dados",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 97,
+        "nome": "Livro de Linux",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 98,
+        "nome": "4ª Edição",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 99,
+        "nome": "2° Edição",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 100,
+        "nome": "Introduction to Embedded Systems_ Using Microcontrollers and the MSP430-Springer-Verlag New York",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 101,
+        "nome": "Michael Barr",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 102,
+        "nome": "Michael J Pont",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 103,
+        "nome": "Michael McRoberts",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 104,
+        "nome": "NoSQL",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 105,
+        "nome": "Node.js",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 106,
+        "nome": "Aprimore sua produtividade com técnicas de foco e organização pessoal",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 107,
+        "nome": "O Programador Apaixonado",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 108,
+        "nome": "Octave",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 109,
+        "nome": "Tanenbaum",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 110,
+        "nome": "PLSQL",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 111,
+        "nome": "10° Edição",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 112,
+        "nome": "Play Framework",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 113,
+        "nome": "PostgreSQL",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 114,
+        "nome": "Python",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 115,
+        "nome": "RSpec",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 116,
+        "nome": "Um guia em ruby",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 117,
+        "nome": "Ruby",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 118,
+        "nome": "SOA aplicado",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 119,
+        "nome": "SQL",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 120,
+        "nome": "Sass",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 121,
+        "nome": "Turbine seu CSS",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 122,
+        "nome": "Voce Sabe Estudar_",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 123,
+        "nome": "jQuery Mobile",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 124,
+        "nome": "Flávio Mendes",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 125,
+        "nome": "Flávio Mendes & Comunidade Trilha Info",
+        "nacionalidade": "Internacional/Comunidade",
+        "biografia": "Autor de obras e manuais técnicos abertos.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 126,
+        "nome": "Héli Chatelain",
+        "nacionalidade": "Suíço-Angolano",
+        "biografia": "Linguista e pioneiro da etnoliteratura banta em Angola, fundador da missão de Caluquembe e autor da primeira gramática científica do quimbundo.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 127,
+        "nome": "Hermenegildo Capelo & Roberto Ivens",
+        "nacionalidade": "Portuguesa",
+        "biografia": "Oficiais da Marinha e exploradores geográficos que lideraram a monumental travessia científica entre o litoral atlântico e as nascentes do Zaire e Zambeze.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 128,
+        "nome": "Comitê Científico da UNESCO",
+        "nacionalidade": "Pan-Africana / Internacional",
+        "biografia": "Comitê composto por 39 historiadores e cientistas sociais (dois terços africanos), presidido por nomes como Cheikh Anta Diop e Joseph Ki-Zerbo.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 129,
+        "nome": "African Storybook Initiative",
+        "nacionalidade": "Africana",
+        "biografia": "Projeto pan-africano sem fins lucrativos que promove a alfabetização e a literatura em línguas africanas sob licença aberta Creative Commons.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 130,
+        "nome": "Noémia de Sousa",
+        "nacionalidade": "Moçambicana",
+        "biografia": "Considerada a pioneira da poesia moçambicana e figura emblemática da literatura africana de libertação.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 131,
+        "nome": "José Craveirinha",
+        "nacionalidade": "Moçambicana",
+        "biografia": "Maior poeta moçambicano do século XX e primeiro autor africano a receber o Prêmio Camões de Literatura (1991).",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 132,
+        "nome": "Baltasar Lopes da Silva",
+        "nacionalidade": "Cabo-Verdiana",
+        "biografia": "Escritor, linguista e advogado caboverdiano, cofundador da revista literária Claridade.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 133,
+        "nome": "Olaudah Equiano",
+        "nacionalidade": "Nigerian / British",
+        "biografia": "Writer, seaman, and abolitionist from modern-day Nigeria whose autobiography played a decisive role in the passage of the British Slave Trade Act 1807.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 134,
+        "nome": "Sol T. Plaatje",
+        "nacionalidade": "South African",
+        "biografia": "Journalist, linguistic scholar, founding general secretary of the South African Native National Congress (later ANC), and pioneering novelist.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 135,
+        "nome": "William H. Barker & Cecilia Sinclair",
+        "nacionalidade": "Ghanaian / British",
+        "biografia": "Educators who documented oral folklore and oral narratives in the Gold Coast (Ghana) in the early 20th century.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 136,
+        "nome": "Elphinstone Dayrell",
+        "nacionalidade": "Nigerian / British",
+        "biografia": "District Commissioner and folklorist in Southern Nigeria who worked with indigenous village elders to transcribe oral stories.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 137,
+        "nome": "W. E. B. Du Bois",
+        "nacionalidade": "African-American / Ghanaian",
+        "biografia": "Sociologist, historian, pan-Africanist leader, and founder of the Pan-African Congress movement, buried in Accra, Ghana.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 138,
+        "nome": "W. H. I. Bleek & Lucy C. Lloyd",
+        "nacionalidade": "South African",
+        "biografia": "Linguists who transcribed the oral literature of the |Xam and !Kun peoples in a unique phonetic system, inscribed in UNESCO Memory of the World.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 139,
+        "nome": "Alice Werner",
+        "nacionalidade": "British / Africanist",
+        "biografia": "Professor of Swahili and Bantu languages at the School of Oriental and African Studies (SOAS), who lived and conducted fieldwork across Kenya, Nyasaland, and South Africa.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 140,
+        "nome": "Auguste Mouliéras",
+        "nacionalidade": "Franco-Algérienne",
+        "biografia": "Orientaliste et ethnographe né en Algérie, professeur de langue arabe et grand collecteur du patrimoine oral berbère et maghrébin.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 141,
+        "nome": "René Caillié",
+        "nacionalidade": "Française",
+        "biografia": "Explorateur français qui traversa à pied l’Afrique de l’Ouest déguisé en voyageur musulman, rapportant des observations ethnographiques précieuses sur le Mali et le Niger.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 142,
+        "nome": "Comité Scientifique International de l’UNESCO",
+        "nacionalidade": "Panafricaine / Internationale",
+        "biografia": "Comité fondé par l’UNESCO à la demande des pays africains nouvellement indépendants pour rédiger une histoire de l’Afrique vue par les Africains eux-mêmes.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 143,
+        "nome": "Léopold Sédar Senghor",
+        "nacionalidade": "Sénégalaise",
+        "biografia": "Poète majeur de la Négritude, premier président de la République du Sénégal et membre de l’Académie française.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 144,
+        "nome": "Birago Diop",
+        "nacionalidade": "Sénégalaise",
+        "biografia": "Écrivain et vétérinaire sénégalais, maître de la transcription des contes oraux d’Afrique de l’Ouest.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 145,
+        "nome": "Amadou Hampâté Bâ",
+        "nacionalidade": "Malienne",
+        "biografia": "Écrivain et ethnologue malien, défenseur infatigable de la tradition orale africaine auprès de l’UNESCO.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 146,
+        "nome": "Camara Laye",
+        "nacionalidade": "Guinéenne",
+        "biografia": "Grand écrivain guinéen, auteur de l’un des textes fondateurs du roman moderne africain francophone.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 147,
+        "nome": "August Seidel",
+        "nacionalidade": "Deutsch",
+        "biografia": "Deutscher Linguist, Orientalist und Reiseschriftsteller, der zahlreiche afrikanische Sprachstudien und Märchensammlungen herausgab.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 148,
+        "nome": "Carl Meinhof",
+        "nacionalidade": "Deutsch",
+        "biografia": "Begründer der vergleichenden Bantu-Linguistik in Deutschland, Professor für afrikanische Sprachen am Hamburgischen Kolonialinstitut.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 149,
+        "nome": "Leo Frobenius",
+        "nacionalidade": "Deutsch",
+        "biografia": "Kulturhistoriker, Ethnologe und Afrikaforscher, Begründer des Frobenius-Instituts in Frankfurt am Main.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 150,
+        "nome": "UNESCO Internationales wissenschaftliches Komitee",
+        "nacionalidade": "Panafrikanisch / International",
+        "biografia": "Wissenschaftliches Gremium unter Führung führender afrikanischer Historiker.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 151,
+        "nome": "Nelson Mandela",
+        "nacionalidade": "Südafrikanisch",
+        "biografia": "Freiheitskämpfer, Friedensnobelpreisträger und erster demokratisch gewählter Präsident Südafrikas.",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 152,
+        "nome": "马欢 (明代航海家)",
+        "nacionalidade": "中国",
+        "biografia": "明代通事（翻译官）、航海家与作家，三度随同郑和船队下西洋，亲历东非沿岸与印度洋诸国。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 153,
+        "nome": "费信 (明代学者)",
+        "nacionalidade": "中国",
+        "biografia": "明代学者，四次随郑和出海远航，著有中国与东非早期交往史上的传世名篇《星槎胜览》。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 154,
+        "nome": "联合国教科文组织国际科学委员会",
+        "nacionalidade": "全非 / 国际",
+        "biografia": "联合国教科文组织设立的国际历史编委会。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 155,
+        "nome": "非洲民间文学整理委员会",
+        "nacionalidade": "非洲 / 国际",
+        "biografia": "致力于保护、翻译并传播非洲传统口头文学与神话遗产的学者团体。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 156,
+        "nome": "格里奥特吟游诗人传承",
+        "nacionalidade": "西非",
+        "biografia": "西非曼丁哥人的活态历史档案馆，以科拉琴与赞歌世代守护着非洲的历史记忆。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 157,
+        "nome": "奇努阿·阿契贝 (Chinua Achebe)",
+        "nacionalidade": "尼日利亚",
+        "biografia": "尼日利亚著名作家、非洲现代文学奠基人，著有享誉世界的文学名作。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 158,
+        "nome": "纳尔逊·曼德拉 (Nelson Mandela)",
+        "nacionalidade": "南非",
+        "biografia": "南非首任黑人总统，诺贝尔和平奖得主，全球著名人权领袖。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 159,
+        "nome": "斯瓦希里沿岸航海志整理会",
+        "nacionalidade": "东非",
+        "biografia": "致力于记录和保护东非印度洋沿岸航海文化与古代商道记忆的学者团队。",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 160,
+        "nome": "利奥波德·桑戈尔 等 (Léopold S. Senghor et al.)",
+        "nacionalidade": "西非 / 国际",
+        "biografia": "非洲黑人精神与文艺复兴运动先驱诗人集体。",
+        "criado_em": "2026-10-11 02:12:51"
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LHR",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.7837
+      },
+      "duration": 0.7837,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 888832,
+      "rows_read": 160,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]

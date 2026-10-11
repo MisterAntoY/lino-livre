@@ -1,0 +1,96 @@
+[
+  {
+    "results": [
+      {
+        "id": 1,
+        "slug": "guiadeti",
+        "nome": "Guia de TI",
+        "tipo": "rss",
+        "url_base": "https://guiadeti.com.br",
+        "ativa": 1
+      },
+      {
+        "id": 2,
+        "slug": "github-bibliotecadev",
+        "nome": "BibliotecaDev (GitHub)",
+        "tipo": "manual",
+        "url_base": "https://github.com/KAYOKG/BibliotecaDev",
+        "ativa": 1
+      },
+      {
+        "id": 3,
+        "slug": "github-italocamilo",
+        "nome": "Repositório Books Tech (GitHub)",
+        "tipo": "manual",
+        "url_base": "https://github.com/italocamil0/books",
+        "ativa": 1
+      },
+      {
+        "id": 4,
+        "slug": "trilhainfo",
+        "nome": "Trilha Info (Flávio Mendes / GitHub)",
+        "tipo": "manual",
+        "url_base": "https://trilha.info",
+        "ativa": 1
+      },
+      {
+        "id": 5,
+        "slug": "gutenberg",
+        "nome": "Project Gutenberg",
+        "tipo": "api",
+        "url_base": "https://gutendex.com",
+        "ativa": 1
+      },
+      {
+        "id": 6,
+        "slug": "openlibrary",
+        "nome": "Open Library",
+        "tipo": "api",
+        "url_base": "https://openlibrary.org",
+        "ativa": 1
+      },
+      {
+        "id": 7,
+        "slug": "dominiopublico",
+        "nome": "Portal Domínio Público (MEC)",
+        "tipo": "manual",
+        "url_base": "https://www.dominiopublico.gov.br",
+        "ativa": 1
+      },
+      {
+        "id": 8,
+        "slug": "wikisource",
+        "nome": "Wikisource",
+        "tipo": "api",
+        "url_base": "https://pt.wikisource.org",
+        "ativa": 1
+      },
+      {
+        "id": 9,
+        "slug": "manual",
+        "nome": "Curadoria Lino Livre",
+        "tipo": "manual",
+        "url_base": null,
+        "ativa": 1
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LHR",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.1872
+      },
+      "duration": 0.1872,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 888832,
+      "rows_read": 9,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]

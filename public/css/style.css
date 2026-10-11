@@ -1630,6 +1630,21 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
 }
 
+.card-featured-dio {
+  border-color: #fbcfe8 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fdf2f8 100%);
+}
+
+.card-featured-santander {
+  border-color: #fecaca !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fff1f2 100%);
+}
+
+.card-featured-cursoemvideo {
+  border-color: #fed7aa !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+}
+
 .pill-bradesco.active {
   background: #0284c7 !important;
   color: #ffffff !important;
@@ -1706,10 +1721,40 @@ body {
 }
 
 .course-platform {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   font-size: 0.825rem;
   font-weight: 600;
   color: var(--primary);
   margin-bottom: 0.5rem;
+}
+
+.course-platform-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  border-radius: 3px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.course-platform-logo.logo-round {
+  border-radius: 50%;
+}
+
+.pill-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 5px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.pill-logo.pill-logo-round {
+  border-radius: 50%;
 }
 
 .course-desc {

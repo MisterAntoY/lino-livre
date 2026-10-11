@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect width="100" height="100" rx="18" fill="#CC092F"/>
+  <!-- Árvore Bradesco estilizada -->
+  <path d="M50 20 C42 20 35 26 35 34 C35 41 40 46 47 48 L47 78 L53 78 L53 48 C60 46 65 41 65 34 C65 26 58 20 50 20 Z" fill="#FFFFFF"/>
+  <path d="M30 42 C24 42 19 47 19 53 C19 59 23 64 29 65 L29 78 L35 78 L35 65 C41 64 45 59 45 53 C45 47 40 42 34 42 Z" fill="#FFFFFF"/>
+  <path d="M70 42 C64 42 59 47 59 53 C59 59 63 64 69 65 L69 78 L75 78 L75 65 C81 64 85 59 85 53 C85 47 80 42 74 42 Z" fill="#FFFFFF"/>
+</svg>

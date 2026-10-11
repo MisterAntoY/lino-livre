@@ -1,0 +1,66 @@
+url:	http://africanstorybook.org/reader.php?id=15274&d=0&a=1
+id:	15274
+title:	I Enjoy Doing / Ninafurahi
+author:	African Storybook
+artist:	Wiehan de Jager
+lang:	English
+level:	First sentences
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/15274.png
+desc:	What do you enjoy doing? Je
+
+page_text:
+
+P1	I enjoy skipping with my friend.
+
+Ninafurahi kuruka kamba na rafiki yangu.
+P2	I enjoy writing letters on the board. 
+
+Ninafurahi kuandika herufi ubaoni.
+P3	I enjoy reading books with pictures. 
+
+Ninafurahi kusoma hadithi za picha.
+P4	I enjoy eating different fruit. 
+
+Ninafurahi kula matunda tofauti.
+P5	I enjoy helping mother in the kitchen. 
+
+Ninafurahi kumsaidia mama jikoni.
+P6	I enjoy listening to my mother's stories. 
+
+Ninafurahi kusikiliza hadithi za mama.
+P7	I enjoy sleeping on a big bed. 
+
+Ninafurahi kulala kwenye kitanda kikubwa.
+P8	I enjoy doing these things. What do you enjoy doing?
+
+Ninafurahi kufanya vitu hivi. Je, wewe unafurahi kufanya nini?
+
+images:
+
+illustrations/pages/1496.png
+illustrations/pages/1495.png
+illustrations/pages/1499.png
+illustrations/pages/1496.png
+illustrations/pages/1500.png
+illustrations/pages/1498.png
+illustrations/pages/1492.png
+illustrations/pages/1501.png
+illustrations/pages/1502.png
+
+translations:
+
+English (Translation)	Ndikonda	id=7774
+English (Adaptation)	I Like	id=10430
+English (Translation)	Cilandikonda - I Enjoy	id=16451
+French (Translation)	Je M'amuse - I Enjoy	id=9769
+Kiswahili (Original)	Ninafurahi - I Enjoy	id=2106
+Luganda (Translation)	Nyumirwa	id=8284
+Lugbarati (Official) (Translation)	Álèàvásɨ̀	id=8785
+Lumasaaba (Translation)	Niwulila Bulayi	id=8285
+Lunyole (Translation)	Ese Nyumirwa	id=8400
+Maa (Translation)	Káshípákíno	id=7869
+Ng’aturkana (Translation)	Alakarikina	id=8449
+Oluwanga (Translation)	Ndachama	id=8283
+Rutooro (Translation)	Ngonza - I Enjoy	id=9484
+Tunisian (Translation)	Yeɛjibni	id=15382

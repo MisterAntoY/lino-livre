@@ -1,0 +1,33 @@
+url:	http://africanstorybook.org/reader.php?id=14088&d=0&a=1
+id:	14088
+title:	Mama's Garden
+author:	Judith Twala
+artist:	Zablon Alex Nguku, Wiehan de Jager, Steven McKimmie and Jesse Breytenbach
+lang:	English
+level:	First sentences
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/14088.png
+desc:	It is a story about a garden.
+
+page_text:
+
+P1	This is Mama's garden. It is big and beautiful. Mama plants many crops in it.
+P2	This is a mango tree Mama planted. The mangoes are ripe and look juicy. They make me salivate.
+P3	Mama and I visit Mama's garden to get maize for roasting. Sometimes, Mama goes to sell the maize at the market.
+P4	Mama's garden has big pumpkins and tomatoes. There is one giant pumpkin I like looking at.
+P5	The neighbour's cows are feeding on Mama's sweet potato vines. Mama will be so angry when she finds out.
+P6	Mama also plants sugarcane. My friends and I love to play hide and seek in the sugarcane.
+
+images:
+
+illustrations/pages/13696.png
+illustrations/pages/13694.png
+illustrations/pages/13388.png
+illustrations/pages/13695.png
+illustrations/pages/10655.png
+illustrations/pages/11670.png
+illustrations/pages/9847.png
+
+translations:
+
+Runyoro (Translation)	Omusiri Gwa' Mama	id=20647

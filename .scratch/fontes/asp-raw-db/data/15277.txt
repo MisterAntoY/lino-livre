@@ -1,0 +1,29 @@
+url:	http://africanstorybook.org/reader.php?id=15277&d=0&a=1
+id:	15277
+title:	Ktēb T-Tṣāwir Mtēɛi
+author:	Ramzi Hachani
+artist:	Karen Lilje, Catherine Groenewald, Alice Toich, Katrien Coetzer, Wiehan de Jager and Marleen Visser
+lang:	Tunisian
+level:	First words
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/15277.png
+desc:	Ktēb bkilmēt w tṣāwir sēhlīn.
+
+page_text:
+
+P1	Bneyya.
+P2	Ɛaṣfūra.
+P3	Ṣīd.
+P4	Qaṭṭūsa.
+
+images:
+
+illustrations/pages/8072.png
+illustrations/pages/9567.png
+illustrations/pages/9223.png
+illustrations/pages/9515.png
+illustrations/pages/8866.png
+
+translations:
+
+Lunyole (Translation)	Ahatabo Hanghambagana  Hu Bi Fanani	id=10165

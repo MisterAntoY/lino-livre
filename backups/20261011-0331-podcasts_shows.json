@@ -1,0 +1,76 @@
+[
+  {
+    "results": [
+      {
+        "id": 1,
+        "titulo": "Lino Conversa: Vozes de Angola e Educação Aberta",
+        "slug": "lino-conversa",
+        "descricao": "Entrevistas, debates e conversas inspiradoras com educadores, autores, estudantes e inovadores angolanos sobre a democratização do conhecimento e o futuro da juventude africana.",
+        "capa_url": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80",
+        "spotify_url": "https://open.spotify.com/show/4rOoJ6Egrf8K2IrywzwOMk",
+        "spotify_uri": "spotify:show:4rOoJ6Egrf8K2IrywzwOMk",
+        "categoria": "Educação & Diálogos",
+        "idioma": "pt",
+        "ativo": 1,
+        "criado_em": "2026-10-11 02:18:12"
+      },
+      {
+        "id": 2,
+        "titulo": "Livro da Semana: Resenhas & Clássicos em Áudio",
+        "slug": "livro-da-semana",
+        "descricao": "Guias de leitura, análises de contexto histórico e resenhas profundas das maiores obras literárias angolanas, africanas e universais disponíveis no acervo do Lino Livre.",
+        "capa_url": "https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&auto=format&fit=crop&q=80",
+        "spotify_url": "https://open.spotify.com/show/2MAi0BvDc6GTFvK2Lp4mNz",
+        "spotify_uri": "spotify:show:2MAi0BvDc6GTFvK2Lp4mNz",
+        "categoria": "Literatura & Crítica",
+        "idioma": "pt",
+        "ativo": 1,
+        "criado_em": "2026-10-11 02:18:12"
+      },
+      {
+        "id": 3,
+        "titulo": "Histórias ao Luar: Contos & Mitos Africanos",
+        "slug": "historias-ao-luar",
+        "descricao": "Leituras dramatizadas, mitos ancestrais dos povos bantos e fábulas da tradição oral africana narradas para encantar famílias e resgatar a sabedoria dos mais velhos.",
+        "capa_url": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80",
+        "spotify_url": "https://open.spotify.com/show/1kLqPo8m3X2Z1bY4vQ9wRe",
+        "spotify_uri": "spotify:show:1kLqPo8m3X2Z1bY4vQ9wRe",
+        "categoria": "Contos & Tradição Oral",
+        "idioma": "pt",
+        "ativo": 1,
+        "criado_em": "2026-10-11 02:18:12"
+      },
+      {
+        "id": 4,
+        "titulo": "Dica Rápida em Áudio: Estudos, Foco & Produtividade",
+        "slug": "dica-rapida-audio",
+        "descricao": "Cápsulas de áudio objetivas de 3 a 5 minutos com técnicas práticas de estudo, foco mental, preparação para exames e ferramentas gratuitas de produtividade.",
+        "capa_url": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80",
+        "spotify_url": "https://open.spotify.com/show/3wKmX7sP4V2Y0aB8cD1eRf",
+        "spotify_uri": "spotify:show:3wKmX7sP4V2Y0aB8cD1eRf",
+        "categoria": "Produtividade & Estudo",
+        "idioma": "pt",
+        "ativo": 1,
+        "criado_em": "2026-10-11 02:18:12"
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LHR",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.1643
+      },
+      "duration": 0.1643,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 888832,
+      "rows_read": 4,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]

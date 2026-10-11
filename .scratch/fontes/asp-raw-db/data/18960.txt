@@ -1,0 +1,42 @@
+url:	http://africanstorybook.org/reader.php?id=18960&d=0&a=1
+id:	18960
+title:	Amahoose Gamugaso Hi?  
+author:	Mubbalya Charles
+artist:	Magoro John
+lang:	Lunyole
+level:	First paragraphs
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/18960.png
+desc:	Omugaso gwa mahoose.
+
+page_text:
+
+P1	Wafula galoma Nafula ati,  "Bugula olutu; onewihirire efula yiri huupi hutonya." 
+P2	Efula yahena yatonya Nafula gewihirira. Olwohuba gaali agegire olutu gagenda bulaƞi mu fula. 
+P3	Amatu n'amahoose gatambisiwa mu ngeri nyingi. 
+P4	Abandi batambisa amatu n'amahoose ohwewihirira, ohusimba enyumba n'ebigangu, ohwalirira mu nimiro  n'abandi baholaamo amayenje.
+P5	Era nindi babbotaamo ekufira, ebisero, ebyonjo n'ebidugi. 
+P6	Amahoose agandi bagalya ng'eryani. 
+P7	Amahoose agandi abaatu bagatambisa ng'obuleesi. 
+P8	Amahoose agandi mere y'ebisolo. 
+P9	Nenda hubalomera ti omulimo omubba ogwa mahoose nj'ogwo hubbota emere y'ebimera. 
+P10	Amahoose gahola hino ni gatambisa amaani ge ryuba, embeƞo ko n'amaaji. 
+P11	Ebimera birya emere yabyo n'ebitira mu misi n'amahoose. 
+
+images:
+
+illustrations/pages/18950.png
+illustrations/pages/18950.png
+illustrations/pages/18948.png
+illustrations/pages/18949.png
+illustrations/pages/18954.png
+illustrations/pages/18951.png
+illustrations/pages/18952.png
+illustrations/pages/18953.png
+illustrations/pages/18947.png
+illustrations/pages/18955.png
+illustrations/pages/18957.png
+illustrations/pages/18958.png
+
+translations:
+

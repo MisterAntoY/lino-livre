@@ -1,0 +1,48 @@
+name: 📺 Sincronização Trimestral - Curso em Vídeo (Gustavo Guanabara)
+
+on:
+  schedule:
+    # Executa de 3 em 3 meses (dia 1 de janeiro, abril, julho e outubro às 08:00 UTC)
+    - cron: '0 8 1 */3 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-cursoemvideo:
+    name: 📺 Atualizar Catálogo & Playlists Curso em Vídeo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Instalar dependências
+        run: npm install
+
+      - name: 🔄 Executar sincronizador Curso em Vídeo
+        run: node scripts/sync_cursoemvideo.js
+
+      - name: 🧪 Validar integridade dos testes
+        run: npm test
+
+      - name: 💾 Commit e Push das atualizações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/database/cursoEmVideoData.json CURSOEMVIDEO-STATUS.md seed.sql biblioteca.db
+          if git diff --staged --quiet; then
+            echo "Nenhum novo curso detectado nesta verificação trimestral do Curso em Vídeo."
+          else
+            git commit -m "chore(sync): atualizar catálogo trimestral do Curso em Vídeo [skip ci]"
+            git push origin main
+          fi

@@ -1,0 +1,43 @@
+url:	http://africanstorybook.org/reader.php?id=14417&d=0&a=1
+id:	14417
+title:	Eu Sei Fazer Isso!
+author:	World Education
+artist:	Silva Afonso
+lang:	Portuguese
+level:	First sentences
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/14417.png
+desc:	Amélia acorda e pensa: Hoje é o meu primeiro dia de escola.
+
+page_text:
+
+P1	Amélia acorda e pensa:  Hoje é o meu primeiro dia de escola.
+P2	Amélia chama: Carlos,  o que é que eu tenho de fazer?Carlos: Vou-te mostrar.
+P3	Carlos: Deves lavar a cara. Amélia: Eu sei lavar a cara. E depois?
+P4	Carlos: Deves escovar os dentes. Amélia: Eu sei escovar os dentes. E depois?
+P5	Carlos: Deves comer. Amélia: Eu sei comer. E depois?
+P6	Carlos: Deves vestir o uniforme. Amélia: Eu sei vestir o uniforme. E depois?
+P7	Carlos: Deves pegar na sacola. Amélia: Eu sei pegar na sacola. E depois?
+P8	Carlos: Deves ir à escola. Amélia: Eu sei ir à escola. E depois?
+P9	Carlos: Deves entrar na sala de aulas. Amélia: Eu sei entrar na sala de aulas. E depois?
+
+images:
+
+illustrations/pages/13814.png
+illustrations/pages/13815.png
+illustrations/pages/13816.png
+illustrations/pages/13819.png
+illustrations/pages/13817.png
+illustrations/pages/13820.png
+illustrations/pages/13821.png
+illustrations/pages/13822.png
+illustrations/pages/13823.png
+illustrations/pages/13824.png
+illustrations/pages/14003.png
+illustrations/pages/14005.png
+illustrations/pages/14006.png
+
+translations:
+
+English (Translation)	I Can Do This!	id=14534
+French (Translation)	Je Peux Le Faire!	id=14537

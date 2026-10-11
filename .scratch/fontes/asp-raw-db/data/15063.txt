@@ -1,0 +1,47 @@
+url:	http://africanstorybook.org/reader.php?id=15063&d=0&a=1
+id:	15063
+title:	Shisi, Kii Wò, Kfə́n É Bàm
+author:	Beatrice Tafon Takeh and Mbinkar Emmanuel Keelen
+artist:	Karen Lilje
+lang:	Lámnsoʼ
+level:	First sentences
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/15063.png
+desc:	Shisi shímóʼ shí dzə̀ a shí lo
+
+page_text:
+
+P1	Shisi, kii wò, kfə́n é bàm. Wìy, é wòsò wáa səərí.
+P2	Dzə̀ʼə̀m e wò ŋkaà. Dzə̀ʼə̀m fen.
+P3	Shisi, kii wò, kfə́n é bàm. Feyi dzə̀ é yuv, é ŋàŋ. À lo e gbù fo fo.
+P4	Shisi, kfə́n é bàm. Lá à yòʼ fəə̀ é ndzə.
+P5	Shisí, kfə́n é bàm.  Yòʼ kér wò kifá kìy.
+P6	Shisi, kfə́n é bàm. À lì a dzə̀ ka?
+P7	Yòʼ dzə̀ ŋkar yè. Kfə́n é bàm.
+P8	Òó mbaà shisi, à sì rú é bàm a?
+P9	Á dzə lèn e wò ŋkaà. Sì ghán sé mbuùné.
+P10	Shisi!
+
+images:
+
+illustrations/pages/8059.png
+illustrations/pages/9122.png
+illustrations/pages/9121.png
+illustrations/pages/9123.png
+illustrations/pages/9124.png
+illustrations/pages/8061.png
+illustrations/pages/8062.png
+illustrations/pages/8063.png
+illustrations/pages/8064.png
+illustrations/pages/8065.png
+illustrations/pages/8066.png
+illustrations/pages/8067.png
+illustrations/pages/8068.png
+
+translations:
+
+Afrikaans (Translation)	Kom Terug, Kat	id=11171
+Amharic (Translation)	ተመለሽ ድመቴ	id=11781
+English (Translation)	Come Back, Cat	id=9125
+French (Translation)	Reviens, Chat!	id=12655
+Yoruba (Translation)	Padà Wá, Olóńgbò	id=11209

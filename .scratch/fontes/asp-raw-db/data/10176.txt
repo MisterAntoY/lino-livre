@@ -1,0 +1,22 @@
+url:	http://africanstorybook.org/reader.php?id=10176&d=0&a=1
+id:	10176
+title:	The Fish
+author:	Acikani Juliet
+artist:	Wiehan de Jager
+lang:	English Alur
+level:	First paragraphs
+lic:	Creative Commons: Attribution-Non Commercial 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/10176.png
+desc:	
+
+page_text:
+
+P1	Ceng moko obedu kudie ceng, wabe do ka chamu kwen. Wayira owacu nia obedu ceng moko magicidhui soku. Ecidu ka wilo rec. Ebielo nyathin I ngeye, ebeneno rec. Karaba nyathin ma ebielo utingo rec moko u turo ie uwok aria. Jalwor rec karabe ubeneno kite ma nyathin ube tura rec eca, egam e wacu mi wayira uting rec ne ire,  wayira owacu egam eca ko woth mi dok in pacu. 
+P2	E wok idhukulu enwago kude rec ma upodhu kud i mutukari pa jukuloka,  etingu rec ecade edok kude ipacu,  Etedu rec ne ma e be came,  ewacu enirombu pareodhu.
+
+images:
+
+illustrations/pages/1846.png
+
+translations:
+

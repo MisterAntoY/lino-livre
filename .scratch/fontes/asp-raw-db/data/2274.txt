@@ -1,0 +1,23 @@
+url:	http://africanstorybook.org/reader.php?id=2274&d=0&a=1
+id:	2274
+title:	Tshihwilili Tshanga
+author:	Traditional Venda song
+artist:	My Drum
+lang:	Tshivenda
+level:	First words
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/2274.png
+desc:	A Tshihwilili is a bull–roarer or spinning disc.
+
+page_text:
+
+P1	Tshivenda Tshihwilili tshanga Mambo Tshanga a tshi lili Mambo: Hu lila tsha Gole Mambo,  Gole wa Mulemba Mambo. Hwii! Hwii! English My bull roarer,  Mambo Mine does not make a sound,  Mambo: Gole's working well,  Mambo,  Gole the Lemba,  Mambo. Whee! Whee!
+P2	A Tshihwilili is a bull–roarer or spinning disc. You can make one by threading a piece of wool through two small holes in the centre of a wooden disc – about 6 x 3 x 0.4 cm. (A button or piece of cardboard can also be used). You wind it up by swinging the disc round the wool,  and then unwind it by alternately pulling the wool taut and letting it loose. This causes the disc to turn and make a whirring sound (like Hwi-i! Hwi-i!).
+
+images:
+
+illustrations/pages/2479.png
+illustrations/pages/2479.png
+
+translations:
+

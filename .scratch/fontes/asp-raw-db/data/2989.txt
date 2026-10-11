@@ -1,0 +1,58 @@
+url:	http://africanstorybook.org/reader.php?id=2989&d=0&a=1
+id:	2989
+title:	Litsoene Tseneng Li Tsamaea Ka Tsela Ena Le Ena
+author:	Khothatso Ranoosi and Marion Drew
+artist:	Benjamin Mitchley
+lang:	Sesotho (Lesotho)
+level:	First paragraphs
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/2989.png
+desc:	Batho ba neng ba phela mmoho motseng o mong
+
+page_text:
+
+P1	Batho ba motseng o monyane oa mekhoro bane basa thaba. Liphoofolo tse qala hotla hotlo bats'osa.
+P2	Liphoofolo tsena leile tsa ja lijalo tsabona tseo baneng ba lilemme. Tsaba tsa nka bana ba bona,  ene ese sebaka sa hore hoka luloa nako e telehele,  empa batho bane batlaea kae?
+P3	Eaba lelapa leleng lefumana karabelo. Hone hasena bothata ba hore reka fumana lijo ka holimo maralleng.
+P4	Lihlahla line li hlahile pakeng tsa majoe. Lifate lihlahile letsoapong la marallaneng. Batsoali ba motseng oo,  baile batsoara 'mtutlanyana ka leraba leo ba cheileng ka lona. Eabe bana bona ba tsoara linonyana.
+P5	Malapa a mang a holokomela hore marallaneng malapa a mang a lula ha monate. Monna e noa re, "Bophelo bomonate marallaneng. Le lona le tlameha letle."
+P6	Ka nako eseng kae eaba malapa a mang a falla hotloha moo maneng ba haile tena baea marallaneng. Lelapa le leng le le leng la fumana lehaha la ho lula teng. Bane ba futhumala ebile bale polokehong.
+P7	Bana, bane ba thabile haholo hobane bane ba khona hohloa mafiki ba fumana le lifate tsa litholoana. Bane ba bapala le linkokomaile joalo ka litsoene halietsa senkokomaile sefateng.
+P8	Hanye-hanyane lintho tsa qala ho fetohoa. Bana baqala hose buoe haholo, banna ba honotha. Eaba batho ba baholo baea hlokomela hore hona le lerata lentseng le hola. Bane ba hola meriri.
+P9	Eare ha bana bana ba shebana,  ba bona hore le meno a bona antse a hola a ba matelehele. Eaba baqala ho tsamaea ka maoto a mane.
+P10	Baqala hofetohela ho liphoofolo tseling tseo basokang ba libona. Sebakeng seno ene ele liphoofolo tseo batho hona joale ba libitsang likorilla.
+P11	Ka nako engoe,  likorilla tsena tsa lula ha'moho ha monate ka thabo. Tsa emisa ho lelekisa li 'mutlanyana,  le hoja likokonyana tsetsoang katlasa le fats'e.
+P12	Tsa lebala hobuoa. Tsa hlobola liphaho tsa tsona hobane. Maoto le matshoho a tsona a ne a koahetsoe ke moriri o lefifi.
+P13	Tsa hopola hore e ne e le batho pele. Tsa shebana linko tsa tsona tse kholo tsa tsehana.
+P14	Empa line lisa rate ho ts'eha. tsa qhoma-qhoma liea holimo le tlase ka ho koata.
+P15	Kamora nako e seng kae likorilla eaba halisa lula ho'moho. Hobane line li ts'ehana li koatile. Lelapa le lelapa laitsamehela la likorilla tsalo itulela lile ling. Keka hona likorilla li itulelang ka lihlopha tsenyane le tsatsing lena, lise lilule ka lihlopha tse kholo.
+
+images:
+
+illustrations/pages/1160.png
+illustrations/pages/1161.png
+illustrations/pages/1162.png
+illustrations/pages/1163.png
+illustrations/pages/1164.png
+illustrations/pages/1165.png
+illustrations/pages/1166.png
+illustrations/pages/1160.png
+illustrations/pages/1167.png
+illustrations/pages/1169.png
+illustrations/pages/1175.png
+illustrations/pages/1168.png
+illustrations/pages/1170.png
+illustrations/pages/1171.png
+illustrations/pages/1173.png
+
+translations:
+
+English (Original)	The Baboons That Went This Way and That	id=2605
+English (Adaptation)	The Baboons That Went This Way and That	id=2609
+English (Adaptation)	They Became Baboons	id=19986
+isiZulu (Translation)	Izimfene Ezaziya Le Na Le	id=2853
+Kiswahili (Translation)	Nyani Walioenda Huku Na Huko	id=2987
+Lumasaaba (Translation)	Tsingukye Tsitsakyeendaana Eyi Ni Neeyi	id=2990
+Lunyole (Translation)	Enguge Ejerwenga Eno Ni Neera	id=2852
+Lunyole (Adaptation)	Enguge Ejerwenga Eno Ni Neera	id=16593
+Sepedi (Translation)	Ditšhwene Tšeo Di Be Go Di E Ya Kua Le Kua	id=2988

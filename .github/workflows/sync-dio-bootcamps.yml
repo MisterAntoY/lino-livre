@@ -1,0 +1,48 @@
+name: ⚡ Sincronização Semanal - Bootcamps DIO
+
+on:
+  schedule:
+    # Executa toda segunda-feira às 06:00 UTC (1 em 1 semana)
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-dio:
+    name: ⚡ Atualizar Catálogo & Deadlines DIO
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Instalar dependências
+        run: npm install
+
+      - name: 🔄 Executar sincronizador de bootcamps DIO
+        run: node scripts/sync_dio_bootcamps.js
+
+      - name: 🧪 Validar integridade dos testes
+        run: npm test
+
+      - name: 💾 Commit e Push das atualizações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/database/dioBootcampsData.json BOOTCAMPS-DIO-STATUS.md seed.sql biblioteca.db
+          if git diff --staged --quiet; then
+            echo "Nenhuma novidade identificada nesta ronda semanal de bootcamps DIO."
+          else
+            git commit -m "chore(sync): atualizar bootcamps DIO e prazos de finalização [skip ci]"
+            git push origin main
+          fi

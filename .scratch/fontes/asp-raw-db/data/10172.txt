@@ -1,0 +1,36 @@
+url:	http://africanstorybook.org/reader.php?id=10172&d=0&a=1
+id:	10172
+title:	Ehiwegera
+author:	Ivan Higenyi
+artist:	Genevieve Terblanche, Louwrisa Blaauw, Emily Berg, Rijuta Ghate, Wiehan de Jager, Catherine Groenewald, Natalie Propa, Benjamin Mitchley and Richard MacIntosh
+lang:	Lunyole
+level:	First sentences
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/10172.png
+desc:	Abaana ebihahola ko banghenyuha.
+
+page_text:
+
+P1	Muto yange bamulanga nje Hitawulo. Ali n'emyaha ebiri.
+P2	Buli hiseera alira,  oluusi gehubbiraŋo mwiroba.
+P3	Analira,  nga mubeha hu mugongo.
+P4	Oluusi gafuhamaho nimubehire. Ate namubehura ng'alira nindi.
+P5	Ni bamwoga, alira era banamwambasa ebyambalo ebiyonjo,  abifudusa n'eroba luusi gabifuhamamo.
+P6	Enjala enamuluma,  nga mama amuŋa ebiryo.
+P7	Anenda ohuŋenyuha bamuŋira mu hatanda hahe ahadiidiri.
+P8	Oluusi amwembera obwembo k'ogaŋenyuha. Era hiisi ebyahola byosi byosi bya hiwegera.
+
+images:
+
+illustrations/pages/8968.png
+illustrations/pages/8968.png
+illustrations/pages/8162.png
+illustrations/pages/8953.png
+illustrations/pages/1892.png
+illustrations/pages/1189.png
+illustrations/pages/7928.png
+illustrations/pages/1686.png
+illustrations/pages/3070.png
+
+translations:
+

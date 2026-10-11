@@ -1,0 +1,45 @@
+url:	http://africanstorybook.org/reader.php?id=7158&d=0&a=1
+id:	7158
+title:	Mti Ulionusuru Kijiji Cha Ombalantu
+author:	Mutugi Kamundi
+artist:	Julia te Water Naude
+lang:	Kiswahili
+level:	Read aloud
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/7158.png
+desc:	Thaimi na nduguye Angula wana mti wa mbuyu wanaopenda kuutembelea.  Siku moja washambulizi wanafika kijijini na Thaimi anafanya mpango wa kuwaficha kila mmoja na kuwaokoa.  Je
+
+page_text:
+
+P1	"Shhhu!" Nyanya alisema. "Kuna joto kali. Na chungu hiki ni kizito sana. Ebu tupumzike kidogo chini ya kivuli cha mti." Alijipangusa jasho usoni huku akijiegemeza kwenye mbavu za mizizi ya mti. Selma naye alisimama huku kashika kiuno chororo cha mbuyu kwa mkono mmoja. Naye ndugu yake,  Toivo,  aliuzungukazunguka ule mbuyu akiangalia ukubwa wake. "Nyanya,  mbuyu huyu ni mzee sana,  sivyo?" "Ndiyo,  Selma. Lakini sio mzee au mkubwa zaidi ya mbuyu ulio katika kijiji cha Ombalantu!" "Ombalantu? Kijiji hicho ki karibu?" Selma aliuliza. "Tafadhali tueleze kuhusu mti huo," Toivo alisema. "Basi keti usikilize," nyanya alisema huku akianza kuhadithia.
+P2	Katika kijiji cha Ombalantu paliishi msichana aliyeitwa Thaimi. Siku moja,  yeye na ndugu yake aliyeitwa Angula,  walienda kuchota maji. Thaimi alipokuwa akijaza chungu chake Angula aliona sungura. Alimkimbiza,  lakini unadhani angeweza kumshika huyo sungura? Sungura alikuwa na mbio kumshinda. Chungu cha Thaimi kilijaa maji. Sasa alikuwa tayari kwenda nyumbani. Aliangalia kila upande akamkosa Angula. Hakujua alikokwenda. Lakini aljiua kwamba hangeenda nyumbani bila ndugu yake mdogo. Aliangalia kila mahali lakini hakumwona. Kwa hivyo,  alianza kazi ya kumtafuta. Alitembea lakini hakumpata. Lakini hatimaye alimpata akilala kwenye nyasi nyuma ya kichuguu kikubwa. Alipokuwa anamkaribia Thaimi alimwashiria kwamba anyamaze. Mbona anyamaze? Hapo karibu,  kulikuwa na kundi la vijana waliokuwa wakipumzika. Walibeba mishale na nyuta na mikuki! Thaimi aliweza kusikia sauti zao. "Angula," Thaimi alimwita kwa sauti ya chini. "Wanaume hao ni wezi wa mifugo. Wamekuja kuiba ng'ombe wetu na kuchoma nyumba zetu. Njoo haraka. Lazima tukimbie nyumbani tukawatahadharishe wanakijiji." Basi waliondoka polepole kutoka eneo hilo kisha wakakimbia nyumbani.
+P3	Walipokaribia kijijini walikutana na mjomba wao. Alikuwa akienda kunywesha ng'ombe maji mtoni. Thaimi alimwita kwa sauti,  "Mjomba,  kimbia,  kimbia! Kuna wanaume wanaokuja kuiba ng'ombe na kutuchomea nyumba." Mjomba alimrudisha ng'ombe kijijini. Na kwa mbali,  Thaimi alimwona Shangazi shambani akilima akamwita,  "Shangazi,  kimbia,  kimbia!" Wanume wanakuja kuiba ng'ombe wetu na kuchoma nyumba zetu!" Shangazi alichukua jembe lake,  akamchukuwa mtoto aliyekuwa akilala na kisha akatoroka kurudi kijijini. Kisha Thaimi akamwona babu yake. Alikuwa akichechemea kandokando mwa barabara akimbebesha punda nafaka. Akamwita kwa sauti, "Babu,  kimbia,  kimbia,  wanaume wanakuja kuiba ng'ombe wetu na kuchoma nyumba zetu." Babu alipiga punda akaenda mbio kuelekea kijijini."
+P4	Basi Thaimi na ndugu yake wakafika kijijini. Akawaita watu wote kwa sauti,  "Kimbieni,  kimbieni. Kuna wanaume wanaokuja kuiba ng'ombe wetu na kuchoma nyumba zetu!" Wanakijiji wakahofu sana. Wakakimbia hapa na pale kwa kuchanganyikiwa kama kundi la mchwa lililokanyagwa na ng'ombe. Hawakujua mahali pa kujificha wala hawakujua la kufanya. Wangeficha ng'ombe wao wapi? Wangeficha nafaka zao wapi? Wangejificha wapi? Thaimi aliogopa sana. Akakumbuka kitu. Alikumbuka mahali ambapo yeye na Angula walipokwenda kucheza wakati mwingine. Mahali salama. Mahali pa siri.
+P5	"Ninajua mahali!" Akasema kwa sauti. "Ninajua mahali ambapo sote tunaweza kujificha." Lakini wanakijiji hawakumsikiliza. Walikuwa wakipiga kelele sana. Sasa angefanya nini ili wamsikilize? Unadhani Thaimi alifanya nini? Alichukua ngoma na kuipiga kwa nguvu kabisa. Bam! Bam! Bam! Boom! Boom! Boom! Wanakijiji wote walitulia. Thaimi akawaambia kwa sauti,  "Ninajua mahali pa kujificha. Nifuateni." Alimshika Angula mkono wakondoka.
+P6	"Njoo,  tutawapeleka wanakijiji kwenye mti wetu. Sote tutakuwa salama huko. Ndugu yake alitikisa kichwa. "Hapana,  Thaimi. Mahali hapo ni siri yetu. Ulisema tusimwambie mtu yeyote." "Ndio",  Thaimi akasema. "Ilikuwa siri. Lakini sasa sote tuko katika hali ya hatari." Thaimi na Angula waliwaongoza wanakijiji kwenye njia iliyoelekea kwa mbuyu ulokuwa karibu. Hakuna aliyeelewa sababu. "Kwa nini unatuleta hapa? Hatuwezi kujificha hapa." Walisema. Kisha Thaimi akamwita babake,  "Njoo,  nitakuonyesha." walipanda juu ya mti. Kulikuwa na shimo dogo. Thaimi na babake waliingia ndani kisha wakashuka chini ndani kwa ndani. Pale chini kulikuwa na uwazi mkubwa. "Lakini watu wote hawawezi kuingilia kwenye shimo dogo pale juu," babake alisema. "Hapana," Thaimi alisema. "Tutaleta shoka tutengenze mlango wa kuinglia hapa kwenye shina." Na hivyo ndivyo walivyofanya. Walitengeneza kiingilio shinani mwa mti. Wanakijiji wakaleta nafaka pamoja na vyungu. Wengine wakaleta mbuzi,  ng'ombe na kondoo. Wote wakaingia ndani ya uwazi mkubwa wa mbuyu. La kushangaza ni kwamba kulikuwa na nafasi ya kutosha kwa kila mtu."
+P7	Wakati jua lilipotua na giza kutanda,  kijiji kizima kilitulia tuli! Ulikuwa usiku wenye baridi. Wale wahalifu walitembea kuelekea kijijini taratibu. "Ni lazima wanakijiji wamelala sasa," wahalifu waliambiana. Nao wanakijiji walingoja ndani ya mti. Nini kingetokea? Walihisi baridi. Walihisi njaa. Na waliogopa. Basi Thaimi akasema,  "Kuna baridi sana. Tuwashe moto." Akachukua mawe mawili akayachua,  moja juu ya jingine kwa harakaharaka. Baada ya muda mfupi cheche za moto zikashika kwenye nyasi. Kisha moto mkubwa ukawaka wakaanza kuota.
+P8	Nje,  wavamizi walizidi kukaribia. Ghafula,  mmoja wao alipiga mayowe akionyesha mti. Ndimi za moto zilitoka mtini. Macho makali yaliangaza kutoka mbuyuni. Moshi ulipaa angani. "Ni jinamizi kubwa!" walilia kwa woga. Kwanza mvamizi mmoja aligeuka na kukimbia. Kisha mwengine,  na mwengine. Hadi wote wakaenda zao. Watu wa kijiji cha Ombalantu wakaokolewa.
+P9	Nyanya akanyamaza. Wakati huu wote Selma alikuwa anashikilia shina la mbuyu. "Kwa hivyo,  ni mti huo uliowaokoa wanakijiji." Nyanya akamaliza hadithi.
+
+images:
+
+illustrations/pages/2685.png
+illustrations/pages/2679.png
+illustrations/pages/2683.png
+illustrations/pages/2686.png
+illustrations/pages/2687.png
+illustrations/pages/2690.png
+illustrations/pages/2691.png
+illustrations/pages/2693.png
+
+translations:
+
+Ekegusii (Translation)	Omote  Oria Okonyete  Okenyoro Ki’Ombalantu	id=7154
+English (Original)	The Tree That Saved the Village of Ombalantu	id=2716
+English (Translation)	The Tree That Saved the Village of Ombalantu	id=2724
+French (Translation)	L’Arbre Qui Sauva Le Village D’Ombalantu	id=12869
+Kikamba (Translation)	Muti  Ula Wavonokisye Ndua Ya Ombalantu	id=7156
+Luganda (Translation)	Omuti Ogwataasa Abantu B’Embuya	id=7159
+Lugbarati (Translation)	Pati Enyati Olivu Niri Ma Azakoopi Ri	id=7160
+Maa (Translation)	Olchaní Óítajeúó Iltúng'áná Lé Ombalantu	id=7148
+Oluwanga (Translation)	Omusaala Kwaonia Litala Lia Namulungu (Ombalantu)	id=7161

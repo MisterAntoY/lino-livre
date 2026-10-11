@@ -6,6 +6,8 @@ const db = getDatabase();
 
 let sql = `-- Seed SQL dump for Cloudflare D1
 DELETE FROM links_livros;
+DELETE FROM podcasts_episodios;
+DELETE FROM podcasts_shows;
 DELETE FROM import_jobs;
 DELETE FROM cursos;
 DELETE FROM livros;
@@ -54,6 +56,21 @@ for (const l of links) {
 const cursos = db.prepare('SELECT id, titulo, tipo, area, plataforma, url, licenca, nivel, descricao FROM cursos').all();
 for (const c of cursos) {
   sql += `INSERT INTO cursos (id, titulo, tipo, area, plataforma, url, licenca, nivel, descricao) VALUES (${c.id}, ${escapeString(c.titulo)}, ${escapeString(c.tipo)}, ${escapeString(c.area)}, ${escapeString(c.plataforma)}, ${escapeString(c.url)}, ${escapeString(c.licenca)}, ${escapeString(c.nivel)}, ${escapeString(c.descricao)});\n`;
+}
+
+// 7. Podcasts Shows & Episódios
+try {
+  const shows = db.prepare('SELECT id, titulo, slug, descricao, capa_url, spotify_url, spotify_uri, categoria, idioma, ativo FROM podcasts_shows').all();
+  for (const s of shows) {
+    sql += `INSERT INTO podcasts_shows (id, titulo, slug, descricao, capa_url, spotify_url, spotify_uri, categoria, idioma, ativo) VALUES (${s.id}, ${escapeString(s.titulo)}, ${escapeString(s.slug)}, ${escapeString(s.descricao)}, ${escapeString(s.capa_url)}, ${escapeString(s.spotify_url)}, ${escapeString(s.spotify_uri)}, ${escapeString(s.categoria)}, ${escapeString(s.idioma)}, ${s.ativo});\n`;
+  }
+
+  const episodios = db.prepare('SELECT id, show_id, numero, titulo, slug, descricao, duracao_minutos, spotify_url, spotify_embed_url, audio_url, publicado_em, reproducoes FROM podcasts_episodios').all();
+  for (const ep of episodios) {
+    sql += `INSERT INTO podcasts_episodios (id, show_id, numero, titulo, slug, descricao, duracao_minutos, spotify_url, spotify_embed_url, audio_url, publicado_em, reproducoes) VALUES (${ep.id}, ${ep.show_id}, ${ep.numero || 'NULL'}, ${escapeString(ep.titulo)}, ${escapeString(ep.slug)}, ${escapeString(ep.descricao)}, ${ep.duracao_minutos || 'NULL'}, ${escapeString(ep.spotify_url)}, ${escapeString(ep.spotify_embed_url)}, ${escapeString(ep.audio_url)}, ${escapeString(ep.publicado_em)}, ${ep.reproducoes});\n`;
+  }
+} catch (e) {
+  console.log('Skipping podcasts table export:', e.message);
 }
 
 const outputPath = path.join(__dirname, '../seed.sql');

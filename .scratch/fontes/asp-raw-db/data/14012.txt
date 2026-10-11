@@ -1,0 +1,45 @@
+url:	http://africanstorybook.org/reader.php?id=14012&d=0&a=1
+id:	14012
+title:	Eu Pinto
+author:	World Education
+artist:	Silva Afonso, Vusumuzi Malindi and José Jochicala
+lang:	Portuguese
+level:	First sentences
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/14012.png
+desc:	Eu pinto com os meus lápis de color.
+
+page_text:
+
+P1	Eu pinto com os meus lápis de cor.
+P2	Eu pinto o tomate com o lápis de cor vermelha.
+P3	Eu pinto a laranja com o lápis de cor laranja.
+P4	Eu pinto o sol com o lápis de cor amarela.
+P5	Eu pinto a rã com o lápis de cor verde.
+P6	Eu pinto o céu com o meu lápis de cor azul.
+P7	Eu pinto as flores com o lápis de cor-de-rosa.
+P8	Eu pinto um gato com o lápis de cor preta.
+P9	Eu pinto a bandeira de Moçambique com muitas cores.
+P10	.
+
+images:
+
+illustrations/pages/13669.png
+illustrations/pages/13670.png
+illustrations/pages/13671.png
+illustrations/pages/13672.png
+illustrations/pages/13673.png
+illustrations/pages/13674.png
+illustrations/pages/13675.png
+illustrations/pages/13676.png
+illustrations/pages/13677.png
+illustrations/pages/13678.png
+illustrations/pages/14003.png
+illustrations/pages/14005.png
+illustrations/pages/14006.png
+
+translations:
+
+Ciyawo (Adaptation)	Wune Ngupeta	id=15772
+English (Translation)	I Colour In	id=14514
+French (Translation)	Je Peins	id=14536

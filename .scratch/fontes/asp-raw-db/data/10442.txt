@@ -1,0 +1,70 @@
+url:	http://africanstorybook.org/reader.php?id=10442&d=0&a=1
+id:	10442
+title:	Rangi Za Upinde
+author:	Caren Echesa
+artist:	Jesse Breytenbach
+lang:	Kiswahili
+level:	First sentences
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/10442.png
+desc:	Hadithi hii inaorodhesha rangi za upinde na kumkumbusha msomaji juu ya vitu vya kawaida maishani vilivyo na rangi kama hizi.
+
+page_text:
+
+P1	Upinde una rangi saba.
+P2	Rangi ya kwanza ni nyekundu.
+P3	Kweyu amevalia shati la rangi nyekundu.
+P4	Rangi ya pili ni ya chungwa.
+P5	Hili ni chungwa.
+P6	Rangi ya tatu ni manjano.
+P7	Yai pingu lina rangi ya manjano.
+P8	Rangi ya nne ni kijani.
+P9	Miwa ni rangi ya kijani.
+P10	Rangi ya tano ni samawati.
+P11	Mbingu ni samawati.
+P12	Rangi ya sita ni nili.
+P13	Matunda haya ni ya rangi ya nili.
+P14	Rangi ya saba ni zambarau.
+P15	Nguo yangu ni ya kizambarau. Ni rangi niipendayo zaidi!
+P16	Je,  unazijua rangi saba za upinde?
+
+images:
+
+illustrations/pages/9838.png
+illustrations/pages/9838.png
+illustrations/pages/9839.png
+illustrations/pages/9840.png
+illustrations/pages/9841.png
+illustrations/pages/9842.png
+illustrations/pages/9843.png
+illustrations/pages/9844.png
+illustrations/pages/9846.png
+illustrations/pages/9847.png
+illustrations/pages/9849.png
+illustrations/pages/9850.png
+illustrations/pages/9851.png
+illustrations/pages/9852.png
+illustrations/pages/9854.png
+illustrations/pages/9853.png
+illustrations/pages/9856.png
+
+translations:
+
+Afaan Oromo (Translation)	Halluu Sabbata Waaqayyo 7	id=20420
+Amharic (Translation)	7 የቀስተደመና ቀለማት 	id=20447
+Ateso (Translation)	 Iragin Ikanyikarei Lu Etaluka	id=20754
+Chinyanja (Translation)	Mautoto Asanu Ndi Awiri Autawaleza	id=20881
+Dhopadhola (Translation)	Lifudu Nitye Gi Cal Abiryo	id=19961
+English (Translation)	Colours of a Rainbow	id=10463
+English (Adaptation)	7 Colours Of A Rainbow	id=19760
+Hausa (Nigeria) (Translation)	Launika Bakwai Na Bakan Gizo	id=20798
+isiZulu (Translation)	Imibala eyisikhombisa yothingo lwenkosazana	id=19954
+isiZulu (Translation)	Imibala Eyisikhombisa Yothingo  Lwenkosazana	id=20679
+Kikamba (Translation)	Utathi	id=15419
+Kiswahili (Translation)	Rangi 7 Za Upinde	id=20432
+Lunyole (Translation)	Amalangi G'olufudu	id=16557
+Lusoga (Translation)	Musoke Ali Na Langi 7	id=20396
+Ng’aturkana (Translation)	Alokakinet Akiru	id=20405
+Portuguese (Translation)	As Cores Do Arco-Íris	id=16561
+Sepedi (Translation)	Mebela ye mesupa ya molalatladi	id=19980
+Siswati (Translation)	Imibala Yemushi Wenkhosatane	id=13066

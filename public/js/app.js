@@ -1018,18 +1018,41 @@ const app = {
     }
 
     grid.innerHTML = lista.map(c => {
-      const isYouTube = (c.plataforma || '').includes('YouTube') || (c.descricao || '').toLowerCase().includes('youtube');
+      const isSantander = (c.plataforma || '').includes('Santander') || (c.titulo || '').includes('Santander');
+      const isDio = (c.plataforma || '').includes('DIO') || (c.titulo || '').includes('DIO');
+      const isCursoEmVideo = (c.plataforma || '').includes('Curso em Vídeo') || (c.titulo || '').includes('Curso em Vídeo');
+      const isYouTube = !isCursoEmVideo && ((c.plataforma || '').includes('YouTube') || (c.descricao || '').toLowerCase().includes('youtube'));
       const isGuiaDeTI = (c.plataforma || '').includes('Guia de TI');
       const isBradesco = (c.plataforma || '').includes('Fundação Bradesco');
       const isUsp = (c.plataforma || '').includes('USP');
-      const isDio = (c.plataforma || '').includes('DIO');
       const isAlura = (c.plataforma || '').includes('Alura');
       const isEvg = (c.plataforma || '').includes('EV.G') || (c.plataforma || '').includes('ENAP');
       const isIfrs = (c.plataforma || '').includes('IFRS') || (c.plataforma || '').includes('Instituto Federal');
       let btnTexto = t('courses.btnFree');
       let extraBadge = '';
+      let deadlineBadge = '';
 
-      if (isYouTube) {
+      const desc = c.descricao || '';
+      if (desc.includes('[INSCRIÇÕES ABERTAS')) {
+        const m = desc.match(/Finaliza em ([^\]]+)/);
+        const prazo = m ? m[1] : '';
+        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#15803d; border-color:#86efac; font-weight:600;" title="Inscrições abertas">🟢 Inscrições Abertas${prazo ? ' (' + prazo + ')' : ''}</span>`;
+      } else if (desc.includes('[Finalizado em')) {
+        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#475569; border-color:#cbd5e1;" title="Edição anterior disponível para estudo">⌛ Concluído (Histórico)</span>`;
+      } else if (desc.includes('[CURSO CONTÍNUO')) {
+        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc;">♾️ Sempre Aberto</span>`;
+      }
+
+      if (isSantander) {
+        btnTexto = '🏛️ Acessar Santander';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; font-weight:600;">🏛️ Santander Academy</span>`;
+      } else if (isDio) {
+        btnTexto = '⚡ Inscrever-se na DIO';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8; font-weight:600;">⚡ Bootcamp DIO</span>`;
+      } else if (isCursoEmVideo) {
+        btnTexto = '📺 Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffedd5; color:#c2410c; border-color:#fdba74; font-weight:600;">📺 Curso em Vídeo</span>`;
+      } else if (isYouTube) {
         btnTexto = t('courses.btnYoutube');
         extraBadge = `<span class="badge-youtube-cert">${t('courses.badgeYoutube')}</span>`;
       } else if (isGuiaDeTI) {
@@ -1041,9 +1064,6 @@ const app = {
       } else if (isUsp) {
         btnTexto = '🎓 Aulas USP';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">🎓 Cursos USP</span>`;
-      } else if (isDio) {
-        btnTexto = '⚡ Acessar DIO';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8;">⚡ DIO Free</span>`;
       } else if (isAlura) {
         btnTexto = '🌟 Aulas Alura';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;">🌟 Alura Aberta</span>`;
@@ -1055,15 +1075,46 @@ const app = {
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#ede9fe; color:#5b21b6; border-color:#ddd6fe;">🏛️ IFRS Federal</span>`;
       }
 
-      const cardClass = isYouTube
-        ? 'card-featured-youtube'
-        : (isGuiaDeTI
-          ? 'card-featured-guiadeti'
-          : (isBradesco
-            ? 'card-featured-bradesco'
-            : (isUsp || isDio || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')));
+      const cardClass = isSantander
+        ? 'card-featured-santander'
+        : (isDio
+          ? 'card-featured-dio'
+          : (isCursoEmVideo
+            ? 'card-featured-cursoemvideo'
+            : (isYouTube
+              ? 'card-featured-youtube'
+              : (isGuiaDeTI
+                ? 'card-featured-guiadeti'
+                : (isBradesco
+                  ? 'card-featured-bradesco'
+                  : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : ''))))));
 
-      const isBtnPrimary = isYouTube || isGuiaDeTI || isUsp || isDio || isAlura || isEvg || isIfrs;
+      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
+
+      let logoHtml = '🏛️';
+      if (isDio) {
+        logoHtml = `<img src="/img/logos/dio.png" alt="DIO" class="course-platform-logo">`;
+      } else if (isSantander) {
+        logoHtml = `<img src="/img/logos/santander.png" alt="Santander" class="course-platform-logo">`;
+      } else if (isCursoEmVideo) {
+        logoHtml = `<img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="course-platform-logo logo-round">`;
+      } else if (isBradesco) {
+        logoHtml = `<img src="/img/logos/bradesco.svg" alt="Fundação Bradesco" class="course-platform-logo">`;
+      } else if (isGuiaDeTI) {
+        logoHtml = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo">`;
+      } else if (isYouTube) {
+        logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo">`;
+      } else if (isUsp) {
+        logoHtml = `<img src="/img/logos/usp.png" alt="USP" class="course-platform-logo">`;
+      } else if (isAlura) {
+        logoHtml = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo">`;
+      } else if (isEvg) {
+        logoHtml = `<img src="/img/logos/evg.png" alt="EV.G" class="course-platform-logo">`;
+      } else if ((c.plataforma || '').includes('MIT')) {
+        logoHtml = `<img src="/img/logos/mit.png" alt="MIT" class="course-platform-logo">`;
+      } else if ((c.plataforma || '').includes('Harvard')) {
+        logoHtml = `<img src="/img/logos/harvard.png" alt="Harvard" class="course-platform-logo">`;
+      }
 
       return `
         <article class="course-card ${cardClass}">
@@ -1071,12 +1122,13 @@ const app = {
             <span class="course-area">${this.escape(traduzirArea(c.area))}</span>
             <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
               ${extraBadge}
+              ${deadlineBadge}
               <span class="course-level">${this.escape(c.nivel ? traduzirNivel(c.nivel) : t('courses.levelDefault'))}</span>
             </div>
           </div>
 
           <h3 class="course-title">${this.escape(c.titulo)}</h3>
-          <p class="course-platform">🏛️ ${this.escape(c.plataforma)}</p>
+          <p class="course-platform">${logoHtml} <span>${this.escape(c.plataforma)}</span></p>
           <p class="course-desc">${this.escape(c.descricao || t('courses.descFallback'))}</p>
 
           <a class="btn ${isBtnPrimary ? 'btn-primary' : 'btn-secondary'} course-btn" href="/api/cursos/${c.id}/acessar" target="_blank" rel="noopener noreferrer">
@@ -1152,9 +1204,17 @@ const app = {
       const isTrilha = (r.plataforma || '').includes('Trilha Info');
       const isGuiaTI = (r.plataforma || '').includes('Guia de TI');
       let badgeOrigem = '🗺️ Roadmap Aberto';
-      if (isRoadmapSh) badgeOrigem = '🌐 Roadmap.sh';
-      else if (isTrilha) badgeOrigem = '🗺️ Trilha Info (BR)';
-      else if (isGuiaTI) badgeOrigem = '🚀 Guia de TI';
+      let logoRoadmap = '🧭';
+      if (isRoadmapSh) {
+        badgeOrigem = '🌐 Roadmap.sh';
+        logoRoadmap = `<img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="course-platform-logo">`;
+      } else if (isTrilha) {
+        badgeOrigem = '🗺️ Trilha Info (BR)';
+        logoRoadmap = `<img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="course-platform-logo">`;
+      } else if (isGuiaTI) {
+        badgeOrigem = '🚀 Guia de TI';
+        logoRoadmap = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo">`;
+      }
 
       return `
         <article class="roadmap-card">
@@ -1164,7 +1224,7 @@ const app = {
           </div>
 
           <h3 class="roadmap-title">${this.escape(r.titulo)}</h3>
-          <p class="roadmap-platform">🧭 ${this.escape(r.plataforma)}</p>
+          <p class="roadmap-platform">${logoRoadmap} <span>${this.escape(r.plataforma)}</span></p>
           <p class="roadmap-desc">${this.escape(r.descricao || 'Árvore de habilidades e guia passo a passo estruturado para desenvolvimento técnico.')}</p>
 
           <a class="btn roadmap-btn" href="${this.escape(r.url)}" target="_blank" rel="noopener noreferrer">

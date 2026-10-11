@@ -1,0 +1,70 @@
+url:	http://africanstorybook.org/reader.php?id=16561&d=0&a=1
+id:	16561
+title:	As Cores Do Arco-Íris
+author:	Translators without Borders and Debora Santos
+artist:	Jesse Breytenbach
+lang:	Portuguese
+level:	First sentences
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/16561.png
+desc:	Esta história mostra as cores do arco-íris e as coisas que você pode ver no dia a dia com essas cores.
+
+page_text:
+
+P1	O arco-íris tem sete cores.
+P2	A primeira cor é o vermelho.
+P3	Kewyu está usando uma camiseta vermelha.
+P4	A segunda cor é o laranja.
+P5	Esta é uma laranja. O que mais você vê da cor laranja?
+P6	A terceira cor é o amarelo.
+P7	A gema do ovo é amarela. O que mais você vê da cor amarela?
+P8	A quarta cor é o verde.
+P9	Nossa plantação de bananas é verde.
+P10	A quinta cor é o azul.
+P11	O céu é azul.
+P12	A sexta cor é o índigo.
+P13	Estas frutinhas são da cor índigo.
+P14	A sétima cor é o violeta.
+P15	Meu vestido é violeta. Violeta é minha cor favorita! Qual é a sua cor favorita?
+P16	Você sabe quais são as sete cores do arco-íris?
+
+images:
+
+illustrations/pages/9838.png
+illustrations/pages/9838.png
+illustrations/pages/9839.png
+illustrations/pages/9840.png
+illustrations/pages/9841.png
+illustrations/pages/9842.png
+illustrations/pages/9843.png
+illustrations/pages/9844.png
+illustrations/pages/9846.png
+illustrations/pages/9847.png
+illustrations/pages/9849.png
+illustrations/pages/9850.png
+illustrations/pages/9851.png
+illustrations/pages/9852.png
+illustrations/pages/9854.png
+illustrations/pages/9853.png
+illustrations/pages/9856.png
+
+translations:
+
+Afaan Oromo (Translation)	Halluu Sabbata Waaqayyo 7	id=20420
+Amharic (Translation)	7 የቀስተደመና ቀለማት 	id=20447
+Ateso (Translation)	 Iragin Ikanyikarei Lu Etaluka	id=20754
+Chinyanja (Translation)	Mautoto Asanu Ndi Awiri Autawaleza	id=20881
+Dhopadhola (Translation)	Lifudu Nitye Gi Cal Abiryo	id=19961
+English (Translation)	Colours of a Rainbow	id=10463
+English (Adaptation)	7 Colours Of A Rainbow	id=19760
+Hausa (Nigeria) (Translation)	Launika Bakwai Na Bakan Gizo	id=20798
+isiZulu (Translation)	Imibala eyisikhombisa yothingo lwenkosazana	id=19954
+isiZulu (Translation)	Imibala Eyisikhombisa Yothingo  Lwenkosazana	id=20679
+Kikamba (Translation)	Utathi	id=15419
+Kiswahili (Original)	Rangi Za Upinde	id=10442
+Kiswahili (Translation)	Rangi 7 Za Upinde	id=20432
+Lunyole (Translation)	Amalangi G'olufudu	id=16557
+Lusoga (Translation)	Musoke Ali Na Langi 7	id=20396
+Ng’aturkana (Translation)	Alokakinet Akiru	id=20405
+Sepedi (Translation)	Mebela ye mesupa ya molalatladi	id=19980
+Siswati (Translation)	Imibala Yemushi Wenkhosatane	id=13066

@@ -189,13 +189,15 @@
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
           <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')" data-i18n="ui.courses.all">Todos</button>
-          <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube">📺 YouTube (Certificado Gratuito)</button>
-          <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')">🏛️ Fundação Bradesco</button>
-          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti">🚀 Guia de TI</button>
-          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')">🎓 Cursos USP</button>
-          <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')">⚡ DIO Free</button>
-          <button class="pill" data-filtro="Alura" onclick="app.filtrarCursosPorPlataforma('Alura')">🌟 Alura Aberta</button>
-          <button class="pill" data-filtro="EV.G" onclick="app.filtrarCursosPorPlataforma('EV.G')">🏛️ EV.G / ENAP</button>
+          <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo"> DIO Bootcamps</button>
+          <button class="pill" data-filtro="Santander" onclick="app.filtrarCursosPorPlataforma('Santander')"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo"> Santander Academy</button>
+          <button class="pill pill-youtube" data-filtro="Curso em Vídeo" onclick="app.filtrarCursosPorPlataforma('Curso em Vídeo')"><img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="pill-logo pill-logo-round"> Curso em Vídeo (Guanabara)</button>
+          <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube"><img src="/img/logos/youtube.svg" alt="YouTube" class="pill-logo"> YouTube (Certificado)</button>
+          <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo"> Fundação Bradesco</button>
+          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo"> Guia de TI</button>
+          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')"><img src="/img/logos/usp.png" alt="USP" class="pill-logo"> Cursos USP</button>
+          <button class="pill" data-filtro="Alura" onclick="app.filtrarCursosPorPlataforma('Alura')"><img src="/img/logos/alura.png" alt="Alura" class="pill-logo"> Alura Aberta</button>
+          <button class="pill" data-filtro="EV.G" onclick="app.filtrarCursosPorPlataforma('EV.G')"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo"> EV.G / ENAP</button>
           <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')">🏛️ IFRS Federal</button>
           <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')" data-i18n="ui.courses.areaTech">Tecnologia Geral</button>
           <button class="pill" data-filtro="Gestão & Negócios" onclick="app.filtrarCursosPorArea('Gestão & Negócios')">💼 Gestão & Negócios</button>
@@ -235,9 +237,9 @@
         <span class="filter-label" data-i18n="ui.roadmaps.filters">Filtros de Trilha:</span>
         <div class="pills-container" id="pills-roadmaps-origem">
           <button class="pill active" data-filtro="" onclick="app.filtrarRoadmapsPorOrigem('')" data-i18n="ui.roadmaps.all">Todos os Roadmaps</button>
-          <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')">🗺️ Trilha Info (BR)</button>
-          <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')">🌐 Roadmap.sh (95 roadmaps)</button>
-          <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')">🚀 Guia de TI</button>
+          <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo"> Trilha Info (BR)</button>
+          <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo"> Roadmap.sh (95 roadmaps)</button>
+          <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo"> Guia de TI</button>
           <button class="pill" data-filtro="frontend" onclick="app.filtrarRoadmapsPorTermo('Frontend')">💻 Frontend</button>
           <button class="pill" data-filtro="backend" onclick="app.filtrarRoadmapsPorTermo('Backend')">⚙️ Backend</button>
           <button class="pill" data-filtro="devops" onclick="app.filtrarRoadmapsPorTermo('DevOps')">☁️ DevOps & Cloud</button>
@@ -421,9 +423,9 @@
     <div class="container footer-content">
       <p><strong>Lino Livre</strong> <span data-i18n="ui.footer.tagline">• Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</span></p>
       <p style="font-size: 0.85rem; color: #94a3b8; margin: 0.5rem 0;">
-        <span>Aviso Legal: Plataforma educacional comunitária e sem fins lucrativos. Se você é detentor de direitos autorais de qualquer material e deseja solicitar a sua remoção imediata, contate: </span>
-        <a href="mailto:contato@linolivre.org?subject=Solicita%C3%A7%C3%A3o%20de%20Remo%C3%A7%C3%A3o%20de%20Conte%C3%BAdo" style="color: var(--primary); text-decoration: underline; font-weight: 500;">contato@linolivre.org</a>
-        <span> — Atenderemos e removeremos prontamente.</span>
+        <span>Aviso Legal & Suporte: Plataforma educacional comunitária e sem fins lucrativos. Para suporte, dúvidas ou solicitações de remoção imediata por detentores de direitos autorais, contate: </span>
+        <a href="mailto:bv6alblu6@mozmail.com?subject=Suporte%20e%20Contato%20-%20Lino%20Livre" style="color: var(--primary); text-decoration: underline; font-weight: 500;">bv6alblu6@mozmail.com</a>
+        <span> — Atenderemos prontamente.</span>
       </p>
       <p id="footer-links-container" class="footer-links hidden">
         <a id="link-footer-comunidade" href="#" target="_blank" rel="noopener noreferrer">

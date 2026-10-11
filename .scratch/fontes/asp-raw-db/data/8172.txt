@@ -1,0 +1,42 @@
+url:	http://africanstorybook.org/reader.php?id=8172&d=0&a=1
+id:	8172
+title:	Ensolimo Oli Igha?
+author:	Cornelius Wambi Gulere
+artist:	Benjamin Mitchley, Bronwen Heath, Catherine Groenewald, Michael Nakuwa, Rijuta Ghate and Wiehan de Jager
+lang:	Lusoga
+level:	First sentences
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/8172.png
+desc:	Bali kunoonia nsolimo eyali yesoze enhumba yekweka aghantu.
+
+page_text:
+
+P1	Ensolimo eli igha?
+P2	Loba ensolimo mu ndobo.
+P3	Eli igha?
+P4	Noonia,  Noonia! Ginoonie ghansi ghe ekitanda.
+P5	Eli igha? A a a a! Oli inhuma wa lwiji? Mbe,  toli inhuma wa lwiji.
+P6	Oli igha? Oli mu nsawo? Mbe,  toli mu nsawo.
+P7	Oli mu ntamu? Mbe,  toli mu ntamu.
+P8	Waakaba oli igha? Mu kikabada?
+P9	Igha,  igha? Tisobola kukufuna.
+P10	Oli ghansi gha mukeeka? Mbe,  mbe.
+P11	Munda mu isanduuku,  iyi yi. Ndi kukubona. Wansolimo mu isanduuku.
+
+images:
+
+illustrations/pages/2556.png
+illustrations/pages/2556.png
+illustrations/pages/2482.png
+illustrations/pages/6904.png
+illustrations/pages/6091.png
+illustrations/pages/6235.png
+illustrations/pages/6123.png
+illustrations/pages/5979.png
+illustrations/pages/1823.png
+illustrations/pages/6007.png
+illustrations/pages/1561.png
+
+translations:
+
+English (Original)	Where is the Rat?	id=7449

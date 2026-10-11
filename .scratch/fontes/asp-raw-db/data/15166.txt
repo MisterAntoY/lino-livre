@@ -1,0 +1,45 @@
+url:	http://africanstorybook.org/reader.php?id=15166&d=0&a=1
+id:	15166
+title:	People I Relate With
+author:	Nyanchama Onywoki
+artist:	Rob Owen, Brandan Reynolds and Sarah Bouwer
+lang:	English
+level:	First sentences
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/15166.png
+desc:	A small girl describes different people she relates with.
+
+page_text:
+
+P1	My name is Anita. I am 8 years old.
+P2	I like playing.
+P3	I love playing with my friends at school.
+P4	John is my brother. He is older than me.
+P5	Our neighbours are good to us.
+P6	 John, Peter and I go to the same school.
+P7	My mother and I go to the market every Saturday.
+P8	My brother and I draw funny pictures.
+P9	My brother John is a good reader. He reads for others in his class.
+P10	My father is a librarian in our school. He chooses storybooks for children.
+P11	When school closes, we go to visit our grandparents in the village.
+P12	I love my family, grandparents and neighbours very much.
+
+images:
+
+illustrations/pages/10612.png
+illustrations/pages/9500.png
+illustrations/pages/9502.png
+illustrations/pages/14062.png
+illustrations/pages/14566.png
+illustrations/pages/13665.png
+illustrations/pages/14064.png
+illustrations/pages/14027.png
+illustrations/pages/14111.png
+illustrations/pages/14017.png
+illustrations/pages/14709.png
+illustrations/pages/13931.png
+illustrations/pages/10611.png
+
+translations:
+
+Lusoga (Translation)	Abantu Benkolagana Nabo	id=20407

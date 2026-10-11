@@ -1,8 +1,9 @@
 const { getDatabase } = require('./index');
 const { cursosData } = require('./cursosSeedData');
 const { githubBooks } = require('./githubBooksSeedData');
-const { githubZhBooks } = require('./githubZhBooksSeedData');
 const { dioBootcampsList } = require('./dioBootcampsData');
+const { santanderAcademyList } = require('./santanderAcademyData');
+const { cursoEmVideoList } = require('./cursoEmVideoData');
 const { livrosAfricaData } = require('./livrosAfricaData');
 const { roadmapShList } = require('./roadmapShData');
 const { podcastsShowsData } = require('./podcastsSeedData');
@@ -39,13 +40,13 @@ function seed(dbInstance = null) {
       DELETE FROM podcasts_episodios;
       DELETE FROM podcasts_shows;
       DELETE FROM import_jobs;
-    DELETE FROM cursos;
-    DELETE FROM livros;
-    DELETE FROM autores;
-    DELETE FROM categorias;
-    DELETE FROM fontes;
-    DELETE FROM sqlite_sequence;
-  `);
+      DELETE FROM cursos;
+      DELETE FROM livros;
+      DELETE FROM autores;
+      DELETE FROM categorias;
+      DELETE FROM fontes;
+      DELETE FROM sqlite_sequence;
+    `);
 
   // 1. Inserir Fontes Oficiais (Guia de TI, GitHub e fontes abertas)
   const insertFonte = db.prepare('INSERT INTO fontes (slug, nome, tipo, url_base, ativa) VALUES (?, ?, ?, ?, ?)');
@@ -62,6 +63,12 @@ function seed(dbInstance = null) {
   const fFreeBooksZh = insertFonte.run('github-freebooks-zh', 'Free Programming Books ZH (GitHub)', 'manual', 'https://github.com/justjavac/free-programming-books-zh_CN', 1).lastInsertRowid;
   const fAwesomeCn = insertFonte.run('github-awesome-cn', 'Awesome Lists Chinese (GitHub)', 'manual', 'https://github.com/gamedilong/awesome-cn', 1).lastInsertRowid;
   const fRoadmapZh = insertFonte.run('github-roadmap-zh', 'Developer Roadmap ZH (GitHub)', 'manual', 'https://github.com/kamranahmedse/developer-roadmap', 1).lastInsertRowid;
+  // Novas fontes GitHub em Francês (apenas metadados + links externos)
+  const fFreeBooksFr = insertFonte.run('github-freebooks-fr', 'Free Programming Books FR (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
+  const fAwesomeFr = insertFonte.run('github-awesome-fr', 'Awesome Lists French (GitHub)', 'manual', 'https://github.com/websealevel/awesome-fr', 1).lastInsertRowid;
+  // Novas fontes GitHub em Inglês (apenas metadados + links externos)
+  const fFreeBooksEn = insertFonte.run('github-freebooks-en', 'Free Programming Books EN (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
+  const fAwesomeEn = insertFonte.run('github-awesome-en', 'Awesome Lists English (GitHub)', 'manual', 'https://github.com/sindresorhus/awesome', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -542,62 +549,11 @@ function seed(dbInstance = null) {
     }
   }
 
-  // Inserir Livros Técnicos em Mandarim (GitHub Awesome Lists & Free Books)
-  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente
-  const catMapZh = {
-    'Tecnologia & Guias Digitais': catTecnologia,
-    'Desenvolvimento Web & Mobile': catWeb,
-    'Arquitetura & Engenharia de Software': catArq,
-    'Ciência de Dados & Inteligência Artificial': catData,
-    'Metodologias Ágeis & Carreira Tech': catAgil
-  };
 
-  const fonteMapZh = {
-    'github-freebooks-zh': fFreeBooksZh,
-    'github-awesome-cn': fAwesomeCn,
-    'github-roadmap-zh': fRoadmapZh
-  };
 
-  for (const b of githubZhBooks) {
-    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
-    let aId;
-    if (!aut) {
-      aId = insertAutor.run(b.autor, 'Chinesa / Internacional', 'Curadoria de recursos técnicos open source em mandarim.').lastInsertRowid;
-    } else {
-      aId = aut.id;
-    }
 
-    const cId = catMapZh[b.categoria] || catTecnologia;
-    const fId = fonteMapZh[b.fonteSlug] || fManual;
 
-    const bId = insertLivro.run(
-      b.titulo,
-      b.subtitulo || null,
-      null,
-      b.ano || 2024,
-      'zh',
-      b.sinopse,
-      b.capaUrl,
-      b.paginas || 0,
-      aId,
-      cId,
-      fId,
-      b.fonteIdExterno,
-      'outro',  // licença: recursos open source / awesome lists
-      0,
-      ''      // SEM conteúdo local - apenas intermediário
-    ).lastInsertRowid;
 
-    if (b.links && Array.isArray(b.links)) {
-      const seenFormatos = new Set();
-      for (const lk of b.links) {
-        const fmt = lk.formato || 'html';
-        if (seenFormatos.has(fmt)) continue;
-        seenFormatos.add(fmt);
-        insertLink.run(bId, fmt, lk.url, 0, 1);
-      }
-    }
-  }
 
   // Inserir a Coleção Monumental de África (5 idiomas: pt, en, fr, de, zh)
   const catAfricaMap = {
@@ -665,6 +621,21 @@ function seed(dbInstance = null) {
   // Roadmaps interativos oficiais do Roadmap.sh (95 roadmaps oficiais extraídos de nilbuild/developer-roadmap)
   for (const r of roadmapShList) {
     insertCurso.run(r.titulo, 'roadmap', r.area, r.plataforma, r.url, r.licenca, r.nivel, r.descricao);
+  }
+
+  // Bootcamps Oficiais DIO (Digital Innovation One - 222 bootcamps com datas de finalização e habilidades)
+  for (const b of dioBootcampsList) {
+    insertCurso.run(b.titulo, 'bootcamp', b.area, b.plataforma, b.url, b.licenca, b.nivel, b.descricao);
+  }
+
+  // Santander Open Academy (Bolsas, Bootcamps e Cursos On-Demand com prazos de finalização)
+  for (const s of santanderAcademyList) {
+    insertCurso.run(s.titulo, s.tipo || 'curso', s.area, s.plataforma, s.url, s.licenca, s.nivel, s.descricao);
+  }
+
+  // Curso em Vídeo (Prof. Gustavo Guanabara - 25 cursos completos com certificados gratuitos)
+  for (const v of cursoEmVideoList) {
+    insertCurso.run(v.titulo, 'curso', v.area, v.plataforma, v.url, v.licenca, v.nivel, v.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

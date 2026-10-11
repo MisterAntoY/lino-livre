@@ -1,0 +1,42 @@
+url:	http://africanstorybook.org/reader.php?id=14948&d=0&a=1
+id:	14948
+title:	I Know How to Play the Teacher!
+author:	Isabelle Duston
+artist:	Silva Afonso
+lang:	English
+level:	First paragraphs
+lic:	Creative Commons: Attribution 4.0
+thumb:	http://africanstorybook.org/illustrations/covers/14948.png
+desc:	I know how to play the teacher. What can you do?
+
+page_text:
+
+P1	My teacher walks with big steps. I know how to walk like the teacher.
+P2	The teacher sings hymns in order. I know how to sing hymns like the teacher.
+P3	The teacher rings the bell for children to enter the classroom. I can ring the bell like the teacher.
+P4	The teacher reads books aloud. I can read aloud like the teacher.
+P5	The teacher writes on the board. I can write on the board like the teacher.
+P6	The teacher points to our province on a map. I know how to point to the map like the teacher.
+P7	The teacher talks to the other teachers. I know how to talk like the teacher.
+P8	The teacher cleans the classroom every day. I know how to clean the classroom like the teacher.
+P9	I can do almost everything that the teacher does. When I grow up I will be a teacher!
+
+images:
+
+illustrations/pages/13846.png
+illustrations/pages/13847.png
+illustrations/pages/13848.png
+illustrations/pages/13849.png
+illustrations/pages/13850.png
+illustrations/pages/13851.png
+illustrations/pages/13852.png
+illustrations/pages/13853.png
+illustrations/pages/13854.png
+illustrations/pages/13855.png
+illustrations/pages/14003.png
+illustrations/pages/14005.png
+illustrations/pages/14006.png
+
+translations:
+
+Portuguese (Original)	Eu Sei Fazer Como O Professor!	id=14894

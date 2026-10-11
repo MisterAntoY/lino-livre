@@ -1,0 +1,57 @@
+url:	http://africanstorybook.org/reader.php?id=15220&d=0&a=1
+id:	15220
+title:	Ҟaṛṭūm L-Fīla
+author:	Ramzi Hachani
+artist:	Wiehan de Jager
+lang:	Tunisian
+level:	First sentences
+lic:	Creative Commons: Attribution 3.0
+thumb:	http://africanstorybook.org/illustrations/covers/15220.png
+desc:	Ɛlēċ l-fīla ɛandha ҟaṛṭūm ṭwīl?
+
+page_text:
+
+P1	N-nēs l-koll yaɛrfu illi'l-fyūla ɛandhom ҟrāṭem ṭwēl.
+P2	Ēma bikri, ҟaṛṭūm l-fīla kēn qṣīr w ҟċīn.
+P3	Fīla ṣɣīra twildet. Kēnet ɛandha ħobb l-itṭilēɛ. Kēnet  ɛandha su`ēl l'koll ħayewēn.
+P4	Kēnet mitɛajjbe fi'z-zarāfa. "Ɛlēċ ɛandek raqbe ṭwīla?" niċdetha.
+P5	Kēnet mitɛajjbe fi'l-karkeden. "Ɛlēċ garnek mđebbib?" niċdettu.
+P6	Kēnet mitɛajjbe barċa fi't-timsēħ. "Cnuwwe yēklu t-tmēseħ fi'l-ɛċe?" niċdet.
+P7	L-ɣrāb l-mzawwar fissaɛ qāl, "Tebbaɛni li'l-wēd. Ɣādi tewwa tċūf ċnuwwe yēklu t-tmēseħ fi'l-ɛċe."
+P8	W hakka l-fīla ṣ-ṣɣīra tebbɛet l-ɣrāb li'l-wēd.
+P9	Dezzet l-qṣab w weqfet ɛle ħarf l-wēd. Ҟazret fi'l-me. Wīn t-timsēħ?
+P10	"Ɛasslēma," qālet l-ħajra illi baħđe ħarf l-wēd. "Ɛasslēma," qālet l-fīla ṣ-ṣɣīra. "Tnejjemċi tqolli cnuwwe yēklu t-tmēseħ."
+P11	"Oqrob w tewwa nqollek," qālet l-ħajra. L-fīla ṣ-ṣɣīra ṭabbset. "Zīd oqrob," qālet l-ħajra. L-fīla ṣ-ṣɣīra zēdet ṭabbset.
+P12	Ɛle ɣafla! ṬRAQ! T-timsēħ ҟṭaf ҟarṭūm l-fīla ṣ-ṣɣīra b'jdēqu.
+P13	L-fīla ṣ-ṣɣīra ṭāħet l'tēli w jibdet. W jibdet,  w jibdet. Ēma t-timsēħ ma seyyebċ ҟarṭūmha.
+P14	Ҟarṭūm l-fīla ṣ-ṣɣīra tjebbed w tjebbed. W tjebbed. Ħatte līn ṭāħet. "Dofff!"
+P15	Ҟarṭūm l-fīla ṣ-ṣɣīra tjebbed ħatte welle ṭwīl.
+P16	Ҟarṭūmha ṭwēl l'darjet illi wellēt tnejjem taqṭef l-ɣalla min aɛle ɛorf. W li'l-yūm,  l-fyūla l-koll ɛandhom ҟrāṭem ṭwēl w nēfɛīn.
+
+images:
+
+illustrations/pages/1110.png
+illustrations/pages/1111.png
+illustrations/pages/1112.png
+illustrations/pages/1110.png
+illustrations/pages/1113.png
+illustrations/pages/1114.png
+illustrations/pages/1116.png
+illustrations/pages/1118.png
+illustrations/pages/1119.png
+illustrations/pages/1120.png
+illustrations/pages/1121.png
+illustrations/pages/1122.png
+illustrations/pages/1123.png
+illustrations/pages/1124.png
+illustrations/pages/1125.png
+illustrations/pages/1882.png
+illustrations/pages/1127.png
+
+translations:
+
+Dhopadhola (Translation)	Umi Liec	id=15737
+English (Translation)	Elephant's Nose	id=15093
+Oluwanga (Adaptation)	Omwana We Inzofu	id=19800
+Portuguese (Translation)	O Nariz Do Elefante	id=16579
+Yoruba (Translation)	Imú Eerin	id=16558

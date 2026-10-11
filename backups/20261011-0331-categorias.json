@@ -1,0 +1,114 @@
+[
+  {
+    "results": [
+      {
+        "id": 1,
+        "nome": "Clássicos Brasileiros",
+        "descricao": "Obras-primas da literatura nacional em domínio público",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 2,
+        "nome": "Romance & Crônicas",
+        "descricao": "Romances históricos, estudos de costumes e narrativas urbanas",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 3,
+        "nome": "Teatro & Poesia",
+        "descricao": "Dramaturgia e coletâneas poéticas clássicas",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 4,
+        "nome": "Romance Indianista",
+        "descricao": "Obras da vertente indianista do romantismo brasileiro",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 5,
+        "nome": "Apoio Pedagógico & Filosofia",
+        "descricao": "Textos formativos e reflexões sociopolíticas",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 6,
+        "nome": "Tecnologia & Guias Digitais",
+        "descricao": "Manuais técnicos, guias de programação, inteligência artificial e roadmaps abertos",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 7,
+        "nome": "Arquitetura & Engenharia de Software",
+        "descricao": "Clean Architecture, Design Patterns, Refatoração e boas práticas de código",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 8,
+        "nome": "Desenvolvimento Web & Mobile",
+        "descricao": "Frontend, Backend, APIs, frameworks modernos e desenvolvimento mobile",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 9,
+        "nome": "DevOps, Cloud & Infraestrutura",
+        "descricao": "Linux, Docker, Kubernetes, redes, segurança e computação em nuvem",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 10,
+        "nome": "Ciência de Dados & Inteligência Artificial",
+        "descricao": "Big Data, Machine Learning, Business Intelligence, Data Science e estatística",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 11,
+        "nome": "Metodologias Ágeis & Carreira Tech",
+        "descricao": "Scrum, Lean Startup, hábitos de produtividade, liderança e gestão técnica",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 12,
+        "nome": "🌍 Literatura & Vozes de África",
+        "descricao": "Obras-primas da literatura africana e pan-africana em múltiplos idiomas",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 13,
+        "nome": "🌍 Contos & Tradição Oral Africana",
+        "descricao": "Folclore, fábulas bantas, lendas de Anansi e sabedoria oral ancestral",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 14,
+        "nome": "🌍 História & Sociedade Africana",
+        "descricao": "Civilizações antigas, impérios do Sahel, arqueologia e história pan-africana",
+        "criado_em": "2026-10-11 02:12:51"
+      },
+      {
+        "id": 15,
+        "nome": "🌍 Filosofia & Pensamento Africano",
+        "descricao": "Négritude, libertação, dignidade humana e filosofia pan-africana",
+        "criado_em": "2026-10-11 02:12:51"
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LHR",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.2423
+      },
+      "duration": 0.2423,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 888832,
+      "rows_read": 15,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]
