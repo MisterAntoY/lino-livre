@@ -42,8 +42,18 @@ function wrangler(cmd) {
   return execSync(`npx wrangler d1 execute ${DB} --remote ${cmd}`, { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'] });
 }
 
+/** INSERTs/DDL com emoji passam por ficheiro --file (imune a quoting de shell). */
+let tmpSeq = 0;
+function execFileSql(linhas) {
+  fs.mkdirSync(SQL_DIR, { recursive: true });
+  const f = path.join(SQL_DIR, `tmp-${process.pid}-${tmpSeq++}.sql`);
+  fs.writeFileSync(f, (Array.isArray(linhas) ? linhas : [linhas]).join('\n') + '\n');
+  try { wrangler(`--file ${JSON.stringify(f)} --yes`); }
+  finally { try { fs.unlinkSync(f); } catch {} }
+}
+
 async function sqlJson(command) {
-  // colapsa quebras de linha: comandos multi-linha quebram o quoting do shell
+  // SELECTs são ASCII puro; --command é seguro aqui
   const oneLine = command.replace(/\s+/g, ' ').trim();
   const out = wrangler(`--command ${JSON.stringify(oneLine)} --json`);
   return JSON.parse(out)[0].results;
@@ -56,14 +66,14 @@ function applyFile(file) {
 
 async function garantirFonte(fonte) {
   // fonte: { slug, nome, tipo, url_base }
-  await sqlJson(`INSERT OR IGNORE INTO fontes (slug, nome, tipo, url_base, ativa)
-                 VALUES (${esc(fonte.slug)}, ${esc(fonte.nome)}, ${esc(fonte.tipo)}, ${esc(fonte.url_base)}, 1);`);
+  execFileSql(`INSERT OR IGNORE INTO fontes (slug, nome, tipo, url_base, ativa)
+               VALUES (${esc(fonte.slug)}, ${esc(fonte.nome)}, ${esc(fonte.tipo)}, ${esc(fonte.url_base)}, 1);`);
   const rows = await sqlJson(`SELECT id FROM fontes WHERE slug = ${esc(fonte.slug)};`);
   return rows[0].id;
 }
 
 async function garantirCategoria(nome, descricao) {
-  await sqlJson(`INSERT OR IGNORE INTO categorias (nome, descricao) VALUES (${esc(nome)}, ${esc(descricao)});`);
+  execFileSql(`INSERT OR IGNORE INTO categorias (nome, descricao) VALUES (${esc(nome)}, ${esc(descricao)});`);
   const rows = await sqlJson(`SELECT id FROM categorias WHERE nome = ${esc(nome)};`);
   return rows[0].id;
 }
@@ -310,7 +320,8 @@ async function importarAsp(aplicar) {
 
 async function importarScience(aplicar) {
   console.log('\n🔬 FREE-SCIENCE-BOOKS (EbookFoundation, CC0)');
-  const res = await fetch('https://raw.githubusercontent.com/EbookFoundation/free-science-books/main/README.md',
+  // a lista real está em free-science-books.md; o README é só a intro
+  const res = await fetch('https://raw.githubusercontent.com/EbookFoundation/free-science-books/master/free-science-books.md',
     { headers: { 'User-Agent': 'LinoLivre-Importer/1.0' } });
   if (!res.ok) throw new Error('Falha ao baixar README: HTTP ' + res.status);
   const md = await res.text();
@@ -422,12 +433,13 @@ async function importarStandardEbooks(aplicar) {
 
 async function importarOpenstax(aplicar) {
   console.log('\n🎓 OPENSTAX (CC-BY)');
-  const res = await fetch('https://openstax.org/api/v2/books?format=json',
-    { headers: { 'User-Agent': 'LinoLivre-Importer/1.0' } });
+  // A API antiga (/api/v2/books) foi descontinuada; a atual é o CMS Wagtail.
+  const BASE = 'https://openstax.org/apps/cms/api/v2/pages/?type=books.book';
+  const res = await fetch(`${BASE}&limit=200`, { headers: { 'User-Agent': 'LinoLivre-Importer/1.0' } });
   if (!res.ok) throw new Error('API OpenStax HTTP ' + res.status);
   const json = await res.json();
-  const books = json.items || json.books || (Array.isArray(json) ? json : []);
-  console.log(`   ✔ ${books.length} manuais encontrados`);
+  const resumo = json.items || [];
+  console.log(`   ✔ ${json.meta?.total_count ?? resumo.length} manuais no índice — a ir buscar detalhes`);
 
   const fonteId = await garantirFonte({ slug: 'openstax', nome: 'OpenStax', tipo: 'api', url_base: 'https://openstax.org' });
   const catId = await garantirCategoria('🎓 Manuais Universitários Abertos', 'Textos universitários CC-BY da OpenStax (Rice University) — download e leitura oficiais');
@@ -435,23 +447,40 @@ async function importarOpenstax(aplicar) {
   const c = novoConstrutor(fonteId, catId);
   await c.preparar();
 
-  for (const b of books) {
+  let falhas = 0;
+  for (const item of resumo) {
+    // detalhe por livro (autores, sinopse, capa, disciplinas)
+    let b = item;
+    try {
+      const dr = await fetch(item.detail_url || `https://openstax.org/apps/cms/api/v2/pages/${item.id}/`,
+        { headers: { 'User-Agent': 'LinoLivre-Importer/1.0' } });
+      if (dr.ok) b = await dr.json();
+    } catch { /* usa o resumo */ }
+    // autores OpenStax: [{type:'author', value:{name:...}}]
     const autores = Array.isArray(b.authors) && b.authors.length
-      ? b.authors.map(a => a.name).join(', ') : 'OpenStax';
-    c.add({
-      titulo: b.title + (b.salesforce_name && b.salesforce_name !== b.title ? '' : ''),
+      ? b.authors.map(a => typeof a === 'string' ? a : (a?.value?.name || a?.name)).filter(Boolean).join(', ')
+      : 'OpenStax';
+    const disciplinas = Array.isArray(b.book_subjects)
+      ? b.book_subjects.map(s => s.subject_name).filter(Boolean).join(', ') : '';
+    let sinopse = b.description || b.search_description || b.meta?.search_description || '';
+    sinopse = String(sinopse).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 400);
+    if (!sinopse) sinopse = `Manual universitário aberto${disciplinas ? ` (${disciplinas})` : ''}. CC-BY.`;
+    const slugLivro = b.meta?.slug || item.meta?.slug;
+    const ok = c.add({
+      titulo: b.title || item.title,
       autor: autores,
       idioma: 'en',
       licenca: 'cc-by',
       capaUrl: b.cover_url || null,
-      sinopse: b.synopsis ? String(b.synopsis).replace(/<[^>]+>/g, ' ').trim().slice(0, 400) : `Manual universitário aberto (${b.subjects ? b.subjects.join(', ') : 'ensino superior'}). CC-BY.`,
-      ano: b.published || null,
-      urlLeitura: b.web_view_rex_link ? `https://openstax.org/apps/books/${b.id}` : `https://openstax.org/details/books/${b.book_ident}`,
+      sinopse,
+      ano: b.publish_date ? Number(String(b.publish_date).slice(0, 4)) || null : null,
+      urlLeitura: b.webview_link || `https://openstax.org/details/books/${slugLivro}`,
       formato: 'html',
-      fonteIdExterno: String(b.id),
+      fonteIdExterno: `ox-${item.id}`,
     });
+    if (!ok) falhas++;
   }
-  console.log(`   ✔ ${c.livrosRegistos.length} manuais prontos`);
+  console.log(`   ✔ ${c.livrosRegistos.length} manuais prontos${falhas ? ` (${falhas} ignorados)` : ''}`);
 
   const tabelas = await c.fechar();
   const ficheiros = gerarSqlLotes(tabelas, 'ox');

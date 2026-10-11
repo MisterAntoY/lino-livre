@@ -555,9 +555,52 @@ function seed(dbInstance = null) {
   }
 
 
+  // Inserir Romances Clássicos de Domínio Público (GITenberg + Standard Ebooks)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente
+  // Usar categoria "Romance & Crônicas" já definida (catRomance)
 
+  for (const b of romanceClassics) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Britânica / Americana / Francesa', 'Autor clássico de romances de domínio público.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
 
+    const cId = catRomance; // usar categoria existente
+    const fId = fGutenberg; // usar fonte Project Gutenberg existente
 
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      b.isbn || null,
+      b.ano,
+      'en', // idioma original
+      b.sinopse,
+      b.capaUrl,
+      b.paginas,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      'dominio-publico',
+      0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
 
 
   // Inserir a Coleção Monumental de África (5 idiomas: pt, en, fr, de, zh)

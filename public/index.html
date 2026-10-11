@@ -301,71 +301,87 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="vertical-align:middle;margin-right:4px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.352-.676.463-1.028.247-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.158-.893-.561-.092-.403.158-.802.561-.894 4.571-1.045 8.49-.606 11.649 1.336.352.217.462.678.247 1.029zm1.467-3.262c-.27.44-.848.58-1.288.31-3.224-1.982-8.139-2.555-11.952-1.398-.497.151-1.026-.135-1.177-.633-.151-.497.135-1.026.633-1.177 4.364-1.325 9.773-.687 13.473 1.589.44.27.58.848.311 1.309zm.126-3.41c-3.864-2.295-10.239-2.506-13.916-1.39-.594.18-1.222-.162-1.402-.756-.18-.594.162-1.222.756-1.402 4.23-1.284 11.272-1.037 15.702 1.593.535.317.71 1.01.393 1.545-.317.534-1.01.71-1.533.41z"/></svg>
             Spotify for Creators & Audiolivros
           </span>
-          <span class="africa-stats-badge">🎙️ 4 Programas Oficiais • 13 Episódios Livres</span>
+          <span class="africa-stats-badge">🎙️ Canal Oficial • Em Breve</span>
         </div>
         <h2 data-i18n="ui.podcasts.bannerTitle">Podcasts, Resenhas Literárias e Tradição Oral</h2>
-        <p data-i18n="ui.podcasts.bannerDesc">Ouça conversas com pensadores angolanos, resenhas em áudio de grandes obras literárias, fábulas ancestrais dramatizadas e dicas rápidas de estudo. Gratuito, sem anúncios invasivos e disponível diretamente no reprodutor integrado ou na app do Spotify.</p>
+        <p data-i18n="ui.podcasts.bannerDesc">O canal oficial do Lino Livre no Spotify for Creators está em preparação! Em breve você poderá ouvir entrevistas com educadores e pensadores, resenhas em áudio dos livros do acervo, contos da tradição oral e dicas rápidas de estudo diretamente aqui ou no Spotify.</p>
         <div class="podcast-actions-header">
-          <a class="btn btn-spotify" href="https://open.spotify.com/genre/podcasts-page" target="_blank" rel="noopener noreferrer">
+          <a class="btn btn-spotify" href="https://creators.spotify.com/" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="vertical-align:middle;margin-right:6px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.352-.676.463-1.028.247-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.158-.893-.561-.092-.403.158-.802.561-.894 4.571-1.045 8.49-.606 11.649 1.336.352.217.462.678.247 1.029zm1.467-3.262c-.27.44-.848.58-1.288.31-3.224-1.982-8.139-2.555-11.952-1.398-.497.151-1.026-.135-1.177-.633-.151-.497.135-1.026.633-1.177 4.364-1.325 9.773-.687 13.473 1.589.44.27.58.848.311 1.309zm.126-3.41c-3.864-2.295-10.239-2.506-13.916-1.39-.594.18-1.222-.162-1.402-.756-.18-.594.162-1.222.756-1.402 4.23-1.284 11.272-1.037 15.702 1.593.535.317.71 1.01.393 1.545-.317.534-1.01.71-1.533.41z"/></svg>
-            <span data-i18n="ui.podcasts.openApp">Abrir no Spotify</span>
+            <span>Conhecer Spotify for Creators</span>
           </a>
-          <button class="btn btn-outline-white" onclick="app.scrollParaEpisodiosRecentes()">
-            🎧 <span>Ver Episódios Recentes</span>
-          </button>
+          <a class="btn btn-outline-white" href="#secao-whatsapp">
+            📢 <span>Acompanhar Lançamento no Canal</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- Player Spotify Interativo em Destaque -->
-    <section class="container" style="margin-top: 1.5rem;">
-      <div class="spotify-embed-wrapper" id="spotify-player-container">
-        <div class="player-header-bar">
-          <div class="player-now-playing">
-            <span class="live-indicator"></span>
-            <span id="player-status-text">🎧 A reproduzir agora: Selecione um episódio ou ouça o programa em destaque</span>
-          </div>
-        </div>
-        <iframe id="spotify-embed-frame" style="border-radius:12px; border:none; width:100%; min-height:232px;" src="https://open.spotify.com/embed/show/4rOoJ6Egrf8K2IrywzwOMk?utm_source=generator&theme=0" width="100%" height="232" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-    </section>
-
-    <!-- Filtros de Podcasts -->
-    <section class="container filter-section" style="margin-top: 1.5rem;">
-      <div class="search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="filtro-busca-podcasts" placeholder="Pesquisar podcasts ou episódios..." data-i18n-ph="ui.podcasts.searchPlaceholder" oninput="app.filtrarPodcastsComDebounce()">
-      </div>
-
-      <div class="filter-row">
-        <span class="filter-label" data-i18n="ui.podcasts.categoryFilter">Categoria:</span>
-        <div class="pills-container" id="pills-categorias-podcasts">
-          <button class="pill active" data-cat="" onclick="app.filtrarPorCategoriaPodcast('')">Todas as Categorias</button>
-          <button class="pill" data-cat="Educação & Diálogos" onclick="app.filtrarPorCategoriaPodcast('Educação & Diálogos')">🎓 Educação & Diálogos</button>
-          <button class="pill" data-cat="Literatura & Crítica" onclick="app.filtrarPorCategoriaPodcast('Literatura & Crítica')">📖 Literatura & Crítica</button>
-          <button class="pill" data-cat="Contos & Tradição Oral" onclick="app.filtrarPorCategoriaPodcast('Contos & Tradição Oral')">🌍 Contos & Tradição Oral</button>
-          <button class="pill" data-cat="Produtividade & Estudo" onclick="app.filtrarPorCategoriaPodcast('Produtividade & Estudo')">💡 Produtividade & Estudo</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Programas Oficiais / Shows Grid -->
-    <section class="container">
+    <!-- Programas Planejados / Prévia -->
+    <section class="container" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
       <h3 class="section-title-icon" style="margin: 1.5rem 0 1rem; font-size: 1.35rem; font-weight: 700; color: var(--text);">
-        🎙️ <span>Programas & Séries Oficiais</span>
+        🎙️ <span>Programas em Produção & Roteirização</span>
       </h3>
-      <div id="podcasts-grid" class="podcasts-grid">
-        <div class="loading">Carregando programas de podcast...</div>
-      </div>
-    </section>
+      <div class="podcasts-grid">
+        <article class="podcast-card">
+          <div class="podcast-cover-box">
+            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80" alt="Lino Conversa" class="podcast-cover-img" loading="lazy">
+            <span class="podcast-category-badge">🎓 Educação & Diálogos</span>
+          </div>
+          <div class="podcast-body">
+            <h4 class="podcast-card-title">Lino Conversa: Vozes de Angola e Educação Aberta</h4>
+            <p class="podcast-card-desc">Entrevistas e reflexões com professores, estudantes e inovadores sobre a democratização do conhecimento e o impacto da leitura livre em África.</p>
+            <div class="podcast-meta-row">
+              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
+              <span>📻 Spotify for Creators</span>
+            </div>
+          </div>
+        </article>
 
-    <!-- Lista de Episódios Recentes -->
-    <section class="container" id="secao-episodios-recentes" style="margin-top: 2.5rem; margin-bottom: 2rem;">
-      <h3 class="section-title-icon" style="margin-bottom: 1rem; font-size: 1.35rem; font-weight: 700; color: var(--text);">
-        ⚡ <span>Episódios Recentes Disponíveis</span>
-      </h3>
-      <div id="episodios-recentes-container" class="episodios-list-container">
-        <div class="loading">Carregando episódios recentes...</div>
+        <article class="podcast-card">
+          <div class="podcast-cover-box">
+            <img src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&auto=format&fit=crop&q=80" alt="Livro da Semana" class="podcast-cover-img" loading="lazy">
+            <span class="podcast-category-badge">📖 Literatura & Crítica</span>
+          </div>
+          <div class="podcast-body">
+            <h4 class="podcast-card-title">Livro da Semana: Resenhas & Clássicos em Áudio</h4>
+            <p class="podcast-card-desc">Apresentações acessíveis e resumos falados das maiores obras literárias angolanas, africanas e universais catalogadas na biblioteca.</p>
+            <div class="podcast-meta-row">
+              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
+              <span>📻 Spotify for Creators</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="podcast-card">
+          <div class="podcast-cover-box">
+            <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80" alt="Histórias ao Luar" class="podcast-cover-img" loading="lazy">
+            <span class="podcast-category-badge">🌍 Contos & Tradição Oral</span>
+          </div>
+          <div class="podcast-body">
+            <h4 class="podcast-card-title">Histórias ao Luar: Contos & Mitos Africanos</h4>
+            <p class="podcast-card-desc">Leituras dramatizadas e narrativas de fábulas bantas, contos populares de Angola e lendas ancestrais gravadas para toda a comunidade.</p>
+            <div class="podcast-meta-row">
+              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
+              <span>📻 Spotify for Creators</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="podcast-card">
+          <div class="podcast-cover-box">
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80" alt="Dica Rápida" class="podcast-cover-img" loading="lazy">
+            <span class="podcast-category-badge">💡 Produtividade & Estudo</span>
+          </div>
+          <div class="podcast-body">
+            <h4 class="podcast-card-title">Dica Rápida em Áudio: Estudos, Foco & Produtividade</h4>
+            <p class="podcast-card-desc">Cápsulas práticas de áudio de 3 a 5 minutos com técnicas comprovadas de leitura rápida, memorização e preparação para exames escolares.</p>
+            <div class="podcast-meta-row">
+              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
+              <span>📻 Spotify for Creators</span>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
   </div>

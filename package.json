@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/server.js",
     "seed": "node src/database/seed.js",
-    "test": "node --test test/**/*.test.js"
+    "test": "node --test test/**/*.test.js",
+    "livros": "node scripts/gerenciar_livros.js",
+    "livros:csv": "node scripts/gerenciar_livros.js --exportar-csv"
   },
   "keywords": [],
   "author": "",
