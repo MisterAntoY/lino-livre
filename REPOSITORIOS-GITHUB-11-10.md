@@ -44,12 +44,19 @@ Nenhum destes hospeda ficheiros: são listas de ligações oficiais, ou seja, cu
 | `progit/progit2-fr` | FR | Oficial Git | CC BY-NC-SA 3.0 | Livro oficial Pro Git (2ª edição) em Francês completo |
 | `javascript-tutorial/fr.javascript.info` | FR | 3.5k★ | CC BY-NC-SA 4.0 | O tutorial/livro completo de JavaScript moderno em Francês |
 | `jimskapt/rust-book-fr` | FR | 120★ | CC-BY / MIT | Livro oficial de Rust traduzido para Francês |
+| `Grafikart` & `Dyma` | FR | Comunidade | Aberto / Web | Desenvolvimento Web moderno, PHP 8, Vue.js, TypeScript e Arquitetura |
+| `SecNumacadémie (ANSSI)` | FR | Governo Francês | Aberto / Oficial | Guia e formação oficial de cibersegurança e segurança em redes |
+| `Framasoft` (`degooglisons-internet.org`) | FR | Aberto / CHATONS | Aberto / CC | Soberania de dados, privacidade e serviços de software livre |
 | `websealevel/awesome-fr` & `alexisLefebvre/awesome-french` | FR | Comunidade | Aberto / MIT | Guias, plataformas educativas, iniciativas tech e ferramentas em Francês |
 | `french-ai/french-nlp` | FR | Comunidade | Aberto | Processamento de linguagem natural, CamemBERT e IA francófona |
 | `QuantEcon/lecture-python-programming.fr` | FR | QuantEcon | CC BY-SA 4.0 | Computação quantitativa, científica e dados com Python em Francês |
-| `inria` & Gérard Swinnen (`inforef.be`) | FR | Aberto / Univ | CC BY-NC-SA | *Apprendre à programmer avec Python 3*, *Algorithmique* (M. Quercia) |
+| `inria` & Gérard Swinnen (`inforef.be`) | FR | Aberto / Univ | CC BY-NC-SA | *Apprendre à programmer avec Python 3*, *Introduction à la Science Informatique* (G. Dowek) |
 | `EbookFoundation/free-programming-books` (`books-de.md`, `courses-de.md`) | DE | 398k★ | CC-BY-4.0 | Obras em Alemão: Python, C/C++, Java, Shell, Linux, ABAP, R |
-| `Rheinwerk Openbook` (Galileo Computing) | DE | Oficial | Aberto para leitura online | *Linux: Das umfassende Handbuch*, *Python 3*, *Java ist auch eine Insel*, *C von A bis Z*, *Shell-Programmierung* |
+| `Rheinwerk Openbook` (Galileo Computing) | DE | Oficial | Aberto para leitura online | *Linux: Das umfassende Handbuch*, *Python 3*, *Java ist auch uma Insel*, *C von A bis Z*, *Shell-Programmierung* |
+| `Chaos Computer Club (CCC)` | DE | Associação Hacker | Aberto / Livre | IT-Sicherheitsleitfäden, criptografia, privacidade e direitos digitais |
+| `BundesAPI` | DE | Open Government | Aberto / MIT | APIs abertas e desenvolvimento de software cívico na Alemanha |
+| `openHPI` (Hasso-Plattner-Institut) | DE | Universitário | Aberto / Univ | Inteligência Artificial, Engenharia de Software e Tecnologias Web |
+| `Cryptomator` (Skymatic) | DE | Open Source | Aberto / GPL | Segurança de dados na nuvem e criptografia ponta a ponta |
 | `progit/progit2-de` | DE | Oficial Git | CC BY-NC-SA 3.0 | Livro oficial Pro Git (2. Auflage) em Alemão completo |
 | `SAP/styleguides` (`CleanABAP_de.md`) | DE | SAP Oficial | CC-BY-4.0 | Guia oficial SAP de Clean Code e arquitetura para ABAP |
 | `opentechschool/python-beginners` | DE | OpenTechSchool | CC BY-SA 3.0 | Introdução prática à programação com Python em Alemão |

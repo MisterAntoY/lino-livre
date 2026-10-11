@@ -19,7 +19,7 @@ const githubDeBooks = [
     "paginas": 0,
     "licenca": "outro",
     "sinopse": "Umfassende Sammlung frei verfügbarer Fachbücher und Anleitungen zur Programmierung in deutscher Sprache. Behandelt: Python, Linux, Java, C/C++, Go, Rust, Webentwicklung, Shell-Scripting, Datenbanken, Software-Architektur und mehr.",
-    "capaUrl": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/books/free-programming-books-de.md",
+    "capaUrl": "/capas/tech/tech_359.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/EbookFoundation/free-programming-books/blob/main/books/free-programming-books-de.md" },
@@ -37,7 +37,7 @@ const githubDeBooks = [
     "paginas": 0,
     "licenca": "outro",
     "sinopse": "Kuratierte Liste kostenloser deutschsprachiger Online-Kurse, Tutorials und MOOCs zu Informatik, Data Science, Web-Entwicklung und Cloud Computing von Institutionen wie openHPI, Universitäten und Open-Source-Gemeinschaften.",
-    "capaUrl": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/courses/free-courses-de.md",
+    "capaUrl": "/capas/tech/tech_360.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/EbookFoundation/free-programming-books/blob/main/courses/free-courses-de.md" }
@@ -56,7 +56,7 @@ const githubDeBooks = [
     "paginas": 520,
     "licenca": "outro",
     "sinopse": "Vollständige deutsche Übersetzung des offiziellen Standardwerks Pro Git. Detaillierte Erläuterung von Branching-Strategien, Interna, Remote-Repositories, Hooks, Rebase und Team-Workflows unter Creative Commons CC BY-NC-SA 3.0.",
-    "capaUrl": "https://git-scm.com/images/progit2.png",
+    "capaUrl": "/capas/tech/tech_361.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://git-scm.com/book/de/v2" },
@@ -74,7 +74,7 @@ const githubDeBooks = [
     "paginas": 120,
     "licenca": "outro",
     "sinopse": "Deutsche Übersetzung des renommierten Curriculums TeachYourselfCS. Neun Kernbereiche eines vollwertigen Informatikstudiums: Programmierung, Rechnerarchitektur, Algorithmen, Mathematik, Betriebssysteme, Netzwerke, Datenbanken, Compiler und verteilte Systeme.",
-    "capaUrl": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/books/free-programming-books-de.md",
+    "capaUrl": "/capas/tech/tech_362.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/AhmedOmran0/TeachYourselfCS-DE" },
@@ -94,7 +94,7 @@ const githubDeBooks = [
     "paginas": 580,
     "licenca": "outro",
     "sinopse": "Offizielle deutsche Übersetzung des Referenzbuchs 'The Rust Programming Language'. Behandelt Ownership, Borrowing, Lifetimes, Pattern Matching, Concurrency ohne Datenwettläufe, Fehlerbehandlung und Cargo.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Rust_programming_language_black_logo.svg",
+    "capaUrl": "/capas/tech/tech_363.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://rust-lang-de.github.io/rustbook-de/" },
@@ -112,7 +112,7 @@ const githubDeBooks = [
     "paginas": 240,
     "licenca": "cc-by-sa",
     "sinopse": "Universitärer Kurs und Vorlesungsbegleitmaterial der Universität Osnabrück zur hardwarenahen und sicheren Systemprogrammierung mit Rust. Enthält praktische Aufgaben, Idiome und Code-Beispiele.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Rust_programming_language_black_logo.svg",
+    "capaUrl": "/capas/tech/tech_364.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/LukasKalbertodt/programmieren-in-rust" }
@@ -131,7 +131,7 @@ const githubDeBooks = [
     "paginas": 1240,
     "licenca": "outro",
     "sinopse": "Das deutsche Standardwerk zu Linux: Grundlagen, Systemadministration, Kernel, Shell-Arbeit, Netzwerkdienste (Apache, Nginx, SSH, Samba), Sicherheit, Automatisierung und Troubleshooting für professionelle Admins und Entwickler.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg",
+    "capaUrl": "/capas/tech/tech_365.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://openbook.rheinwerk-verlag.de/linux/" }
@@ -148,7 +148,7 @@ const githubDeBooks = [
     "paginas": 800,
     "licenca": "outro",
     "sinopse": "Praktischer Leitfaden für die Shell-Programmierung unter Linux, Unix und macOS. Deckt Variablen, Kontrollstrukturen, Reguläre Ausdrücke, sed, awk, Automatisierungsskripte und Prozessverwaltung ab.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Bash_Logo_Colored.svg",
+    "capaUrl": "/capas/tech/tech_366.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://openbook.rheinwerk-verlag.de/shell_programmierung/" }
@@ -165,7 +165,7 @@ const githubDeBooks = [
     "paginas": 750,
     "licenca": "outro",
     "sinopse": "Ausführliches deutschsprachiges Referenz- und Benutzerhandbuch zu Debian GNU/Linux. Paketverwaltung mit APT/dpkg, Systemstart (systemd), Speicherverwaltung, Netzwerkkonfiguration und Serverdienste.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Debian-OpenLogo.svg",
+    "capaUrl": "/capas/tech/tech_367.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://debiananwenderhandbuch.de" }
@@ -184,7 +184,7 @@ const githubDeBooks = [
     "paginas": 1050,
     "licenca": "outro",
     "sinopse": "Das umfassende Standardwerk zu Python 3: Sprachgrundlagen, Objektorientierung, funktionale Aspekte, Ausnahmebehandlung, Standardbibliothek, Modularisierung, GUI-Programmierung und Webentwicklung.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+    "capaUrl": "/capas/tech/tech_368.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://openbook.rheinwerk-verlag.de/python/" }
@@ -201,7 +201,7 @@ const githubDeBooks = [
     "paginas": 160,
     "licenca": "cc-by-sa",
     "sinopse": "Eine der weltweit beliebtesten Einführungen in die Programmiersprache Python, ins Deutsche übersetzt. Ideal für Einsteiger und Umsteiger mit klaren Beispielen, Datenstrukturen und OOP-Konzepten.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+    "capaUrl": "/capas/tech/tech_369.svg",
     "leituras": 0,
     "links": [
       { "formato": "pdf", "url": "https://sourceforge.net/projects/abop-german.berlios/files/abop-german-1.92.pdf/download" },
@@ -219,7 +219,7 @@ const githubDeBooks = [
     "paginas": 120,
     "licenca": "outro",
     "sinopse": "Interaktiver und anfängerfreundlicher Programmierkurs der gemeinnützigen Organisation OpenTechSchool. Schritt-für-Schritt-Übungen von ersten Skripten bis zu Turtle Graphics und kleinen Spielen.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+    "capaUrl": "/capas/tech/tech_370.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "http://opentechschool.github.io/python-beginners/de" },
@@ -237,7 +237,7 @@ const githubDeBooks = [
     "paginas": 280,
     "licenca": "cc-by-sa",
     "sinopse": "Praxisorientiertes Lehrbuch für Datenanalyse und Statistik mit R und dem Tidyverse. Behandelt Datenbereinigung, ggplot2-Visualisierung, statistische Tests, Regressionsmodelle und Reproduzierbarkeit.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
+    "capaUrl": "/capas/tech/tech_371.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://methodenlehre.github.io/einfuehrung-in-R/" },
@@ -255,7 +255,7 @@ const githubDeBooks = [
     "paginas": 340,
     "licenca": "cc-by-sa",
     "sinopse": "Offenes Buch zur professionellen Desktop-Anwendungsentwicklung mit Python, Qt5/Qt6, PyQt und PySide. Signal-Slot-Mechanismus, Layout-Management, Model-View-Architektur und Cross-Platform-Distribution.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Qt_logo_2016.svg",
+    "capaUrl": "/capas/tech/tech_372.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/pbouda/pyqt-und-pyside-buch" },
@@ -275,7 +275,7 @@ const githubDeBooks = [
     "paginas": 1400,
     "licenca": "outro",
     "sinopse": "Das bekannteste und meistgelesene deutsche Fachbuch für Java-Entwickler: Von den Grundlagen über Objektorientierung, Generics, Lambdas & Streams bis hin zur Java Class Library, Concurrency und Clean Code.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/de/e/e1/Java-Logo.svg",
+    "capaUrl": "/capas/tech/tech_373.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://openbook.rheinwerk-verlag.de/javainsel/" }
@@ -292,7 +292,7 @@ const githubDeBooks = [
     "paginas": 1190,
     "licenca": "outro",
     "sinopse": "Klassisches Referenzwerk für die Sprache C (ANSI C): Zeigerarithmetik, Speicherverwaltung (malloc/free), Datenstrukturen, Dateizugriff, hardwarenahe Programmierung und Portabilität.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg",
+    "capaUrl": "/capas/tech/tech_374.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://openbook.rheinwerk-verlag.de/c_von_a_bis_z/" }
@@ -309,7 +309,7 @@ const githubDeBooks = [
     "paginas": 310,
     "licenca": "cc-by-sa",
     "sinopse": "Umfangreiches freies Wikibook zur Programmiersprache C: Syntax, Datentypen, Kontrollstrukturen, Funktionen, Präprozessor, dynamische Speicherverwaltung und Programmierstil.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg",
+    "capaUrl": "/capas/tech/tech_375.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://de.wikibooks.org/wiki/C-Programmierung" }
@@ -326,7 +326,7 @@ const githubDeBooks = [
     "paginas": 420,
     "licenca": "cc-by-sa",
     "sinopse": "Freies Lehrbuch zu modernen C++-Konzepten: Klassen, Vererbung, Polymorphie, Templates, Standard Template Library (STL), Smart Pointer und Ausnahmebehandlung.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg",
+    "capaUrl": "/capas/tech/tech_376.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://de.wikibooks.org/wiki/C%2B%2B-Programmierung" }
@@ -343,7 +343,7 @@ const githubDeBooks = [
     "paginas": 90,
     "licenca": "outro",
     "sinopse": "Prägnante und praxisnahe Einführung in Googles Sprache Go (Golang). Behandelt Typensystem, Interfaces, Goroutines, Channels, Fehlerbehandlung und Best Practices.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg",
+    "capaUrl": "/capas/tech/tech_377.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/Aaronmacaron/the-little-go-book-de" },
@@ -363,7 +363,7 @@ const githubDeBooks = [
     "paginas": 850,
     "licenca": "cc-by-sa",
     "sinopse": "Die renommierteste und älteste deutschsprachige Dokumentation für Webstandards. Behandelt semantisches HTML5, CSS3-Layouts (Flexbox, Grid), responsives Design, Barrierefreiheit (a11y) und clientseitiges JavaScript.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg",
+    "capaUrl": "/capas/tech/tech_378.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://wiki.selfhtml.org/wiki/Startseite" }
@@ -380,7 +380,7 @@ const githubDeBooks = [
     "paginas": 1300,
     "licenca": "outro",
     "sinopse": "Das Standard-Nachschlagewerk für IT-Berufe und Fachinformatiker: Hardware, Betriebssysteme, Netzwerke (TCP/IP, Routing, DNS), relationale Datenbanken, Software-Engineering, IT-Sicherheit und Datenschutz.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg",
+    "capaUrl": "/capas/tech/tech_379.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://openbook.rheinwerk-verlag.de/it_handbuch/" }
@@ -397,7 +397,7 @@ const githubDeBooks = [
     "paginas": 210,
     "licenca": "outro",
     "sinopse": "Leitfaden für pragmatisches und effizientes Testen von C++-Software. Unit-Tests mit Google Test und Catch2, Mocking, testgetriebene Entwicklung (TDD) und kontinuierliche Qualitätsprüfung.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg",
+    "capaUrl": "/capas/tech/tech_380.svg",
     "leituras": 0,
     "links": [
       { "formato": "pdf", "url": "https://www.assets.dpunkt.de/openbooks/Openbook_Lean_Testing.pdf" }
@@ -414,7 +414,7 @@ const githubDeBooks = [
     "paginas": 150,
     "licenca": "outro",
     "sinopse": "Offizieller Leitfaden von SAP SE für sauberen, wartbaren und testbaren ABAP-Code. Umfasst Namenskonventionen, Strukturierung, Fehlerbehandlung, Komponententests und Refactoring-Muster für Unternehmensanwendungen.",
-    "capaUrl": "https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg",
+    "capaUrl": "/capas/tech/tech_381.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/SAP/styleguides/blob/master/clean-abap/CleanABAP_de.md" }
@@ -431,11 +431,99 @@ const githubDeBooks = [
     "paginas": 0,
     "licenca": "outro",
     "sinopse": "Kuratierte Sammlung von Open-Source-Initiativen, Podcasts (Freak Show, CRE, Logbuch:Netzpolitik), Konferenzen (Chaos Communication Congress - CCC, FOSDEM, FrOSCon), Communities und staatlichen Open-Data-Projekten im deutschsprachigen Raum.",
-    "capaUrl": "https://raw.githubusercontent.com/sindresorhus/awesome/main/media/logo.png",
+    "capaUrl": "/capas/tech/tech_382.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/topics/german" },
       { "formato": "html", "url": "https://media.ccc.de/" }
+    ]
+  },
+  {
+    "titulo": "Chaos Computer Club: IT-Sicherheitsleitfäden & Hackerbibel",
+    "subtitulo": "Chaos Computer Club e.V. (CCC)",
+    "autor": "Chaos Computer Club (CCC)",
+    "categoria": "DevOps, Cloud & Infraestrutura",
+    "fonteSlug": "github-awesome-de",
+    "fonteIdExterno": "ccc-security-de",
+    "ano": 2024,
+    "paginas": 310,
+    "licenca": "outro",
+    "sinopse": "Dokumentationen, Sicherheitsanalysen und Leitfäden des größten europäischen Hacker-Vereins: angewandte Kryptographie, Netzwerksicherheit, Datenschutz, Privatsphäre, Open-Source-Audits und digitale Bürgerrechte.",
+    "capaUrl": "/capas/tech/tech_383.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://www.ccc.de/" },
+      { "formato": "html", "url": "https://media.ccc.de/" }
+    ]
+  },
+  {
+    "titulo": "BundesAPI: Offene Schnittstellen & Entwickler-Ökosystem",
+    "subtitulo": "BundesAPI Open-Source-Initiative",
+    "autor": "BundesAPI Community",
+    "categoria": "Tecnologia & Guias Digitais",
+    "fonteSlug": "github-awesome-de",
+    "fonteIdExterno": "bundesapi-de",
+    "ano": 2024,
+    "paginas": 180,
+    "licenca": "outro",
+    "sinopse": "Open-Source-Dokumentationen und SDKs für offizielle deutsche Programmierschnittstellen: GovData, Wetterdienst, Bundestag, Umweltbundesamt, Mobilitätsdaten und Open-Data-Standards der Bundesrepublik Deutschland.",
+    "capaUrl": "/capas/tech/tech_384.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://bundesapi.de/" },
+      { "formato": "html", "url": "https://github.com/bundesAPI" }
+    ]
+  },
+  {
+    "titulo": "Künstliche Intelligenz und Maschinelles Lernen im Alltag",
+    "subtitulo": "openHPI / Hasso-Plattner-Institut Potsdam",
+    "autor": "Prof. Dr. Christoph Meinel / openHPI",
+    "categoria": "Ciência de Dados & Inteligência Artificial",
+    "fonteSlug": "github-freebooks-de",
+    "fonteIdExterno": "openhpi-ki-de",
+    "ano": 2023,
+    "paginas": 290,
+    "licenca": "outro",
+    "sinopse": "Wissenschaftlich fundierter und freier Leitfaden des Hasso-Plattner-Instituts zu KI: Neuronale Netze, Deep Learning, Transformer-Architekturen, Datenethik, Bias-Vermeidung und industrielle Anwendungsfälle.",
+    "capaUrl": "/capas/tech/tech_385.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://open.hpi.de/courses" }
+    ]
+  },
+  {
+    "titulo": "Moderne Webentwicklung mit JavaScript, HTML & CSS auf Deutsch",
+    "subtitulo": "LerneProgrammieren Open Guide",
+    "autor": "LerneProgrammieren & Community",
+    "categoria": "Desenvolvimento Web & Mobile",
+    "fonteSlug": "github-awesome-de",
+    "fonteIdExterno": "moderne-webentwicklung-de",
+    "ano": 2024,
+    "paginas": 240,
+    "licenca": "outro",
+    "sinopse": "Schritt-für-Schritt-Anleitung für zeitgemäße Frontend-Entwicklung: semantisches HTML5, CSS Flexbox & Grid, modernes JavaScript (ES6+), DOM-Manipulation, REST-APIs und Responsive Design.",
+    "capaUrl": "/capas/tech/tech_386.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://github.com/topics/german" }
+    ]
+  },
+  {
+    "titulo": "Cryptomator: IT-Sicherheit & Cloud-Verschlüsselung",
+    "subtitulo": "Skymatic / Open Source Security",
+    "autor": "Cryptomator Team / Skymatic",
+    "categoria": "DevOps, Cloud & Infraestrutura",
+    "fonteSlug": "github-awesome-de",
+    "fonteIdExterno": "cryptomator-security-de",
+    "ano": 2024,
+    "paginas": 190,
+    "licenca": "outro",
+    "sinopse": "Architektur und Sicherheitsdokumentation für clientseitige Ende-zu-Ende-Verschlüsselung in Cloud-Speichern: AES-256-GCM, Scrypt-Key-Derivation, Zero-Knowledge-Prinzip und kryptographische Audits.",
+    "capaUrl": "/capas/tech/tech_387.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://cryptomator.org/architecture/" },
+      { "formato": "html", "url": "https://github.com/cryptomator/cryptomator" }
     ]
   }
 ];

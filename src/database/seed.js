@@ -1,16 +1,20 @@
 const { getDatabase } = require('./index');
 const { cursosData } = require('./cursosSeedData');
 const { githubBooks } = require('./githubBooksSeedData');
-const { githubZhBooks } = require('./githubZhBooksSeedData');
 const { githubFrBooks } = require('./githubFrBooksSeedData');
-const { githubDeBooks } = require('./githubDeBooksSeedData');
 const { githubEnBooks } = require('./githubEnBooksSeedData');
+const { githubZhBooks } = require('./githubZhBooksSeedData');
+const { githubDeBooks } = require('./githubDeBooksSeedData');
+const { filosofiaBooks } = require('./filosofiaSeedData');
+const { literaturaAlema } = require('./literaturaAlemaSeedData');
 const { romanceClassics } = require('./romanceClassicsSeedData');
+const { worldClassicsList } = require('./worldClassicsSeedData');
 const { dioBootcampsList } = require('./dioBootcampsData');
 const { santanderAcademyList } = require('./santanderAcademyData');
 const { cursoEmVideoList } = require('./cursoEmVideoData');
 const { dsaCoursesList } = require('./dsaCoursesData');
 const { germanCoursesList } = require('./germanCoursesData');
+const { frenchCoursesList } = require('./frenchCoursesData');
 const { novasPlataformasCursos } = require('./novasPlataformasData');
 const { livrosAfricaData } = require('./livrosAfricaData');
 const { roadmapShList } = require('./roadmapShData');
@@ -77,11 +81,16 @@ function seed(dbInstance = null) {
   // Novas fontes GitHub em Inglês (apenas metadados + links externos)
   const fFreeBooksEn = insertFonte.run('github-freebooks-en', 'Free Programming Books EN (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
   const fAwesomeEn = insertFonte.run('github-awesome-en', 'Awesome Lists English (GitHub)', 'manual', 'https://github.com/sindresorhus/awesome', 1).lastInsertRowid;
-  // Novas fontes GitHub e Openbooks em Alemão (apenas metadados + links externos)
+  // Novas fontes GitHub em Alemão (apenas metadados + links externos)
   const fFreeBooksDe = insertFonte.run('github-freebooks-de', 'Free Programming Books DE (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
   const fAwesomeDe = insertFonte.run('github-awesome-de', 'Awesome Lists German (GitHub)', 'manual', 'https://github.com/topics/german', 1).lastInsertRowid;
   const fRheinwerk = insertFonte.run('rheinwerk-openbook', 'Rheinwerk Openbooks (Galileo Computing)', 'manual', 'http://openbook.rheinwerk-verlag.de', 1).lastInsertRowid;
+  const fGithubDe = insertFonte.run('github-de', 'Open Source Alemão no GitHub', 'manual', 'https://github.com/topics/deutsch', 1).lastInsertRowid;
+  const fLiteraturaDe = insertFonte.run('github-literatura-de', 'Literatura Alemã no GitHub (GITenberg / tiny_schiller)', 'manual', 'https://github.com/topics/deutsch', 1).lastInsertRowid;
   const fWikibooksDe = insertFonte.run('wikibooks-de', 'Wikibooks Deutsch', 'manual', 'https://de.wikibooks.org', 1).lastInsertRowid;
+  // Fontes de Filosofia (apenas metadados + links externos)
+  const fFilosofia = insertFonte.run('github-filosofia', 'Filosofia no GitHub (Listas, Cursos e Ferramentas)', 'manual', 'https://github.com/topics/philosophy', 1).lastInsertRowid;
+  const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'manual', 'https://www.standardebooks.org', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -511,7 +520,10 @@ function seed(dbInstance = null) {
     'DevOps, Cloud & Infraestrutura': catDevOps,
     'Ciência de Dados & Inteligência Artificial': catData,
     'Metodologias Ágeis & Carreira Tech': catAgil,
-    'Tecnologia & Guias Digitais': catTecnologia
+    'Tecnologia & Guias Digitais': catTecnologia,
+    'Romance & Crônicas': catRomance,
+    'Teatro & Poesia': catPoesia,
+    'Apoio Pedagógico & Filosofia': catDidaticos
   };
 
   const fonteMap = {
@@ -533,7 +545,11 @@ function seed(dbInstance = null) {
     'github-freebooks-de': fFreeBooksDe,
     'github-awesome-de': fAwesomeDe,
     'rheinwerk-openbook': fRheinwerk,
-    'wikibooks-de': fWikibooksDe
+    'wikibooks-de': fWikibooksDe,
+    'github-de': fGithubDe,
+    'github-literatura-de': fLiteraturaDe,
+    'github-filosofia': fFilosofia,
+    'standardebooks': fStandardEbooks
   };
 
   for (const b of githubBooks) {
@@ -802,6 +818,146 @@ function seed(dbInstance = null) {
     }
   }
 
+  // Inserir Os 100 Livros Mais Lidos e Vendidos da História (+ 5 Obras Históricas)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of worldClassicsList) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Literatura Mundial / Universal', 'Autor consagrado no cânone da literatura e circulação mundial.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || (b.categoria === 'Apoio Pedagógico & Filosofia' ? catDidaticos : catRomance);
+    const fId = fonteMap[b.fonteSlug] || fGutenberg;
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano,
+      b.idioma || 'pt',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 300,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      b.licenca || 'outro',
+      0,
+      '' // ZERO conteúdo local - estritamente intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Filosofia no GitHub (Listas, Cursos, Ferramentas e Obras Clássicas)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of filosofiaBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Internacional / Comunidade', 'Autor ou organizador de recursos filosóficos abertos.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catDidaticos;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'outro';
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2020,
+      b.idioma || 'en',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 200,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      b.leituras || 0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Literatura Alemã (Project Gutenberg / GITenberg + tiny_schiller)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of literaturaAlema) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Alemã', 'Autor clássico de obras em língua alemã em domínio público.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catDidaticos;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'outro';
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 1900,
+      b.idioma || 'de',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 200,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      b.leituras || 0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
   // Inserir a Coleção Monumental de África (5 idiomas: pt, en, fr, de, zh)
   const catAfricaMap = {
     '🌍 Literatura & Vozes de África': catAfricaLit,
@@ -898,6 +1054,11 @@ function seed(dbInstance = null) {
   // Cursos e Tutoriais Gratuitos em Alemão (openHPI, Microsoft Learn DE, YouTube, Red Hat)
   for (const g of germanCoursesList) {
     insertCurso.run(g.titulo, g.tipo || 'curso', g.area, g.plataforma, g.url, g.licenca, g.nivel, g.descricao);
+  }
+
+  // Cursos e Tutoriais Gratuitos em Francês (FUN-MOOC, Inria, ANSSI, OpenClassrooms, Elements of AI)
+  for (const fr of frenchCoursesList) {
+    insertCurso.run(fr.titulo, fr.tipo || 'curso', fr.area, fr.plataforma, fr.url, fr.licenca, fr.nivel, fr.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

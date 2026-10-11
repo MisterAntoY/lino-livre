@@ -291,7 +291,7 @@ const filosofiaBooks = [
     "idioma": "de",
     "licenca": "outro",
     "sinopse": "Coleção de artigos e ensaios de filosofia integralmente em alemão — um dos raros repositórios do GitHub com produção filosófica contemporânea em língua alemã.",
-    "capaUrl": null,
+    "capaUrl": "/capas/tech/tech_482.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/Knusperhase/philosophy" }
@@ -309,7 +309,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "outro",
     "sinopse": "Resumo breve e acessível da Crítica da Razão Pura de Kant, escrito para linguistas: categorias, intuições puras e a distinção entre entendimento e sensibilidade, ligando epistemologia kantiana e teoria da linguagem.",
-    "capaUrl": null,
+    "capaUrl": "/capas/tech/tech_483.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/free-variation/kant-for-linguists" }
@@ -385,10 +385,10 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "dominio-publico",
     "sinopse": "Introdução breve e célebre de Bertrand Russell aos problemas centrais da filosofia: conhecimento sensível, idealismo, verdade e falsidade, indução e limites do conhecimento. Edição digital de alta qualidade da Standard Ebooks (dedicação CC0).",
-    "capaUrl": "https://www.standardebooks.org/images/opengraph?path=bertrand-russell%2Fthe-problems-of-philosophy",
+    "capaUrl": "https://standardebooks.org/ebooks/bertrand-russell/the-problems-of-philosophy/downloads/cover.jpg",
     "leituras": 0,
     "links": [
-      { "formato": "html", "url": "https://www.standardebooks.org/ebooks/bertrand-russell/the-problems-of-philosophy" }
+      { "formato": "html", "url": "https://standardebooks.org/ebooks/bertrand-russell/the-problems-of-philosophy" }
     ]
   },
   {
@@ -403,7 +403,7 @@ const filosofiaBooks = [
     "idioma": "en",
     "licenca": "dominio-publico",
     "sinopse": "Um dos textos mais lidos do primeiro milénio: o prisioneiro Boécio dialoga com a personificação da Filosofia sobre fortuna, providência, liberdade e o bem verdadeiro. Ponte entre a filosofia antiga e a Idade Média.",
-    "capaUrl": "https://www.standardebooks.org/images/opengraph?path=boethius%2Fthe-consolation-of-philosophy%2Fh-r-james",
+    "capaUrl": "https://standardebooks.org/ebooks/boethius/the-consolation-of-philosophy/h-r-james/downloads/cover.jpg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://www.standardebooks.org/ebooks/boethius/the-consolation-of-philosophy/h-r-james" }

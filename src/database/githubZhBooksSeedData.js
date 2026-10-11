@@ -16,7 +16,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Índice colaborativo de 500+ livros de programação gratuitos em chinês. Cobrindo Python, Go, Java, JavaScript, Rust, C++, ML/AI, sistemas, bancos de dados, DevOps, segurança e mais. Atualizado continuamente pela comunidade.",
-    "capaUrl": "https://raw.githubusercontent.com/justjavac/free-programming-books-zh_CN/main/free-programming-books-zh.jpg",
+    "capaUrl": "/capas/tech/tech_388.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/justjavac/free-programming-books-zh_CN" },
@@ -33,7 +33,7 @@ const githubZhBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Curadoria pessoal de Ruanyf: livros gratuitos de Web, sistemas, linguagens, bancos de dados, IA, matemática e mais. Maioria em inglês, seção chinesa crescente.",
-    "capaUrl": "https://raw.githubusercontent.com/ruanyf/free-books/main/free-books.png",
+    "capaUrl": "/capas/tech/tech_389.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/ruanyf/free-books" }
@@ -49,7 +49,7 @@ const githubZhBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Livros práticos de curta duração para entrada rápida: tutoriais, guias de ferramentas, artigos técnicos selecionados. Foco em 'aprender fazendo'.",
-    "capaUrl": "https://raw.githubusercontent.com/EZLippi/practical-programming-books/main/cover.png",
+    "capaUrl": "/capas/tech/tech_390.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/EZLippi/practical-programming-books" }
@@ -67,7 +67,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Tradução chinesa curada das listas Awesome oficiais (Python, Go, JS, React, Vue, Node, Java, Rust, ML/AI, etc.). Índice navegável para 200+ categorias técnicas.",
-    "capaUrl": "https://raw.githubusercontent.com/gamedilong/awesome-cn/main/awesome-cn.png",
+    "capaUrl": "/capas/tech/tech_391.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/gamedilong/awesome-cn" }
@@ -83,7 +83,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Framework, bibliotecas, ferramentas, recursos de aprendizado Python — versão chinesa do awesome-python oficial. 25k+ estrelas.",
-    "capaUrl": "https://raw.githubusercontent.com/jobbole/awesome-python-cn/main/awesome-python-cn.png",
+    "capaUrl": "/capas/tech/tech_392.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/jobbole/awesome-python-cn" }
@@ -99,7 +99,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Ecossistema Go: web frameworks, ORM, CLI, microservices, testing, observabilidade. Versão chinesa mantida pela comunidade Jobbole.",
-    "capaUrl": "https://raw.githubusercontent.com/jobbole/awesome-go-cn/main/awesome-go-cn.png",
+    "capaUrl": "/capas/tech/tech_393.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/jobbole/awesome-go-cn" }
@@ -115,7 +115,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Bibliotecas, frameworks, engines, ferramentas, artigos e recursos JS/TS essenciais. Uma das awesome lists mais antigas e respeitadas.",
-    "capaUrl": "https://raw.githubusercontent.com/sorrycc/awesome-javascript/main/logo.png",
+    "capaUrl": "/capas/tech/tech_394.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/sorrycc/awesome-javascript" }
@@ -131,7 +131,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Componentes, hooks, state management, testing, SSR/SSG, UI kits, performance — tudo React. 60k+ stars.",
-    "capaUrl": "https://raw.githubusercontent.com/enaqx/awesome-react/main/awesome-react.png",
+    "capaUrl": "/capas/tech/tech_395.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/enaqx/awesome-react" }
@@ -147,7 +147,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Ecossistema oficial Vue: UI libraries, routers, state, SSR, testing, ferramentas de build, componentes. Mantido pela equipe Vue.",
-    "capaUrl": "https://raw.githubusercontent.com/vuejs/awesome-vue/main/awesome-vue.png",
+    "capaUrl": "/capas/tech/tech_396.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/vuejs/awesome-vue" }
@@ -163,7 +163,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Packages, frameworks, ferramentas, artigos, recursos de learning para Node.js. Curado por Sindre Sorhus (maior contribuidor npm).",
-    "capaUrl": "https://raw.githubusercontent.com/sindresorhus/awesome-nodejs/main/awesome-nodejs.png",
+    "capaUrl": "/capas/tech/tech_397.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/sindresorhus/awesome-nodejs" }
@@ -179,7 +179,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Spring, microservices, build tools, testing, profiling, cloud, bibliotecas core Java. Versão chinesa do awesome-java.",
-    "capaUrl": "https://raw.githubusercontent.com/jobbole/awesome-java-cn/main/awesome-java-cn.png",
+    "capaUrl": "/capas/tech/tech_398.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/jobbole/awesome-java-cn" }
@@ -195,7 +195,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Crates, frameworks, ferramentas, livros, artigos, cursos Rust. Mantido pela Rust Foundation / comunidade não-oficial.",
-    "capaUrl": "https://raw.githubusercontent.com/rust-unofficial/awesome-rust/main/awesome-rust.png",
+    "capaUrl": "/capas/tech/tech_399.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/rust-unofficial/awesome-rust" }
@@ -211,7 +211,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "500+ ferramentas de IA selecionadas para usuários chineses: LLMs, agents, RAG, image/audio/video generation, code assistants, productivity.",
-    "capaUrl": "https://raw.githubusercontent.com/521xueweihan/awesome-ai-tools-zh/main/awesome-ai-tools-zh.png",
+    "capaUrl": "/capas/tech/tech_400.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/521xueweihan/awesome-ai-tools-zh" }
@@ -227,7 +227,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Do zero ao full-stack: front-end, back-end, database, DevOps, deployment, architecture. Projetos práticos passo a passo em chinês.",
-    "capaUrl": "https://raw.githubusercontent.com/frank-lam/fullstack-tutorial/main/cover.png",
+    "capaUrl": "/capas/tech/tech_401.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/frank-lam/fullstack-tutorial" }
@@ -243,7 +243,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Guia definitivo para entrevistas de system design: escalabilidade, cache, sharding, message queues, CAP, consistent hashing, case studies. 250k+ stars.",
-    "capaUrl": "https://raw.githubusercontent.com/donnemartin/system-design-primer/main/images/cover.png",
+    "capaUrl": "/capas/tech/tech_402.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/donnemartin/system-design-primer" },
@@ -260,7 +260,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Notas completas para entrevistas técnicas: redes, OS, DB, Java, Go, Python, C++, algoritmos, system design. 180k+ stars, padrão ouro chinês.",
-    "capaUrl": "https://raw.githubusercontent.com/CyC2018/CS-Notes/main/CS-Notes.png",
+    "capaUrl": "/capas/tech/tech_403.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/CyC2018/CS-Notes" }
@@ -276,7 +276,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Soluções comentadas em chinês para 2000+ problemas LeetCode: arrays, strings, trees, graphs, DP, backtracking, bit manipulation. Pensamento algorítmico explicado.",
-    "capaUrl": "https://raw.githubusercontent.com/azl397985856/leetcode/main/leetcode.png",
+    "capaUrl": "/capas/tech/tech_404.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/azl397985856/leetcode" }
@@ -294,7 +294,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Roteiros visuais interativos de carreira tech: Frontend, Backend, DevOps, React, Node, Go, Java, Python, QA, Security, Data Science, Mobile. Atualizados anualmente.",
-    "capaUrl": "https://raw.githubusercontent.com/kamranahmedse/developer-roadmap/main/public/roadmaps.png",
+    "capaUrl": "/capas/tech/tech_405.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://roadmap.sh" },
@@ -312,7 +312,7 @@ const githubZhBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Mapa de competências técnicas da Tencent: front-end, back-end, mobile, AI, security, architecture, engineering culture. Referência chinesa para crescimento de carreira.",
-    "capaUrl": "https://raw.githubusercontent.com/TeamStuQ/skill-map/main/skill-map.png",
+    "capaUrl": "/capas/tech/tech_406.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/TeamStuQ/skill-map" }
@@ -328,7 +328,7 @@ const githubZhBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Como explorar GitHub eficientemente: awesome lists, trending, topics, search avançado, descoberta de projetos, contribuição open source. Guia prático em chinês.",
-    "capaUrl": "https://raw.githubusercontent.com/phodal/github-roam/main/cover.png",
+    "capaUrl": "/capas/tech/tech_407.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/phodal/github-roam" }
@@ -346,7 +346,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Projetos open source interessantes e de alta qualidade categorizados por 'diversão/utilidade' e não apenas linguagem. Ferramentas CLI, games, utilitários, experiments, arte gerativa.",
-    "capaUrl": "https://raw.githubusercontent.com/Wechat-ggGitHub/Awesome-GitHub-Repo/main/cover.png",
+    "capaUrl": "/capas/tech/tech_408.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/Wechat-ggGitHub/Awesome-GitHub-Repo" }
@@ -362,7 +362,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Recursos curados para as 20 linguagens TIOBE: frameworks, bibliotecas, ferramentas, livros, cursos. Java, C#, Python, C++, JS, Go, Rust, TS, PHP, Swift, Kotlin, Ruby, Scala, R, Lua, Dart, Julia, Elixir, Haskell.",
-    "capaUrl": "https://raw.githubusercontent.com/awesome-code-resources/awesome-code-resources/main/cover.png",
+    "capaUrl": "/capas/tech/tech_409.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/awesome-code-resources/awesome-code-resources" }
@@ -378,7 +378,7 @@ const githubZhBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Recursos práticos de desenvolvimento: iOS demos, CSS tricks, HTML5, design patterns, arquitetura, performance, security, testing, debugging tools.",
-    "capaUrl": "https://raw.githubusercontent.com/lyfeyaj/awesome-resources/main/cover.png",
+    "capaUrl": "/capas/tech/tech_410.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/lyfeyaj/awesome-resources" }

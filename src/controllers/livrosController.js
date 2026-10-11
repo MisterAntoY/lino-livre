@@ -91,10 +91,29 @@ function listar(req, res) {
 
     const livros = db.prepare(selectQuery).all(...params, numLimit, offset);
 
-    // Anexar links para cada livro
-    const getLinksStmt = db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?');
-    for (const livro of livros) {
-      livro.links = getLinksStmt.all(livro.id);
+    // Anexar links para cada livro (otimizado: busca única em vez de N+1 queries)
+    if (livros.length > 0) {
+      const placeholders = livros.map(() => '?').join(',');
+      const links = db.prepare(`
+        SELECT livro_id, id, formato, url, tamanho_bytes, link_externo
+        FROM links_livros
+        WHERE livro_id IN (${placeholders})
+      `).all(...livros.map(l => l.id));
+      
+      const linksPorLivro = {};
+      for (const link of links) {
+        if (!linksPorLivro[link.livro_id]) linksPorLivro[link.livro_id] = [];
+        linksPorLivro[link.livro_id].push({
+          id: link.id,
+          formato: link.formato,
+          url: link.url,
+          tamanho_bytes: link.tamanho_bytes,
+          link_externo: link.link_externo
+        });
+      }
+      for (const livro of livros) {
+        livro.links = linksPorLivro[livro.id] || [];
+      }
     }
 
     res.json({

@@ -16,7 +16,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Índice colaborativo de centenas de livros de programação gratuitos em francês. Cobrindo: Algoritmia, C/C++, Python, Git, Rust, Go, Bash/Shell, Teoria dos Grafos, Linux, Java, JavaScript, PHP, SQL, Docker, Kubernetes, Machine Learning e mais. Atualizado continuamente pela comunidade.",
-    "capaUrl": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/books/free-programming-books-fr.md",
+    "capaUrl": "/capas/tech/tech_331.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/EbookFoundation/free-programming-books/blob/main/books/free-programming-books-fr.md" },
@@ -33,7 +33,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Lista colaborativa de cursos online gratuitos (MOOCs, tutoriais, bootcamps) em francês. Plataformas: Coursera, edX, FUN-MOOC, OpenClassrooms, YouTube, GitHub. Áreas: Web, Data Science, DevOps, Segurança, IA, Mobile, Cloud.",
-    "capaUrl": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/courses/free-courses-fr.md",
+    "capaUrl": "/capas/tech/tech_332.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/EbookFoundation/free-programming-books/blob/main/courses/free-courses-fr.md" }
@@ -49,7 +49,7 @@ const githubFrBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Curadoria de livros e apostilas técnicas em francês e inglês: segurança/hacking, linguagem C, arquitetura de software, desenvolvimento web, computação fundamental. Foco em obras de referência e difícil acesso.",
-    "capaUrl": "https://raw.githubusercontent.com/jasonchampagne/RTFB/main/README.md",
+    "capaUrl": "/capas/tech/tech_333.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/jasonchampagne/RTFB" }
@@ -67,7 +67,7 @@ const githubFrBooks = [
     "ano": 2023,
     "paginas": 500,
     "sinopse": "Tradução oficial completa do livro Pro Git 2ª edição para francês. Código-fonte em AsciiDoc/Markdown, compilado para HTML, EPUB e PDF. Licença Creative Commons CC BY-NC-SA. Cobre Git internamente, workflows, servidores, ferramentas avançadas.",
-    "capaUrl": "https://raw.githubusercontent.com/progit/progit2-fr/main/assets/cover.png",
+    "capaUrl": "/capas/tech/tech_334.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/progit/progit2-fr" },
@@ -84,7 +84,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "O tutorial/livro completo 'JavaScript Moderno' traduzido integralmente para francês. Cobre sintaxe básica até recursos modernos: Promises, async/await, Web APIs, manipulação do DOM, animações, módulos, tooling, TypeScript introdutório. Site interativo com exercícios.",
-    "capaUrl": "https://raw.githubusercontent.com/javascript-tutorial/fr.javascript.info/main/logo.svg",
+    "capaUrl": "/capas/tech/tech_335.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/javascript-tutorial/fr.javascript.info" },
@@ -101,7 +101,7 @@ const githubFrBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Repositório centralizador de cursos, notebooks Jupyter e livros práticos de Python para Data Science e ML em francês. Pandas, NumPy, Matplotlib, Scikit-learn, TensorFlow, PyTorch, visualização, NLP, séries temporais.",
-    "capaUrl": "https://raw.githubusercontent.com/pythondata-fr/ressources/main/cover.png",
+    "capaUrl": "/capas/tech/tech_336.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/pythondata-fr/ressources" }
@@ -119,7 +119,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Lista Awesome mantida pela comunidade com recursos abertos para programadores em francês: documentações, plataformas educativas, tutoriais de web design, frontend, backend, DevOps, ferramentas, design, acessibilidade, performance, Git, CI/CD, APIs públicas, open data, segurança, IA generativa, low-code/no-code, projetos open source. 55+ stars, atualizada regularmente.",
-    "capaUrl": "https://raw.githubusercontent.com/websealevel/awesome-fr/main/img/awesome-fr.png",
+    "capaUrl": "/capas/tech/tech_337.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/websealevel/awesome-fr" }
@@ -135,7 +135,7 @@ const githubFrBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Coletânea focada na promoção de iniciativas francófonas no ecossistema de software, engenharia e TI: startups francesas, comunidades, eventos, podcasts, newsletters, ferramentas desenvolvidas na França, contribuições open source francófonas.",
-    "capaUrl": "https://raw.githubusercontent.com/alexisLefebvre/awesome-french/main/logo.png",
+    "capaUrl": "/capas/tech/tech_338.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/alexisLefebvre/awesome-french" }
@@ -151,7 +151,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Recursos e modelos voltados para NLP e IA em francês: datasets (French Wikipedia, OSCAR, CC100-fr), modelos pré-treinados (CamemBERT, FlauBERT, BERT-base-french), bibliotecas (spaCy-fr, transformers, huggingface), benchmarks, tutoriais, papers, ferramentas de anotação.",
-    "capaUrl": "https://raw.githubusercontent.com/french-ai/french-nlp/main/cover.png",
+    "capaUrl": "/capas/tech/tech_339.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/french-ai/french-nlp" }
@@ -167,7 +167,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Iniciativas e bibliotecas de código aberto do ecossistema público e governamental de tecnologia na França: APIs públicas (api.gouv.fr, data.gouv.fr), componentes UI (DSFR - Design System de l'État), bibliotecas compartilhadas, guios de contribuição, padrões de interoperabilidade, projetos de e-gov open source.",
-    "capaUrl": "https://raw.githubusercontent.com/codegouvfr/awesome-codegouvfr/main/logo.png",
+    "capaUrl": "/capas/tech/tech_340.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/codegouvfr/awesome-codegouvfr" }
@@ -185,7 +185,7 @@ const githubFrBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Manuais estruturados para desenvolvimento em C sob Linux/Ubuntu: CMake, compilação, depuração (GDB, Valgrind), conceitos de sistemas operacionais, programação de sistemas, threads, sinais, sockets, Makefiles avançados. Dois repositórios complementares.",
-    "capaUrl": "https://raw.githubusercontent.com/en-francais/C-Linux/main/cover.png",
+    "capaUrl": "/capas/tech/tech_341.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/en-francais/C-Linux" },
@@ -202,7 +202,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Guia completo da linguagem Go em francês: do básico (variáveis, estruturas, interfaces) até tópicos avançados (concorrência com goroutines/channels, microserviços, gRPC, testes, benchmarking, profiling, deployment, CI/CD, observabilidade, Kubernetes). Exemplos práticos e exercícios.",
-    "capaUrl": "https://raw.githubusercontent.com/NDXDeveloper/go-tutoriel-fr/main/cover.png",
+    "capaUrl": "/capas/tech/tech_342.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/NDXDeveloper/go-tutoriel-fr" }
@@ -218,7 +218,7 @@ const githubFrBooks = [
     "ano": 2023,
     "paginas": 0,
     "sinopse": "Manuais e tutoriais práticos de Python voltados para análise de dados e pesquisa científica: Pandas, NumPy, SciPy, Matplotlib/Seaborn, Jupyter, estatística descritiva, inferencial, visualização, reprodutibilidade, ambientes virtuais, boas práticas de código científico.",
-    "capaUrl": "https://raw.githubusercontent.com/pyshs/ressources-pyshs/main/cover.png",
+    "capaUrl": "/capas/tech/tech_343.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/pyshs/ressources-pyshs" }
@@ -236,7 +236,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Agregação de tutoriais, guias e boas práticas DevOps em francês: Docker (multi-stage, buildkit), Kubernetes (helm, operators, GitOps com ArgoCD/Flux), CI/CD (GitHub Actions, GitLab CI, Jenkins), IaC (Terraform, Pulumi, Ansible), monitoramento (Prometheus, Grafana, Loki), segurança (Trivy, Cosign, Kyverno). Fontes: blogs francófonos, documentações oficiais traduzidas, meetups.",
-    "capaUrl": "https://raw.githubusercontent.com/awesome-devops-fr/awesome-devops-fr/main/logo.png",
+    "capaUrl": "/capas/tech/tech_344.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/awesome-devops-fr/awesome-devops-fr" },
@@ -253,7 +253,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Recursos de cibersegurança em francês: metodologias de pentest (PTES, OSSTMM), plataformas CTF (Root-Me, Hack The Box, TryHackMe writeups FR), ferramentas (Burp Suite, Nmap, Metasploit, BloodHound), hardening Linux/Windows/Cloud, bug bounty methodology, forense digital, análise de malware, criptografia aplicada, conformidade (ANSSI, GDPR, ISO 27001). Comunidades: French Cyber, CTF-FR, HackTheBox FR.",
-    "capaUrl": "https://raw.githubusercontent.com/awesome-cybersec-fr/awesome-cybersec-fr/main/logo.png",
+    "capaUrl": "/capas/tech/tech_345.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/awesome-cybersec-fr/awesome-cybersec-fr" },
@@ -270,7 +270,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Ecossistema Python francófono: awesome-python-fr (jobbole), tutoriais oficiais traduzidos (docs.python.org/fr), projetos open source franceses (Django, FastAPI, Pydantic, Typer, Rich, Textual contribuições FR), comunidades (AFPy, PyCon FR, Python Discord FR), newsletters (Python Weekly FR), podcasts (Les Cast Codeurs), formação data/ML/web.",
-    "capaUrl": "https://raw.githubusercontent.com/jobbole/awesome-python-cn/main/awesome-python-cn.png",
+    "capaUrl": "/capas/tech/tech_346.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/jobbole/awesome-python-cn" },
@@ -288,7 +288,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Tradução completa do 'The Rust Programming Language' (Rust Book) para francês. Cobre ownership, borrowing, lifetimes, traits, generics, pattern matching, error handling, testing, Cargo, crates.io, concorrência (fearless concurrency), async/await, unsafe Rust, FFI. Site interativo com exemplos executáveis.",
-    "capaUrl": "https://raw.githubusercontent.com/jimskapt/rust-book-fr/main/cover.png",
+    "capaUrl": "/capas/tech/tech_347.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/jimskapt/rust-book-fr" },
@@ -305,7 +305,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 0,
     "sinopse": "Recursos de arquitetura de software em francês: Clean Architecture (Uncle Bob), Domain-Driven Design (Vaughn Vernon), Hexagonal Architecture (Alistair Cockburn), Event Sourcing/CQRS, Microserviços, Moduliths, Design Patterns (GoF, Enterprise Patterns), SOLID, GRASP, refatoração, legacy code, testes de arquitetura (ArchUnit). Livros: 'Architecture Logicielle' (Robert C. Martin FR), 'DDD Distilled' FR.",
-    "capaUrl": "https://raw.githubusercontent.com/awesome-software-architecture-fr/awesome-software-architecture-fr/main/logo.png",
+    "capaUrl": "/capas/tech/tech_348.svg",
     "links": [
       { "formato": "html", "url": "https://github.com/awesome-software-architecture-fr/awesome-software-architecture-fr" }
     ]
@@ -320,7 +320,7 @@ const githubFrBooks = [
     "ano": 2022,
     "paginas": 440,
     "sinopse": "O livro clássico mais influente de programação em francês, disponível sob licença Creative Commons. Ensina programação de forma didática com Python 3, algoritmos, interfaces gráficas (Tkinter) e orientação a objetos.",
-    "capaUrl": "https://inforef.be/swi/python/images/logo.png",
+    "capaUrl": "/capas/tech/tech_349.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://inforef.be/swi/python.htm" },
@@ -337,7 +337,7 @@ const githubFrBooks = [
     "ano": 2021,
     "paginas": 430,
     "sinopse": "Manual acadêmico rigoroso e de livre acesso sobre teoria da computação e complexidade algorítmica: máquinas de Turing, classes P, NP, NP-completude, espaço de memória (PSPACE, L, NL), complexidade probabilística e aproximação.",
-    "capaUrl": "https://www.irif.fr/~sperifel/couverture_livre.png",
+    "capaUrl": "/capas/tech/tech_350.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://www.irif.fr/~sperifel/livre_complexite.html" },
@@ -354,7 +354,7 @@ const githubFrBooks = [
     "ano": 2020,
     "paginas": 280,
     "sinopse": "Coleção aberta de algoritmos fundamentais, estruturas de dados clássicas (árvores, grafos, tabelas de hash), ordenação e resolução de problemas matemáticos e computacionais em C e OCaml.",
-    "capaUrl": "https://inria.fr/sites/default/files/inria-logo.png",
+    "capaUrl": "/capas/tech/tech_351.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "http://pauillac.inria.fr/~quercia/cdrom/cours/" }
@@ -370,7 +370,7 @@ const githubFrBooks = [
     "ano": 2024,
     "paginas": 350,
     "sinopse": "Curso aberto e moderno de computação científica em Python traduzido para francês pelo projeto QuantEcon: NumPy, SciPy, álgebra linear numérica, simulações Monte Carlo e dinâmica econômica.",
-    "capaUrl": "https://quantecon.org/assets/img/logo-small.png",
+    "capaUrl": "/capas/tech/tech_352.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://quantecon.github.io/lecture-python-programming.fr/" },
@@ -387,10 +387,94 @@ const githubFrBooks = [
     "ano": 2023,
     "paginas": 180,
     "sinopse": "Introdução aos conceitos basilares de ciência da computação, representação binária da informação, redes de computadores, arquitetura de hardware, noções de sistemas operacionais e lógica de programação.",
-    "capaUrl": "https://raw.githubusercontent.com/j-m-li/intro/main/images/logo.png",
+    "capaUrl": "/capas/tech/tech_353.svg",
     "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/j-m-li/intro" }
+    ]
+  },
+  {
+    "titulo": "Développement Web Moderne avec PHP 8, JavaScript et Vue",
+    "subtitulo": "Grafikart / Guides & Tutoriels Ouverts",
+    "autor": "Jonathan Boyer (Grafikart)",
+    "categoria": "Desenvolvimento Web & Mobile",
+    "fonteSlug": "github-awesome-fr",
+    "fonteIdExterno": "grafikart-web-fr",
+    "ano": 2024,
+    "paginas": 320,
+    "sinopse": "O mais influente acervo aberto de desenvolvimento web na França: arquitetura MVC, PHP 8 moderno, TypeScript, Vue.js, componentização, TailwindCSS, APIs RESTful e segurança em aplicações web.",
+    "capaUrl": "/capas/tech/tech_354.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://grafikart.fr/formations" },
+      { "formato": "html", "url": "https://github.com/Grafikart" }
+    ]
+  },
+  {
+    "titulo": "SecNumacadémie: Guide Officiel de Cybersécurité",
+    "subtitulo": "ANSSI (Agence Nationale de la Sécurité des Systèmes d'Information)",
+    "autor": "ANSSI / République Française",
+    "categoria": "DevOps, Cloud & Infraestrutura",
+    "fonteSlug": "github-awesome-fr",
+    "fonteIdExterno": "secnumacademie-anssi-fr",
+    "ano": 2024,
+    "paginas": 260,
+    "sinopse": "Guia de referência e manual oficial de segurança digital da França: autenticação, proteção de redes, criptografia aplicada, boas práticas em nuvem, detecção de ameaças e resposta a incidentes cibernéticos.",
+    "capaUrl": "/capas/tech/tech_355.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://secnumacademie.gouv.fr/" },
+      { "formato": "html", "url": "https://www.ssi.gouv.fr/guide/" }
+    ]
+  },
+  {
+    "titulo": "Introduction à la Science Informatique: Notions Fondamentales",
+    "subtitulo": "Inria & Association Sillages",
+    "autor": "Gilles Dowek / Inria",
+    "categoria": "Tecnologia & Guias Digitais",
+    "fonteSlug": "github-freebooks-fr",
+    "fonteIdExterno": "inria-dowek-info-fr",
+    "ano": 2022,
+    "paginas": 390,
+    "sinopse": "Obra aberta consagrada da Inria sobre os quatro pilares da computação: algoritmos, linguagens de programação, arquitetura de máquinas computacionais e estruturas de representação de dados.",
+    "capaUrl": "/capas/tech/tech_356.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://sillages.info/cours/introduction-a-la-science-informatique/" },
+      { "formato": "pdf", "url": "https://openclassrooms.com/courses/introduction-a-la-science-informatique" }
+    ]
+  },
+  {
+    "titulo": "JavaScript & TypeScript Moderne: Guide Complet",
+    "subtitulo": "Dyma / Guides Libres de Développement",
+    "autor": "Dyma & Comunidade Web FR",
+    "categoria": "Desenvolvimento Web & Mobile",
+    "fonteSlug": "github-awesome-fr",
+    "fonteIdExterno": "dyma-js-ts-fr",
+    "ano": 2024,
+    "paginas": 290,
+    "sinopse": "Manual prático de JavaScript ES2024 e TypeScript: tipagem estática, interfaces, generics, assincronismo com Promises e Async/Await, Webpack, Vite e consumo de APIs assíncronas.",
+    "capaUrl": "/capas/tech/tech_357.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://dyma.fr/formations" }
+    ]
+  },
+  {
+    "titulo": "Dégooglisons Internet: Guide des Services Libres & Éthiques",
+    "subtitulo": "Framasoft / Collectif CHATONS",
+    "autor": "Framasoft",
+    "categoria": "Tecnologia & Guias Digitais",
+    "fonteSlug": "github-awesome-fr",
+    "fonteIdExterno": "framasoft-degooglisons-fr",
+    "ano": 2023,
+    "paginas": 210,
+    "sinopse": "Guia prático e manifesto de autonomia digital, soberania de dados, serviços autohospedados (Nextcloud, Matrix, Peertube) e ferramentas abertas em substituição aos monopólios tecnológicos.",
+    "capaUrl": "/capas/tech/tech_358.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://degooglisons-internet.org/" },
+      { "formato": "html", "url": "https://framasoft.org/" }
     ]
   }
 ];
