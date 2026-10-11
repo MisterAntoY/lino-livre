@@ -36,6 +36,26 @@
 
 Nenhum destes hospeda ficheiros: são listas de ligações oficiais, ou seja, curadoria pronta a importar para as categorias do site.
 
+### Acervo de Tecnologia em Francês e Alemão (Integrados em 11/10/2026)
+
+| Repositório / Fonte | Idioma | Estrelas / Tipo | Licença | Conteúdo Principal |
+|---|---|---|---|---|
+| `EbookFoundation/free-programming-books` (`books-fr.md`, `courses-fr.md`) | FR | 398k★ | CC-BY-4.0 | Python, Linux, C/C++, OCaml, Web, Algoritmos, Redes e Cursos abertos |
+| `progit/progit2-fr` | FR | Oficial Git | CC BY-NC-SA 3.0 | Livro oficial Pro Git (2ª edição) em Francês completo |
+| `javascript-tutorial/fr.javascript.info` | FR | 3.5k★ | CC BY-NC-SA 4.0 | O tutorial/livro completo de JavaScript moderno em Francês |
+| `jimskapt/rust-book-fr` | FR | 120★ | CC-BY / MIT | Livro oficial de Rust traduzido para Francês |
+| `websealevel/awesome-fr` & `alexisLefebvre/awesome-french` | FR | Comunidade | Aberto / MIT | Guias, plataformas educativas, iniciativas tech e ferramentas em Francês |
+| `french-ai/french-nlp` | FR | Comunidade | Aberto | Processamento de linguagem natural, CamemBERT e IA francófona |
+| `QuantEcon/lecture-python-programming.fr` | FR | QuantEcon | CC BY-SA 4.0 | Computação quantitativa, científica e dados com Python em Francês |
+| `inria` & Gérard Swinnen (`inforef.be`) | FR | Aberto / Univ | CC BY-NC-SA | *Apprendre à programmer avec Python 3*, *Algorithmique* (M. Quercia) |
+| `EbookFoundation/free-programming-books` (`books-de.md`, `courses-de.md`) | DE | 398k★ | CC-BY-4.0 | Obras em Alemão: Python, C/C++, Java, Shell, Linux, ABAP, R |
+| `Rheinwerk Openbook` (Galileo Computing) | DE | Oficial | Aberto para leitura online | *Linux: Das umfassende Handbuch*, *Python 3*, *Java ist auch eine Insel*, *C von A bis Z*, *Shell-Programmierung* |
+| `progit/progit2-de` | DE | Oficial Git | CC BY-NC-SA 3.0 | Livro oficial Pro Git (2. Auflage) em Alemão completo |
+| `SAP/styleguides` (`CleanABAP_de.md`) | DE | SAP Oficial | CC-BY-4.0 | Guia oficial SAP de Clean Code e arquitetura para ABAP |
+| `opentechschool/python-beginners` | DE | OpenTechSchool | CC BY-SA 3.0 | Introdução prática à programação com Python em Alemão |
+| `methodenlehre/einfuehrung-in-R` | DE | Acadêmico | CC BY-SA 4.0 | Livro aberto de análise de dados empíricos e estatística com R |
+| `pbouda/pyqt-und-pyside-buch` | DE | 80★ | CC BY-NC-SA | Desenvolvimento de GUIs desktop com Python e Qt |
+
 ### Domínio público e textos abertos (ficheiros reais)
 
 | Repositório | Estrelas | Licença | Conteúdo | Nota |

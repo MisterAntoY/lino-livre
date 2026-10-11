@@ -1650,6 +1650,26 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
 }
 
+.card-featured-fiap {
+  border-color: #fecdd3 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fff1f2 100%);
+}
+
+.card-featured-ibm {
+  border-color: #bfdbfe !important;
+  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+}
+
+.card-featured-cisco {
+  border-color: #bae6fd !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+.card-featured-wmc {
+  border-color: #f5d0fe !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fdf4ff 100%);
+}
+
 .pill-bradesco.active {
   background: #0284c7 !important;
   color: #ffffff !important;

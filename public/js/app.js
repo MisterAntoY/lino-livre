@@ -1044,6 +1044,20 @@ const app = {
         deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc;">♾️ Sempre Aberto</span>`;
       }
 
+      const isFiap = (c.plataforma || '').includes('FIAP');
+      const isEuCapacito = (c.plataforma || '').includes('Eu Capacito');
+      const isIbm = (c.plataforma || '').includes('IBM');
+      const isCisco = (c.plataforma || '').includes('Cisco');
+      const isEscolaTrab = (c.plataforma || '').includes('Escola do Trabalhador');
+      const isAws = (c.plataforma || '').includes('AWS');
+      const isMsLearn = (c.plataforma || '').includes('Microsoft Learn');
+      const isFcc = (c.plataforma || '').includes('freeCodeCamp');
+      const isKultivi = (c.plataforma || '').includes('Kultivi');
+      const isSenai = (c.plataforma || '').includes('SENAI');
+      const isOracleOne = (c.plataforma || '').includes('Oracle');
+      const isGeneration = (c.plataforma || '').includes('Generation');
+      const isWmc = (c.plataforma || '').includes('WoMakersCode');
+
       if (isSantander) {
         btnTexto = '🏛️ Acessar Santander';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; font-weight:600;">🏛️ Santander Academy</span>`;
@@ -1056,6 +1070,45 @@ const app = {
       } else if (isDsa) {
         btnTexto = '🔬 Acessar DSA';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">🔬 Data Science Academy</span>`;
+      } else if (isFiap) {
+        btnTexto = '🎓 Acessar FIAP';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffe4e6; color:#e11d48; border-color:#fecdd3; font-weight:600;">🎓 FIAP ON</span>`;
+      } else if (isEuCapacito) {
+        btnTexto = '🚀 Acessar Eu Capacito';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f3e8ff; color:#7e22ce; border-color:#e9d5ff; font-weight:600;">🚀 Eu Capacito</span>`;
+      } else if (isIbm) {
+        btnTexto = '💼 Acessar IBM';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; font-weight:600;">💼 IBM SkillsBuild</span>`;
+      } else if (isCisco) {
+        btnTexto = '🌐 Acessar Cisco';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd; font-weight:600;">🌐 Cisco NetAcad</span>`;
+      } else if (isEscolaTrab) {
+        btnTexto = '🏛️ Acessar MTE / Microsoft';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;">🏛️ Escola do Trabalhador 4.0</span>`;
+      } else if (isAws) {
+        btnTexto = '☁️ Acessar AWS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fffbeb; color:#b45309; border-color:#fde68a; font-weight:600;">☁️ AWS Skill Builder</span>`;
+      } else if (isMsLearn) {
+        btnTexto = '💻 Acessar Microsoft';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd; font-weight:600;">💻 Microsoft Learn</span>`;
+      } else if (isFcc) {
+        btnTexto = '🔥 Estudar no freeCodeCamp';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;">🔥 freeCodeCamp</span>`;
+      } else if (isKultivi) {
+        btnTexto = '📚 Acessar Kultivi';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfeff; color:#0e7490; border-color:#a5f3fc; font-weight:600;">📚 Kultivi</span>`;
+      } else if (isSenai) {
+        btnTexto = '⚙️ Acessar SENAI';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#b91c1c; border-color:#fecaca; font-weight:600;">⚙️ SENAI Play</span>`;
+      } else if (isOracleOne) {
+        btnTexto = '⚡ Acessar Oracle ONE';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fff1f2; color:#be123c; border-color:#fecdd3; font-weight:600;">⚡ Oracle ONE</span>`;
+      } else if (isGeneration) {
+        btnTexto = '🚀 Acessar Generation';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0; font-weight:600;">🚀 Generation Brasil</span>`;
+      } else if (isWmc) {
+        btnTexto = '💜 Acessar WoMakersCode';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fdf4ff; color:#a21caf; border-color:#f5d0fe; font-weight:600;">💜 WoMakersCode</span>`;
       } else if (isYouTube) {
         btnTexto = t('courses.btnYoutube');
         extraBadge = `<span class="badge-youtube-cert">${t('courses.badgeYoutube')}</span>`;
@@ -1087,15 +1140,23 @@ const app = {
             ? 'card-featured-cursoemvideo'
             : (isDsa
               ? 'card-featured-dsa'
-              : (isYouTube
-                ? 'card-featured-youtube'
-                : (isGuiaDeTI
-                  ? 'card-featured-guiadeti'
-                  : (isBradesco
-                    ? 'card-featured-bradesco'
-                    : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')))))));
+              : (isFiap
+                ? 'card-featured-fiap'
+                : (isIbm
+                  ? 'card-featured-ibm'
+                  : (isCisco
+                    ? 'card-featured-cisco'
+                    : (isWmc
+                      ? 'card-featured-wmc'
+                      : (isYouTube
+                        ? 'card-featured-youtube'
+                        : (isGuiaDeTI
+                          ? 'card-featured-guiadeti'
+                          : (isBradesco
+                            ? 'card-featured-bradesco'
+                            : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')))))))))));
 
-      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
+      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
 
       let logoHtml = '🏛️';
       if (isDio) {
@@ -1106,6 +1167,32 @@ const app = {
         logoHtml = `<img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="course-platform-logo logo-round">`;
       } else if (isDsa) {
         logoHtml = `<img src="/img/logos/dsa.png" alt="Data Science Academy" class="course-platform-logo">`;
+      } else if (isFiap) {
+        logoHtml = `<img src="/img/logos/fiap.png" alt="FIAP" class="course-platform-logo">`;
+      } else if (isEuCapacito) {
+        logoHtml = `<img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="course-platform-logo">`;
+      } else if (isIbm) {
+        logoHtml = `<img src="/img/logos/ibm.svg" alt="IBM SkillsBuild" class="course-platform-logo">`;
+      } else if (isCisco) {
+        logoHtml = `<img src="/img/logos/cisco.svg" alt="Cisco NetAcad" class="course-platform-logo">`;
+      } else if (isEscolaTrab) {
+        logoHtml = `<img src="/img/logos/escoladotrabalhador.png" alt="Escola do Trabalhador 4.0" class="course-platform-logo">`;
+      } else if (isAws) {
+        logoHtml = `<img src="/img/logos/aws.svg" alt="AWS" class="course-platform-logo">`;
+      } else if (isMsLearn) {
+        logoHtml = `<img src="/img/logos/microsoft.svg" alt="Microsoft Learn" class="course-platform-logo">`;
+      } else if (isFcc) {
+        logoHtml = `<img src="/img/logos/freecodecamp.png" alt="freeCodeCamp" class="course-platform-logo">`;
+      } else if (isKultivi) {
+        logoHtml = `<img src="/img/logos/kultivi.png" alt="Kultivi" class="course-platform-logo">`;
+      } else if (isSenai) {
+        logoHtml = `<img src="/img/logos/senai.png" alt="SENAI" class="course-platform-logo">`;
+      } else if (isOracleOne) {
+        logoHtml = `<img src="/img/logos/oracle.svg" alt="Oracle ONE" class="course-platform-logo">`;
+      } else if (isGeneration) {
+        logoHtml = `<img src="/img/logos/generation.png" alt="Generation Brasil" class="course-platform-logo">`;
+      } else if (isWmc) {
+        logoHtml = `<img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="course-platform-logo">`;
       } else if (isBradesco) {
         logoHtml = `<img src="/img/logos/bradesco.svg" alt="Fundação Bradesco" class="course-platform-logo">`;
       } else if (isGuiaDeTI) {

@@ -3,12 +3,15 @@ const { cursosData } = require('./cursosSeedData');
 const { githubBooks } = require('./githubBooksSeedData');
 const { githubZhBooks } = require('./githubZhBooksSeedData');
 const { githubFrBooks } = require('./githubFrBooksSeedData');
+const { githubDeBooks } = require('./githubDeBooksSeedData');
 const { githubEnBooks } = require('./githubEnBooksSeedData');
 const { romanceClassics } = require('./romanceClassicsSeedData');
 const { dioBootcampsList } = require('./dioBootcampsData');
 const { santanderAcademyList } = require('./santanderAcademyData');
 const { cursoEmVideoList } = require('./cursoEmVideoData');
 const { dsaCoursesList } = require('./dsaCoursesData');
+const { germanCoursesList } = require('./germanCoursesData');
+const { novasPlataformasCursos } = require('./novasPlataformasData');
 const { livrosAfricaData } = require('./livrosAfricaData');
 const { roadmapShList } = require('./roadmapShData');
 const { podcastsShowsData } = require('./podcastsSeedData');
@@ -74,6 +77,11 @@ function seed(dbInstance = null) {
   // Novas fontes GitHub em Inglês (apenas metadados + links externos)
   const fFreeBooksEn = insertFonte.run('github-freebooks-en', 'Free Programming Books EN (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
   const fAwesomeEn = insertFonte.run('github-awesome-en', 'Awesome Lists English (GitHub)', 'manual', 'https://github.com/sindresorhus/awesome', 1).lastInsertRowid;
+  // Novas fontes GitHub e Openbooks em Alemão (apenas metadados + links externos)
+  const fFreeBooksDe = insertFonte.run('github-freebooks-de', 'Free Programming Books DE (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
+  const fAwesomeDe = insertFonte.run('github-awesome-de', 'Awesome Lists German (GitHub)', 'manual', 'https://github.com/topics/german', 1).lastInsertRowid;
+  const fRheinwerk = insertFonte.run('rheinwerk-openbook', 'Rheinwerk Openbooks (Galileo Computing)', 'manual', 'http://openbook.rheinwerk-verlag.de', 1).lastInsertRowid;
+  const fWikibooksDe = insertFonte.run('wikibooks-de', 'Wikibooks Deutsch', 'manual', 'https://de.wikibooks.org', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -514,7 +522,18 @@ function seed(dbInstance = null) {
     'gutenberg': fGutenberg,
     'wikisource': fWikisource,
     'dominiopublico': fDomPub,
-    'manual': fManual
+    'manual': fManual,
+    'github-freebooks-zh': fFreeBooksZh,
+    'github-awesome-cn': fAwesomeCn,
+    'github-roadmap-zh': fRoadmapZh,
+    'github-freebooks-fr': fFreeBooksFr,
+    'github-awesome-fr': fAwesomeFr,
+    'github-freebooks-en': fFreeBooksEn,
+    'github-awesome-en': fAwesomeEn,
+    'github-freebooks-de': fFreeBooksDe,
+    'github-awesome-de': fAwesomeDe,
+    'rheinwerk-openbook': fRheinwerk,
+    'wikibooks-de': fWikibooksDe
   };
 
   for (const b of githubBooks) {
@@ -550,6 +569,186 @@ function seed(dbInstance = null) {
     if (b.links && Array.isArray(b.links)) {
       for (const lk of b.links) {
         insertLink.run(bId, lk.formato || 'pdf', lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Livros Técnicos e Repositórios em Francês (FR)
+  for (const b of githubFrBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'França / Francofonia', 'Auteur et communauté de technologies libres francophones.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fFreeBooksFr;
+
+    const existing = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existing) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2024,
+      'fr',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      'outro',
+      0,
+      `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nOuvrage ou ressource libre accessible pour lecture en ligne.`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Livros Técnicos e Repositórios em Alemão (DE)
+  for (const b of githubDeBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Deutschland / DACH', 'Autor und Open-Source-Gemeinschaft im deutschsprachigen Raum.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fFreeBooksDe;
+
+    const existing = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existing) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2024,
+      'de',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      'outro',
+      0,
+      `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nFrei verfügbares Fachbuch oder Ressource für Studium und Praxis.`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Livros Técnicos e Repositórios em Mandarim (ZH)
+  for (const b of githubZhBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'China / Comunidade Técnica', '开源技术作者与社区').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fFreeBooksZh;
+
+    const existing = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existing) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2024,
+      'zh',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      'outro',
+      0,
+      `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\n开源技术中文书籍及资源。`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Livros Técnicos e Repositórios em Inglês (EN)
+  for (const b of githubEnBooks) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'International / Open Source', 'Technical authors and community curators.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fFreeBooksEn;
+
+    const existing = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existing) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2024,
+      'en',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      'outro',
+      0,
+      `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nFree open book for online learning.`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
       }
     }
   }
@@ -689,6 +888,16 @@ function seed(dbInstance = null) {
   // Data Science Academy (DSA - Cursos gratuitos oficiais com certificação gratuita de conclusão)
   for (const d of dsaCoursesList) {
     insertCurso.run(d.titulo, d.tipo || 'curso', d.area, d.plataforma, d.url, d.licenca, d.nivel, d.descricao);
+  }
+
+  // Novas Plataformas Parceiras de Cursos & Bootcamps (FIAP, IBM, Cisco, Escola do Trabalhador, AWS, MS Learn, freeCodeCamp, Kultivi, SENAI, ONE, Generation, WoMakersCode, Eu Capacito)
+  for (const p of novasPlataformasCursos) {
+    insertCurso.run(p.titulo, p.tipo || 'curso', p.area, p.plataforma, p.url, p.licenca, p.nivel, p.descricao);
+  }
+
+  // Cursos e Tutoriais Gratuitos em Alemão (openHPI, Microsoft Learn DE, YouTube, Red Hat)
+  for (const g of germanCoursesList) {
+    insertCurso.run(g.titulo, g.tipo || 'curso', g.area, g.plataforma, g.url, g.licenca, g.nivel, g.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

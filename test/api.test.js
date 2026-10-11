@@ -428,19 +428,19 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
   // Teste 12: Coleção Monumental de África nos 5 idiomas oficiais
   test('12. Coleção Monumental de África cobre 5 idiomas (pt, en, fr, de, zh) com capítulos e metadados', async () => {
     // 12.1 - Consulta por idioma English (en)
-    const resEn = await request('/api/livros?idioma=en');
+    const resEn = await request('/api/livros?idioma=en&limit=100');
     assert.equal(resEn.status, 200);
     assert.ok(resEn.data.total >= 8, 'Deve conter acervo em inglês (>= 8)');
     assert.ok(resEn.data.data.some(l => l.titulo.includes('Olaudah Equiano')));
 
     // 12.2 - Consulta por idioma Français (fr)
-    const resFr = await request('/api/livros?idioma=fr');
+    const resFr = await request('/api/livros?idioma=fr&limit=100');
     assert.equal(resFr.status, 200);
     assert.ok(resFr.data.total >= 6, 'Deve conter acervo em francês (>= 6)');
     assert.ok(resFr.data.data.some(l => l.titulo.includes('Senghor') || l.autor_nome.includes('Senghor')));
 
     // 12.3 - Consulta por idioma Deutsch (de)
-    const resDe = await request('/api/livros?idioma=de');
+    const resDe = await request('/api/livros?idioma=de&limit=100');
     assert.equal(resDe.status, 200);
     assert.ok(resDe.data.total >= 6, 'Deve conter acervo em alemão (>= 6)');
     assert.ok(resDe.data.data.some(l => l.titulo.includes('Afrikanische') || l.titulo.includes('Bantu')));
@@ -514,6 +514,52 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resDsa.data.some(c => c.titulo.includes('Python') || c.titulo.includes('Power BI')), 'Deve conter cursos de Python e Power BI');
     assert.ok(resDsa.data.some(c => c.url.includes('datascienceacademy.com.br')), 'Deve apontar para URLs oficiais da DSA');
     assert.ok(resDsa.data.some(c => c.descricao.includes('Data Science Academy')), 'Deve conter descrição oficial da DSA');
+
+    // 14.5 - Plataformas Parceiras (FIAP, IBM, Cisco, freeCodeCamp, AWS, Microsoft, etc.)
+    const resFiap = await request('/api/cursos?plataforma=FIAP+ON');
+    assert.equal(resFiap.status, 200);
+    assert.ok(resFiap.data.length >= 5, 'Deve conter cursos da FIAP ON');
+
+    const resFcc = await request('/api/cursos?plataforma=freeCodeCamp');
+    assert.equal(resFcc.status, 200);
+    assert.ok(resFcc.data.length >= 5, 'Deve conter certificações do freeCodeCamp');
+
+    const resCisco = await request('/api/cursos?plataforma=Cisco+Networking+Academy');
+    assert.equal(resCisco.status, 200);
+    assert.ok(resCisco.data.length >= 5, 'Deve conter cursos da Cisco NetAcad');
+
+    const resIbm = await request('/api/cursos?plataforma=IBM+SkillsBuild');
+    assert.equal(resIbm.status, 200);
+    assert.ok(resIbm.data.length >= 4, 'Deve conter cursos da IBM SkillsBuild');
+  });
+
+  // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
+  test('15. Acervo de Tecnologia e Programação em Alemão (Livros e Cursos Open Access)', async () => {
+    // 15.1 - Livros técnicos em alemão
+    const resDe = await request('/api/livros?idioma=de&limit=50');
+    assert.equal(resDe.status, 200);
+    assert.ok(resDe.data.total >= 25, 'Deve conter ao menos 25 livros em alemão cadastrados');
+    assert.ok(resDe.data.data.some(l => l.titulo.includes('Pro Git')), 'Deve conter Pro Git auf Deutsch');
+    assert.ok(resDe.data.data.some(l => l.titulo.includes('Rust-Buch') || l.titulo.includes('Rust')), 'Deve conter Das Rust-Buch');
+    assert.ok(resDe.data.data.some(l => l.titulo.includes('Linux')), 'Deve conter Linux Rheinwerk Openbook');
+    assert.ok(resDe.data.data.some(l => l.titulo.includes('SelfHTML')), 'Deve conter SelfHTML Web-Standards');
+    assert.ok(resDe.data.data.some(l => l.titulo.includes('TeachYourselfCS')), 'Deve conter TeachYourselfCS Deutsch');
+
+    // 15.2 - Verificação de métricas reais (zero leituras fictícias) e links externos
+    const deLivros = resDe.data.data;
+    assert.ok(deLivros.every(l => l.leituras === 0), 'Todos os novos livros em alemão devem iniciar com leituras zeradas');
+    assert.ok(deLivros.every(l => Array.isArray(l.links) && l.links.length > 0), 'Todos os livros em alemão devem possuir links de acesso');
+
+    // 15.3 - Cursos e MOOCs em alemão (openHPI, Elements of AI, YouTube DE)
+    const resHpi = await request('/api/cursos?busca=openHPI');
+    assert.equal(resHpi.status, 200);
+    assert.ok(Array.isArray(resHpi.data));
+    assert.ok(resHpi.data.length >= 4, 'Deve conter cursos do openHPI (Hasso-Plattner-Institut)');
+    assert.ok(resHpi.data.some(c => c.titulo.includes('Python')), 'Deve conter curso de Python do openHPI');
+
+    const resAi = await request('/api/cursos?busca=Elements+of+AI');
+    assert.equal(resAi.status, 200);
+    assert.ok(resAi.data.length >= 1, 'Deve conter o curso Elements of AI em alemão');
   });
 });
 

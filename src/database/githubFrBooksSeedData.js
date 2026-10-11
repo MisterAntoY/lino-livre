@@ -306,9 +306,91 @@ const githubFrBooks = [
     "paginas": 0,
     "sinopse": "Recursos de arquitetura de software em francês: Clean Architecture (Uncle Bob), Domain-Driven Design (Vaughn Vernon), Hexagonal Architecture (Alistair Cockburn), Event Sourcing/CQRS, Microserviços, Moduliths, Design Patterns (GoF, Enterprise Patterns), SOLID, GRASP, refatoração, legacy code, testes de arquitetura (ArchUnit). Livros: 'Architecture Logicielle' (Robert C. Martin FR), 'DDD Distilled' FR.",
     "capaUrl": "https://raw.githubusercontent.com/awesome-software-architecture-fr/awesome-software-architecture-fr/main/logo.png",
-    "leituras": 0,
     "links": [
       { "formato": "html", "url": "https://github.com/awesome-software-architecture-fr/awesome-software-architecture-fr" }
+    ]
+  },
+  {
+    "titulo": "Apprendre à programmer avec Python 3",
+    "subtitulo": "Édition intégrale ouverte (inforef.be)",
+    "autor": "Gérard Swinnen",
+    "categoria": "Tecnologia & Guias Digitais",
+    "fonteSlug": "github-freebooks-fr",
+    "fonteIdExterno": "swinnen-python-fr",
+    "ano": 2022,
+    "paginas": 440,
+    "sinopse": "O livro clássico mais influente de programação em francês, disponível sob licença Creative Commons. Ensina programação de forma didática com Python 3, algoritmos, interfaces gráficas (Tkinter) e orientação a objetos.",
+    "capaUrl": "https://inforef.be/swi/python/images/logo.png",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://inforef.be/swi/python.htm" },
+      { "formato": "pdf", "url": "https://inforef.be/swi/telechargement/apprendre_python3_5.pdf" }
+    ]
+  },
+  {
+    "titulo": "Complexité Algorithmique",
+    "subtitulo": "Université Paris Diderot / Liafa",
+    "autor": "Sylvain Perifel",
+    "categoria": "Arquitetura & Engenharia de Software",
+    "fonteSlug": "github-freebooks-fr",
+    "fonteIdExterno": "perifel-complexite-fr",
+    "ano": 2021,
+    "paginas": 430,
+    "sinopse": "Manual acadêmico rigoroso e de livre acesso sobre teoria da computação e complexidade algorítmica: máquinas de Turing, classes P, NP, NP-completude, espaço de memória (PSPACE, L, NL), complexidade probabilística e aproximação.",
+    "capaUrl": "https://www.irif.fr/~sperifel/couverture_livre.png",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://www.irif.fr/~sperifel/livre_complexite.html" },
+      { "formato": "pdf", "url": "https://www.irif.fr/~sperifel/complexite.pdf" }
+    ]
+  },
+  {
+    "titulo": "Algorithmique et Programmation",
+    "subtitulo": "Cours et Problèmes Ouverts (Inria / Pauillac)",
+    "autor": "Michel Quercia",
+    "categoria": "Arquitetura & Engenharia de Software",
+    "fonteSlug": "github-freebooks-fr",
+    "fonteIdExterno": "quercia-algo-fr",
+    "ano": 2020,
+    "paginas": 280,
+    "sinopse": "Coleção aberta de algoritmos fundamentais, estruturas de dados clássicas (árvores, grafos, tabelas de hash), ordenação e resolução de problemas matemáticos e computacionais em C e OCaml.",
+    "capaUrl": "https://inria.fr/sites/default/files/inria-logo.png",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "http://pauillac.inria.fr/~quercia/cdrom/cours/" }
+    ]
+  },
+  {
+    "titulo": "Programmation Python pour l'Économie et la Science",
+    "subtitulo": "QuantEcon / lecture-python-programming.fr",
+    "autor": "QuantEcon Community",
+    "categoria": "Ciência de Dados & Inteligência Artificial",
+    "fonteSlug": "github-freebooks-fr",
+    "fonteIdExterno": "quantecon-python-fr",
+    "ano": 2024,
+    "paginas": 350,
+    "sinopse": "Curso aberto e moderno de computação científica em Python traduzido para francês pelo projeto QuantEcon: NumPy, SciPy, álgebra linear numérica, simulações Monte Carlo e dinâmica econômica.",
+    "capaUrl": "https://quantecon.org/assets/img/logo-small.png",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://quantecon.github.io/lecture-python-programming.fr/" },
+      { "formato": "html", "url": "https://github.com/QuantEcon/lecture-python-programming.fr" }
+    ]
+  },
+  {
+    "titulo": "Introduction à l'Informatique",
+    "subtitulo": "Cours et Tutoriels Ouverts (j-m-li/intro)",
+    "autor": "Jean-Michel Li",
+    "categoria": "Tecnologia & Guias Digitais",
+    "fonteSlug": "github-freebooks-fr",
+    "fonteIdExterno": "jmli-intro-fr",
+    "ano": 2023,
+    "paginas": 180,
+    "sinopse": "Introdução aos conceitos basilares de ciência da computação, representação binária da informação, redes de computadores, arquitetura de hardware, noções de sistemas operacionais e lógica de programação.",
+    "capaUrl": "https://raw.githubusercontent.com/j-m-li/intro/main/images/logo.png",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://github.com/j-m-li/intro" }
     ]
   }
 ];
