@@ -3,11 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lino Livre — Livros livres, para todos. Maior acervo digital de livros de África, obras-primas da literatura africana, contos da tradição oral, história e filosofia em 5 idiomas. Leitura online gratuita sem download.">
+  <meta name="theme-color" content="#2563eb">
   <title>Lino Livre — Livros livres, para todos.</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20261008">
+  
+  <!-- Preload critical fonts with font-display: swap -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Critical CSS (inlined for instant render) -->
+  <style>
+    :root{--primary:#2563eb;--primary-hover:#1d4ed8;--bg-page:#f8fafc;--bg-card:#fff;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--shadow-card:0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.05);--shadow-hover:0 12px 24px -4px rgba(0,0,0,.12),0 4px 6px -2px rgba(0,0,0,.05)}
+    *, *::before, *::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background-color:var(--bg-page);color:var(--text-main);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    .font-serif{font-family:'Lora',Georgia,serif}
+    .container{max-width:1180px;margin:0 auto;padding:0 1.5rem;width:100%}
+    .site-header{background:#fff;border-bottom:1px solid var(--border);padding:1.25rem 0;position:sticky;top:0;z-index:20}
+    .header-content{display:flex;justify-content:space-between;align-items:center}
+    .brand{display:flex;align-items:center;gap:.85rem}
+    .brand-icon{font-size:2rem;line-height:1}
+    .brand-title{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;color:var(--text-main)}
+    .brand-subtitle{font-size:.825rem;color:var(--text-muted)}
+    .header-actions{display:flex;align-items:center;gap:.75rem}
+    .lang-switcher{position:relative}
+    .lang-glove{flex-shrink:0}
+    .lang-select{padding:.5rem 2.5rem .5rem .75rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.875rem;font-family:inherit;background:#fff;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;background-size:1rem;padding-right:2.5rem}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
+    .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+    .btn-secondary{background:#f1f5f9;color:var(--text-main);border-color:var(--border)}
+    .btn-secondary:hover{background:#e2e8f0}
+    .btn-outline{background:transparent;border-color:var(--border);color:var(--text-main)}
+    .btn-outline:hover{background:#f1f5f9}
+    .hidden{display:none!important}
+    .filter-section{padding:2rem 1.5rem 1rem 1.5rem;display:flex;flex-direction:column;gap:1.25rem}
+    .search-bar{position:relative;max-width:600px;width:100%}
+    .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
+    .search-bar input{width:100%;padding:.8rem 1rem .8rem 2.75rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.95rem;font-family:inherit;background:#fff;outline:none;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+    .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+    .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:999px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
+    .pill:hover{background:#f1f5f9;color:var(--text-main)}
+    .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
+    .main-container{flex:1;padding:1rem 1.5rem 3rem 1.5rem}
+    .books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
+    .book-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column;transition:all .25s ease}
+    .book-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover);border-color:#cbd5e1}
+    .book-cover-container{position:relative;width:100%;aspect-ratio:2/2.9;background:#e2e8f0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .book-cover{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;box-shadow:inset 4px 0 10px rgba(0,0,0,.15)}
+    .loading{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--text-muted);font-size:1.125rem}
+    .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
+    .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:999px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
+    .pill:hover{background:#f1f5f9;color:var(--text-main)}
+    .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
+    .reader-modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .reader-modal.theme-creme{background:rgba(15,23,42,.85);backdrop-filter:blur(8px)}
+    .reader-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid rgba(148,163,184,.2)}
+    .reader-title{font-size:1.125rem;font-weight:700;color:#f8fafc;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .reader-subtitle{font-size:.875rem;color:#94a3b8;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .book-details{padding:1.25rem;display:flex;flex-direction:column;gap:.75rem;flex:1;min-height:0}
+    .book-title{font-size:1.125rem;font-weight:700;color:var(--text-main);line-height:1.3;margin:0}
+    .book-author{font-size:.875rem;color:var(--text-muted);margin:0}
+    .badge-license{display:inline-block;padding:.25rem .625rem;border-radius:999px;font-size:.6875rem;font-weight:600;background:#eff6ff;color:var(--primary);border:1px solid #bfdbfe;width:fit-content}
+    .book-synopsis{font-size:.8125rem;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+    .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
+    .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+    .btn-secondary{background:#f1f5f9;color:var(--text-main);border-color:var(--border)}
+    .btn-secondary:hover{background:#e2e8f0}
+    .btn-outline{background:transparent;border-color:var(--border);color:var(--text-main)}
+    .btn-outline:hover{background:#f1f5f9}
+    .hidden{display:none!important}
+    .visually-hidden,.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media (prefers-reduced-motion:reduce){*, *::before, *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+    :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+    ::-webkit-scrollbar{width:8px;height:8px}
+    ::-webkit-scrollbar-track{background:#f1f5f9}
+    ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+    ::selection{background:rgba(37,99,235,.2);color:var(--text-main)}
+  </style>
+  
+  <!-- Full CSS loaded asynchronously -->
+  <link rel="stylesheet" href="/css/style.css?v=20261009" media="print" onload="this.media='all'">
+  
+  <noscript><link rel="stylesheet" href="/css/style.css?v=20261009"></noscript>
+  
+  <!-- Service Worker for offline caching -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').catch(function(err) {
+          console.log('SW registration failed:', err);
+        });
+      });
+    }
+  </script>
+  
+  <title>Lino Livre — Livros livres, para todos.</title>
 </head>
 <body>
 
@@ -410,6 +505,7 @@
         <span class="filter-label" data-i18n="ui.tips.filters">Categorias de Dicas:</span>
         <div class="pills-container" id="pills-dicas-cat">
           <button class="pill active" data-cat="" onclick="app.filtrarDicasPorCategoria('')" data-i18n="ui.tips.all">Todas as Dicas</button>
+          <button class="pill highlight-pill-gold" data-cat="habitos" onclick="app.filtrarDicasPorCategoria('habitos')">⚡ Hábitos Atômicos (James Clear)</button>
           <button class="pill" data-cat="estudo" onclick="app.filtrarDicasPorCategoria('estudo')">🧠 Técnicas de Estudo & Foco</button>
           <button class="pill" data-cat="organizacao" onclick="app.filtrarDicasPorCategoria('organizacao')">📓 Organização & Notas</button>
           <button class="pill" data-cat="escrita" onclick="app.filtrarDicasPorCategoria('escrita')">✍️ Escrita & Revisão</button>
@@ -571,28 +667,88 @@
     </div>
   </section>
 
-  <!-- Rodapé -->
+  <!-- Rodapé Global da Plataforma -->
   <footer class="site-footer">
-    <div class="container footer-content">
-      <p><strong>Lino Livre</strong> <span data-i18n="ui.footer.tagline">• Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</span></p>
-      <p style="font-size: 0.85rem; color: #94a3b8; margin: 0.5rem 0;">
-        <span>Aviso Legal & Suporte: Plataforma educacional comunitária e sem fins lucrativos. Para suporte, dúvidas ou solicitações de remoção imediata por detentores de direitos autorais, contate: </span>
-        <a href="mailto:bv6alblu6@mozmail.com?subject=Suporte%20e%20Contato%20-%20Lino%20Livre" style="color: var(--primary); text-decoration: underline; font-weight: 500;">bv6alblu6@mozmail.com</a>
-        <span> — Atenderemos prontamente.</span>
-      </p>
-      <p id="footer-links-container" class="footer-links hidden">
-        <a id="link-footer-comunidade" href="#" target="_blank" rel="noopener noreferrer">
-          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          <span data-i18n="ui.footer.group">Grupo WhatsApp</span>
-        </a>
-        <span id="footer-separator" aria-hidden="true">•</span>
-        <a id="link-footer-canal" href="#" target="_blank" rel="noopener noreferrer">
-          <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          <span data-i18n="ui.footer.channel">Canal WhatsApp</span>
-        </a>
-      </p>
+    <div class="container footer-content-grid">
+      <!-- Coluna 1: Missão & Lino Livre -->
+      <div class="footer-col footer-col-brand">
+        <div class="footer-brand-title">📚 Lino Livre</div>
+        <p class="footer-brand-desc" data-i18n="ui.footer.mission">
+          Plataforma comunitária e sem fins lucrativos dedicada a democratizar o acesso universal ao conhecimento, literatura e tecnologia para jovens, estudantes e educadores nos PALOP e Sul Global.
+        </p>
+        <div class="footer-safe-badge">
+          <span data-i18n="ui.footer.safeBadge">🛡️ Provedor Intermediário de Busca • Zero Armazenamento Local</span>
+        </div>
+      </div>
+
+      <!-- Coluna 2: Navegação Rápida -->
+      <div class="footer-col">
+        <h4 class="footer-heading" data-i18n="ui.footer.headingExplore">Explorar Acervo</h4>
+        <ul class="footer-nav-list">
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books">📚 Livros Digitais</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses">🎓 Cursos Gratuitos</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps">🗺️ Roadmaps & Trilhas</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts">🎙️ Podcasts & Spotify</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard">📊 Métricas & Fontes</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 3: Jurídico & Responsabilidade -->
+      <div class="footer-col">
+        <h4 class="footer-heading" data-i18n="ui.footer.headingLegal">Jurídico & Diretrizes</h4>
+        <ul class="footer-nav-list">
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('termos')" data-i18n="ui.footer.terms">📜 Termos de Uso</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('isencao')" data-i18n="ui.footer.disclaimer">🛡️ Isenção de Responsabilidade</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('takedown')" data-i18n="ui.footer.dmca">⚖️ Direitos Autorais & DMCA</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('privacidade')" data-i18n="ui.footer.privacy">🔒 Privacidade (LGPD/RGPD)</a></li>
+          <li><a href="/termos.html" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.fullTerms">📑 Página Legal Completa ↗</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 4: Comunidade & Suporte -->
+      <div class="footer-col">
+        <h4 class="footer-heading" data-i18n="ui.footer.headingCommunity">Comunidade & Suporte</h4>
+        <ul class="footer-nav-list">
+          <li id="footer-links-container" class="hidden">
+            <a id="link-footer-comunidade" href="#" target="_blank" rel="noopener noreferrer">
+              <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+              <span data-i18n="ui.footer.group">Grupo WhatsApp</span>
+            </a>
+          </li>
+          <li id="footer-canal-container" class="hidden">
+            <a id="link-footer-canal" href="#" target="_blank" rel="noopener noreferrer">
+              <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+              <span data-i18n="ui.footer.channel">Canal WhatsApp</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" style="color: #ff5f5f; font-weight: 600;">
+              ☕ <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:bv6alblu6@mozmail.com" style="color: var(--primary); font-weight: 500;">
+              ✉️ bv6alblu6@mozmail.com
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Caixa de Isenção e Intermediação em Destaque -->
+    <div class="container footer-disclaimer-wrapper">
+      <div class="footer-disclaimer-box">
+        <p data-i18n="ui.footer.disclaimerText">
+          Aviso de Intermediação & Isenção de Responsabilidade: O Lino Livre é estritamente uma plataforma intermediária e motor de busca de hiperligações externas públicas. Nossos servidores e banco de dados não armazenam, não hospedam e não distribuem arquivos binários de livros (PDF, EPUB, TXT). Todo acesso e leitura ocorrem via redirecionamento de protocolo (HTTP 302) para os repositórios públicos originais. Detentores legítimos de direitos autorais podem solicitar a desindexação imediata de links através de bv6alblu6@mozmail.com — atendimento e remoção em até 48 horas úteis.
+        </p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom-bar">
+      <p>© 2026 Lino Livre • <span data-i18n="ui.footer.tagline">• Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</span></p>
     </div>
   </footer>
+
 
   <!-- MODAL: LEITOR DIGITAL IMERSIVO (ESTILO ONLINE LINO LIVRE) -->
   <div id="modal-leitor" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="leitor-titulo">
@@ -829,10 +985,81 @@
     </div>
   </div>
 
+  <!-- MODAL: TERMOS DE USO, ISENÇÃO E DIRETRIZES LEGAIS -->
+  <div id="modal-legal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-legal-titulo">
+    <div class="modal-card modal-legal-card">
+      <div class="modal-card-header">
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span style="font-size:1.3rem;">⚖️</span>
+          <h3 id="modal-legal-titulo" data-i18n="ui.legal.title">Diretrizes Legais & Termos de Uso</h3>
+        </div>
+        <button class="btn-close" onclick="app.fecharModais()">&times;</button>
+      </div>
+
+      <!-- Abas Internas do Modal Legal -->
+      <div class="modal-legal-nav">
+        <button class="modal-tab-btn active" id="modal-legal-tab-termos" onclick="app.trocarAbaLegal('termos')" data-i18n="ui.legal.tabTerms">📜 Termos de Uso</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-isencao" onclick="app.trocarAbaLegal('isencao')" data-i18n="ui.legal.tabDisclaimer">🛡️ Intermediário & Isenção</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-takedown" onclick="app.trocarAbaLegal('takedown')" data-i18n="ui.legal.tabDmca">⚖️ DMCA / Takedown</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-privacidade" onclick="app.trocarAbaLegal('privacidade')" data-i18n="ui.legal.tabPrivacy">🔒 Privacidade</button>
+      </div>
+
+      <div class="modal-card-body modal-legal-body">
+        <!-- Aba 1: Termos de Uso -->
+        <div id="legal-conteudo-termos" class="legal-tab-panel active">
+          <h4>1. Missão Educacional & Natureza Comunitária</h4>
+          <p>O Lino Livre é um projeto educacional comunitário sem fins lucrativos concebido para democratizar o acesso universal à literatura, à formação técnica e ao saber nos Países Africanos de Língua Oficial Portuguesa (PALOP) — <strong>Angola, Moçambique, Cabo Verde, São Tomé e Príncipe e Guiné-Bissau</strong> — e no Sul Global.</p>
+          <p>O uso da plataforma é estritamente pessoal, pedagógico e cultural. O usuário concorda em utilizar as informações e os links catalogados de forma ética e em conformidade com as legislações vigentes.</p>
+        </div>
+
+        <!-- Aba 2: Intermediário & Isenção -->
+        <div id="legal-conteudo-isencao" class="legal-tab-panel">
+          <h4>2. Papel Exclusivo de Intermediário (Zero Armazenamento Local)</h4>
+          <div style="background:#eff6ff;border-left:4px solid #2563eb;padding:0.75rem 1rem;border-radius:4px;margin-bottom:1rem;">
+            <p style="margin:0;font-size:0.9rem;color:#1e40af;"><strong>Diretriz Inviolável de Arquitetura:</strong> Os servidores e bancos de dados do Lino Livre <strong>NUNCA</strong> armazenam arquivos binários de livros (PDF, EPUB, MOBI ou TXT). O sistema armazena unicamente metadados públicos e hiperligações para provedores externos.</p>
+          </div>
+          <p>Toda leitura externa é realizada através de redirecionamento de protocolo padrão (HTTP 302) para os repositórios originais na internet. A plataforma opera como mero provedor de aplicação de busca, conforme o Marco Civil da Internet (Lei 12.965/2014, art. 19), DMCA (17 U.S.C. § 512) e Diretiva de Comércio Eletrónico da UE (2000/31/CE).</p>
+        </div>
+
+        <!-- Aba 3: DMCA / Takedown -->
+        <div id="legal-conteudo-takedown" class="legal-tab-panel">
+          <h4>3. Notificação e Remoção Imediata de Links (Notice and Takedown)</h4>
+          <p>Respeitamos rigorosamente os direitos autorais. Caso identifique qualquer hiperligação apontando para obra que infrinja seus direitos, disponibilizamos um procedimento célere para remoção voluntária do índice em até <strong>24 a 48 horas úteis</strong>.</p>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:1rem;border-radius:var(--radius-sm);margin:1rem 0;">
+            <p style="margin:0 0 0.5rem 0;"><strong>Canal Oficial de Atendimento:</strong> <a href="mailto:bv6alblu6@mozmail.com" style="color:var(--primary);font-weight:600;">bv6alblu6@mozmail.com</a></p>
+            <p style="margin:0;font-size:0.85rem;color:#64748b;">Assunto: <code>[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre</code></p>
+          </div>
+          <a href="mailto:bv6alblu6@mozmail.com?subject=%5BNOTIFICA%C3%87%C3%83O%20DE%20DIREITOS%20AUTORAIS%20%2F%20TAKEDOWN%5D%20-%20Lino%20Livre&body=Prezada%20Equipe%20do%20Lino%20Livre%2C%0A%0ASolicito%20a%20remo%C3%A7%C3%A3o%20imediata%20da%20seguinte%20hiperliga%C3%A7%C3%A3o%20do%20cat%C3%A1logo%3A%0A%0A1.%20T%C3%ADtulo%20da%20Obra%3A%20%0A2.%20Autor%2FTitular%20dos%20Direitos%3A%20%0A3.%20URL%20no%20Lino%20Livre%3A%20%0A4.%20URL%20Externa%20Apontada%3A%20%0A5.%20Comprova%C3%A7%C3%A3o%20da%20Titularidade%3A%20%0A%0ADeclaro%20de%20boa-f%C3%A9%20que%20sou%20o%20detentor%20leg%C3%ADtimo%20ou%20representante%20autorizado.%0A%0AAtenciosamente%2C%0ANome%3A%20%0AContato%3A%20" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;font-size:0.9rem;">
+            ✉️ Enviar Notificação de Remoção (E-mail Formatado)
+          </a>
+        </div>
+
+        <!-- Aba 4: Privacidade -->
+        <div id="legal-conteudo-privacidade" class="legal-tab-panel">
+          <h4>4. Privacidade e Proteção de Dados (LGPD & RGPD)</h4>
+          <p>O Lino Livre adota privacidade por desenho e por padrão:</p>
+          <ul style="margin-left:1.25rem;line-height:1.6;font-size:0.95rem;">
+            <li><strong>Zero Cadastro Obrigatório:</strong> Navegação e leitura 100% anônimas, sem necessidade de fornecer dados pessoais.</li>
+            <li><strong>Sem Rastreamento Invasivo:</strong> Não utilizamos cookies de terceiros para publicidade direcionada nem vendemos dados.</li>
+            <li><strong>Preferências Locais:</strong> Ajustes de leitura (tema, fontes, áudio) são salvos exclusivamente no seu dispositivo via <code>localStorage</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="modal-card-footer" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;">
+        <a href="/termos.html" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:600;text-decoration:none;font-size:0.9rem;" data-i18n="ui.legal.readFull">
+          📑 Ler Documento Legal Completo em Nova Aba ↗
+        </a>
+        <button type="button" class="btn btn-secondary" onclick="app.fecharModais()" data-i18n="ui.legal.close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast de Notificação -->
   <div id="toast" class="toast hidden"></div>
 
-  <script src="/js/i18n.js?v=20261008"></script>
-  <script src="/js/app.js?v=20261008"></script>
+
+  <script defer src="/js/i18n.js?v=20261008"></script>
+  <script defer src="/js/app.js?v=20261008"></script>
 </body>
 </html>

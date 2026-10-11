@@ -167,8 +167,29 @@
     "footer": {
       "tagline": "• 自由书籍，人人共享。公有领域作品与开放教育资源。",
       "group": "WhatsApp 群组",
-      "channel": "WhatsApp 频道"
+      "channel": "WhatsApp 频道",
+      "mission": "面向葡语国家（PALOP）和全球南方学生与教育工作者的社区非营利开放图书馆平台，致力于促进知识、文学和技术教育的普及平等。",
+      "safeBadge": "🛡️ 中介搜索索引服务商 • 本地零文件存储",
+      "headingExplore": "探索馆藏",
+      "headingLegal": "法律与准则",
+      "headingCommunity": "社区与支持",
+      "terms": "📜 使用条款",
+      "disclaimer": "🛡️ 免责声明",
+      "dmca": "⚖️ 版权与 DMCA",
+      "privacy": "🔒 隐私政策 (GDPR)",
+      "fullTerms": "📑 完整法律条款页面 ↗",
+      "disclaimerText": "中介与免责声明：Lino Livre 严格作为公开外部超链接的中介与搜索索引平台运作。我们的服务器和数据库不存储任何二进制书籍文件（PDF、EPUB、TXT）。所有阅读访问均通过协议重定向（HTTP 302）进行。版权所有者可通过 bv6alblu6@mozmail.com 申请快速链接下架。"
     },
+    "legal": {
+      "title": "法律准则与使用条款",
+      "tabTerms": "📜 使用条款",
+      "tabDisclaimer": "🛡️ 中介与免责",
+      "tabDmca": "⚖️ DMCA / 下架申请",
+      "tabPrivacy": "🔒 隐私保护",
+      "readFull": "📑 在新标签页阅读完整法律文件 ↗",
+      "close": "关闭"
+    },
+
     "reader": {
       "backTitle": "返回目录",
       "back": "返回",

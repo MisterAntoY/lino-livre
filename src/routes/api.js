@@ -67,5 +67,10 @@ router.get('/podcasts/episodios/recentes', podcastsController.listarEpisodiosRec
 router.get('/podcasts/:slugOuId', podcastsController.obterShow);
 router.post('/podcasts/episodios/:id/ouvir', podcastsController.ouvirEpisodio);
 
+// 9. Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade
+const legalController = require('../controllers/legalController');
+router.get('/legal', legalController.obterDiretrizesLegais);
+
 module.exports = router;
+
 

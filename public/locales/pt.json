@@ -187,8 +187,29 @@
     "footer": {
       "tagline": "• Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.",
       "group": "Grupo WhatsApp",
-      "channel": "Canal WhatsApp"
+      "channel": "Canal WhatsApp",
+      "mission": "Plataforma comunitária e sem fins lucrativos dedicada a democratizar o acesso universal ao conhecimento, literatura e tecnologia para jovens, estudantes e educadores nos PALOP e Sul Global.",
+      "safeBadge": "🛡️ Provedor Intermediário de Busca • Zero Armazenamento Local",
+      "headingExplore": "Explorar Acervo",
+      "headingLegal": "Jurídico & Diretrizes",
+      "headingCommunity": "Comunidade & Suporte",
+      "terms": "📜 Termos de Uso",
+      "disclaimer": "🛡️ Isenção de Responsabilidade",
+      "dmca": "⚖️ Direitos Autorais & DMCA",
+      "privacy": "🔒 Privacidade (LGPD/RGPD)",
+      "fullTerms": "📑 Página Legal Completa ↗",
+      "disclaimerText": "Aviso de Intermediação & Isenção de Responsabilidade: O Lino Livre é estritamente uma plataforma intermediária e motor de busca de hiperligações externas públicas. Nossos servidores e banco de dados não armazenam, não hospedam e não distribuem arquivos binários de livros (PDF, EPUB, TXT). Todo acesso e leitura ocorrem via redirecionamento de protocolo (HTTP 302) para os repositórios públicos originais. Detentores legítimos de direitos autorais podem solicitar a desindexação imediata de links através de bv6alblu6@mozmail.com — atendimento e remoção em até 48 horas úteis."
     },
+    "legal": {
+      "title": "Diretrizes Legais & Termos de Uso",
+      "tabTerms": "📜 Termos de Uso",
+      "tabDisclaimer": "🛡️ Intermediário & Isenção",
+      "tabDmca": "⚖️ DMCA / Takedown",
+      "tabPrivacy": "🔒 Privacidade",
+      "readFull": "📑 Ler Documento Legal Completo em Nova Aba ↗",
+      "close": "Fechar"
+    },
+
     "reader": {
       "backTitle": "Voltar ao Catálogo",
       "back": "Voltar",

@@ -57,7 +57,21 @@ const app = {
     this.carregarPreferenciasLeitor();
     this.iniciarSinteseVoz();
     this.verificarEconomiaDeDados();
+
+    // Fechar modais ao pressionar tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') this.fecharModais();
+    });
+
+    // Fechar modais ao clicar no backdrop
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) this.fecharModais();
+      });
+    });
+
     await Promise.all([
+
       this.carregarLivros(),
       this.carregarPlacarMeta(),
       this.carregarCategoriasSelect(),
@@ -1797,9 +1811,31 @@ const app = {
 
   fecharModais() {
     this.pararAudio();
-    document.getElementById('modal-leitor').classList.add('hidden');
-    document.getElementById('modal-novo-livro').classList.add('hidden');
+    const modalLeitor = document.getElementById('modal-leitor');
+    if (modalLeitor) modalLeitor.classList.add('hidden');
+    const modalNovoLivro = document.getElementById('modal-novo-livro');
+    if (modalNovoLivro) modalNovoLivro.classList.add('hidden');
+    const modalLegal = document.getElementById('modal-legal');
+    if (modalLegal) modalLegal.classList.add('hidden');
   },
+
+  abrirModalLegal(secao = 'termos') {
+    const modalLegal = document.getElementById('modal-legal');
+    if (!modalLegal) return;
+    this.trocarAbaLegal(secao);
+    modalLegal.classList.remove('hidden');
+  },
+
+  trocarAbaLegal(secao) {
+    const abas = ['termos', 'isencao', 'takedown', 'privacidade'];
+    abas.forEach(aba => {
+      const btn = document.getElementById(`modal-legal-tab-${aba}`);
+      const conteudo = document.getElementById(`legal-conteudo-${aba}`);
+      if (btn) btn.classList.toggle('active', aba === secao);
+      if (conteudo) conteudo.classList.toggle('active', aba === secao);
+    });
+  },
+
 
   async salvarNovoLivro(e) {
     e.preventDefault();

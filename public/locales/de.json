@@ -167,8 +167,29 @@
     "footer": {
       "tagline": "• Freie Bücher für alle. Werke gemeinfreier Inhalte und offene Bildungsressourcen.",
       "group": "WhatsApp-Gruppe",
-      "channel": "WhatsApp-Kanal"
+      "channel": "WhatsApp-Kanal",
+      "mission": "Gemeinnützige Bildungsplattform zur Demokratisierung des universellen Zugangs zu Wissen, Literatur und technischer Bildung für Studierende und Lehrende in den PALOP-Ländern und im Globalen Süden.",
+      "safeBadge": "🛡️ Vermittelnder Suchindex-Provider • Keine lokale Dateispeicherung",
+      "headingExplore": "Bibliothek Erkunden",
+      "headingLegal": "Rechtliches & Richtlinien",
+      "headingCommunity": "Community & Support",
+      "terms": "📜 Nutzungsbedingungen",
+      "disclaimer": "🛡️ Haftungsausschluss",
+      "dmca": "⚖️ Urheberrecht & DMCA",
+      "privacy": "🔒 Datenschutz (DSGVO)",
+      "fullTerms": "📑 Vollständige rechtliche Seite ↗",
+      "disclaimerText": "Vermittlungs- und Haftungsausschluss: Lino Livre fungiert ausschließlich als Vermittler und Suchindex für öffentlich zugängliche externe Hyperlinks. Unsere Server und Datenbank speichern keine binären Buchdateien (PDF, EPUB, TXT). Jeglicher Zugriff erfolgt über Protokollweiterleitungen (HTTP 302). Rechteinhaber können die Löschung über bv6alblu6@mozmail.com anfordern."
     },
+    "legal": {
+      "title": "Rechtliche Richtlinien & Nutzungsbedingungen",
+      "tabTerms": "📜 Nutzungsbedingungen",
+      "tabDisclaimer": "🛡️ Vermittler & Ausschluss",
+      "tabDmca": "⚖️ DMCA / Takedown",
+      "tabPrivacy": "🔒 Datenschutz",
+      "readFull": "📑 Vollständiges Rechtsdokument in neuem Tab lesen ↗",
+      "close": "Schließen"
+    },
+
     "reader": {
       "backTitle": "Zurück zum Katalog",
       "back": "Zurück",

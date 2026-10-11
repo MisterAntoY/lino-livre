@@ -167,8 +167,29 @@
     "footer": {
       "tagline": "• Des livres libres, pour tous. Œuvres du domaine public et ressources éducatives ouvertes.",
       "group": "Groupe WhatsApp",
-      "channel": "Canal WhatsApp"
+      "channel": "Canal WhatsApp",
+      "mission": "Plateforme communautaire et à but non lucratif dédiée à démocratiser l'accès universel au savoir, à la littérature et à la formation technique pour les étudiants et enseignants des PALOP et du Sud Global.",
+      "safeBadge": "🛡️ Fournisseur Intermédiaire d'Indexation • Zéro Stockage Local",
+      "headingExplore": "Explorer le Catalogue",
+      "headingLegal": "Mentions Légales",
+      "headingCommunity": "Communauté et Support",
+      "terms": "📜 Conditions d'Utilisation",
+      "disclaimer": "🛡️ Clause de Non-Responsabilité",
+      "dmca": "⚖️ Droits d'Auteur & DMCA",
+      "privacy": "🔒 Confidentialité (RGPD)",
+      "fullTerms": "📑 Page Légale Complète ↗",
+      "disclaimerText": "Avis d'Intermédiation et Non-Responsabilité : Lino Livre opère strictement comme moteur de recherche et index intermédiaire de liens externes publics. Nos serveurs et base de données ne stockent aucun fichier binaire de livres (PDF, EPUB, TXT). Tout accès s'effectue par redirection protocolaire (HTTP 302). Les ayants droit peuvent demander la désindexation via bv6alblu6@mozmail.com."
     },
+    "legal": {
+      "title": "Directives Légales & Conditions d'Utilisation",
+      "tabTerms": "📜 Conditions d'Utilisation",
+      "tabDisclaimer": "🛡️ Intermédiaire & Clause",
+      "tabDmca": "⚖️ DMCA / Retrait",
+      "tabPrivacy": "🔒 Confidentialité",
+      "readFull": "📑 Lire le Document Légal Complet ↗",
+      "close": "Fermer"
+    },
+
     "reader": {
       "backTitle": "Retour au catalogue",
       "back": "Retour",

@@ -677,5 +677,87 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resEs.status, 200);
     assert.ok(resEs.data.total >= 1, 'Deve conter obras em espanhol no catálogo');
   });
+
+  // Teste 21: Módulo de Dicas de Estudo e Hábitos Atômicos (James Clear)
+  test('21. Módulo de Dicas de Estudo e Hábitos Atômicos (James Clear)', async () => {
+    // 21.1 - Listar todas as dicas
+    const resTodas = await request('/api/dicas');
+    assert.equal(resTodas.status, 200);
+    assert.ok(Array.isArray(resTodas.data), 'Resposta deve ser um array');
+    assert.ok(resTodas.data.length >= 28, 'Deve conter pelo menos 28 dicas catalogadas');
+
+    // 21.2 - Filtrar por categoria habitos (Hábitos Atômicos)
+    const resHabitos = await request('/api/dicas?categoria=habitos');
+    assert.equal(resHabitos.status, 200);
+    assert.ok(Array.isArray(resHabitos.data));
+    assert.equal(resHabitos.data.length, 6, 'Deve conter exatamente 6 dicas de Hábitos Atômicos');
+    const titulos = resHabitos.data.map(d => d.titulo);
+    assert.ok(titulos.some(t => t.includes('2 Minutos')), 'Deve conter a Regra dos 2 Minutos');
+    assert.ok(titulos.some(t => t.includes('Empilhamento de Hábitos')), 'Deve conter Habit Stacking');
+    assert.ok(titulos.some(t => t.includes('Design do Ambiente')), 'Deve conter Design do Ambiente');
+    assert.ok(titulos.some(t => t.includes('1% Melhor')), 'Deve conter 1% Melhor Todos os Dias');
+    assert.ok(titulos.some(t => t.includes('Nunca Falhar Duas Vezes')), 'Deve conter Regra de Nunca Falhar Duas Vezes');
+    assert.ok(titulos.some(t => t.includes('Identidade')), 'Deve conter Hábitos Baseados em Identidade');
+
+    // 21.3 - Buscar dica específica por ID
+    const resId = await request('/api/dicas/23');
+    assert.equal(resId.status, 200);
+    assert.equal(resId.data.id, 23);
+    assert.equal(resId.data.categoria, 'habitos');
+
+    // 21.4 - Busca textual com filtro
+    const resBusca = await request('/api/dicas?busca=' + encodeURIComponent('procrastinação'));
+    assert.equal(resBusca.status, 200);
+    assert.ok(resBusca.data.length >= 1, 'Deve encontrar a dica sobre procrastinação');
+  });
+
+  // Teste 22: Conformidade Legal, Papel de Intermediário, DMCA Takedown e Termos de Uso
+  test('22. Conformidade Legal, Papel de Intermediário, DMCA Takedown e Termos de Uso', async () => {
+    // 22.1 - Validação do endpoint oficial /api/legal
+    const resLegal = await request('/api/legal');
+    assert.equal(resLegal.status, 200);
+    assert.equal(resLegal.data.status, 'ativo');
+    assert.equal(resLegal.data.arquitetura.papel, 'intermediario_indexador');
+    assert.equal(resLegal.data.arquitetura.armazenamento_local_arquivos, false, 'Deve garantir zero armazenamento local de livros');
+    assert.equal(resLegal.data.arquitetura.redirecionamento_protocolo, 'HTTP 302');
+    assert.equal(resLegal.data.dmca_takedown.canal_oficial, 'bv6alblu6@mozmail.com');
+    assert.equal(resLegal.data.dmca_takedown.prazo_atendimento_horas, 48);
+    assert.equal(resLegal.data.privacidade.cadastro_obrigatorio, false);
+    assert.equal(resLegal.data.privacidade.cookies_rastreamento, false);
+
+    // 22.2 - Validação da existência e integridade dos arquivos legais físicos
+    const fs = require('node:fs');
+    const path = require('node:path');
+
+    const mdPath = path.join(__dirname, '../TERMOS-DE-USO-E-AVISO-LEGAL.md');
+    assert.ok(fs.existsSync(mdPath), 'TERMOS-DE-USO-E-AVISO-LEGAL.md deve existir na raiz');
+    const mdContent = fs.readFileSync(mdPath, 'utf8');
+    assert.ok(mdContent.includes('Zero Armazenamento'), 'Documento deve registrar diretriz de zero armazenamento');
+    assert.ok(mdContent.includes('HTTP 302'), 'Documento deve registrar protocolo 302');
+
+    const htmlTermosPath = path.join(__dirname, '../public/termos.html');
+    assert.ok(fs.existsSync(htmlTermosPath), 'public/termos.html deve existir');
+    const htmlContent = fs.readFileSync(htmlTermosPath, 'utf8');
+    assert.ok(htmlContent.includes('Termos de Uso'), 'HTML deve conter Termos de Uso');
+    assert.ok(htmlContent.includes('bv6alblu6@mozmail.com'), 'HTML deve conter email de takedown');
+
+    const htmlLegalPath = path.join(__dirname, '../public/legal.html');
+    assert.ok(fs.existsSync(htmlLegalPath), 'public/legal.html deve existir como alias');
+
+    // 22.3 - Validação de i18n dos termos legais (pt, es, en)
+    const ptLocale = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/locales/pt.json'), 'utf8'));
+    assert.ok(ptLocale.ui.footer.terms, 'pt.json deve conter ui.footer.terms');
+    assert.ok(ptLocale.ui.footer.disclaimer, 'pt.json deve conter ui.footer.disclaimer');
+    assert.ok(ptLocale.ui.legal.title, 'pt.json deve conter ui.legal.title');
+
+    const esLocale = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/locales/es.json'), 'utf8'));
+    assert.ok(esLocale.ui.footer.terms, 'es.json deve conter ui.footer.terms');
+    assert.ok(esLocale.ui.legal.title, 'es.json deve conter ui.legal.title');
+
+    const enLocale = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/locales/en.json'), 'utf8'));
+    assert.ok(enLocale.ui.footer.terms, 'en.json deve conter ui.footer.terms');
+    assert.ok(enLocale.ui.legal.title, 'en.json deve conter ui.legal.title');
+  });
 });
+
 

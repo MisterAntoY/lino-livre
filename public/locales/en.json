@@ -175,8 +175,29 @@
     "footer": {
       "tagline": "• Free books, for everyone. Public Domain works and Open Educational Resources.",
       "group": "WhatsApp Group",
-      "channel": "WhatsApp Channel"
+      "channel": "WhatsApp Channel",
+      "mission": "Community, non-profit open library platform dedicated to universal access to knowledge, literature and tech education for students and educators in PALOP and the Global South.",
+      "safeBadge": "🛡️ Search Intermediary Provider • Zero Local Storage of Files",
+      "headingExplore": "Explore Library",
+      "headingLegal": "Legal & Guidelines",
+      "headingCommunity": "Community & Support",
+      "terms": "📜 Terms of Use",
+      "disclaimer": "🛡️ Disclaimer & Liability",
+      "dmca": "⚖️ Copyright & DMCA",
+      "privacy": "🔒 Privacy Policy (GDPR)",
+      "fullTerms": "📑 Full Legal Page ↗",
+      "disclaimerText": "Intermediary & Liability Disclaimer: Lino Livre strictly operates as an intermediary search index for publicly available external hyperlinks. Our servers and database do not store or host binary book files (PDF, EPUB, TXT). All reading access occurs via protocol redirects (HTTP 302). Rightsholders may request immediate link removal via bv6alblu6@mozmail.com."
     },
+    "legal": {
+      "title": "Legal Guidelines & Terms of Use",
+      "tabTerms": "📜 Terms of Use",
+      "tabDisclaimer": "🛡️ Intermediary & Disclaimer",
+      "tabDmca": "⚖️ DMCA / Takedown",
+      "tabPrivacy": "🔒 Privacy Policy",
+      "readFull": "📑 Read Full Legal Document in New Tab ↗",
+      "close": "Close"
+    },
+
     "reader": {
       "backTitle": "Back to Catalogue",
       "back": "Back",
