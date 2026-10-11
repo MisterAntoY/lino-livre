@@ -536,15 +536,18 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
   test('15. Acervo de Tecnologia e Programação em Alemão (Livros e Cursos Open Access)', async () => {
-    // 15.1 - Livros técnicos em alemão (limit=100 cobre o acervo completo de 67 livros DE)
+    // 15.1 - Livros técnicos em alemão (2 páginas x 100 cobrem o acervo DE atual e futuro próximo)
     const resDe = await request('/api/livros?idioma=de&limit=100');
     assert.equal(resDe.status, 200);
+    const resDe2 = await request('/api/livros?idioma=de&limit=100&page=2');
+    assert.equal(resDe2.status, 200);
+    const todosDe = [...resDe.data.data, ...resDe2.data.data];
     assert.ok(resDe.data.total >= 25, 'Deve conter ao menos 25 livros em alemão cadastrados');
-    assert.ok(resDe.data.data.some(l => l.titulo.includes('Pro Git')), 'Deve conter Pro Git auf Deutsch');
-    assert.ok(resDe.data.data.some(l => l.titulo.includes('Rust-Buch') || l.titulo.includes('Rust')), 'Deve conter Das Rust-Buch');
-    assert.ok(resDe.data.data.some(l => l.titulo.includes('Linux')), 'Deve conter Linux Rheinwerk Openbook');
-    assert.ok(resDe.data.data.some(l => l.titulo.includes('SelfHTML')), 'Deve conter SelfHTML Web-Standards');
-    assert.ok(resDe.data.data.some(l => l.titulo.includes('TeachYourselfCS')), 'Deve conter TeachYourselfCS Deutsch');
+    assert.ok(todosDe.some(l => l.titulo.includes('Pro Git')), 'Deve conter Pro Git auf Deutsch');
+    assert.ok(todosDe.some(l => l.titulo.includes('Rust-Buch') || l.titulo.includes('Rust')), 'Deve conter Das Rust-Buch');
+    assert.ok(todosDe.some(l => l.titulo.includes('Linux')), 'Deve conter Linux Rheinwerk Openbook');
+    assert.ok(todosDe.some(l => l.titulo.includes('SelfHTML')), 'Deve conter SelfHTML Web-Standards');
+    assert.ok(todosDe.some(l => l.titulo.includes('TeachYourselfCS')), 'Deve conter TeachYourselfCS Deutsch');
 
     // 15.2 - Verificação de métricas reais (sem números fictícios inflados) e links externos
     const deLivros = resDe.data.data;
