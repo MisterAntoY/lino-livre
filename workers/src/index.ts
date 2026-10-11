@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { Bindings } from './types';
 import { generateQrCodeSvg } from './utils/qrcode';
 import { dicasData } from '../../src/database/dicasData';
+import { executarImportacaoD1 } from './services/importer';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -577,8 +578,13 @@ app.post('/api/import', async (c) => {
       VALUES (?, ?, 'pendente', 0, 0)
     `).bind(fonte.id, termoBusca).run();
 
+    const jobId = Number(res.meta.last_row_id);
+
+    // Disparar importação assíncrona na Edge sem bloquear resposta HTTP
+    c.executionCtx.waitUntil(executarImportacaoD1(db, jobId, fonte.slug, termoBusca));
+
     return c.json({
-      job_id: res.meta.last_row_id,
+      job_id: jobId,
       status: 'pendente',
       fonte: fonte.slug,
       query: termoBusca
