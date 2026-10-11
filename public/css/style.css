@@ -2323,6 +2323,25 @@ html[lang^="zh"] .course-title {
   border-color: #78350f !important;
 }
 
+/* Category highlight for World Top 100 Books */
+.highlight-pill-gold {
+  background: #fefce8 !important;
+  color: #854d0e !important;
+  border-color: #eab308 !important;
+  font-weight: 700;
+}
+
+.highlight-pill-gold:hover {
+  background: #fef08a !important;
+  border-color: #ca8a04 !important;
+}
+
+.highlight-pill-gold.active {
+  background: #ca8a04 !important;
+  color: #ffffff !important;
+  border-color: #a16207 !important;
+}
+
 /* Book Language Flag Badge */
 .book-lang-badge {
   font-size: 0.725rem;
