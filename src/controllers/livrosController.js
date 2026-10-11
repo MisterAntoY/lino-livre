@@ -6,12 +6,14 @@ function listar(req, res) {
   try {
     const db = getDatabase();
     const { 
-      busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug,
-      page = 1, limit = 24 
+      busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug
     } = req.query;
 
-    const numPage = Math.max(1, parseInt(page, 10) || 1);
-    const numLimit = Math.min(100, Math.max(1, parseInt(limit, 10) || 24));
+    const rawPage = req.query.pagina || req.query.page || 1;
+    const rawLimit = req.query.limite || req.query.limit || 24;
+
+    const numPage = Math.max(1, parseInt(rawPage, 10) || 1);
+    const numLimit = Math.min(100, Math.max(1, parseInt(rawLimit, 10) || 24));
     const offset = (numPage - 1) * numLimit;
 
     let baseQuery = `

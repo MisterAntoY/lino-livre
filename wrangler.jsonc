@@ -57,7 +57,9 @@
     "SITE_SLOGAN": "Livros livres, para todos.",
     "DEFAULT_LOCALE": "pt",
     "ITEMS_PER_PAGE": "24",
-    "MAX_ITEMS_PER_PAGE": "100"
+    "MAX_ITEMS_PER_PAGE": "100",
+    "WHATSAPP_COMMUNITY_URL": "https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU",
+    "WHATSAPP_CHANNEL_URL": "https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X"
   }
 
   // Secrets (set via: wrangler secret put <NAME>):
