@@ -793,7 +793,7 @@ const cursosData = [
   ],
   [
     "Gramática e Compreensão da Língua Portuguesa",
-    "Linguagens",
+    "Linguagens & Comunicação",
     "Khan Academy Brasil",
     "https://pt.khanacademy.org/humanities/gramatica-da-lingua-portuguesa",
     "cc-by-nc-sa",
