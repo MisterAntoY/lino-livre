@@ -4,7 +4,15 @@ const { getDatabase } = require('../src/database');
 
 const db = getDatabase();
 
-let sql = '-- Seed SQL dump for Cloudflare D1\n';
+let sql = `-- Seed SQL dump for Cloudflare D1
+DELETE FROM links_livros;
+DELETE FROM import_jobs;
+DELETE FROM cursos;
+DELETE FROM livros;
+DELETE FROM autores;
+DELETE FROM categorias;
+DELETE FROM fontes;
+`;
 
 function escapeString(val) {
   if (val === null || val === undefined) return 'NULL';

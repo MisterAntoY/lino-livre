@@ -117,10 +117,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000241',
     'dominio-publico',
-    380,
+    0,
     domCasmurroTexto
   ).lastInsertRowid;
-  insertLink.run(l1, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000241.pdf', 1887436, 1);
   insertLink.run(l1, 'epub', 'https://www.gutenberg.org/ebooks/55752.epub3.images', 1250000, 1);
   insertLink.run(l1, 'html', 'https://pt.wikisource.org/wiki/Dom_Casmurro', 0, 1);
 
@@ -139,10 +138,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000215',
     'dominio-publico',
-    215,
+    0,
     memoriasPosthumasTexto
   ).lastInsertRowid;
-  insertLink.run(l2, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000215.pdf', 2140000, 1);
   insertLink.run(l2, 'epub', 'https://www.gutenberg.org/ebooks/54829.epub3.images', 1100000, 1);
 
   // Livro 3: O Cortiço
@@ -160,10 +158,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000194',
     'dominio-publico',
-    165,
+    0,
     oCorticoTexto
   ).lastInsertRowid;
-  insertLink.run(l3, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000194.pdf', 2500000, 1);
   insertLink.run(l3, 'epub', 'https://www.gutenberg.org/ebooks/54575.epub3.images', 1400000, 1);
 
   // Livro 4: O Alienista
@@ -181,10 +178,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000231',
     'dominio-publico',
-    420,
+    0,
     oAlienistaTexto
   ).lastInsertRowid;
-  insertLink.run(l4, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000231.pdf', 950000, 1);
   insertLink.run(l4, 'html', 'https://pt.wikisource.org/wiki/O_Alienista', 0, 1);
 
   // Livro 5: Triste Fim de Policarpo Quaresma
@@ -202,10 +198,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000160',
     'dominio-publico',
-    190,
+    0,
     policarpoQuaresmaTexto
   ).lastInsertRowid;
-  insertLink.run(l5, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000160.pdf', 1450000, 1);
   insertLink.run(l5, 'epub', 'https://www.gutenberg.org/ebooks/57530.epub3.images', 980000, 1);
 
   // Livro 6: Espumas Flutuantes
@@ -223,10 +218,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000067',
     'dominio-publico',
-    310,
+    0,
     espumasFlutuantesTexto
   ).lastInsertRowid;
-  insertLink.run(l6, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000067.pdf', 850000, 1);
 
   // Livro 7: Iracema
   const l7 = insertLivro.run(
@@ -243,10 +237,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000185',
     'dominio-publico',
-    290,
+    0,
     iracemaTexto
   ).lastInsertRowid;
-  insertLink.run(l7, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000185.pdf', 1200000, 1);
   insertLink.run(l7, 'epub', 'https://www.gutenberg.org/ebooks/67705.epub3.images', 850000, 1);
 
   // Livro 8: O Guarani
@@ -264,10 +257,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000186',
     'dominio-publico',
-    230,
+    0,
     oGuaraniTexto
   ).lastInsertRowid;
-  insertLink.run(l8, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000186.pdf', 2800000, 1);
   insertLink.run(l8, 'epub', 'https://www.gutenberg.org/ebooks/38496.epub3.images', 1900000, 1);
 
   // Livro: Quincas Borba
@@ -285,10 +277,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000234',
     'dominio-publico',
-    275,
+    0,
     quincasBorbaTexto
   ).lastInsertRowid;
-  insertLink.run(lQuincas, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000234.pdf', 1650000, 1);
   insertLink.run(lQuincas, 'epub', 'https://www.gutenberg.org/ebooks/55682.epub3.images', 1150000, 1);
   insertLink.run(lQuincas, 'html', 'https://pt.wikisource.org/wiki/Quincas_Borba', 0, 1);
 
@@ -307,10 +298,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000188',
     'dominio-publico',
-    310,
+    0,
     senhoraTexto
   ).lastInsertRowid;
-  insertLink.run(lSenhora, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000188.pdf', 1820000, 1);
   insertLink.run(lSenhora, 'epub', 'https://www.gutenberg.org/ebooks/48433.epub3.images', 1200000, 1);
   insertLink.run(lSenhora, 'html', 'https://pt.wikisource.org/wiki/Senhora', 0, 1);
 
@@ -329,10 +319,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000282',
     'dominio-publico',
-    240,
+    0,
     oAteneuTexto
   ).lastInsertRowid;
-  insertLink.run(lAteneu, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000282.pdf', 1390000, 1);
   insertLink.run(lAteneu, 'epub', 'https://www.gutenberg.org/ebooks/47824.epub3.images', 980000, 1);
   insertLink.run(lAteneu, 'html', 'https://pt.wikisource.org/wiki/O_Ateneu', 0, 1);
 
@@ -351,10 +340,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000091',
     'dominio-publico',
-    430,
+    0,
     osSertoesTexto
   ).lastInsertRowid;
-  insertLink.run(lSertoes, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000091.pdf', 4200000, 1);
   insertLink.run(lSertoes, 'html', 'https://pt.wikisource.org/wiki/Os_Sertões', 0, 1);
 
   // Livro: A Moreninha
@@ -372,10 +360,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000216',
     'dominio-publico',
-    285,
+    0,
     aMoreninhaTexto
   ).lastInsertRowid;
-  insertLink.run(lMoreninha, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000216.pdf', 1250000, 1);
   insertLink.run(lMoreninha, 'epub', 'https://www.gutenberg.org/ebooks/55257.epub3.images', 870000, 1);
   insertLink.run(lMoreninha, 'html', 'https://pt.wikisource.org/wiki/A_Moreninha', 0, 1);
 
@@ -394,10 +381,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000109',
     'dominio-publico',
-    340,
+    0,
     autoDaBarcaDoInfernoTexto
   ).lastInsertRowid;
-  insertLink.run(lBarca, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000109.pdf', 720000, 1);
   insertLink.run(lBarca, 'epub', 'https://www.gutenberg.org/ebooks/37021.epub3.images', 550000, 1);
   insertLink.run(lBarca, 'html', 'https://pt.wikisource.org/wiki/Auto_da_Barca_do_Inferno', 0, 1);
 
@@ -416,10 +402,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000088',
     'dominio-publico',
-    510,
+    0,
     osLusiadasTexto
   ).lastInsertRowid;
-  insertLink.run(lLusiadas, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000088.pdf', 2950000, 1);
   insertLink.run(lLusiadas, 'epub', 'https://www.gutenberg.org/ebooks/3333.epub3.images', 1600000, 1);
   insertLink.run(lLusiadas, 'html', 'https://pt.wikisource.org/wiki/Os_Lusíadas', 0, 1);
 
@@ -438,10 +423,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-pe000004',
     'dominio-publico',
-    470,
+    0,
     mensagemTexto
   ).lastInsertRowid;
-  insertLink.run(lMensagem, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/pe000004.pdf', 890000, 1);
   insertLink.run(lMensagem, 'epub', 'https://www.gutenberg.org/ebooks/54029.epub3.images', 620000, 1);
   insertLink.run(lMensagem, 'html', 'https://pt.wikisource.org/wiki/Mensagem', 0, 1);
 
@@ -460,10 +444,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000043',
     'dominio-publico',
-    360,
+    0,
     noiteNaTavernaTexto
   ).lastInsertRowid;
-  insertLink.run(lTaverna, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000043.pdf', 960000, 1);
   insertLink.run(lTaverna, 'epub', 'https://www.gutenberg.org/ebooks/47822.epub3.images', 680000, 1);
   insertLink.run(lTaverna, 'html', 'https://pt.wikisource.org/wiki/Noite_na_Taverna', 0, 1);
 
@@ -482,10 +465,9 @@ function seed(dbInstance = null) {
     fDomPub,
     'dp-bv000159',
     'dominio-publico',
-    320,
+    0,
     claraDosAnjosTexto
   ).lastInsertRowid;
-  insertLink.run(lClara, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000159.pdf', 1350000, 1);
   insertLink.run(lClara, 'html', 'https://pt.wikisource.org/wiki/Clara_dos_Anjos', 0, 1);
 
   // Inserir Livros Técnicos e Manuais Abertos do GitHub (BibliotecaDev, italo books)
@@ -502,7 +484,11 @@ function seed(dbInstance = null) {
     'github-bibliotecadev': fBibDev,
     'github-italocamilo': fItalo,
     'trilhainfo': fTrilha,
-    'guiadeti': fGuiaDeTI
+    'guiadeti': fGuiaDeTI,
+    'gutenberg': fGutenberg,
+    'wikisource': fWikisource,
+    'dominiopublico': fDomPub,
+    'manual': fManual
   };
 
   for (const b of githubBooks) {
@@ -531,7 +517,7 @@ function seed(dbInstance = null) {
       fId,
       b.fonteIdExterno,
       'outro',
-      b.leituras || (Math.floor(Math.random() * 80) + 120),
+      0,
       `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nMaterial disponível livremente para leitura e estudo no acervo Lino Livre.`
     ).lastInsertRowid;
 
@@ -576,7 +562,7 @@ function seed(dbInstance = null) {
       fId,
       b.fonteIdExterno,
       b.licenca || 'dominio-publico',
-      b.leituras || (Math.floor(Math.random() * 80) + 300),
+      0,
       b.conteudoTexto
     ).lastInsertRowid;
 

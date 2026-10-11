@@ -669,7 +669,127 @@ und widerlegen den Mythos von der geschichtslosen Isolation des Kontinents.`,
 归向我们在罗安达的清凉港湾！
 归向威基河畔的咖啡种植园，归向宽扎河奔腾的浪花！
 归向我们母亲温暖的怀抱，归向孩子们自由奔放的欢笑！
-我们必将归来，因为自由的曙光正刺破非洲黑夜的长空！`
+我们必将归来，因为自由的曙光正刺破非洲黑夜的长空！`,
+
+  bushmanFolkloreEn: `### Chapter I: The Mantis Makes an Eland
+Long ago, the Mantis made an eland from a piece of unrubbed skin.
+He placed it in a fountain among the reeds, and every morning he went there to look upon it.
+The eland grew large and sleek, with gentle dark eyes that looked upon the waters.
+The Mantis wept for joy when he saw how beautiful was the creature of the dry savannah.
+He brought it honey from the rocks and sprinkled it upon the eland's flanks.
+And the eland licked his hand and followed him as a child follows its father through the tall red grass.
+
+### Chapter II: The Sun, the Moon and the Stars
+The old people tell that the Moon once sent a message to the people of the earth:
+'Even as I die and dying live again, so shall ye also die and dying live again.'
+The Moon called the Hare and said: 'Run swift upon your four paws, and carry this word unto mankind.'
+The Hare ran over the desert sands, but his heart was forgetful and impatient.
+When he came unto the villages of men, he said: 'Even as I die and dying perish, so shall ye also perish forever.'
+And thus sorrow came into the hearts of mortals, but the stars still shine in the deep sky to guide those who walk in the night.`,
+
+  bantuLegendsWernerEn: `### Chapter I: The Origin of the River and the Sacred Baobab
+In the heart of the great valleys, where the Zambezi roars like a thousand lions falling into the deep gorge,
+the elders gather the youth around the evening embers.
+They tell that in the first days, the Earth was soft like moist river clay, and the sky hung low so that men could touch the passing clouds with their spears.
+The great Baobab was the first of all trees to sprout upon the plains.
+Its roots dug deep into the underworld waters, holding fast the soil against the great winds.
+Because it gave shade to the elephant, the kudu and the traveler alike, the ancestors declared that no axe should ever strike its ancient bark.
+
+### Chapter II: The Hare and the Horned Animals
+There came a great drought upon the savannah, and all the waterholes turned to dry cracked mud.
+The Lion called an assembly of all the horned beasts: the Buffalo, the Eland, the Sable and the Gazelle.
+'Let us dig a deep well in the riverbed,' roared the king of beasts.
+All the animals toiled from the rising of the sun to the evening stars, save only the cunning Hare, who sat beneath the acacia playing his reed flute.
+Yet in the middle of the night, when the well was filled with cool sweet water,
+the Hare came with his calabash, laughing softly at the pride of the great horns.`,
+
+  capeloIvensBenguelaPt: `### Capítulo I: A Partida de Benguela e as Primeiras Serras
+A 7 de Julho de 1877, sob um sol ardente que dourava as águas calmas da baía de Benguela,
+a nossa caravana pôs-se em marcha em direção ao vasto e desconhecido interior africano.
+Cento e cinquenta carregadores marchavam em fila indiana, equilibrando à cabeça os fardos de fazenda e os instrumentos astronómicos.
+Diante de nós erguiam-se as cristas azuladas das serras de Catumbela, onde o ar marítimo cedia lugar ao vento seco do planalto.
+O nosso coração batia forte com o sentimento de abrir caminhos nunca antes trilhados pela ciência geográfica.
+
+### Capítulo II: O Encontro com os Sobas do Planalto de Benguela
+Nas terras altas do Bailundo, onde a terra vermelha é fecunda e as acácias abrem copas majestosas,
+fomos recebidos pelo Grande Soba no terreiro da sua povoação fortificada.
+Sentados sobre esteiras de palha fina, trocámos saudações protocolares através dos intérpretes.
+O Soba ouviu com dignidade a explicação dos nossos propósitos: não vinham negociantes de escravos nem soldados de conquista,
+mas homens que mediam os astros e traçavam o curso dos grandes rios que alimentam a bacia do Zaire e do Zambeze.
+Em sinal de paz, partilhou connosco a farinha de milho e o mel silvestre colhido nas florestas do planalto.`,
+
+  africanStorybookPt: `### Capítulo I: Como o Macaco Salvou a Árvore da Vida
+Num tempo muito antigo, quando os animais ainda falavam com as estrelas,
+uma grande árvore no centro da savana sustentava todos os frutos doces da terra.
+Quando o leopardo faminto quis guardar a árvore só para si, os pequenos animais ficaram aflitos.
+Foi então que o pequeno macaco saltador usou a sua astúcia: subiu ao ramo mais alto e começou a atirar sementes para todos os cantos.
+Onde caía uma semente, nascia uma nova árvore com água fresca e folhas verdes.
+E assim a generosidade venceu o egoísmo, ensinando que a partilha é o maior tesouro da floresta.
+
+### Capítulo II: A Tartaruga Sábia e o Fogo Sagrado
+A tartaruga andava devagar, mas os seus olhos viam o que os corredores velozes deixavam passar.
+Quando a noite ficou fria e o trovão apagou o fogo das aldeias, nenhum animal sabia como reacender a chama.
+A tartaruga caminhou durante três luas até à grande montanha de pedra vermelha.
+Com paciência infinita, bateu duas pedras de sílex até que uma faísca saltou para a casca seca de um embondeiro.
+Levou a brasa viva na sua concha protectora de volta à aldeia.
+Desde esse dia, todos os animais respeitam o passo lento da tartaruga, porque a paciência salva a vida.`,
+
+  contosKabylieFr: `### Chapitre I: L'Oiseau de Lumière et le Berger des Montagnes
+Sur les cimes escarpées du Djurdjura, où les neiges éternelles contemplent la mer Méditerranée,
+un jeune berger nommé Ali gardait son troupeau de chèvres au bord du ravin d'argent.
+Un soir de brume, alors que le vent sifflait dans les oliviers centenaires,
+un oiseau dont les plumes brillaient comme l'or pur vint se poser sur son épaule.
+'Ne crains rien, enfant des crêtes,' murmura l'oiseau d'une voix mélodieuse comme une flûte de roseau.
+'Je suis la mémoire des ancêtres, et je viens t'apprendre le secret de la source qui ne tarit jamais.'
+
+### Chapitre II: Les Épreuves de la Vallée Enchantée
+Pour délivrer la source retenue par le géant de pierre, Ali dut franchir trois portes de rocher sans jamais regarder en arrière.
+Il refusa l'or des marchands d'illusions et le miroir de la vanité, car son cœur n'était rempli que de l'amour de son village natal.
+Lorsqu'il toucha enfin la pierre sacrée avec sa houlette de berger, l'eau claire jaillit en cascades mugissantes,
+arrosant les figuiers et les grenadiers de la vallée kabyle, tandis que les femmes chantaient la renaissance de la terre féconde.`,
+
+  voyageTombouctouFr: `### Chapitre I: L'Arrivée à la Cité Mystérieuse des Sables
+Le 20 avril 1828, au coucher du soleil, après des mois d'une marche épuisante à travers les sables brûlants du désert,
+j'aperçus enfin au loin les minarets d'argile de Tombouctou se détachant sur l'horizon enflammé.
+Mon émotion était indicible. La reine du Soudan occidental, la cité tant célébrée par les voyageurs arabes et les récits d'Orient,
+s'étendait devant mes yeux dans le silence infini du Sahara.
+Ses maisons massives en briques de banco, ses cours intérieures ombragées et sa mosquée de Djinguereber
+témoignaient d'une grandeur paisible que les siècles de tempêtes de sable n'avaient su effacer.
+
+### Chapitre II: Les Savants et les Manuscrits du Sahel
+À Tombouctou, la richesse la plus précieuse n'était ni l'or ni le sel gemme de Taoudeni, mais les livres.
+Dans chaque grande famille, les lettrés conservaient jalousement des bibliothèques de manuscrits calligraphiés à l'encre d'or et de safran,
+traitant d'astronomie, de jurisprudence, de poésie et d'histoire des souverains du Mali et du Songhaï.
+Je compris alors que l'Afrique noire n'était point une terre sans écriture,
+mais le berceau d'une haute culture intellectuelle qui avait illuminé le monde médiéval d'une clarté méconnue de l'Europe.`,
+
+  unescoHistoireAfricaFr: `### Chapitre I: L'Afrique, Berceau de l'Humanité
+La recherche paléontologique moderne a confirmé de manière éclatante la vérité fondamentale énoncée par la science :
+c'est sur le sol africain, dans la grande faille du Rift oriental et sur les hauts plateaux austral,
+que se sont déroulées les premières étapes décisives de l'hominisation.
+Depuis l'apparition des premiers outils taillés d'Olduvai jusqu'à la maîtrise du feu et l'éclosion de la pensée symbolique,
+l'Afrique a offert à l'espèce humaine son premier foyer protecteur et son premier atelier créateur.
+
+### Chapitre II: Les Royaumes et les Civilisations du Nil et du Sahel
+L'histoire du continent africain ne saurait être réduite à un appendice des événements extérieurs.
+De la Nubie antique et du royaume de Koush jusqu'aux civilisations florissantes de l'Ifé, du Bénin et du Grand Zimbabwe,
+les peuples africains ont développé des institutions politiques sophistiquées, une métallurgie du fer précoce
+et des philosophies de l'harmonie sociale qui enrichissent le patrimoine commun de l'humanité entière.`,
+
+  xingchaShenglanZh: `### 第一章：星槎浮海与东非木骨都束国
+太仓起锚，星槎指天。宝船巨舶乘西南季风涉浩瀚西洋，
+历经数万里惊涛骇浪，终于抵达东非名邦木骨都束国（今摩加迪沙）。
+其城依山带海，筑石为城，层楼累高，民风敦庞纯实。
+其地出产金钱豹皮、龙涎香与乳香，珍奇异常。
+郑和正使率行官登岸，宣示永乐皇帝弘德安民之意，厚加颁赐锦绮丝绸与青花瓷器，
+抚慰万民，彼此结为盟好，互通商舶。
+
+### 第二章：麻林地古国与瑞兽入贡
+船队再指南行，至麻林地国（今马林迪）。
+国王率大小官员望阙叩谢，欣然以国珍相报，特遣正使携带神鹿（长颈鹿）随船来朝。
+其兽长项高丈余，蹄有双甲，毛色班斓如赤霞，性情温良，遇草即啮。
+明廷朝野皆叹天降麒麟，盛赞四海升平。
+六百年涛声依旧，海上丝路所经东非诸国，皆沐和平交往之清风，成为千古佳话。`
 };
 
 module.exports = { textosAfrica };

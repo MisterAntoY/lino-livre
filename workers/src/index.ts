@@ -353,9 +353,12 @@ app.get('/api/livros', async (c) => {
 
     return c.json({
       page: numPage,
+      pagina: numPage,
       limit: numLimit,
+      limite: numLimit,
       total,
       total_pages: Math.ceil(total / numLimit),
+      total_paginas: Math.ceil(total / numLimit),
       data: livros
     });
   } catch (err: any) {
@@ -793,15 +796,18 @@ app.get('/api/dicas/:id', (c) => {
   }
 });
 
+const DEFAULT_WHATSAPP_COMMUNITY = 'https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU';
+const DEFAULT_WHATSAPP_CHANNEL = 'https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X';
+
 // 8. Comunidade e Canal WhatsApp
 app.get('/api/comunidade', (c) => {
-  const url = c.env.WHATSAPP_COMMUNITY_URL || null;
+  const url = c.env.WHATSAPP_COMMUNITY_URL || DEFAULT_WHATSAPP_COMMUNITY;
   if (!url) return c.json({ erro: 'Comunidade WhatsApp não configurada' }, 404);
   return c.json({ url });
 });
 
 app.get('/api/comunidade/qrcode.svg', async (c) => {
-  const url = c.env.WHATSAPP_COMMUNITY_URL || null;
+  const url = c.env.WHATSAPP_COMMUNITY_URL || DEFAULT_WHATSAPP_COMMUNITY;
   if (!url) return c.json({ erro: 'Comunidade WhatsApp não configurada' }, 404);
 
   try {
@@ -816,13 +822,13 @@ app.get('/api/comunidade/qrcode.svg', async (c) => {
 });
 
 app.get('/api/canal', (c) => {
-  const url = c.env.WHATSAPP_CHANNEL_URL || null;
+  const url = c.env.WHATSAPP_CHANNEL_URL || DEFAULT_WHATSAPP_CHANNEL;
   if (!url) return c.json({ erro: 'Canal WhatsApp não configurado' }, 404);
   return c.json({ url });
 });
 
 app.get('/api/canal/qrcode.svg', async (c) => {
-  const url = c.env.WHATSAPP_CHANNEL_URL || null;
+  const url = c.env.WHATSAPP_CHANNEL_URL || DEFAULT_WHATSAPP_CHANNEL;
   if (!url) return c.json({ erro: 'Canal WhatsApp não configurado' }, 404);
 
   try {

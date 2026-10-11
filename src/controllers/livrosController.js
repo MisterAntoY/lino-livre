@@ -99,9 +99,12 @@ function listar(req, res) {
 
     res.json({
       page: numPage,
+      pagina: numPage,
       limit: numLimit,
+      limite: numLimit,
       total,
       total_pages: Math.ceil(total / numLimit),
+      total_paginas: Math.ceil(total / numLimit),
       data: livros
     });
   } catch (err) {

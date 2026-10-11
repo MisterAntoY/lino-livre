@@ -72,7 +72,7 @@
     "courses": {
       "bannerBadge": "⭐ Free Online Courses & Certifications",
       "bannerTitle": "Directory of Free Online Courses",
-      "bannerDescBefore": "Video courses, YouTube playlists with free verified certificates and open training in partnership with ",
+      "bannerDescBefore": "Video courses, YouTube playlists with free verified certificates and open training featuring resources from ",
       "bannerDescAfter": " and Fundação Bradesco.",
       "searchPlaceholder": "Search courses and technologies (Python, DevOps, AI, Power BI, Linux...)...",
       "filters": "Filters & Categories:",
@@ -101,7 +101,7 @@
     },
     "roadmaps": {
       "bannerTitle": "Career Roadmaps & Guided Learning Tracks",
-      "bannerDesc": "Step-by-step interactive skill trees and career pathways in partnership with Roadmap.sh, Trilha Info and Guia de TI.",
+      "bannerDesc": "Step-by-step interactive skill trees and career pathways featuring open resources from Roadmap.sh, Trilha Info and Guia de TI.",
       "searchPlaceholder": "Search roadmaps (Frontend, Backend, DevOps, AI, React, QA, Python...)...",
       "filters": "Track Filters:",
       "all": "All Roadmaps",

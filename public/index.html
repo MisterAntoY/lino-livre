@@ -176,7 +176,7 @@
       <div class="cursos-header-banner">
         <div class="banner-badge-primary" data-i18n="ui.courses.bannerBadge">⭐ Cursos Livres & Certificações Gratuitas</div>
         <h2 data-i18n="ui.courses.bannerTitle">Diretório de Cursos Online Gratuitos</h2>
-        <p><span data-i18n="ui.courses.bannerDescBefore">Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas em parceria com o </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e a Fundação Bradesco.</span></p>
+        <p><span data-i18n="ui.courses.bannerDescBefore">Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas reunindo recursos do </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e da Fundação Bradesco.</span></p>
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
@@ -191,7 +191,9 @@
           <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube">📺 YouTube (Certificado Gratuito)</button>
           <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')">🏛️ Fundação Bradesco</button>
           <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti">🚀 Guia de TI</button>
-          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')">🎓 USP Oficial</button>
+          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')">🎓 Cursos USP</button>
+          <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')">⚡ DIO Free</button>
+          <button class="pill" data-filtro="Alura" onclick="app.filtrarCursosPorPlataforma('Alura')">🌟 Alura Aberta</button>
           <button class="pill" data-filtro="EV.G" onclick="app.filtrarCursosPorPlataforma('EV.G')">🏛️ EV.G / ENAP</button>
           <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')">🏛️ IFRS Federal</button>
           <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')" data-i18n="ui.courses.areaTech">Tecnologia Geral</button>
@@ -220,7 +222,7 @@
       <div class="cursos-header-banner roadmap-banner">
         <div class="banner-badge-primary" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe;">🗺️ Árvores de Habilidades & Carreiras Tech</div>
         <h2 data-i18n="ui.roadmaps.bannerTitle">Roadmaps e Trilhas Guiadas de Aprendizado</h2>
-        <p data-i18n="ui.roadmaps.bannerDesc">Mapas interativos passo a passo e caminhos estruturados de formação profissional em parceria com <a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer" class="link-destaque">Roadmap.sh</a>, <a href="https://trilha.info" target="_blank" rel="noopener noreferrer" class="link-destaque">Trilha Info</a> e o <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a>.</p>
+        <p data-i18n="ui.roadmaps.bannerDesc">Mapas interativos passo a passo e caminhos estruturados de formação profissional reunindo recursos abertos de <a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer" class="link-destaque">Roadmap.sh</a>, <a href="https://trilha.info" target="_blank" rel="noopener noreferrer" class="link-destaque">Trilha Info</a> e do <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a>.</p>
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
@@ -338,6 +340,11 @@
   <footer class="site-footer">
     <div class="container footer-content">
       <p><strong>Lino Livre</strong> <span data-i18n="ui.footer.tagline">• Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</span></p>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin: 0.5rem 0;">
+        <span>Aviso Legal: Plataforma educacional comunitária e sem fins lucrativos. Se você é detentor de direitos autorais de qualquer material e deseja solicitar a sua remoção imediata, contate: </span>
+        <a href="mailto:contato@linolivre.org?subject=Solicita%C3%A7%C3%A3o%20de%20Remo%C3%A7%C3%A3o%20de%20Conte%C3%BAdo" style="color: var(--primary); text-decoration: underline; font-weight: 500;">contato@linolivre.org</a>
+        <span> — Atenderemos e removeremos prontamente.</span>
+      </p>
       <p id="footer-links-container" class="footer-links hidden">
         <a id="link-footer-comunidade" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>

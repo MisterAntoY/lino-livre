@@ -1,6 +1,13 @@
 const express = require('express');
 const path = require('node:path');
 const compression = require('compression');
+
+if (typeof process.loadEnvFile === 'function') {
+  try {
+    process.loadEnvFile();
+  } catch (_) {}
+}
+
 const apiRoutes = require('./routes/api');
 const { getDatabase } = require('./database');
 

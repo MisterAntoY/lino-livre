@@ -84,8 +84,8 @@
     "courses": {
       "bannerBadge": "⭐ Cursos Livres & Certificações Gratuitas",
       "bannerTitle": "Diretório de Cursos Online Gratuitos",
-      "bannerDescBefore": "Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas em parceria com o ",
-      "bannerDescAfter": " e a Fundação Bradesco.",
+      "bannerDescBefore": "Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas reunindo recursos do ",
+      "bannerDescAfter": " e da Fundação Bradesco.",
       "searchPlaceholder": "Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)...",
       "filters": "Filtros & Categorias:",
       "all": "Todos",
@@ -113,7 +113,7 @@
     },
     "roadmaps": {
       "bannerTitle": "Roadmaps e Trilhas Guiadas de Aprendizado",
-      "bannerDesc": "Mapas interativos passo a passo e caminhos estruturados de formação profissional em parceria com Roadmap.sh, Trilha Info e o Guia de TI.",
+      "bannerDesc": "Mapas interativos passo a passo e caminhos estruturados de formação profissional reunindo recursos abertos de Roadmap.sh, Trilha Info e do Guia de TI.",
       "searchPlaceholder": "Pesquisar roadmaps (Frontend, Backend, DevOps, IA, React, QA, Python...)...",
       "filters": "Filtros de Trilha:",
       "all": "Todos os Roadmaps",

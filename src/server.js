@@ -1,3 +1,9 @@
+if (typeof process.loadEnvFile === 'function') {
+  try {
+    process.loadEnvFile();
+  } catch (_) {}
+}
+
 const app = require('./app');
 const { getDatabase } = require('./database');
 

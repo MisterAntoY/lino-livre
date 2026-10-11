@@ -352,7 +352,7 @@ const app = {
             </div>
 
             <div class="book-stats">
-              <span>${t('books.readings', { n: l.leituras || 0 })}</span>
+              <span>${l.leituras > 0 ? t('books.readings', { n: l.leituras }) : '📖 Leitura Aberta'}</span>
               <span>🏷️ ${this.escape(traduzirCategoria(l.categoria_nome) || t('books.defaultCategory'))}</span>
             </div>
 
@@ -387,12 +387,23 @@ const app = {
         document.getElementById('leitor-titulo').textContent = livro.titulo;
         document.getElementById('leitor-autor').textContent = `${livro.autor_nome || t('books.defaultAuthor')} • ${traduzirLicenca(livro.licenca)}`;
 
-        // Botão para abrir PDF Oficial se existir
+        // Botão para abrir edição completa (EPUB Gutenberg ou HTML Wikisource)
         const btnPdf = document.getElementById('btn-leitor-pdf');
-        const pdfLink = (livro.links || []).find(lnk => lnk.formato.toLowerCase() === 'pdf');
+        const epubLink = (livro.links || []).find(lnk => lnk.formato && lnk.formato.toLowerCase() === 'epub');
+        const htmlLink = (livro.links || []).find(lnk => lnk.formato && lnk.formato.toLowerCase() === 'html' && !lnk.url.includes('wikipedia'));
+        const pdfLink = (livro.links || []).find(lnk => lnk.formato && lnk.formato.toLowerCase() === 'pdf' && !lnk.url.includes('dominiopublico.gov.br'));
+        const bestExternalLink = epubLink || htmlLink || pdfLink || (livro.links && livro.links[0]);
+
         if (btnPdf) {
-          if (pdfLink) {
-            btnPdf.href = `/api/livros/${livro.id}/ler/${pdfLink.id}`;
+          if (bestExternalLink) {
+            btnPdf.href = `/api/livros/${livro.id}/ler/${bestExternalLink.id}`;
+            if (bestExternalLink.formato.toLowerCase() === 'epub') {
+              btnPdf.textContent = '📥 Baixar EPUB (Gutenberg)';
+            } else if (bestExternalLink.formato.toLowerCase() === 'html') {
+              btnPdf.textContent = '🌐 Wikisource Oficial';
+            } else {
+              btnPdf.textContent = '📥 Baixar PDF';
+            }
             btnPdf.classList.remove('hidden');
           } else {
             btnPdf.classList.add('hidden');
@@ -1003,6 +1014,8 @@ const app = {
       const isGuiaDeTI = (c.plataforma || '').includes('Guia de TI');
       const isBradesco = (c.plataforma || '').includes('Fundação Bradesco');
       const isUsp = (c.plataforma || '').includes('USP');
+      const isDio = (c.plataforma || '').includes('DIO');
+      const isAlura = (c.plataforma || '').includes('Alura');
       const isEvg = (c.plataforma || '').includes('EV.G') || (c.plataforma || '').includes('ENAP');
       const isIfrs = (c.plataforma || '').includes('IFRS') || (c.plataforma || '').includes('Instituto Federal');
       let btnTexto = t('courses.btnFree');
@@ -1019,7 +1032,13 @@ const app = {
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">${t('courses.badgeBradesco')}</span>`;
       } else if (isUsp) {
         btnTexto = '🎓 Aulas USP';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">🎓 USP Oficial</span>`;
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">🎓 Cursos USP</span>`;
+      } else if (isDio) {
+        btnTexto = '⚡ Acessar DIO';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8;">⚡ DIO Free</span>`;
+      } else if (isAlura) {
+        btnTexto = '🌟 Aulas Alura';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;">🌟 Alura Aberta</span>`;
       } else if (isEvg) {
         btnTexto = '📜 Inscrição EV.G';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#bbf7d0;">🏛️ EV.G / ENAP</span>`;
@@ -1034,9 +1053,9 @@ const app = {
           ? 'card-featured-guiadeti'
           : (isBradesco
             ? 'card-featured-bradesco'
-            : (isUsp || isEvg || isIfrs ? 'card-featured-guiadeti' : '')));
+            : (isUsp || isDio || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')));
 
-      const isBtnPrimary = isYouTube || isGuiaDeTI || isUsp || isEvg || isIfrs;
+      const isBtnPrimary = isYouTube || isGuiaDeTI || isUsp || isDio || isAlura || isEvg || isIfrs;
 
       return `
         <article class="course-card ${cardClass}">
@@ -1246,8 +1265,8 @@ const app = {
             <div class="stat-label">${t('dashboard.titles')}</div>
           </div>
           <div class="stat-card">
-            <div class="stat-val">${r.total_leituras || 0}</div>
-            <div class="stat-label">${t('dashboard.reads')}</div>
+            <div class="stat-val">${r.total_leituras > 0 ? r.total_leituras.toLocaleString() : '0'}</div>
+            <div class="stat-label">${r.total_leituras > 0 ? t('dashboard.reads') : 'Leituras em Tempo Real'}</div>
           </div>
           <div class="stat-card">
             <div class="stat-val">${r.total_cursos || 0}</div>
@@ -1324,7 +1343,7 @@ const app = {
               ${maisLidos.map(l => `
                 <div class="dash-list-item">
                   <span>📖 ${this.escape(l.titulo)}</span>
-                  <span class="dash-list-badge">${l.leituras} ${t('dashboard.readsShort')}</span>
+                  <span class="dash-list-badge">${l.leituras > 0 ? `${l.leituras} ${t('dashboard.readsShort')}` : 'Acervo Aberto'}</span>
                 </div>
               `).join('')}
             </div>
