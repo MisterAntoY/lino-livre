@@ -568,6 +568,69 @@ async function importarChino(aplicar) {
   return c.livrosRegistos.length;
 }
 
+// ───────────────── SIYAVULA (manuais sul-africanos, CC-BY) ─────────────────
+// Siyavula publica manuais de ciência e matemática do ensino sul-africano
+// em acesso aberto CC-BY. Não armazenamos ficheiros: guardamos metadados e
+// apontamos para a leitura online em siyavula.com (redirect 302).
+async function importarSiyavula(aplicar) {
+  const UA = { 'User-Agent': 'LinoLivre/1.0 (educacional; lino-livre)' };
+  const fetchTexto = async (url) => {
+    for (let a = 0; a < 3; a++) {
+      try {
+        const ctl = new AbortController();
+        const to = setTimeout(() => ctl.abort(), 15000);
+        const r = await fetch(url, { headers: UA, signal: ctl.signal });
+        clearTimeout(to);
+        if (r.ok) return await r.text();
+        if (r.status === 429) { await new Promise(r2 => setTimeout(r2, 2000)); continue; }
+        return null;
+      } catch { await new Promise(r2 => setTimeout(r2, 1200)); }
+    }
+    return null;
+  };
+
+  console.log('🇿🇦 SIYAVULA (manuais CC-BY da África do Sul)');
+  const htmlRead = await fetchTexto('https://www.siyavula.com/read');
+  if (!htmlRead) throw new Error('não consegui ler a página /read do Siyavula');
+  const disciplinas = new Map();
+  for (const m of htmlRead.matchAll(/\/read\/za\/([a-z-]+)\/(grade-\d+)/g)) {
+    disciplinas.set(m[0], { subj: m[1], grade: m[2] });
+  }
+  const rotulos = {
+    mathematics: 'Matemática', 'mathematical-literacy': 'Alfabetização Matemática',
+    'physical-sciences': 'Ciências Físicas', 'natural-sciences': 'Ciências Naturais',
+    'life-sciences': 'Ciências da Vida', 'computer-applications-technology': 'Tecnologia de Aplicações Informáticas',
+    'information-technology': 'Tecnologia da Informação',
+  };
+  console.log(`   ✔ ${disciplinas.size} manuais encontrados`);
+  const fonteId = await garantirFonte({ slug: 'siyavula', nome: 'Siyavula', tipo: 'manual', url_base: 'https://www.siyavula.com' });
+  const catId = await garantirCategoria('🇿🇦 Ciência & Matemática Sul-Africana', 'Manuais de ciência e matemática do ensino da África do Sul, em acesso aberto CC-BY, hospedados no Siyavula — leitura online com redirect.');
+  const c = novoConstrutor(fonteId, catId);
+  await c.preparar();
+
+  let n = 0;
+  for (const [path, { subj, grade }] of disciplinas) {
+    const url = 'https://www.siyavula.com' + path;
+    const pagina = await fetchTexto(url);
+    const tituloReal = pagina ? (pagina.match(/<title>([\s\S]*?)<\/title>/)?.[1] || '').replace(/\s*\|\s*Siyavula\s*$/i, '').replace(/\s*Table of Contents\s*$/i, '').trim() : null;
+    const titulo = tituloReal || `${rotulos[subj] || subj} ${grade.replace('grade-', '')}`;
+    c.add({
+      titulo, autor: 'Siyavula (equipa editorial)', idioma: 'en', licenca: 'cc-by',
+      capaUrl: null,
+      sinopse: `Manual ${rotulos[subj] || subj} (${grade.replace('grade-', '')}º ano) do ensino sul-africano, em acesso aberto CC-BY. Texto integral hospedado no Siyavula — leitura online no próprio site.`,
+      ano: null, urlLeitura: url, formato: 'html', fonteIdExterno: `siy-${subj}-${grade}`,
+    });
+    n++;
+    if (n % 5 === 0) console.log(`     … ${n}/${disciplinas.size} processados`);
+    await new Promise(r2 => setTimeout(r2, 500));
+  }
+  console.log(`   ✔ ${c.livrosRegistos.length} manuais prontos`);
+  const tabelas = await c.fechar();
+  const ficheiros = gerarSqlLotes(tabelas, 'siyavula');
+  if (aplicar) ficheiros.forEach(applyFile);
+  return c.livrosRegistos.length;
+}
+
 // ───────────────────────── main ─────────────────────────
 
 const FONTES = {
@@ -576,6 +639,7 @@ const FONTES = {
   standardebooks: importarStandardEbooks,
   openstax: importarOpenstax,
   chinese: importarChino,
+  siyavula: importarSiyavula,
 };
 
 const escolhida = process.argv[2] || 'todas';
