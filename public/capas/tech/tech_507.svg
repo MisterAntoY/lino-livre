@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e2e8f0" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#e2e8f0" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Fundo principal com degradê -->
+  <rect width="400" height="600" fill="url(#bgGrad)"/>
+  <rect width="400" height="600" fill="url(#gridPattern)"/>
+
+  <!-- Halo sutil atrás do ícone -->
+  <circle cx="200" cy="200" r="100" fill="url(#glowGrad)"/>
+
+  <!-- Sombra lateral simulando lombada do livro -->
+  <rect x="0" y="0" width="14" height="600" fill="rgba(0,0,0,0.4)"/>
+  <line x1="14" y1="0" x2="14" y2="600" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- Badge de Idioma e Licença Aberta (Topo) -->
+  <g transform="translate(40, 42)">
+    <rect width="170" height="26" rx="13" fill="rgba(255,255,255,0.06)" stroke="#e2e8f0" stroke-opacity="0.4" stroke-width="1"/>
+    <circle cx="15" cy="13" r="4" fill="#e2e8f0"/>
+    <text x="28" y="17" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#f59e0b" letter-spacing="0.5">ES • LIBRO ABIERTO</text>
+  </g>
+
+  <!-- Ícone Central da Tecnologia -->
+  
+    <g transform="translate(165, 160) scale(2.3)">
+      <circle cx="16" cy="16" r="14" fill="#334155"/>
+      <path d="M16 6c-3 0-5 2.5-5 5.5 0 1.5.5 3 1.5 4l-1.5 4c-.5 1.5.5 3.5 2.5 3.5h5c2 0 3-2 2.5-3.5l-1.5-4c1-1 1.5-2.5 1.5-4 0-3-2-5.5-5-5.5z" fill="#f8fafc"/>
+      <ellipse cx="16" cy="13" rx="2" ry="1" fill="#f59e0b"/>
+      <circle cx="14" cy="10" r="1" fill="#0f172a"/>
+      <circle cx="18" cy="10" r="1" fill="#0f172a"/>
+    </g>
+  
+
+  <!-- Linha divisória de acento -->
+  <rect x="40" y="325" width="48" height="4" rx="2" fill="#e2e8f0"/>
+
+  <!-- Título do Livro -->
+  <text x="40" y="370" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" fill="#f8fafc" letter-spacing="-0.5">Manual de Linux y</text>
+<text x="40" y="402" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" fill="#f8fafc" letter-spacing="-0.5">Administración de</text>
+<text x="40" y="434" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" fill="#f8fafc" letter-spacing="-0.5">Servidores</text>
+
+  <!-- Autor / Curadoria -->
+  <text x="40" y="490" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#94a3b8">Por Proyecto LuCAS &amp; Hispalinux</text>
+
+  <!-- Rodapé Lino Livre Oficial -->
+  <line x1="40" y1="535" x2="360" y2="535" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <g transform="translate(40, 555)">
+    <circle cx="6" cy="6" r="3" fill="#38bdf8"/>
+    <text x="16" y="9" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#cbd5e1" letter-spacing="1">LINO LIVRE</text>
+    <text x="96" y="9" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">• Acervo Digital Aberto</text>
+  </g>
+</svg>
