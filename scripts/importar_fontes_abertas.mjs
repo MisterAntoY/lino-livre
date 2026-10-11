@@ -568,6 +568,102 @@ async function importarChino(aplicar) {
   return c.livrosRegistos.length;
 }
 
+// ─────────────── PROJECT GUTENBERG via Gutendex (domínio público) ───────────────
+// Livros do Project Gutenberg (todos domínio público / PD), via API Gutendex.
+// Dedup: usa o ID do Gutenberg como fonteIdExterno = mesmo formato dos já importados.
+// Modelo intermediário: guardamos metadados e link de leitura em gutenberg.org (302).
+async function importarGutenberg(aplicar) {
+  const UA = { 'User-Agent': 'LinoLivre/1.0 (educacional; lino-livre)' };
+  const buscar = async (params) => {
+    const out = [];
+    let page = 1;
+    for (;;) {
+      const url = 'https://gutendex.com/books/?' + new URLSearchParams({ ...params, page });
+      let j = null;
+      // retries pacientes com backoff exponencial (Gutendex faz rate-limit em série)
+      for (let a = 0; a < 6; a++) {
+        try {
+          const ctl = new AbortController();
+          const to = setTimeout(() => ctl.abort(), 25000);
+          const r = await fetch(url, { headers: UA, signal: ctl.signal });
+          clearTimeout(to);
+          if (r.ok) { j = await r.json(); break; }
+          if (r.status === 429) { await new Promise(s => setTimeout(s, 2000 * (a + 1))); continue; }
+          // outro erro transitório: espera e tenta de novo
+          await new Promise(s => setTimeout(s, 1500 * (a + 1)));
+        } catch { await new Promise(s => setTimeout(s, 1500 * (a + 1))); }
+      }
+      if (!j) {
+        // não abandonar tudo: espera extra e tenta mais uma vez esta página
+        await new Promise(s => setTimeout(s, 4000));
+        for (let a = 0; a < 3 && !j; a++) {
+          try {
+            const ctl = new AbortController();
+            const to = setTimeout(() => ctl.abort(), 25000);
+            const r = await fetch(url, { headers: UA, signal: ctl.signal });
+            clearTimeout(to);
+            if (r.ok) { j = await r.json(); break; }
+          } catch {}
+          await new Promise(s => setTimeout(s, 3000 * (a + 1)));
+        }
+      }
+      if (!j) { console.warn(`   ⚠ página ${page} (${params.search || params.languages}) desistiu — a saltar`); page++; continue; }
+      out.push(...(j.results || []));
+      if (!j.next) break;
+      page++;
+      await new Promise(s => setTimeout(s, 1200)); // respeitar rate limits
+    }
+    return out;
+  };
+
+  console.log('📚 PROJECT GUTENBERG (Gutendex, domínio público)');
+  const consultas = [
+    { rotulo: 'africanos/tema África', params: { search: 'african' } },
+    { rotulo: 'portugueses (pt)', params: { languages: 'pt' } },
+  ];
+  const fonteId = await garantirFonte({ slug: 'gutenberg', nome: 'Project Gutenberg', tipo: 'api', url_base: 'https://gutendex.com' });
+  const catId = await garantirCategoria('📚 Project Gutenberg (Domínio Público)', 'Literatura e obras em domínio público do Project Gutenberg, incluindo títulos sobre África e literatura portuguesa. Leitura e download no próprio Gutenberg (redirect).');
+
+  const c = novoConstrutor(fonteId, catId);
+  await c.preparar();
+  const vistos = new Set();
+  let totalBruto = 0;
+
+  for (const { rotulo, params } of consultas) {
+    const books = await buscar(params);
+    totalBruto += books.length;
+    let n = 0;
+    for (const b of books) {
+      if (vistos.has(b.id)) continue;
+      vistos.add(b.id);
+      // só domínio público (copyright=false); ignora áudio/imagem
+      if (b.copyright !== false || b.media_type !== 'Text') continue;
+      const fmt = b.formats || {};
+      const leitura = fmt['text/html'] || fmt['text/plain; charset=utf-8'] || Object.values(fmt).find(u => /\.html?$|\.txt/i.test(u));
+      if (!leitura) continue;
+      const capa = fmt['image/jpeg'] || null;
+      const idioma = (b.languages && b.languages[0]) || 'en';
+      const autor = (b.authors && b.authors[0] && b.authors[0].name) || 'Autor desconhecido';
+      // inverter "Sobrenome, Primeiro" → "Primeiro Sobrenome" para display
+      const autorDisplay = autor.includes(',') ? autor.split(',').map(s => s.trim()).reverse().join(' ') : autor;
+      const sinopse = (b.summaries && b.summaries[0]) ? b.summaries[0].replace(/\s*\(This is an automatically generated summary\.\)\s*$/i, '').trim() : null;
+      c.add({
+        titulo: b.title, autor: autorDisplay, idioma, licenca: 'dominio-publico',
+        capaUrl: capa, sinopse, ano: b.authors?.[0]?.birth_year || null,
+        urlLeitura: leitura, formato: 'html', fonteIdExterno: String(b.id),
+      });
+      n++;
+    }
+    console.log(`   ✔ ${rotulo}: ${books.length} obtidos, ${n} novos elegíveis`);
+  }
+  console.log(`   ✔ ${c.livrosRegistos.length} livros prontos (de ${totalBruto} brutos, ${vistos.size} únicos)`);
+
+  const tabelas = await c.fechar();
+  const ficheiros = gerarSqlLotes(tabelas, 'gutenberg');
+  if (aplicar) ficheiros.forEach(applyFile);
+  return c.livrosRegistos.length;
+}
+
 // ───────────────── SIYAVULA (manuais sul-africanos, CC-BY) ─────────────────
 // Siyavula publica manuais de ciência e matemática do ensino sul-africano
 // em acesso aberto CC-BY. Não armazenamos ficheiros: guardamos metadados e
@@ -639,6 +735,7 @@ const FONTES = {
   standardebooks: importarStandardEbooks,
   openstax: importarOpenstax,
   chinese: importarChino,
+  gutenberg: importarGutenberg,
   siyavula: importarSiyavula,
 };
 
