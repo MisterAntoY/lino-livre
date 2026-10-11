@@ -9,6 +9,7 @@ const { filosofiaBooks } = require('./filosofiaSeedData');
 const { literaturaAlema } = require('./literaturaAlemaSeedData');
 const { classicosAlema } = require('./classicosAlemaSeedData');
 const { wikisourceAlema } = require('./wikisourceAlemaSeedData');
+const { archiveAlema } = require('./archiveAlemaSeedData');
 const { githubOrgsAlema } = require('./githubOrgsAlemaSeedData');
 const { romanceClassics } = require('./romanceClassicsSeedData');
 const { worldClassicsList } = require('./worldClassicsSeedData');
@@ -94,6 +95,7 @@ function seed(dbInstance = null) {
   const fLiteraturaDe = insertFonte.run('github-literatura-de', 'Literatura Alemã no GitHub (GITenberg / tiny_schiller)', 'manual', 'https://github.com/topics/deutsch', 1).lastInsertRowid;
   const fWikibooksDe = insertFonte.run('wikibooks-de', 'Wikibooks Deutsch', 'manual', 'https://de.wikibooks.org', 1).lastInsertRowid;
   const fWikisourceDe = insertFonte.run('wikisource-de', 'Wikisource Alemã (Domínio Público)', 'manual', 'https://de.wikisource.org', 1).lastInsertRowid;
+  const fArchiveDe = insertFonte.run('archive-de', 'Internet Archive — Cânone Clássico Alemão', 'manual', 'https://archive.org', 1).lastInsertRowid;
   // Fontes de Filosofia (apenas metadados + links externos)
   const fFilosofia = insertFonte.run('github-filosofia', 'Filosofia no GitHub (Listas, Cursos e Ferramentas)', 'manual', 'https://github.com/topics/philosophy', 1).lastInsertRowid;
   const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'manual', 'https://www.standardebooks.org', 1).lastInsertRowid;
@@ -567,7 +569,8 @@ function seed(dbInstance = null) {
     'github-filosofia': fFilosofia,
     'standardebooks': fStandardEbooks,
     'github-freebooks-es': fFreeBooksEs,
-    'wikisource-de': fWikisourceDe
+    'wikisource-de': fWikisourceDe,
+    'archive-de': fArchiveDe
   };
 
   for (const b of githubBooks) {
@@ -1026,6 +1029,53 @@ function seed(dbInstance = null) {
   // Inserir Clássicos Alemães na Wikisource Alemã (Schiller, Kant, Goethe, Lessing, Grimm)
   // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
   for (const b of wikisourceAlema) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Alemã', 'Autor clássico de obras em língua alemã em domínio público.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catDidaticos;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'outro';
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || null,
+      b.idioma || 'de',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      b.leituras || 0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir o Cânone Clássico Alemão no Internet Archive (Hegel, Schopenhauer, Nietzsche, Lessing, Goethe, Kleist, Heine)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of archiveAlema) {
     let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
     let aId;
     if (!aut) {
