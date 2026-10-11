@@ -61,6 +61,11 @@ async function sqlJson(command) {
 
 function applyFile(file) {
   console.log(`   ▶ a aplicar ${path.basename(file)} ...`);
+  try {
+    execSync(`sqlite3 biblioteca.db -cmd "PRAGMA trusted_schema = ON;" < ${JSON.stringify(file)}`, { stdio: 'pipe' });
+  } catch (err) {
+    console.warn(`   ⚠ Aviso local: ${err.message}`);
+  }
   wrangler(`--file ${JSON.stringify(file)} --yes`);
 }
 
@@ -69,13 +74,21 @@ async function garantirFonte(fonte) {
   execFileSql(`INSERT OR IGNORE INTO fontes (slug, nome, tipo, url_base, ativa)
                VALUES (${esc(fonte.slug)}, ${esc(fonte.nome)}, ${esc(fonte.tipo)}, ${esc(fonte.url_base)}, 1);`);
   const rows = await sqlJson(`SELECT id FROM fontes WHERE slug = ${esc(fonte.slug)};`);
-  return rows[0].id;
+  const id = rows[0].id;
+  try {
+    execSync(`sqlite3 biblioteca.db "INSERT OR IGNORE INTO fontes (id, slug, nome, tipo, url_base, ativa) VALUES (${id}, ${esc(fonte.slug)}, ${esc(fonte.nome)}, ${esc(fonte.tipo)}, ${esc(fonte.url_base)}, 1);"`, { stdio: 'ignore' });
+  } catch {}
+  return id;
 }
 
 async function garantirCategoria(nome, descricao) {
   execFileSql(`INSERT OR IGNORE INTO categorias (nome, descricao) VALUES (${esc(nome)}, ${esc(descricao)});`);
   const rows = await sqlJson(`SELECT id FROM categorias WHERE nome = ${esc(nome)};`);
-  return rows[0].id;
+  const id = rows[0].id;
+  try {
+    execSync(`sqlite3 biblioteca.db "INSERT OR IGNORE INTO categorias (id, nome, descricao) VALUES (${id}, ${esc(nome)}, ${esc(descricao)});"`, { stdio: 'ignore' });
+  } catch {}
+  return id;
 }
 
 async function mapaAutoresExistentes() {
@@ -232,9 +245,16 @@ function novoConstrutor(fonteId, categoriaId) {
       const livros = this.livrosRegistos.map((l, i) =>
         `INSERT OR IGNORE INTO livros (id, titulo, idioma, sinopse, capa_url, ano_publicacao, autor_id, categoria_id, fonte_id, fonte_id_externo, licenca, leituras, conteudo_texto) VALUES ` +
         `(${maxL + i + 1}, ${esc(l.titulo)}, ${esc(l.idioma)}, ${esc(l.sinopse)}, ${esc(l.capaUrl)}, ${esc(l.ano)}, ${esc(resolveAutor(l.autorChave))}, ${categoriaId}, ${fonteId}, ${esc(l.fonteIdExterno)}, ${esc(l.licenca)}, 0, NULL);`);
-      const links = this.linksRegistos.map((lk, i) =>
-        `INSERT OR IGNORE INTO links_livros (id, livro_id, formato, url, link_externo) VALUES ` +
-        `(${maxK + i + 1}, ${maxL + lk.livroIdx + 1}, ${esc(lk.formato)}, ${esc(lk.url)}, 1);`);
+      // Links: resolve o livro pela chave estável (fonte_id, fonte_id_externo), nunca por offset.
+      // Assim a importação é retomável — se um livro já existe (INSERT OR IGNORE saltou-o),
+      // o link ainda aponta para o registo correto em vez de um id calculado que pode não existir.
+      // O id auto-incrementa (sem offset frágil de maxK).
+      const links = this.linksRegistos.map((lk) => {
+        const l = this.livrosRegistos[lk.livroIdx];
+        return `INSERT OR IGNORE INTO links_livros (livro_id, formato, url, link_externo) ` +
+          `SELECT id, ${esc(lk.formato)}, ${esc(lk.url)}, 1 FROM livros ` +
+          `WHERE fonte_id = ${fonteId} AND fonte_id_externo = ${esc(l.fonteIdExterno)};`;
+      });
       return { autores, livros, links };
     },
   };
