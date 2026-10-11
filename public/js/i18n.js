@@ -10,7 +10,7 @@
 (function () {
   'use strict';
 
-  const IDIOMAS = ['pt', 'pt-br', 'en', 'de', 'zh', 'fr'];
+  const IDIOMAS = ['pt', 'pt-br', 'en', 'es', 'de', 'zh', 'fr'];
   const CHAVE_LS = 'lino_lang';
 
   const I18N = {
@@ -222,8 +222,8 @@
     return String(s).replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m));
   }
 
-  const FLAGS = { pt: '🇦🇴', 'pt-br': '🇧🇷', en: '🇬🇧', de: '🇩🇪', zh: '🇨🇳', fr: '🇫🇷' };
-  const LABELS_PADRAO = { pt: 'Português (Angola)', 'pt-br': 'Português (Brasil)', en: 'English', de: 'Deutsch', zh: '中文', fr: 'Français' };
+  const FLAGS = { pt: '🇦🇴', 'pt-br': '🇧🇷', en: '🇬🇧', es: '🇪🇸', de: '🇩🇪', zh: '🇨🇳', fr: '🇫🇷' };
+  const LABELS_PADRAO = { pt: 'Português (Angola)', 'pt-br': 'Português (Brasil)', en: 'English', es: 'Español', de: 'Deutsch', zh: '中文', fr: 'Français' };
 
   window.I18N = I18N;
 

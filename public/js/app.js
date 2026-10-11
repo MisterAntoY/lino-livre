@@ -687,6 +687,7 @@ const app = {
     const prefixos = {
       pt: ['pt-br', 'pt_br', 'pt-pt', 'pt'],
       en: ['en-us', 'en_us', 'en-gb', 'en'],
+      es: ['es-es', 'es_es', 'es-419', 'es-mx', 'es'],
       fr: ['fr-fr', 'fr_fr', 'fr-ca', 'fr'],
       de: ['de-de', 'de_de', 'de-at', 'de'],
       zh: ['zh-cn', 'zh_cn', 'zh-tw', 'zh']
@@ -815,7 +816,7 @@ const app = {
       utterance.voice = voz;
       utterance.lang = voz.lang;
     } else {
-      const defaults = { pt: 'pt-BR', en: 'en-US', fr: 'fr-FR', de: 'de-DE', zh: 'zh-CN' };
+      const defaults = { pt: 'pt-BR', en: 'en-US', es: 'es-ES', fr: 'fr-FR', de: 'de-DE', zh: 'zh-CN' };
       utterance.lang = defaults[idiomaLivro] || 'pt-BR';
     }
     utterance.rate = this.speechState.velocidade;
@@ -1637,6 +1638,7 @@ const app = {
                 const flags = {
                   pt: '🇧🇷 Português',
                   en: '🇬🇧 English',
+                  es: '🇪🇸 Español',
                   fr: '🇫🇷 Français',
                   de: '🇩🇪 Deutsch',
                   zh: '🇨🇳 中文'
@@ -1912,6 +1914,7 @@ const app = {
     const localeMap = {
       'pt': 'pt-AO',
       'en': 'en-US',
+      'es': 'es-ES',
       'de': 'de-DE',
       'fr': 'fr-FR',
       'zh': 'zh-CN'
@@ -1971,7 +1974,7 @@ const app = {
   compartilharMeta10M() {
     const total = this.totalLivrosAcervo || 695;
     const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
-    const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
+    const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);
 
     let texto = `📚 Junte-se ao Lino Livre na jornada dos 10 Milhões de Livros Livres! Já temos ${numFmt} obras abertas e gratuitas indexadas. Venha ler e contribuir:`;

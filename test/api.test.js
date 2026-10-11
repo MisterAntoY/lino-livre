@@ -654,5 +654,25 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resLivros.status, 200);
     assert.equal(resLivros.data.total, totalLivros, 'Total em /api/livros deve ser idêntico ao total do dashboard');
   });
+
+  // Teste 20: Suporte Internacional Completo ao Idioma Espanhol (locales/es.json e filtros)
+  test('20. Suporte Internacional Completo ao Idioma Espanhol (locales/es.json e filtros)', async () => {
+    const fs = require('node:fs');
+    const path = require('node:path');
+
+    // 20.1 - Validação do arquivo de internacionalização es.json
+    const esPath = path.join(__dirname, '../public/locales/es.json');
+    assert.ok(fs.existsSync(esPath), 'Arquivo public/locales/es.json deve existir');
+    const esData = JSON.parse(fs.readFileSync(esPath, 'utf8'));
+    assert.equal(esData.meta.code, 'es');
+    assert.equal(esData.meta.label, 'Español');
+    assert.ok(esData.ui.goal.title.includes('10 Millones'), 'Deve conter tradução do placar da meta dos 10 milhões');
+    assert.ok(esData.ui.books.readOnline, 'Deve conter tradução de leitura online');
+
+    // 20.2 - Filtro de livros em espanhol na API
+    const resEs = await request('/api/livros?idioma=es');
+    assert.equal(resEs.status, 200);
+    assert.ok(resEs.data.total >= 1, 'Deve conter obras em espanhol no catálogo');
+  });
 });
 
