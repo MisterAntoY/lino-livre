@@ -60,4 +60,6 @@ venv/
 *.temp
 .wrangler/
 seed.sql
+lote_importacao*.sql
+
 
