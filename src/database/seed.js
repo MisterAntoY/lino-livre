@@ -7,6 +7,7 @@ const { githubZhBooks } = require('./githubZhBooksSeedData');
 const { githubDeBooks } = require('./githubDeBooksSeedData');
 const { filosofiaBooks } = require('./filosofiaSeedData');
 const { literaturaAlema } = require('./literaturaAlemaSeedData');
+const { githubOrgsAlema } = require('./githubOrgsAlemaSeedData');
 const { romanceClassics } = require('./romanceClassicsSeedData');
 const { worldClassicsList } = require('./worldClassicsSeedData');
 const { dioBootcampsList } = require('./dioBootcampsData');
@@ -947,6 +948,53 @@ function seed(dbInstance = null) {
       b.subtitulo || null,
       null,
       b.ano || 1900,
+      b.idioma || 'de',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 200,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      b.leituras || 0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Open Source Alemão no GitHub (Repositórios de Organizações Alemãs)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of githubOrgsAlema) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Alemã', 'Organização ou comunidade de software livre alemã.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'outro';
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2026,
       b.idioma || 'de',
       b.sinopse,
       b.capaUrl,

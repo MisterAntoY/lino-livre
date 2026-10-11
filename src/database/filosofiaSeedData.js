@@ -446,6 +446,24 @@ const filosofiaBooks = [
     "links": [
       { "formato": "html", "url": "https://github.com/La-caverne-de-Platon/PhiloBots" }
     ]
+  },
+  {
+    "titulo": "dailogos — Diálogos entre Filósofos e IA",
+    "subtitulo": "XenocodeRCE/dailogos (2★)",
+    "autor": "Xenocode RCE",
+    "categoria": "Apoio Pedagógico & Filosofia",
+    "fonteSlug": "github-filosofia",
+    "fonteIdExterno": "dailogos",
+    "ano": 2026,
+    "paginas": 0,
+    "idioma": "fr",
+    "licenca": "outro",
+    "sinopse": "Diálogos ('des dialogues entre deux philosophes') conduzidos entre duas IAs que personificam filósofos — experiência de discussão filosófica em francês como ferramenta de estudo e debate.",
+    "capaUrl": "/capas/tech/tech_1802.svg",
+    "leituras": 0,
+    "links": [
+      { "formato": "html", "url": "https://github.com/XenocodeRCE/dailogos" }
+    ]
   }
 ];
 

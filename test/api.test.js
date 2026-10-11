@@ -536,8 +536,8 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
   test('15. Acervo de Tecnologia e Programação em Alemão (Livros e Cursos Open Access)', async () => {
-    // 15.1 - Livros técnicos em alemão
-    const resDe = await request('/api/livros?idioma=de&limit=50');
+    // 15.1 - Livros técnicos em alemão (limit=100 cobre o acervo completo de 67 livros DE)
+    const resDe = await request('/api/livros?idioma=de&limit=100');
     assert.equal(resDe.status, 200);
     assert.ok(resDe.data.total >= 25, 'Deve conter ao menos 25 livros em alemão cadastrados');
     assert.ok(resDe.data.data.some(l => l.titulo.includes('Pro Git')), 'Deve conter Pro Git auf Deutsch');
