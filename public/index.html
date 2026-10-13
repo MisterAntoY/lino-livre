@@ -4,24 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Lino Livre — Livros livres, para todos. Maior acervo digital de livros de África, obras-primas da literatura africana, contos da tradição oral, história e filosofia em 5 idiomas. Leitura online gratuita sem download.">
-  <meta name="theme-color" content="#2563eb">
+  <meta name="theme-color" content="#334155">
   <title>Lino Livre — Livros livres, para todos.</title>
   
   <!-- Preload critical fonts with font-display: swap -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   
   <!-- Critical CSS (inlined for instant render) -->
   <style>
-    :root{--primary:#2563eb;--primary-hover:#1d4ed8;--bg-page:#f8fafc;--bg-card:#fff;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--shadow-card:0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.05);--shadow-hover:0 12px 24px -4px rgba(0,0,0,.12),0 4px 6px -2px rgba(0,0,0,.05)}
+    :root{--primary:#334155;--primary-hover:#1e293b;--bg-page:#f5f5f4;--bg-card:#fff;--text-main:#1c1917;--text-muted:#57534e;--border:#e7e5e4;--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--shadow-card:0 1px 2px rgba(28,25,23,.05);--shadow-hover:0 2px 6px rgba(28,25,23,.08)}
     *, *::before, *::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background-color:var(--bg-page);color:var(--text-main);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background-color:var(--bg-page);color:var(--text-main);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
     .font-serif{font-family:'Lora',Georgia,serif}
     .container{max-width:1180px;margin:0 auto;padding:0 1.5rem;width:100%}
     .site-header{background:#fff;border-bottom:1px solid var(--border);padding:1.25rem 0;position:sticky;top:0;z-index:20}
     .header-content{display:flex;justify-content:space-between;align-items:center}
     .brand{display:flex;align-items:center;gap:.85rem}
-    .brand-icon{font-size:2rem;line-height:1}
     .brand-title{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;color:var(--text-main)}
     .brand-subtitle{font-size:.825rem;color:var(--text-muted)}
     .header-actions{display:flex;align-items:center;gap:.75rem}
@@ -39,22 +38,22 @@
     .filter-section{padding:2rem 1.5rem 1rem 1.5rem;display:flex;flex-direction:column;gap:1.25rem}
     .search-bar{position:relative;max-width:600px;width:100%}
     .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
-    .search-bar input{width:100%;padding:.8rem 1rem .8rem 2.75rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.95rem;font-family:inherit;background:#fff;outline:none;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-    .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+    .search-bar input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.95rem;font-family:inherit;background:#fff;outline:none;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+    .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(51,65,85,.12)}
     .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
-    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:999px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
     .pill:hover{background:#f1f5f9;color:var(--text-main)}
     .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
     .main-container{flex:1;padding:1rem 1.5rem 3rem 1.5rem}
     .books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
     .book-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column;transition:all .25s ease}
-    .book-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover);border-color:#cbd5e1}
+    .book-card:hover{transform:none;box-shadow:var(--shadow-hover);border-color:#cbd5e1}
     .book-cover-container{position:relative;width:100%;aspect-ratio:2/2.9;background:#e2e8f0;overflow:hidden;display:flex;align-items:center;justify-content:center}
     .book-cover{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;box-shadow:inset 4px 0 10px rgba(0,0,0,.15)}
     .loading{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--text-muted);font-size:1.125rem}
     .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
     .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
-    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:999px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
     .pill:hover{background:#f1f5f9;color:var(--text-main)}
     .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
     .reader-modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
@@ -83,7 +82,7 @@
     ::-webkit-scrollbar-track{background:#f1f5f9}
     ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
     ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
-    ::selection{background:rgba(37,99,235,.2);color:var(--text-main)}
+    ::selection{background:rgba(51,65,85,.16);color:var(--text-main)}
   </style>
   
   <!-- Full CSS loaded asynchronously -->
@@ -117,7 +116,6 @@
   <header class="site-header">
     <div class="container header-content">
       <div class="brand">
-        <div class="brand-icon">📚</div>
         <div>
           <h1 class="brand-title">Lino Livre</h1>
           <p class="brand-subtitle">Livros livres, para todos.</p>
@@ -127,12 +125,12 @@
         <div class="lang-switcher">
           <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <select id="seletor-idioma" class="lang-select" onchange="app.trocarIdioma(this.value)" data-i18n-aria="ui.langLabel" aria-label="Idioma do site">
-            <option value="pt">🇧🇷 Português</option>
-            <option value="en">🇬🇧 English</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="zh">🇨🇳 中文</option>
-            <option value="fr">🇫🇷 Français</option>
+            <option value="pt"> Português</option>
+            <option value="en"> English</option>
+            <option value="es"> Español</option>
+            <option value="de"> Deutsch</option>
+            <option value="zh"> 中文</option>
+            <option value="fr"> Français</option>
           </select>
         </div>
         <a id="btn-header-comunidade" class="btn btn-whatsapp hidden" href="#" target="_blank" rel="noopener noreferrer" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
@@ -144,7 +142,7 @@
           <span data-i18n="ui.header.channel">Canal</span>
         </a>
         <a id="btn-header-kofi" class="btn btn-kofi" href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" title="Apoiar o Lino Livre no Ko-fi">
-          ☕ <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
+           <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
         </a>
         <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()" data-i18n="ui.header.addBook">+ Adicionar Livro</button>
       </div>
@@ -154,12 +152,12 @@
   <!-- Navegação Principal por Abas -->
   <nav class="container nav-tabs-section">
     <div class="nav-tabs">
-      <button class="tab-btn active" id="tab-btn-livros" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books">📚 Livros Digitais</button>
-      <button class="tab-btn" id="tab-btn-cursos" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses">🎓 Cursos Gratuitos</button>
-      <button class="tab-btn" id="tab-btn-roadmaps" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps">🗺️ Roadmaps & Trilhas</button>
-      <button class="tab-btn" id="tab-btn-podcasts" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts">🎙️ Podcasts & Spotify</button>
-      <button class="tab-btn" id="tab-btn-dicas" onclick="app.trocarAba('dicas')" data-i18n="ui.tabs.tips">💡 Dicas & Ferramentas</button>
-      <button class="tab-btn" id="tab-btn-dashboard" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard">📊 Métricas & Fontes</button>
+      <button class="tab-btn active" id="tab-btn-livros" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books"> Livros Digitais</button>
+      <button class="tab-btn" id="tab-btn-cursos" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses"> Cursos Gratuitos</button>
+      <button class="tab-btn" id="tab-btn-roadmaps" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</button>
+      <button class="tab-btn" id="tab-btn-podcasts" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</button>
+      <button class="tab-btn" id="tab-btn-dicas" onclick="app.trocarAba('dicas')" data-i18n="ui.tabs.tips"> Dicas & Ferramentas</button>
+      <button class="tab-btn" id="tab-btn-dashboard" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</button>
     </div>
   </nav>
 
@@ -171,7 +169,6 @@
         <div class="goal-header">
           <div class="goal-title-group">
             <div class="goal-badge">
-              <span class="goal-badge-icon">🎯</span>
               <span data-i18n="ui.goal.badge">Meta Coletiva Global</span>
             </div>
             <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
@@ -193,9 +190,7 @@
         <!-- Barra de Progresso Visual e Marcos Históricos -->
         <div class="goal-progress-wrapper">
           <div class="goal-progress-bar-bg" role="progressbar" aria-valuenow="695" aria-valuemin="0" aria-valuemax="10000000" id="placar-progressbar-container">
-            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 1.5%;">
-              <span class="goal-progress-glow"></span>
-            </div>
+            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 1.5%;"></div>
           </div>
           
           <!-- Marcos da Jornada / Milestones -->
@@ -223,7 +218,7 @@
             </div>
             <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
               <span class="milestone-dot gold"></span>
-              <span class="milestone-text gold">10.000.000 👑</span>
+              <span class="milestone-text gold">10.000.000 </span>
             </div>
           </div>
         </div>
@@ -232,28 +227,28 @@
         <div class="goal-footer">
           <div class="goal-stats-grid">
             <div class="goal-stat-pill">
-              <span class="stat-icon">📚</span>
+
               <div>
                 <span class="stat-val" id="placar-stat-atual">695</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
               </div>
             </div>
             <div class="goal-stat-pill">
-              <span class="stat-icon">🎯</span>
+
               <div>
                 <span class="stat-val">10.000.000</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statTarget">Alvo Global</span>
               </div>
             </div>
             <div class="goal-stat-pill">
-              <span class="stat-icon">🚀</span>
+
               <div>
                 <span class="stat-val" id="placar-stat-faltam">9.999.305</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
               </div>
             </div>
             <div class="goal-stat-pill">
-              <span class="stat-icon">⚡</span>
+
               <div>
                 <span class="stat-val" id="placar-stat-next-target">1.000</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
@@ -266,7 +261,7 @@
               <span>+</span> <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
             </button>
             <button class="btn btn-goal-share" onclick="app.compartilharMeta10M()">
-              <span>📢</span> <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
+              <span></span> <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
             </button>
             <a class="btn btn-goal-whatsapp hidden" id="btn-goal-comunidade" href="#" target="_blank" rel="noopener noreferrer">
               <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
@@ -281,18 +276,18 @@
     <section class="container">
       <div class="africa-collection-banner">
         <div class="africa-banner-header">
-          <span class="africa-badge">🌍 Coleção Monumental de África</span>
+          <span class="africa-badge"> Coleção Monumental de África</span>
           <span class="africa-stats-badge">5 Idiomas • 46+ Obras Clássicas & Tradição Oral</span>
         </div>
         <h2 data-i18n="ui.books.africaBannerTitle">O Maior Acervo de Livros Digitais de África</h2>
         <p data-i18n="ui.books.africaBannerDesc">Obras-primas da literatura africana, contos da tradição oral ancestral, história das grandes civilizações e filosofia em 5 idiomas: Português, English, Français, Deutsch e 中文. Todos os livros possuem leitura online multi-capítulos sem necessidade de baixar arquivos pesados.</p>
         <div class="africa-lang-pills">
-          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('pt')">🇲🇿/🇦🇴 Português</button>
-          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('en')">🇳🇬/🇿🇦 English</button>
-          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('fr')">🇸🇳/🇲🇱 Français</button>
-          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('de')">🇩🇪 Deutsch</button>
-          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('zh')">🇨🇳 中文</button>
-          <button class="pill-lang-btn pill-lang-reset" onclick="app.filtrarPorIdiomaLivro('')">🌍 Ver Todos</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('pt')">Português</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('en')">English</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('fr')">Français</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('de')"> Deutsch</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('zh')"> 中文</button>
+          <button class="pill-lang-btn pill-lang-reset" onclick="app.filtrarPorIdiomaLivro('')"> Ver Todos</button>
         </div>
       </div>
     </section>
@@ -300,7 +295,6 @@
     <!-- Filtros e Busca -->
     <section class="container filter-section">
       <div class="search-bar">
-        <span class="search-icon">🔍</span>
         <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()">
       </div>
 
@@ -309,12 +303,12 @@
         <span class="filter-label" data-i18n="ui.books.languageFilter">Idioma:</span>
         <div class="pills-container" id="pills-idiomas-livros">
           <button class="pill active" data-lang="" onclick="app.filtrarPorIdiomaLivro('')" data-i18n="ui.books.allLanguages">Todos os Idiomas</button>
-          <button class="pill" data-lang="pt" onclick="app.filtrarPorIdiomaLivro('pt')">🇧🇷 Português</button>
-          <button class="pill" data-lang="en" onclick="app.filtrarPorIdiomaLivro('en')">🇬🇧 English</button>
-          <button class="pill" data-lang="es" onclick="app.filtrarPorIdiomaLivro('es')">🇪🇸 Español</button>
-          <button class="pill" data-lang="fr" onclick="app.filtrarPorIdiomaLivro('fr')">🇫🇷 Français</button>
-          <button class="pill" data-lang="de" onclick="app.filtrarPorIdiomaLivro('de')">🇩🇪 Deutsch</button>
-          <button class="pill" data-lang="zh" onclick="app.filtrarPorIdiomaLivro('zh')">🇨🇳 中文</button>
+          <button class="pill" data-lang="pt" onclick="app.filtrarPorIdiomaLivro('pt')"> Português</button>
+          <button class="pill" data-lang="en" onclick="app.filtrarPorIdiomaLivro('en')"> English</button>
+          <button class="pill" data-lang="es" onclick="app.filtrarPorIdiomaLivro('es')"> Español</button>
+          <button class="pill" data-lang="fr" onclick="app.filtrarPorIdiomaLivro('fr')"> Français</button>
+          <button class="pill" data-lang="de" onclick="app.filtrarPorIdiomaLivro('de')"> Deutsch</button>
+          <button class="pill" data-lang="zh" onclick="app.filtrarPorIdiomaLivro('zh')"> 中文</button>
         </div>
       </div>
 
@@ -323,25 +317,25 @@
         <span class="filter-label" data-i18n="ui.books.categories">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
           <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')" data-i18n="ui.books.all">Todas</button>
-          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')">🌟 Os 100 Mais Lidos do Mundo</button>
-          <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" onclick="app.filtrarPorCategoria('Autores Lusófonos Clássicos')">📜 Autores Lusófonos Clássicos</button>
-          <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" onclick="app.filtrarPorCategoria('Literatura Angolana')">🇦🇴 Literatura Angolana</button>
-          <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" onclick="app.filtrarPorCategoria('Literatura Africana Lusófona')">🇨🇻 Literatura Africana Lusófona</button>
-          <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" onclick="app.filtrarPorCategoria('Poesia Africana')">🇲🇿 Poesia Africana</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" onclick="app.filtrarPorCategoria('🌍 Literatura & Vozes de África')">🌍 Literatura & Vozes de África</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Contos & Tradição Oral Africana" onclick="app.filtrarPorCategoria('🌍 Contos & Tradição Oral Africana')">🌍 Contos & Tradição Oral</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 História & Sociedade Africana" onclick="app.filtrarPorCategoria('🌍 História & Sociedade Africana')">🌍 História de África</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Filosofia & Pensamento Africano" onclick="app.filtrarPorCategoria('🌍 Filosofia & Pensamento Africano')">🌍 Filosofia Africana</button>
+          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')"> Os 100 Mais Lidos do Mundo</button>
+          <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" onclick="app.filtrarPorCategoria('Autores Lusófonos Clássicos')"> Autores Lusófonos Clássicos</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" onclick="app.filtrarPorCategoria('Literatura Angolana')"> Literatura Angolana</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" onclick="app.filtrarPorCategoria('Literatura Africana Lusófona')"> Literatura Africana Lusófona</button>
+          <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" onclick="app.filtrarPorCategoria('Poesia Africana')"> Poesia Africana</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" onclick="app.filtrarPorCategoria('🌍 Literatura & Vozes de África')"> Literatura & Vozes de África</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Contos & Tradição Oral Africana" onclick="app.filtrarPorCategoria('🌍 Contos & Tradição Oral Africana')"> Contos & Tradição Oral</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 História & Sociedade Africana" onclick="app.filtrarPorCategoria('🌍 História & Sociedade Africana')"> História de África</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Filosofia & Pensamento Africano" onclick="app.filtrarPorCategoria('🌍 Filosofia & Pensamento Africano')"> Filosofia Africana</button>
           <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')" data-i18n="ui.books.catClassics">Clássicos Brasileiros</button>
           <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')" data-i18n="ui.books.catRomance">Romances</button>
           <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')" data-i18n="ui.books.catPoetry">Poesia</button>
           <button class="pill" data-categoria="Romance Indianista" onclick="app.filtrarPorCategoria('Romance Indianista')">Romance Indianista</button>
           <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')" data-i18n="ui.books.catEssays">Didáticos & Ensaios</button>
-          <button class="pill" data-categoria="Arquitetura & Engenharia de Software" onclick="app.filtrarPorCategoria('Arquitetura & Engenharia de Software')">📐 Arquitetura & Engenharia</button>
-          <button class="pill" data-categoria="Desenvolvimento Web & Mobile" onclick="app.filtrarPorCategoria('Desenvolvimento Web & Mobile')">📱 Web & Mobile</button>
-          <button class="pill" data-categoria="DevOps, Cloud & Infraestrutura" onclick="app.filtrarPorCategoria('DevOps, Cloud & Infraestrutura')">☁️ DevOps & Nuvem</button>
-          <button class="pill" data-categoria="Ciência de Dados & Inteligência Artificial" onclick="app.filtrarPorCategoria('Ciência de Dados & Inteligência Artificial')">🤖 Dados & IA</button>
-          <button class="pill" data-categoria="Metodologias Ágeis & Carreira Tech" onclick="app.filtrarPorCategoria('Metodologias Ágeis & Carreira Tech')">🚀 Ágil & Carreira</button>
+          <button class="pill" data-categoria="Arquitetura & Engenharia de Software" onclick="app.filtrarPorCategoria('Arquitetura & Engenharia de Software')"> Arquitetura & Engenharia</button>
+          <button class="pill" data-categoria="Desenvolvimento Web & Mobile" onclick="app.filtrarPorCategoria('Desenvolvimento Web & Mobile')"> Web & Mobile</button>
+          <button class="pill" data-categoria="DevOps, Cloud & Infraestrutura" onclick="app.filtrarPorCategoria('DevOps, Cloud & Infraestrutura')"> DevOps & Nuvem</button>
+          <button class="pill" data-categoria="Ciência de Dados & Inteligência Artificial" onclick="app.filtrarPorCategoria('Ciência de Dados & Inteligência Artificial')"> Dados & IA</button>
+          <button class="pill" data-categoria="Metodologias Ágeis & Carreira Tech" onclick="app.filtrarPorCategoria('Metodologias Ágeis & Carreira Tech')"> Ágil & Carreira</button>
         </div>
       </div>
 
@@ -350,13 +344,13 @@
         <span class="filter-label">Fonte / Acervo:</span>
         <div class="pills-container" id="pills-fontes">
           <button class="pill active" data-fonte="" onclick="app.filtrarPorFonteLivro('')">Todos os Acervos</button>
-          <button class="pill" data-fonte="dominiopublico" onclick="app.filtrarPorFonteLivro('dominiopublico')">🏛️ Domínio Público & África</button>
-          <button class="pill" data-fonte="gutenberg" onclick="app.filtrarPorFonteLivro('gutenberg')">🌐 Project Gutenberg</button>
-          <button class="pill" data-fonte="github-bibliotecadev" onclick="app.filtrarPorFonteLivro('github-bibliotecadev')">📂 BibliotecaDev</button>
-          <button class="pill" data-fonte="github-italocamilo" onclick="app.filtrarPorFonteLivro('github-italocamilo')">📂 Books Tech / italocamil0</button>
-          <button class="pill" data-fonte="github-freebooks-es" onclick="app.filtrarPorFonteLivro('github-freebooks-es')">🇪🇸 Free Programming Books ES</button>
-          <button class="pill" data-fonte="rheinwerk-openbook" onclick="app.filtrarPorFonteLivro('rheinwerk-openbook')">🇩🇪 Rheinwerk Openbooks</button>
-          <button class="pill" data-fonte="github-freebooks-de" onclick="app.filtrarPorFonteLivro('github-freebooks-de')">🇩🇪 Free Programming Books DE</button>
+          <button class="pill" data-fonte="dominiopublico" onclick="app.filtrarPorFonteLivro('dominiopublico')"> Domínio Público & África</button>
+          <button class="pill" data-fonte="gutenberg" onclick="app.filtrarPorFonteLivro('gutenberg')"> Project Gutenberg</button>
+          <button class="pill" data-fonte="github-bibliotecadev" onclick="app.filtrarPorFonteLivro('github-bibliotecadev')"> BibliotecaDev</button>
+          <button class="pill" data-fonte="github-italocamilo" onclick="app.filtrarPorFonteLivro('github-italocamilo')"> Books Tech / italocamil0</button>
+          <button class="pill" data-fonte="github-freebooks-es" onclick="app.filtrarPorFonteLivro('github-freebooks-es')"> Free Programming Books ES</button>
+          <button class="pill" data-fonte="rheinwerk-openbook" onclick="app.filtrarPorFonteLivro('rheinwerk-openbook')"> Rheinwerk Openbooks</button>
+          <button class="pill" data-fonte="github-freebooks-de" onclick="app.filtrarPorFonteLivro('github-freebooks-de')"> Free Programming Books DE</button>
         </div>
       </div>
 
@@ -398,7 +392,6 @@
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
-        <span class="search-icon">🔍</span>
         <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()">
       </div>
 
@@ -423,18 +416,18 @@
           <button class="pill" data-filtro="Oracle Next Education" onclick="app.filtrarCursosPorPlataforma('Oracle Next Education')"><img src="/img/logos/oracle.svg" alt="Oracle ONE" class="pill-logo"> Oracle ONE</button>
           <button class="pill" data-filtro="Generation Brasil" onclick="app.filtrarCursosPorPlataforma('Generation Brasil')"><img src="/img/logos/generation.png" alt="Generation" class="pill-logo"> Generation Brasil</button>
           <button class="pill" data-filtro="WoMakersCode" onclick="app.filtrarCursosPorPlataforma('WoMakersCode')"><img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="pill-logo"> WoMakersCode</button>
-          <button class="pill" data-filtro="openHPI" onclick="app.filtrarCursosPorPlataforma('openHPI')">🇩🇪 openHPI (Hasso-Plattner)</button>
+          <button class="pill" data-filtro="openHPI" onclick="app.filtrarCursosPorPlataforma('openHPI')"> openHPI (Hasso-Plattner)</button>
           <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube"><img src="/img/logos/youtube.svg" alt="YouTube" class="pill-logo"> YouTube (Certificado)</button>
           <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo"> Fundação Bradesco</button>
           <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo"> Guia de TI</button>
           <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')"><img src="/img/logos/usp.png" alt="USP" class="pill-logo"> Cursos USP</button>
           <button class="pill" data-filtro="Alura" onclick="app.filtrarCursosPorPlataforma('Alura')"><img src="/img/logos/alura.png" alt="Alura" class="pill-logo"> Alura Aberta</button>
           <button class="pill" data-filtro="EV.G" onclick="app.filtrarCursosPorPlataforma('EV.G')"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo"> EV.G / ENAP</button>
-          <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')">🏛️ IFRS Federal</button>
+          <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')"> IFRS Federal</button>
           <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')" data-i18n="ui.courses.areaTech">Tecnologia Geral</button>
-          <button class="pill" data-filtro="Gestão & Negócios" onclick="app.filtrarCursosPorArea('Gestão & Negócios')">💼 Gestão & Negócios</button>
-          <button class="pill" data-filtro="Desenvolvimento Pessoal" onclick="app.filtrarCursosPorArea('Desenvolvimento Pessoal')">🌱 Desenvolvimento Pessoal</button>
-          <button class="pill" data-filtro="Educação & Pedagogia" onclick="app.filtrarCursosPorArea('Educação & Pedagogia')">📚 Educação & Pedagogia</button>
+          <button class="pill" data-filtro="Gestão & Negócios" onclick="app.filtrarCursosPorArea('Gestão & Negócios')"> Gestão & Negócios</button>
+          <button class="pill" data-filtro="Desenvolvimento Pessoal" onclick="app.filtrarCursosPorArea('Desenvolvimento Pessoal')"> Desenvolvimento Pessoal</button>
+          <button class="pill" data-filtro="Educação & Pedagogia" onclick="app.filtrarCursosPorArea('Educação & Pedagogia')"> Educação & Pedagogia</button>
           <button class="pill" data-filtro="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')" data-i18n="ui.courses.areaExact">Ciências Exatas</button>
           <button class="pill" data-filtro="Matemática" onclick="app.filtrarCursosPorArea('Matemática')" data-i18n="ui.courses.areaMath">Matemática</button>
           <button class="pill" data-filtro="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')" data-i18n="ui.courses.areaBio">Biológicas</button>
@@ -455,13 +448,12 @@
   <div id="aba-roadmaps" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner roadmap-banner">
-        <div class="banner-badge-primary" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe;">🗺️ Árvores de Habilidades & Carreiras Tech</div>
+        <div class="banner-badge-primary" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe;"> Árvores de Habilidades & Carreiras Tech</div>
         <h2 data-i18n="ui.roadmaps.bannerTitle">Roadmaps e Trilhas Guiadas de Aprendizado</h2>
         <p data-i18n="ui.roadmaps.bannerDesc">Mapas interativos passo a passo e caminhos estruturados de formação profissional reunindo recursos abertos de <a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer" class="link-destaque">Roadmap.sh</a>, <a href="https://trilha.info" target="_blank" rel="noopener noreferrer" class="link-destaque">Trilha Info</a> e do <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a>.</p>
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
-        <span class="search-icon">🔍</span>
         <input type="text" id="filtro-busca-roadmaps" placeholder="Pesquisar roadmaps (Frontend, Backend, DevOps, IA, React, QA, Python...)..." data-i18n-ph="ui.roadmaps.searchPlaceholder" oninput="app.buscarRoadmapsComDebounce()">
       </div>
 
@@ -472,10 +464,10 @@
           <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo"> Trilha Info (BR)</button>
           <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo"> Roadmap.sh (95 roadmaps)</button>
           <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo"> Guia de TI</button>
-          <button class="pill" data-filtro="frontend" onclick="app.filtrarRoadmapsPorTermo('Frontend')">💻 Frontend</button>
-          <button class="pill" data-filtro="backend" onclick="app.filtrarRoadmapsPorTermo('Backend')">⚙️ Backend</button>
-          <button class="pill" data-filtro="devops" onclick="app.filtrarRoadmapsPorTermo('DevOps')">☁️ DevOps & Cloud</button>
-          <button class="pill" data-filtro="dados" onclick="app.filtrarRoadmapsPorTermo('Dados')">🤖 IA & Dados</button>
+          <button class="pill" data-filtro="frontend" onclick="app.filtrarRoadmapsPorTermo('Frontend')"> Frontend</button>
+          <button class="pill" data-filtro="backend" onclick="app.filtrarRoadmapsPorTermo('Backend')"> Backend</button>
+          <button class="pill" data-filtro="devops" onclick="app.filtrarRoadmapsPorTermo('DevOps')"> DevOps & Cloud</button>
+          <button class="pill" data-filtro="dados" onclick="app.filtrarRoadmapsPorTermo('Dados')"> IA & Dados</button>
         </div>
       </div>
     </section>
@@ -491,13 +483,12 @@
   <div id="aba-dicas" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner dicas-banner">
-        <div class="banner-badge-primary" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">💡 Métodos Comprovados & Recursos Abertos</div>
+        <div class="banner-badge-primary" style="background:#fef3c7; color:#92400e; border-color:#fde68a;"> Métodos Comprovados & Recursos Abertos</div>
         <h2 data-i18n="ui.tips.bannerTitle">Dicas de Estudo, Técnicas de Foco & Ferramentas</h2>
         <p data-i18n="ui.tips.bannerDesc">Seleção prática de metodologias de aprendizagem, temporizadores Pomodoro, repetição espaçada, corretores gramaticais, gestores de anotações e apoios ao estudante.</p>
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
-        <span class="search-icon">🔍</span>
         <input type="text" id="filtro-busca-dicas" placeholder="Pesquisar dicas e ferramentas (Pomodoro, Anki, Obsidian, Zotero, LaTeX, Gramática...)..." data-i18n-ph="ui.tips.searchPlaceholder" oninput="app.buscarDicasComDebounce()">
       </div>
 
@@ -505,13 +496,13 @@
         <span class="filter-label" data-i18n="ui.tips.filters">Categorias de Dicas:</span>
         <div class="pills-container" id="pills-dicas-cat">
           <button class="pill active" data-cat="" onclick="app.filtrarDicasPorCategoria('')" data-i18n="ui.tips.all">Todas as Dicas</button>
-          <button class="pill highlight-pill-gold" data-cat="habitos" onclick="app.filtrarDicasPorCategoria('habitos')">⚡ Hábitos Atômicos (James Clear)</button>
-          <button class="pill" data-cat="estudo" onclick="app.filtrarDicasPorCategoria('estudo')">🧠 Técnicas de Estudo & Foco</button>
-          <button class="pill" data-cat="organizacao" onclick="app.filtrarDicasPorCategoria('organizacao')">📓 Organização & Notas</button>
-          <button class="pill" data-cat="escrita" onclick="app.filtrarDicasPorCategoria('escrita')">✍️ Escrita & Revisão</button>
-          <button class="pill" data-cat="idiomas" onclick="app.filtrarDicasPorCategoria('idiomas')">🗣️ Idiomas & Dicionários</button>
-          <button class="pill" data-cat="criacao" onclick="app.filtrarDicasPorCategoria('criacao')">🎨 Mídia Livre & Criação</button>
-          <button class="pill" data-cat="carreira" onclick="app.filtrarDicasPorCategoria('carreira')">💼 Carreira & Apoio</button>
+          <button class="pill highlight-pill-gold" data-cat="habitos" onclick="app.filtrarDicasPorCategoria('habitos')"> Hábitos Atômicos (James Clear)</button>
+          <button class="pill" data-cat="estudo" onclick="app.filtrarDicasPorCategoria('estudo')"> Técnicas de Estudo & Foco</button>
+          <button class="pill" data-cat="organizacao" onclick="app.filtrarDicasPorCategoria('organizacao')"> Organização & Notas</button>
+          <button class="pill" data-cat="escrita" onclick="app.filtrarDicasPorCategoria('escrita')"> Escrita & Revisão</button>
+          <button class="pill" data-cat="idiomas" onclick="app.filtrarDicasPorCategoria('idiomas')"> Idiomas & Dicionários</button>
+          <button class="pill" data-cat="criacao" onclick="app.filtrarDicasPorCategoria('criacao')"> Mídia Livre & Criação</button>
+          <button class="pill" data-cat="carreira" onclick="app.filtrarDicasPorCategoria('carreira')"> Carreira & Apoio</button>
         </div>
       </div>
     </section>
@@ -533,7 +524,7 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="vertical-align:middle;margin-right:4px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.352-.676.463-1.028.247-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.158-.893-.561-.092-.403.158-.802.561-.894 4.571-1.045 8.49-.606 11.649 1.336.352.217.462.678.247 1.029zm1.467-3.262c-.27.44-.848.58-1.288.31-3.224-1.982-8.139-2.555-11.952-1.398-.497.151-1.026-.135-1.177-.633-.151-.497.135-1.026.633-1.177 4.364-1.325 9.773-.687 13.473 1.589.44.27.58.848.311 1.309zm.126-3.41c-3.864-2.295-10.239-2.506-13.916-1.39-.594.18-1.222-.162-1.402-.756-.18-.594.162-1.222.756-1.402 4.23-1.284 11.272-1.037 15.702 1.593.535.317.71 1.01.393 1.545-.317.534-1.01.71-1.533.41z"/></svg>
             Spotify for Creators & Audiolivros
           </span>
-          <span class="africa-stats-badge">🎙️ Canal Oficial • Em Breve</span>
+          <span class="africa-stats-badge"> Canal Oficial • Em Breve</span>
         </div>
         <h2 data-i18n="ui.podcasts.bannerTitle">Podcasts, Resenhas Literárias e Tradição Oral</h2>
         <p data-i18n="ui.podcasts.bannerDesc">O canal oficial do Lino Livre no Spotify for Creators está em preparação! Em breve você poderá ouvir entrevistas com educadores e pensadores, resenhas em áudio dos livros do acervo, contos da tradição oral e dicas rápidas de estudo diretamente aqui ou no Spotify.</p>
@@ -543,7 +534,7 @@
             <span>Conhecer Spotify for Creators</span>
           </a>
           <a class="btn btn-outline-white" href="#secao-whatsapp">
-            📢 <span>Acompanhar Lançamento no Canal</span>
+             <span>Acompanhar Lançamento no Canal</span>
           </a>
         </div>
       </div>
@@ -552,20 +543,20 @@
     <!-- Programas Planejados / Prévia -->
     <section class="container" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
       <h3 class="section-title-icon" style="margin: 1.5rem 0 1rem; font-size: 1.35rem; font-weight: 700; color: var(--text);">
-        🎙️ <span>Programas em Produção & Roteirização</span>
+         <span>Programas em Produção & Roteirização</span>
       </h3>
       <div class="podcasts-grid">
         <article class="podcast-card">
           <div class="podcast-cover-box">
             <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80" alt="Lino Conversa" class="podcast-cover-img" loading="lazy">
-            <span class="podcast-category-badge">🎓 Educação & Diálogos</span>
+            <span class="podcast-category-badge"> Educação & Diálogos</span>
           </div>
           <div class="podcast-body">
             <h4 class="podcast-card-title">Lino Conversa: Vozes de Angola e Educação Aberta</h4>
             <p class="podcast-card-desc">Entrevistas e reflexões com professores, estudantes e inovadores sobre a democratização do conhecimento e o impacto da leitura livre em África.</p>
             <div class="podcast-meta-row">
-              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
-              <span>📻 Spotify for Creators</span>
+              <span>Em Roteirização</span>
+              <span> Spotify for Creators</span>
             </div>
           </div>
         </article>
@@ -573,14 +564,14 @@
         <article class="podcast-card">
           <div class="podcast-cover-box">
             <img src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&auto=format&fit=crop&q=80" alt="Livro da Semana" class="podcast-cover-img" loading="lazy">
-            <span class="podcast-category-badge">📖 Literatura & Crítica</span>
+            <span class="podcast-category-badge"> Literatura & Crítica</span>
           </div>
           <div class="podcast-body">
             <h4 class="podcast-card-title">Livro da Semana: Resenhas & Clássicos em Áudio</h4>
             <p class="podcast-card-desc">Apresentações acessíveis e resumos falados das maiores obras literárias angolanas, africanas e universais catalogadas na biblioteca.</p>
             <div class="podcast-meta-row">
-              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
-              <span>📻 Spotify for Creators</span>
+              <span>Em Roteirização</span>
+              <span> Spotify for Creators</span>
             </div>
           </div>
         </article>
@@ -588,14 +579,14 @@
         <article class="podcast-card">
           <div class="podcast-cover-box">
             <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80" alt="Histórias ao Luar" class="podcast-cover-img" loading="lazy">
-            <span class="podcast-category-badge">🌍 Contos & Tradição Oral</span>
+            <span class="podcast-category-badge"> Contos & Tradição Oral</span>
           </div>
           <div class="podcast-body">
             <h4 class="podcast-card-title">Histórias ao Luar: Contos & Mitos Africanos</h4>
             <p class="podcast-card-desc">Leituras dramatizadas e narrativas de fábulas bantas, contos populares de Angola e lendas ancestrais gravadas para toda a comunidade.</p>
             <div class="podcast-meta-row">
-              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
-              <span>📻 Spotify for Creators</span>
+              <span>Em Roteirização</span>
+              <span> Spotify for Creators</span>
             </div>
           </div>
         </article>
@@ -603,14 +594,14 @@
         <article class="podcast-card">
           <div class="podcast-cover-box">
             <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80" alt="Dica Rápida" class="podcast-cover-img" loading="lazy">
-            <span class="podcast-category-badge">💡 Produtividade & Estudo</span>
+            <span class="podcast-category-badge"> Produtividade & Estudo</span>
           </div>
           <div class="podcast-body">
             <h4 class="podcast-card-title">Dica Rápida em Áudio: Estudos, Foco & Produtividade</h4>
             <p class="podcast-card-desc">Cápsulas práticas de áudio de 3 a 5 minutos com técnicas comprovadas de leitura rápida, memorização e preparação para exames escolares.</p>
             <div class="podcast-meta-row">
-              <span style="color:#f59e0b;font-weight:700;">⏳ Em Roteirização</span>
-              <span>📻 Spotify for Creators</span>
+              <span>Em Roteirização</span>
+              <span> Spotify for Creators</span>
             </div>
           </div>
         </article>
@@ -638,7 +629,7 @@
     <div class="whatsapp-cards">
       <div id="card-comunidade" class="whatsapp-card hidden">
         <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="ui.whatsapp.groupAlt" width="160" height="160" loading="lazy">
-        <h3 data-i18n="ui.whatsapp.groupTitle">💬 Grupo Lino Livre</h3>
+        <h3 data-i18n="ui.whatsapp.groupTitle"> Grupo Lino Livre</h3>
         <p data-i18n="ui.whatsapp.groupDesc">Converse, peça e recomende livros que quer ler.</p>
         <a id="link-card-comunidade" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
@@ -648,7 +639,7 @@
 
       <div id="card-canal" class="whatsapp-card hidden">
         <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="ui.whatsapp.channelAlt" width="160" height="160" loading="lazy">
-        <h3 data-i18n="ui.whatsapp.channelTitle">📢 Canal Livros e Cursos</h3>
+        <h3 data-i18n="ui.whatsapp.channelTitle"> Canal Livros e Cursos</h3>
         <p data-i18n="ui.whatsapp.channelDesc">Receba as novidades de livros e cursos gratuitos.</p>
         <a id="link-card-canal" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
@@ -657,11 +648,11 @@
       </div>
 
       <div id="card-kofi" class="whatsapp-card kofi-card">
-        <div class="whatsapp-qr kofi-qr" style="display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:#fff5f5;border-radius:var(--radius-sm);width:160px;height:160px;">☕</div>
-        <h3 data-i18n="ui.kofi.cardTitle">☕ Apoie no Ko-fi</h3>
+        <div class="whatsapp-qr kofi-qr" style="display:flex;align-items:center;justify-content:center;font-size:1.25rem;background:#f5f5f4;border-radius:var(--radius-sm);width:160px;height:160px;">Ko-fi</div>
+        <h3 data-i18n="ui.kofi.cardTitle"> Apoie no Ko-fi</h3>
         <p data-i18n="ui.kofi.cardDesc">Contribua com qualquer valor para ajudar a manter o servidor e expandir o acervo livre.</p>
         <a id="link-card-kofi" class="btn btn-kofi" href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer">
-          ☕ <span data-i18n="ui.kofi.cardBtn">Apoiar Projeto</span>
+           <span data-i18n="ui.kofi.cardBtn">Apoiar Projeto</span>
         </a>
       </div>
     </div>
@@ -672,12 +663,12 @@
     <div class="container footer-content-grid">
       <!-- Coluna 1: Missão & Lino Livre -->
       <div class="footer-col footer-col-brand">
-        <div class="footer-brand-title">📚 Lino Livre</div>
+        <div class="footer-brand-title"> Lino Livre</div>
         <p class="footer-brand-desc" data-i18n="ui.footer.mission">
           Plataforma comunitária e sem fins lucrativos dedicada a democratizar o acesso universal ao conhecimento, literatura e tecnologia para jovens, estudantes e educadores nos PALOP e Sul Global.
         </p>
         <div class="footer-safe-badge">
-          <span data-i18n="ui.footer.safeBadge">🛡️ Provedor Intermediário de Busca • Zero Armazenamento Local</span>
+          <span data-i18n="ui.footer.safeBadge"> Provedor Intermediário de Busca • Zero Armazenamento Local</span>
         </div>
       </div>
 
@@ -685,11 +676,11 @@
       <div class="footer-col">
         <h4 class="footer-heading" data-i18n="ui.footer.headingExplore">Explorar Acervo</h4>
         <ul class="footer-nav-list">
-          <li><a href="javascript:void(0)" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books">📚 Livros Digitais</a></li>
-          <li><a href="javascript:void(0)" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses">🎓 Cursos Gratuitos</a></li>
-          <li><a href="javascript:void(0)" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps">🗺️ Roadmaps & Trilhas</a></li>
-          <li><a href="javascript:void(0)" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts">🎙️ Podcasts & Spotify</a></li>
-          <li><a href="javascript:void(0)" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard">📊 Métricas & Fontes</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books"> Livros Digitais</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses"> Cursos Gratuitos</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</a></li>
         </ul>
       </div>
 
@@ -697,11 +688,11 @@
       <div class="footer-col">
         <h4 class="footer-heading" data-i18n="ui.footer.headingLegal">Jurídico & Diretrizes</h4>
         <ul class="footer-nav-list">
-          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('termos')" data-i18n="ui.footer.terms">📜 Termos de Uso</a></li>
-          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('isencao')" data-i18n="ui.footer.disclaimer">🛡️ Isenção de Responsabilidade</a></li>
-          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('takedown')" data-i18n="ui.footer.dmca">⚖️ Direitos Autorais & DMCA</a></li>
-          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('privacidade')" data-i18n="ui.footer.privacy">🔒 Privacidade (LGPD/RGPD)</a></li>
-          <li><a href="/termos.html" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.fullTerms">📑 Página Legal Completa ↗</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('termos')" data-i18n="ui.footer.terms"> Termos de Uso</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('isencao')" data-i18n="ui.footer.disclaimer"> Isenção de Responsabilidade</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('takedown')" data-i18n="ui.footer.dmca"> Direitos Autorais & DMCA</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('privacidade')" data-i18n="ui.footer.privacy"> Privacidade (LGPD/RGPD)</a></li>
+          <li><a href="/termos.html" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.fullTerms"> Página Legal Completa ↗</a></li>
         </ul>
       </div>
 
@@ -722,13 +713,13 @@
             </a>
           </li>
           <li>
-            <a href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" style="color: #ff5f5f; font-weight: 600;">
-              ☕ <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
+            <a href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">
+               <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
             </a>
           </li>
           <li>
             <a href="mailto:bv6alblu6@mozmail.com" style="color: var(--primary); font-weight: 500;">
-              ✉️ bv6alblu6@mozmail.com
+               bv6alblu6@mozmail.com
             </a>
           </li>
         </ul>
@@ -783,24 +774,23 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </button>
           <a id="btn-leitor-pdf" class="btn-pdf-header hidden" target="_blank" rel="noopener noreferrer" title="Abrir Edição Oficial Completa (PDF)" data-i18n-title="ui.reader.officialPdf">
-            📄 <span class="btn-pdf-label" data-i18n="ui.reader.officialPdf">PDF Oficial</span>
+             <span class="btn-pdf-label" data-i18n="ui.reader.officialPdf">PDF Oficial</span>
           </a>
-          <button class="reader-action-btn" onclick="app.fecharModais()" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor">✕</button>
+          <button class="reader-action-btn" onclick="app.fecharModais()" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor"></button>
         </div>
       </div>
 
       <!-- Barra de Navegação de Capítulos -->
       <div id="reader-chapter-bar" class="reader-chapter-bar hidden">
         <button id="btn-cap-anterior" class="btn-cap-nav" onclick="app.capituloAnterior()" title="Capítulo Anterior">
-          ❮ <span class="cap-nav-text">Anterior</span>
+           <span class="cap-nav-text">Anterior</span>
         </button>
         <div class="chapter-select-wrapper">
-          <span class="chapter-icon">📖</span>
           <select id="leitor-capitulos-select" class="chapter-nav-select" onchange="app.mudarCapituloPeloSelect(this.value)" aria-label="Selecionar capítulo">
           </select>
         </div>
         <button id="btn-cap-proximo" class="btn-cap-nav" onclick="app.proximoCapitulo()" title="Próximo Capítulo">
-          <span class="cap-nav-text">Próximo</span> ❯
+          <span class="cap-nav-text">Próximo</span>
         </button>
       </div>
 
@@ -815,7 +805,7 @@
           <button id="btn-audio-play" class="btn-audio-control primary" onclick="app.alternarPlayAudio()">
             <span id="icone-play">▶</span> <span id="audio-play-label" data-i18n="ui.reader.listen">Ouvir</span>
           </button>
-          <button id="btn-audio-stop" class="btn-audio-control" onclick="app.pararAudio()" data-i18n="ui.reader.stop">⏹ Parar</button>
+          <button id="btn-audio-stop" class="btn-audio-control" onclick="app.pararAudio()" data-i18n="ui.reader.stop">Parar</button>
           <div class="audio-speed-selector">
             <span class="speed-label" data-i18n="ui.reader.speed">Velocidade:</span>
             <button class="btn-speed active" data-speed="1" onclick="app.alterarVelocidadeAudio(1, this)">1.0x</button>
@@ -834,13 +824,13 @@
         <!-- Ação de Avanço no Fim do Capítulo -->
         <div id="leitor-proximo-cap-container" class="next-chapter-action hidden">
           <button id="btn-avancar-proximo-cap" class="btn-next-cap" onclick="app.proximoCapitulo()">
-            Avançar para o Próximo Capítulo ➔
+            Avançar para o Próximo Capítulo
           </button>
         </div>
 
         <!-- Indicador Sutil no Rodapé da Leitura -->
         <div class="reader-footer-note">
-          <span>⚡ Modo Leitura Ultraleve • Obras de domínio público para leitura contínua no navegador.</span>
+          <span> Modo Leitura Ultraleve • Obras de domínio público para leitura contínua no navegador.</span>
         </div>
       </div>
 
@@ -855,9 +845,9 @@
           <div class="panel-control-row">
             <span class="control-label" data-i18n="ui.reader.brightness">Iluminação</span>
             <div class="brightness-slider-container">
-              <span class="sun-icon min">☀️</span>
+              <span class="sun-icon min"></span>
               <input type="range" id="slider-brilho" min="0.4" max="1" step="0.05" value="1" oninput="app.ajustarBrilho(this.value)" data-i18n-aria="ui.reader.brightnessAria" aria-label="Ajuste de brilho">
-              <span class="sun-icon max">☀️</span>
+              <span class="sun-icon max"></span>
             </div>
           </div>
 
@@ -990,7 +980,7 @@
     <div class="modal-card modal-legal-card">
       <div class="modal-card-header">
         <div style="display:flex;align-items:center;gap:0.5rem;">
-          <span style="font-size:1.3rem;">⚖️</span>
+          <span style="font-size:1.3rem;"></span>
           <h3 id="modal-legal-titulo" data-i18n="ui.legal.title">Diretrizes Legais & Termos de Uso</h3>
         </div>
         <button class="btn-close" onclick="app.fecharModais()">&times;</button>
@@ -998,10 +988,10 @@
 
       <!-- Abas Internas do Modal Legal -->
       <div class="modal-legal-nav">
-        <button class="modal-tab-btn active" id="modal-legal-tab-termos" onclick="app.trocarAbaLegal('termos')" data-i18n="ui.legal.tabTerms">📜 Termos de Uso</button>
-        <button class="modal-tab-btn" id="modal-legal-tab-isencao" onclick="app.trocarAbaLegal('isencao')" data-i18n="ui.legal.tabDisclaimer">🛡️ Intermediário & Isenção</button>
-        <button class="modal-tab-btn" id="modal-legal-tab-takedown" onclick="app.trocarAbaLegal('takedown')" data-i18n="ui.legal.tabDmca">⚖️ DMCA / Takedown</button>
-        <button class="modal-tab-btn" id="modal-legal-tab-privacidade" onclick="app.trocarAbaLegal('privacidade')" data-i18n="ui.legal.tabPrivacy">🔒 Privacidade</button>
+        <button class="modal-tab-btn active" id="modal-legal-tab-termos" onclick="app.trocarAbaLegal('termos')" data-i18n="ui.legal.tabTerms"> Termos de Uso</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-isencao" onclick="app.trocarAbaLegal('isencao')" data-i18n="ui.legal.tabDisclaimer"> Intermediário & Isenção</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-takedown" onclick="app.trocarAbaLegal('takedown')" data-i18n="ui.legal.tabDmca"> DMCA / Takedown</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-privacidade" onclick="app.trocarAbaLegal('privacidade')" data-i18n="ui.legal.tabPrivacy"> Privacidade</button>
       </div>
 
       <div class="modal-card-body modal-legal-body">
@@ -1015,8 +1005,8 @@
         <!-- Aba 2: Intermediário & Isenção -->
         <div id="legal-conteudo-isencao" class="legal-tab-panel">
           <h4>2. Papel Exclusivo de Intermediário (Zero Armazenamento Local)</h4>
-          <div style="background:#eff6ff;border-left:4px solid #2563eb;padding:0.75rem 1rem;border-radius:4px;margin-bottom:1rem;">
-            <p style="margin:0;font-size:0.9rem;color:#1e40af;"><strong>Diretriz Inviolável de Arquitetura:</strong> Os servidores e bancos de dados do Lino Livre <strong>NUNCA</strong> armazenam arquivos binários de livros (PDF, EPUB, MOBI ou TXT). O sistema armazena unicamente metadados públicos e hiperligações para provedores externos.</p>
+          <div style="background:#f5f5f4;border-left:4px solid #334155;padding:0.75rem 1rem;border-radius:4px;margin-bottom:1rem;">
+            <p style="margin:0;font-size:0.9rem;color:#334155;"><strong>Diretriz Inviolável de Arquitetura:</strong> Os servidores e bancos de dados do Lino Livre <strong>NUNCA</strong> armazenam arquivos binários de livros (PDF, EPUB, MOBI ou TXT). O sistema armazena unicamente metadados públicos e hiperligações para provedores externos.</p>
           </div>
           <p>Toda leitura externa é realizada através de redirecionamento de protocolo padrão (HTTP 302) para os repositórios originais na internet. A plataforma opera como mero provedor de aplicação de busca, conforme o Marco Civil da Internet (Lei 12.965/2014, art. 19), DMCA (17 U.S.C. § 512) e Diretiva de Comércio Eletrónico da UE (2000/31/CE).</p>
         </div>
@@ -1030,7 +1020,7 @@
             <p style="margin:0;font-size:0.85rem;color:#64748b;">Assunto: <code>[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre</code></p>
           </div>
           <a href="mailto:bv6alblu6@mozmail.com?subject=%5BNOTIFICA%C3%87%C3%83O%20DE%20DIREITOS%20AUTORAIS%20%2F%20TAKEDOWN%5D%20-%20Lino%20Livre&body=Prezada%20Equipe%20do%20Lino%20Livre%2C%0A%0ASolicito%20a%20remo%C3%A7%C3%A3o%20imediata%20da%20seguinte%20hiperliga%C3%A7%C3%A3o%20do%20cat%C3%A1logo%3A%0A%0A1.%20T%C3%ADtulo%20da%20Obra%3A%20%0A2.%20Autor%2FTitular%20dos%20Direitos%3A%20%0A3.%20URL%20no%20Lino%20Livre%3A%20%0A4.%20URL%20Externa%20Apontada%3A%20%0A5.%20Comprova%C3%A7%C3%A3o%20da%20Titularidade%3A%20%0A%0ADeclaro%20de%20boa-f%C3%A9%20que%20sou%20o%20detentor%20leg%C3%ADtimo%20ou%20representante%20autorizado.%0A%0AAtenciosamente%2C%0ANome%3A%20%0AContato%3A%20" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;font-size:0.9rem;">
-            ✉️ Enviar Notificação de Remoção (E-mail Formatado)
+             Enviar Notificação de Remoção (E-mail Formatado)
           </a>
         </div>
 
@@ -1048,7 +1038,7 @@
 
       <div class="modal-card-footer" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;">
         <a href="/termos.html" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:600;text-decoration:none;font-size:0.9rem;" data-i18n="ui.legal.readFull">
-          📑 Ler Documento Legal Completo em Nova Aba ↗
+           Ler Documento Legal Completo em Nova Aba ↗
         </a>
         <button type="button" class="btn btn-secondary" onclick="app.fecharModais()" data-i18n="ui.legal.close">Fechar</button>
       </div>

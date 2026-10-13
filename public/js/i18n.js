@@ -22,7 +22,7 @@
 
     idiomas() {
       // labels nos próprios idiomas (endônimos) — adicionar um idioma = novo arquivo em /locales
-      return IDIOMAS.map(code => ({ code, label: LABELS_PADRAO[code], flag: FLAGS[code] }));
+      return IDIOMAS.map(code => ({ code, label: LABELS_PADRAO[code] }));
     },
 
     async init() {
@@ -113,7 +113,7 @@
       if (!d) return path;
       let s = this.buscarChave(d, path);
       if (typeof s !== 'string' && this.base) s = this.buscarChave(this.base, path);
-      return typeof s === 'string' ? interpolar(s, vars) : path;
+      return typeof s === 'string' ? limparEmojis(interpolar(s, vars)) : path;
     },
 
     buscarChave(dicionario, path) {
@@ -132,17 +132,17 @@
     sinopse(id, padrao) {
       const d = this.dict || this.base;
       const mapa = d && d.synopses;
-      if (mapa && mapa[String(id)]) return mapa[String(id)];
-      if (this.base && this.base.synopses && this.base.synopses[String(id)]) return this.base.synopses[String(id)];
-      return padrao || '';
+      if (mapa && mapa[String(id)]) return limparEmojis(mapa[String(id)]);
+      if (this.base && this.base.synopses && this.base.synopses[String(id)]) return limparEmojis(this.base.synopses[String(id)]);
+      return limparEmojis(padrao || '');
     },
 
     mapa(secao, chave, padrao) {
       const d = this.dict || this.base;
       const m = d && d.ui && d.ui[secao];
-      if (m && Object.prototype.hasOwnProperty.call(m, chave)) return m[chave];
-      if (this.base && this.base.ui && this.base.ui[secao] && this.base.ui[secao][chave] !== undefined) return this.base.ui[secao][chave];
-      return padrao !== undefined ? padrao : chave;
+      if (m && Object.prototype.hasOwnProperty.call(m, chave)) return limparEmojis(m[chave]);
+      if (this.base && this.base.ui && this.base.ui[secao] && this.base.ui[secao][chave] !== undefined) return limparEmojis(this.base.ui[secao][chave]);
+      return limparEmojis(padrao !== undefined ? padrao : chave);
     },
 
     // ---------- aplicação no DOM ----------
@@ -196,7 +196,7 @@
       const sel = document.getElementById('seletor-idioma');
       if (!sel || sel.dataset.montado === '1') return;
       sel.innerHTML = this.idiomas()
-        .map(i => `<option value="${i.code}">${i.flag} ${i.label}</option>`)
+        .map(i => `<option value="${i.code}">${i.label}</option>`)
         .join('');
       sel.dataset.montado = '1';
     },
@@ -222,7 +222,10 @@
     return String(s).replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m));
   }
 
-  const FLAGS = { pt: '🇦🇴', 'pt-br': '🇧🇷', en: '🇬🇧', es: '🇪🇸', de: '🇩🇪', zh: '🇨🇳', fr: '🇫🇷' };
+  function limparEmojis(texto) {
+    return String(texto).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F1E6}-\u{1F1FF}\u{FE0E}\u{FE0F}\u{200D}]/gu, '');
+  }
+
   const LABELS_PADRAO = { pt: 'Português (Angola)', 'pt-br': 'Português (Brasil)', en: 'English', es: 'Español', de: 'Deutsch', zh: '中文', fr: 'Français' };
 
   window.I18N = I18N;
