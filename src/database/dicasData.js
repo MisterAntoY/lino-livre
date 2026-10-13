@@ -278,6 +278,80 @@ const dicasData = [
     url: 'https://cvv.org.br',
     gratuito: 'Gratuito 24h / Ligue 188',
     idioma: 'PT-BR'
+  },
+
+  // ==================== 7. HÁBITOS & ROTINAS DE ESTUDO ====================
+  {
+    id: 23,
+    titulo: 'Regra dos 2 Minutos — Comece Pequeno',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos',
+    icone: '',
+    descricao: 'Reduza uma nova rotina de estudo à primeira ação que leva até dois minutos. Começar por uma etapa pequena ajuda a vencer a procrastinação e a criar consistência.',
+    dica_pratica: 'Em vez de prometer estudar um capítulo inteiro, abra o livro e leia a primeira página. Depois de começar, decida se continua.',
+    url: 'https://jamesclear.com/atomic-habits',
+    gratuito: 'Artigo Gratuito',
+    idioma: 'EN'
+  },
+  {
+    id: 24,
+    titulo: 'Empilhamento de Hábitos — Vincule uma Nova Rotina',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos',
+    icone: '',
+    descricao: 'Associe um novo hábito a uma rotina que já faz parte do seu dia, usando um momento existente como lembrete para a nova atividade.',
+    dica_pratica: 'Defina uma sequência clara, como: depois do pequeno-almoço, rever os cartões de estudo por dez minutos.',
+    url: 'https://jamesclear.com/habit-stacking',
+    gratuito: 'Artigo Gratuito',
+    idioma: 'EN'
+  },
+  {
+    id: 25,
+    titulo: 'Design do Ambiente — Facilite o Estudo',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos',
+    icone: '',
+    descricao: 'Organize o espaço e os materiais para tornar o comportamento desejado mais fácil de iniciar e reduzir distrações.',
+    dica_pratica: 'Deixe o material da próxima sessão preparado e mantenha o telemóvel fora do alcance durante o período de foco.',
+    url: 'https://jamesclear.com/atomic-habits',
+    gratuito: 'Artigo Gratuito',
+    idioma: 'EN'
+  },
+  {
+    id: 26,
+    titulo: '1% Melhor Todos os Dias — Progresso Gradual',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos',
+    icone: '',
+    descricao: 'Pequenas melhorias repetidas podem acumular-se com o tempo. Concentre-se em práticas sustentáveis em vez de depender de mudanças bruscas.',
+    dica_pratica: 'Escolha uma melhoria simples para a próxima sessão, como rever os apontamentos durante cinco minutos adicionais.',
+    url: 'https://jamesclear.com/atomic-habits',
+    gratuito: 'Artigo Gratuito',
+    idioma: 'EN'
+  },
+  {
+    id: 27,
+    titulo: 'Nunca Falhar Duas Vezes — Retome a Rotina',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos',
+    icone: '',
+    descricao: 'Uma interrupção ocasional não precisa transformar-se num abandono. Retome a atividade na próxima oportunidade disponível.',
+    dica_pratica: 'Se perder uma sessão, programe agora um horário curto para amanhã e retome pelo próximo passo possível.',
+    url: 'https://jamesclear.com/atomic-habits',
+    gratuito: 'Artigo Gratuito',
+    idioma: 'EN'
+  },
+  {
+    id: 28,
+    titulo: 'Hábitos Baseados em Identidade — Reforce Quem Quer Ser',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos',
+    icone: '',
+    descricao: 'Ligue as ações diárias à identidade que pretende construir: cada sessão de estudo é uma oportunidade de praticar ser uma pessoa que aprende.',
+    dica_pratica: 'Após cada sessão, registe a ação concluída e reconheça o compromisso que ela representa com os seus objetivos de aprendizagem.',
+    url: 'https://jamesclear.com/identity-based-habits',
+    gratuito: 'Artigo Gratuito',
+    idioma: 'EN'
   }
 ];
 
