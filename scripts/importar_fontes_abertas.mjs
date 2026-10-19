@@ -47,16 +47,22 @@ function wrangler(cmd) {
   // sob carga concorrente (rate-limit: "A request to the Cloudflare API ... failed").
   // Sem retry, uma falha transitória de um SELECT (p. ex. maxId) abortava o run
   // inteiro a meio. As operações são idempotentes (INSERT OR IGNORE + cursor),
-  // logo re-tentar é seguro.
-  const backoffs = [5, 15, 30, 60];
+  // logo re-tentar é seguro. Backoffs generosos: a degradação do D1 pode durar
+  // minutos, não segundos.
+  const backoffs = [10, 30, 60, 120];
   for (let a = 0; ; a++) {
     try {
       return execSync(`npx wrangler d1 execute ${DB} --remote ${cmd}`, { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 50 * 1024 * 1024 });
     } catch (err) {
-      const msg = String(err?.message || '');
-      const transitoria = /A request to the Cloudflare API|error sending request|EAGAIN|ETIMEDOUT|ENOTFOUND|ECONNRESET|EPIPE|socket hang up|rate limit/i.test(msg);
+      // o wrangler 4.x pode imprimir o erro da API no stdout (não stderr) e sair 1;
+      // testar só err.message perderia esses casos. Saída vazia (processo morto)
+      // também é tratada como transitória — SQL inválido sempre produz output.
+      const saida = `${err?.message || ''}\n${err?.stdout || ''}\n${err?.stderr || ''}`;
+      const transitoria = !saida.trim() ||
+        /A request to the Cloudflare API|error sending request|Too Many Requests|EAGAIN|ETIMEDOUT|ENOTFOUND|ECONNRESET|EPIPE|socket hang up|rate limit/i.test(saida);
       if (!transitoria || a >= backoffs.length) throw err;
-      console.warn(`   ⚠ wrangler falhou (${msg.split('\n')[0].slice(0, 80)}) — retry em ${backoffs[a]}s`);
+      const primeira = saida.split('\n').find(l => l.trim()) || 'sem output';
+      console.warn(`   ⚠ wrangler falhou (${primeira.slice(0, 80)}) — retry em ${backoffs[a]}s`);
       execSync(`sleep ${backoffs[a]}`, { stdio: 'ignore' });
     }
   }
