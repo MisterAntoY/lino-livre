@@ -40,6 +40,7 @@ const { openBootcampCoursesList } = require('./openBootcampCoursesData');
 const { fluenciaAiList } = require('./fluenciaAiData');
 const { recodeCoursesList } = require('./recodeData');
 const { codeIotCoursesList } = require('./codeIotData');
+const { abeCoursesList } = require('./abeCoursesData');
 const {
 
   domCasmurroTexto,
@@ -1611,6 +1612,11 @@ function seed(dbInstance = null) {
   // Cursos Gratuitos do Code IoT (codeiot.org.br - Samsung & LSI-TEC / USP - Internet das Coisas, Arduino, Robótica, IA)
   for (const ci of codeIotCoursesList) {
     insertCurso.run(ci.titulo, ci.tipo || 'curso', ci.area, ci.plataforma, ci.url, ci.licenca, ci.nivel, ci.descricao);
+  }
+
+  // Cursos Gratuitos da Aliança pela Educação (ABE / Instituto Somos - abe.aliancapelaeducacao.com.br - IA, Dados, Cloud, ESG, Gestão)
+  for (const abe of abeCoursesList) {
+    insertCurso.run(abe.titulo, abe.tipo || 'curso', abe.area, abe.plataforma, abe.url, abe.licenca, abe.nivel, abe.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

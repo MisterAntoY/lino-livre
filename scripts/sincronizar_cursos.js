@@ -145,6 +145,14 @@ function carregarCursosPadrao() {
     console.warn('Aviso: recodeData não carregado:', e.message);
   }
 
+  // 11. Aliança pela Educação (ABE / Instituto Somos)
+  try {
+    const { abeCoursesList } = require('../src/database/abeCoursesData');
+    if (Array.isArray(abeCoursesList)) cursos.push(...abeCoursesList);
+  } catch (e) {
+    console.warn('Aviso: abeCoursesData não carregado:', e.message);
+  }
+
   return cursos;
 }
 

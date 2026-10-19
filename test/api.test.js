@@ -602,6 +602,17 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resCodeIot.data.some(c => c.titulo.includes('Samsung Innovation Campus') || c.titulo.includes('SIC')), 'Deve conter cursos do Samsung Innovation Campus');
     assert.ok(resCodeIot.data.some(c => c.url.includes('codeiot.org.br')), 'URLs devem apontar para a plataforma Code IoT');
     assert.ok(resCodeIot.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos do Code IoT devem ser gratuitos');
+
+    // 14.12 - Aliança pela Educação (ABE / Instituto Somos - abe.aliancapelaeducacao.com.br)
+    const resAbe = await request('/api/cursos?plataforma=Alian%C3%A7a+pela+Educa%C3%A7%C3%A3o+(ABE)&limit=100');
+    assert.equal(resAbe.status, 200);
+    assert.ok(Array.isArray(resAbe.data));
+    assert.ok(resAbe.data.length >= 50, 'Deve conter os cursos da Aliança pela Educação (>= 50 no limit=100)');
+    assert.ok(resAbe.data.some(c => c.titulo.includes('Cybersecurity') || c.titulo.includes('Segurança')), 'Deve conter cursos de Segurança/Cybersecurity');
+    assert.ok(resAbe.data.some(c => c.titulo.includes('Big Data') || c.titulo.includes('Dados') || c.titulo.includes('Preditiva')), 'Deve conter cursos de Dados/Big Data');
+    assert.ok(resAbe.data.some(c => c.titulo.includes('HTML') || c.titulo.includes('Web') || c.titulo.includes('Java')), 'Deve conter cursos de Desenvolvimento/HTML');
+    assert.ok(resAbe.data.some(c => c.url.includes('abe.aliancapelaeducacao.com.br')), 'URLs devem apontar para o portal da ABE');
+    assert.ok(resAbe.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos da ABE devem ser gratuitos');
   });
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
