@@ -276,7 +276,7 @@ const app = {
         }
         return `
           <a class="format-tag" href="/api/livros/${l.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.openFormat', { f: lnk.formato.toUpperCase() }))}${labelTamanho}">
-            📄 ${lnk.formato.toUpperCase()}${labelTamanho}
+             ${lnk.formato.toUpperCase()}${labelTamanho}
           </a>
         `;
       }).join('');
@@ -300,23 +300,23 @@ const app = {
       if (eGuiaWeb && htmlLink) {
         badgeHtml = `
           <div class="data-badge-card" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd" title="Recurso Educacional Aberto / Roadmap Interativo">
-            🚀 <span>Guia Interativo Web</span>
+             <span>Guia Interativo Web</span>
           </div>
         `;
         botoesAcaoHtml = `
           <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${htmlLink.id}" target="_blank" rel="noopener noreferrer">
-            🌐 Acessar Guia Online
+             Acessar Guia Online
           </a>
         `;
       } else if (eLivroTecnicoPdf) {
         badgeHtml = `
           <div class="data-badge-card" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0" title="Livro Técnico Completo Aberto">
-            📘 <span>Livro Digital Completo (PDF)</span>
+             <span>Livro Digital Completo (PDF)</span>
           </div>
         `;
         botoesAcaoHtml = `
           <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer">
-            📄 Ler Livro (PDF)
+             Ler Livro (PDF)
           </a>
           <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer">
             ⬇ Baixar${pdfTamanho}
@@ -334,7 +334,7 @@ const app = {
           </button>
           ${pdfLink ? `
             <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.downloadFile'))}${pdfTamanho}">
-              📄 PDF Oficial${pdfTamanho}
+               PDF Oficial${pdfTamanho}
             </a>
           ` : (downloadLink ? `
             <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer">
@@ -345,11 +345,11 @@ const app = {
       }
 
       const langFlags = {
-        pt: '🇧🇷 PT',
-        en: '🇬🇧 EN',
-        fr: '🇫🇷 FR',
-        de: '🇩🇪 DE',
-        zh: '🇨🇳 ZH'
+        pt: ' PT',
+        en: ' EN',
+        fr: ' FR',
+        de: ' DE',
+        zh: ' ZH'
       };
       const flagLabel = langFlags[l.idioma] || (l.idioma || 'PT').toUpperCase();
       const isAfrica = (l.categoria_nome && l.categoria_nome.includes('África'));
@@ -367,7 +367,7 @@ const app = {
             <div>
               <span class="book-lang-badge lang-${l.idioma || 'pt'}">${flagLabel}</span>
               <span class="badge-license">${this.escape(licencaFormatada)}</span>
-              ${isAfrica ? `<span class="africa-stats-badge" style="background:#fef3c7; color:#78350f; border-color:#f59e0b; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700;">🌍 Coleção África</span>` : ''}
+              ${isAfrica ? `<span class="africa-stats-badge" style="background:#fef3c7; color:#78350f; border-color:#f59e0b; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700;"> Coleção África</span>` : ''}
             </div>
 
             <p class="book-synopsis">${this.escape(sinopse)}</p>
@@ -377,8 +377,8 @@ const app = {
             </div>
 
             <div class="book-stats">
-              <span>${l.leituras > 0 ? t('books.readings', { n: l.leituras }) : '📖 Leitura Aberta'}</span>
-              <span>🏷️ ${this.escape(traduzirCategoria(l.categoria_nome) || t('books.defaultCategory'))}</span>
+              <span>${l.leituras > 0 ? t('books.readings', { n: l.leituras }) : ' Leitura Aberta'}</span>
+              <span> ${this.escape(traduzirCategoria(l.categoria_nome) || t('books.defaultCategory'))}</span>
             </div>
 
             ${badgeHtml}
@@ -423,11 +423,11 @@ const app = {
           if (bestExternalLink) {
             btnPdf.href = `/api/livros/${livro.id}/ler/${bestExternalLink.id}`;
             if (bestExternalLink.formato.toLowerCase() === 'epub') {
-              btnPdf.textContent = '📥 Baixar EPUB (Gutenberg)';
+              btnPdf.textContent = ' Baixar EPUB (Gutenberg)';
             } else if (bestExternalLink.formato.toLowerCase() === 'html') {
-              btnPdf.textContent = '🌐 Wikisource Oficial';
+              btnPdf.textContent = ' Wikisource Oficial';
             } else {
-              btnPdf.textContent = '📥 Baixar PDF';
+              btnPdf.textContent = ' Baixar PDF';
             }
             btnPdf.classList.remove('hidden');
           } else {
@@ -534,7 +534,7 @@ const app = {
         const proxTitulo = this.capitulos[this.capituloAtualIndex + 1].titulo;
         const btnAvancar = document.getElementById('btn-avancar-proximo-cap');
         if (btnAvancar) {
-          btnAvancar.textContent = `Avançar para: ${proxTitulo} ➔`;
+          btnAvancar.textContent = `Avançar para: ${proxTitulo} `;
         }
       } else {
         proximoAction.classList.add('hidden');
@@ -813,7 +813,7 @@ const app = {
     if (audioBar) audioBar.classList.add('speaking');
 
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">⏸</span> <span id="audio-play-label">${t('reader.pause')}</span>`;
+    if (btnPlay) btnPlay.innerHTML = `<span id="audio-play-label">${t('reader.pause')}</span>`;
 
     const statusEl = document.getElementById('audio-status-texto');
     if (statusEl) {
@@ -860,7 +860,7 @@ const app = {
     const audioBar = document.getElementById('player-audio-bar');
     if (audioBar) audioBar.classList.remove('speaking');
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">▶</span> <span id="audio-play-label">${t('reader.resume')}</span>`;
+    if (btnPlay) btnPlay.innerHTML = `<span id="audio-play-label">${t('reader.resume')}</span>`;
     const statusEl = document.getElementById('audio-status-texto');
     if (statusEl) statusEl.textContent = t('reader.audioPaused');
   },
@@ -873,7 +873,7 @@ const app = {
     const audioBar = document.getElementById('player-audio-bar');
     if (audioBar) audioBar.classList.add('speaking');
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">⏸</span> <span id="audio-play-label">${t('reader.pause')}</span>`;
+    if (btnPlay) btnPlay.innerHTML = `<span id="audio-play-label">${t('reader.pause')}</span>`;
     const statusEl = document.getElementById('audio-status-texto');
     if (statusEl) {
       statusEl.textContent = t('reader.readingParagraph', {
@@ -895,7 +895,7 @@ const app = {
     const audioBar = document.getElementById('player-audio-bar');
     if (audioBar) audioBar.classList.remove('speaking');
     const btnPlay = document.getElementById('btn-audio-play');
-    if (btnPlay) btnPlay.innerHTML = `<span id="icone-play">▶</span> <span id="audio-play-label">${t('reader.listen')}</span>`;
+    if (btnPlay) btnPlay.innerHTML = `<span id="audio-play-label">${t('reader.listen')}</span>`;
     const statusEl = document.getElementById('audio-status-texto');
     if (statusEl) statusEl.textContent = t('reader.audioReady');
   },
@@ -1055,11 +1055,11 @@ const app = {
       if (desc.includes('[INSCRIÇÕES ABERTAS')) {
         const m = desc.match(/Finaliza em ([^\]]+)/);
         const prazo = m ? m[1] : '';
-        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#15803d; border-color:#86efac; font-weight:600;" title="Inscrições abertas">🟢 Inscrições Abertas${prazo ? ' (' + prazo + ')' : ''}</span>`;
+        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#15803d; border-color:#86efac; font-weight:600;" title="Inscrições abertas"> Inscrições Abertas${prazo ? ' (' + prazo + ')' : ''}</span>`;
       } else if (desc.includes('[Finalizado em')) {
-        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#475569; border-color:#cbd5e1;" title="Edição anterior disponível para estudo">⌛ Concluído (Histórico)</span>`;
+        deadlineBadge = `<span class="badge-guiadeti-pill" title="Edição anterior disponível para estudo">Concluído (Histórico)</span>`;
       } else if (desc.includes('[CURSO CONTÍNUO')) {
-        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc;">♾️ Sempre Aberto</span>`;
+        deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc;"> Sempre Aberto</span>`;
       }
 
       const isFiap = (c.plataforma || '').includes('FIAP');
@@ -1081,14 +1081,14 @@ const app = {
       const isStanford = (c.plataforma || '').includes('Stanford');
 
       if (isSantander) {
-        btnTexto = '🏛️ Acessar Santander';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; font-weight:600;">🏛️ Santander Academy</span>`;
+        btnTexto = ' Acessar Santander';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; font-weight:600;"> Santander Academy</span>`;
       } else if (isDio) {
-        btnTexto = '⚡ Inscrever-se na DIO';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8; font-weight:600;">⚡ Bootcamp DIO</span>`;
+        btnTexto = ' Inscrever-se na DIO';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8; font-weight:600;"> Bootcamp DIO</span>`;
       } else if (isCursoEmVideo) {
-        btnTexto = '📺 Assistir no YouTube';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffedd5; color:#c2410c; border-color:#fdba74; font-weight:600;">📺 Curso em Vídeo</span>`;
+        btnTexto = ' Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffedd5; color:#c2410c; border-color:#fdba74; font-weight:600;"> Curso em Vídeo</span>`;
       } else if (isDsa) {
         btnTexto = '🔬 Acessar DSA';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">🔬 Data Science Academy</span>`;
@@ -1105,44 +1105,44 @@ const app = {
         btnTexto = '🌲 Acessar Stanford';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#831843; border-color:#fbcfe8; font-weight:600;">🌲 Stanford Online</span>`;
       } else if (isFiap) {
-        btnTexto = '🎓 Acessar FIAP';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffe4e6; color:#e11d48; border-color:#fecdd3; font-weight:600;">🎓 FIAP ON</span>`;
+        btnTexto = ' Acessar FIAP';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffe4e6; color:#e11d48; border-color:#fecdd3; font-weight:600;"> FIAP ON</span>`;
       } else if (isEuCapacito) {
-        btnTexto = '🚀 Acessar Eu Capacito';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f3e8ff; color:#7e22ce; border-color:#e9d5ff; font-weight:600;">🚀 Eu Capacito</span>`;
+        btnTexto = ' Acessar Eu Capacito';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f3e8ff; color:#7e22ce; border-color:#e9d5ff; font-weight:600;"> Eu Capacito</span>`;
       } else if (isIbm) {
-        btnTexto = '💼 Acessar IBM';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; font-weight:600;">💼 IBM SkillsBuild</span>`;
+        btnTexto = ' Acessar IBM';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; font-weight:600;"> IBM SkillsBuild</span>`;
       } else if (isCisco) {
-        btnTexto = '🌐 Acessar Cisco';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd; font-weight:600;">🌐 Cisco NetAcad</span>`;
+        btnTexto = ' Acessar Cisco';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd; font-weight:600;"> Cisco NetAcad</span>`;
       } else if (isEscolaTrab) {
-        btnTexto = '🏛️ Acessar MTE / Microsoft';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;">🏛️ Escola do Trabalhador 4.0</span>`;
+        btnTexto = ' Acessar MTE / Microsoft';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;"> Escola do Trabalhador 4.0</span>`;
       } else if (isAws) {
-        btnTexto = '☁️ Acessar AWS';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fffbeb; color:#b45309; border-color:#fde68a; font-weight:600;">☁️ AWS Skill Builder</span>`;
+        btnTexto = ' Acessar AWS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fffbeb; color:#b45309; border-color:#fde68a; font-weight:600;"> AWS Skill Builder</span>`;
       } else if (isMsLearn) {
-        btnTexto = '💻 Acessar Microsoft';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd; font-weight:600;">💻 Microsoft Learn</span>`;
+        btnTexto = ' Acessar Microsoft';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd; font-weight:600;"> Microsoft Learn</span>`;
       } else if (isFcc) {
-        btnTexto = '🔥 Estudar no freeCodeCamp';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;">🔥 freeCodeCamp</span>`;
+        btnTexto = ' Estudar no freeCodeCamp';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;"> freeCodeCamp</span>`;
       } else if (isKultivi) {
-        btnTexto = '📚 Acessar Kultivi';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfeff; color:#0e7490; border-color:#a5f3fc; font-weight:600;">📚 Kultivi</span>`;
+        btnTexto = ' Acessar Kultivi';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfeff; color:#0e7490; border-color:#a5f3fc; font-weight:600;"> Kultivi</span>`;
       } else if (isSenai) {
-        btnTexto = '⚙️ Acessar SENAI';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#b91c1c; border-color:#fecaca; font-weight:600;">⚙️ SENAI Play</span>`;
+        btnTexto = ' Acessar SENAI';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#b91c1c; border-color:#fecaca; font-weight:600;"> SENAI Play</span>`;
       } else if (isOracleOne) {
-        btnTexto = '⚡ Acessar Oracle ONE';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fff1f2; color:#be123c; border-color:#fecdd3; font-weight:600;">⚡ Oracle ONE</span>`;
+        btnTexto = ' Acessar Oracle ONE';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fff1f2; color:#be123c; border-color:#fecdd3; font-weight:600;"> Oracle ONE</span>`;
       } else if (isGeneration) {
-        btnTexto = '🚀 Acessar Generation';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0; font-weight:600;">🚀 Generation Brasil</span>`;
+        btnTexto = ' Acessar Generation';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0; font-weight:600;"> Generation Brasil</span>`;
       } else if (isWmc) {
-        btnTexto = '💜 Acessar WoMakersCode';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fdf4ff; color:#a21caf; border-color:#f5d0fe; font-weight:600;">💜 WoMakersCode</span>`;
+        btnTexto = ' Acessar WoMakersCode';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fdf4ff; color:#a21caf; border-color:#f5d0fe; font-weight:600;"> WoMakersCode</span>`;
       } else if (isYouTube) {
         btnTexto = t('courses.btnYoutube');
         extraBadge = `<span class="badge-youtube-cert">${t('courses.badgeYoutube')}</span>`;
@@ -1153,17 +1153,17 @@ const app = {
         btnTexto = t('courses.btnBradesco');
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">${t('courses.badgeBradesco')}</span>`;
       } else if (isUsp) {
-        btnTexto = '🎓 Aulas USP';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">🎓 Cursos USP</span>`;
+        btnTexto = ' Aulas USP';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;"> Cursos USP</span>`;
       } else if (isAlura) {
-        btnTexto = '🌟 Aulas Alura';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;">🌟 Alura Aberta</span>`;
+        btnTexto = ' Aulas Alura';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;"> Alura Aberta</span>`;
       } else if (isEvg) {
-        btnTexto = '📜 Inscrição EV.G';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#bbf7d0;">🏛️ EV.G / ENAP</span>`;
+        btnTexto = ' Inscrição EV.G';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#bbf7d0;"> EV.G / ENAP</span>`;
       } else if (isIfrs) {
-        btnTexto = '📜 Inscrição IFRS';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ede9fe; color:#5b21b6; border-color:#ddd6fe;">🏛️ IFRS Federal</span>`;
+        btnTexto = ' Inscrição IFRS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ede9fe; color:#5b21b6; border-color:#ddd6fe;"> IFRS Federal</span>`;
       }
 
       const cardClass = isSantander
@@ -1197,7 +1197,7 @@ const app = {
       const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
 
 
-      let logoHtml = '🏛️';
+      let logoHtml = '';
       if (isDio) {
         logoHtml = `<img src="/img/logos/dio.png" alt="DIO" class="course-platform-logo">`;
       } else if (isSantander) {
@@ -1342,16 +1342,16 @@ const app = {
       const isRoadmapSh = (r.plataforma || '').includes('Roadmap.sh');
       const isTrilha = (r.plataforma || '').includes('Trilha Info');
       const isGuiaTI = (r.plataforma || '').includes('Guia de TI');
-      let badgeOrigem = '🗺️ Roadmap Aberto';
-      let logoRoadmap = '🧭';
+      let badgeOrigem = ' Roadmap Aberto';
+      let logoRoadmap = '';
       if (isRoadmapSh) {
-        badgeOrigem = '🌐 Roadmap.sh';
+        badgeOrigem = ' Roadmap.sh';
         logoRoadmap = `<img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="course-platform-logo">`;
       } else if (isTrilha) {
-        badgeOrigem = '🗺️ Trilha Info (BR)';
+        badgeOrigem = ' Trilha Info (BR)';
         logoRoadmap = `<img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="course-platform-logo">`;
       } else if (isGuiaTI) {
-        badgeOrigem = '🚀 Guia de TI';
+        badgeOrigem = ' Guia de TI';
         logoRoadmap = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo">`;
       }
 
@@ -1366,8 +1366,8 @@ const app = {
           <p class="roadmap-platform">${logoRoadmap} <span>${this.escape(r.plataforma)}</span></p>
           <p class="roadmap-desc">${this.escape(r.descricao || 'Árvore de habilidades e guia passo a passo estruturado para desenvolvimento técnico.')}</p>
 
-          <a class="btn roadmap-btn" href="${this.escape(r.url)}" target="_blank" rel="noopener noreferrer">
-            🗺️ Acessar Roadmap Interativo ↗
+          <a class="btn roadmap-btn" href="${this.escape(r.url, true)}" target="_blank" rel="noopener noreferrer">
+             Acessar Roadmap Interativo ↗
           </a>
         </article>
       `;
@@ -1403,7 +1403,7 @@ const app = {
       frame.src = embedUrl;
     }
     if (statusText) {
-      statusText.textContent = `🎧 A reproduzir: ${titulo}${showTitulo ? ' (' + showTitulo + ')' : ''}`;
+      statusText.textContent = ` A reproduzir: ${titulo}${showTitulo ? ' (' + showTitulo + ')' : ''}`;
     }
     const container = document.getElementById('spotify-player-container');
     if (container) {
@@ -1464,8 +1464,8 @@ const app = {
             <p class="podcast-card-desc">${this.escape(s.descricao)}</p>
 
             <div class="podcast-meta-row">
-              <span>🎙️ ${totalEp} ${totalEp === 1 ? 'Episódio' : 'Episódios'}</span>
-              <span>📻 Spotify for Creators</span>
+              <span> ${totalEp} ${totalEp === 1 ? 'Episódio' : 'Episódios'}</span>
+              <span> Spotify for Creators</span>
             </div>
 
             <div class="podcast-card-actions">
@@ -1508,13 +1508,13 @@ const app = {
       return `
         <div class="episodio-card">
           <div class="episodio-info">
-            <span class="episodio-show-tag">🎙️ ${this.escape(ep.show_titulo || 'Podcast Lino Livre')}</span>
+            <span class="episodio-show-tag"> ${this.escape(ep.show_titulo || 'Podcast Lino Livre')}</span>
             <h4 class="episodio-title">${this.escape(ep.titulo)}</h4>
             <p class="episodio-desc">${this.escape(ep.descricao || '')}</p>
             <div class="episodio-meta">
-              ${duracao ? `<span>⏱️ ${duracao}</span>` : ''}
-              ${data ? `<span>📅 ${data}</span>` : ''}
-              ${ep.reproducoes > 0 ? `<span>🎧 ${ep.reproducoes} reproduções</span>` : ''}
+              ${duracao ? `<span>${duracao}</span>` : ''}
+              ${data ? `<span> ${data}</span>` : ''}
+              ${ep.reproducoes > 0 ? `<span> ${ep.reproducoes} reproduções</span>` : ''}
             </div>
           </div>
 
@@ -1583,7 +1583,6 @@ const app = {
       return `
         <article class="dica-card">
           <div class="dica-header">
-            <div class="dica-icon">${d.icone || '💡'}</div>
             <div>
               <span class="dica-categoria-badge">${this.escape(d.categoria_label || 'Dica')}</span>
               <h3 class="dica-title">${this.escape(d.titulo)}</h3>
@@ -1593,13 +1592,13 @@ const app = {
           <p class="dica-desc">${this.escape(d.descricao)}</p>
 
           <div class="dica-pratica-box">
-            <strong>🎯 Como aplicar nos estudos:</strong>
+            <strong> Como aplicar nos estudos:</strong>
             ${this.escape(d.dica_pratica)}
           </div>
 
           <div class="dica-footer">
-            <span class="dica-badge-gratis">✓ ${this.escape(d.gratuito || 'Gratuito')}</span>
-            <a class="dica-btn" href="${this.escape(d.url)}" target="_blank" rel="noopener noreferrer">
+            <span class="dica-badge-gratis"> ${this.escape(d.gratuito || 'Gratuito')}</span>
+            <a class="dica-btn" href="${this.escape(d.url, true)}" target="_blank" rel="noopener noreferrer">
               Acessar Recurso ↗
             </a>
           </div>
@@ -1631,23 +1630,23 @@ const app = {
       const visualWidth = Math.max(1.5, Math.min(100, pct));
 
       container.innerHTML = `
-        <div class="dash-goal-banner" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 45%, #1e3a8a 100%); color:#ffffff; border-radius:var(--radius-lg); padding:1.5rem 2rem; margin-bottom:1.5rem; border:1px solid rgba(255,255,255,0.18); box-shadow:0 10px 25px -5px rgba(15,23,42,0.35); position:relative; overflow:hidden;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1.25rem; margin-bottom:1rem; position:relative; z-index:1;">
+        <div class="dash-goal-banner">
+          <div class="dash-goal-header">
             <div>
-              <span style="background:#f59e0b; color:#451a03; font-size:0.75rem; font-weight:800; padding:0.25rem 0.75rem; border-radius:9999px; text-transform:uppercase; letter-spacing:0.5px;">🎯 Meta Coletiva Global</span>
-              <h2 style="font-size:1.6rem; font-weight:800; margin:0.4rem 0 0.2rem 0; color:#fff;">Rumo aos 10 Milhões de Livros Livres</h2>
-              <p style="color:#cbd5e1; font-size:0.9rem; margin:0; max-width:620px;">Acompanhamento oficial da jornada de indexação de obras livres e de domínio público para a humanidade.</p>
+              <span class="dash-goal-badge">Meta Coletiva Global</span>
+              <h2>Rumo aos 10 Milhões de Livros Livres</h2>
+              <p>Acompanhamento oficial da jornada de indexação de obras livres e de domínio público para a humanidade.</p>
             </div>
-            <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:var(--radius-md); padding:0.75rem 1.5rem; text-align:center;">
-              <span style="display:block; font-size:0.7rem; font-weight:700; color:#94a3b8; text-transform:uppercase;">Acervo Atual / Meta</span>
-              <div style="font-size:1.85rem; font-weight:900; color:#38bdf8; font-variant-numeric:tabular-nums;">
-                ${totalLivros.toLocaleString()} <span style="font-size:1.1rem; color:#64748b;">/</span> <span style="color:#facc15; font-size:1.3rem;">10.000.000</span>
+            <div class="dash-goal-counter">
+              <span class="dash-goal-label">Acervo Atual / Meta</span>
+              <div class="dash-goal-number">
+                ${totalLivros.toLocaleString()} <span>/</span> <strong>10.000.000</strong>
               </div>
-              <span style="font-size:0.8rem; font-weight:700; color:#4ade80; background:rgba(74,222,128,0.15); padding:0.15rem 0.5rem; border-radius:9999px;">${pctStr}% da meta</span>
+              <span class="dash-goal-percent">${pctStr}% da meta</span>
             </div>
           </div>
-          <div style="height:14px; background:rgba(255,255,255,0.15); border-radius:9999px; overflow:hidden; position:relative;">
-            <div style="height:100%; width:${visualWidth}%; background:linear-gradient(90deg, #38bdf8, #818cf8, #eab308, #f59e0b); border-radius:9999px; box-shadow:0 0 10px rgba(234,179,8,0.5);"></div>
+          <div class="dash-goal-progress">
+            <div class="dash-goal-progress-fill" style="width:${visualWidth}%;"></div>
           </div>
         </div>
 
@@ -1672,18 +1671,18 @@ const app = {
 
         <div class="dash-sections-row">
           <div class="dash-box">
-            <h3>🌐 Idiomas do Acervo</h3>
+            <h3> Idiomas do Acervo</h3>
             <div class="dash-list">
               ${idiomas.map(i => {
-                const flags = {
-                  pt: '🇧🇷 Português',
-                  en: '🇬🇧 English',
-                  es: '🇪🇸 Español',
-                  fr: '🇫🇷 Français',
-                  de: '🇩🇪 Deutsch',
-                  zh: '🇨🇳 中文'
+                const labels = {
+                  pt: 'Português',
+                  en: 'English',
+                  es: 'Español',
+                  fr: 'Français',
+                  de: 'Deutsch',
+                  zh: '中文'
                 };
-                const label = flags[i.idioma] || (i.idioma ? i.idioma.toUpperCase() : 'Outro');
+                const label = labels[i.idioma] || (i.idioma ? i.idioma.toUpperCase() : 'Outro');
                 return `
                   <div class="dash-list-item">
                     <span>${label}</span>
@@ -1699,7 +1698,7 @@ const app = {
             <div class="dash-list">
               ${formatos.map(f => `
                 <div class="dash-list-item">
-                  <span>📄 ${f.formato.toUpperCase()}</span>
+                  <span> ${f.formato.toUpperCase()}</span>
                   <span class="dash-list-badge">${f.total} ${t('dashboard.works')}</span>
                 </div>
               `).join('')}
@@ -1711,7 +1710,7 @@ const app = {
             <div class="dash-list">
               ${areas.map(a => `
                 <div class="dash-list-item">
-                  <span>📚 ${this.escape(traduzirArea(a.area))}</span>
+                  <span> ${this.escape(traduzirArea(a.area))}</span>
                   <span class="dash-list-badge">${a.total} ${t('dashboard.works')}</span>
                 </div>
               `).join('')}
@@ -1723,7 +1722,7 @@ const app = {
             <div class="dash-list">
               ${fontes.map(f => `
                 <div class="dash-list-item">
-                  <span>🌐 ${this.escape(f.nome)}</span>
+                  <span> ${this.escape(f.nome)}</span>
                   <span class="dash-list-badge">${f.total_livros} ${t('dashboard.works')}</span>
                 </div>
               `).join('')}
@@ -1735,7 +1734,7 @@ const app = {
             <div class="dash-list">
               ${maisLidos.map(l => `
                 <div class="dash-list-item">
-                  <span>📖 ${this.escape(l.titulo)}</span>
+                  <span> ${this.escape(l.titulo)}</span>
                   <span class="dash-list-badge">${l.leituras > 0 ? `${l.leituras} ${t('dashboard.readsShort')}` : 'Acervo Aberto'}</span>
                 </div>
               `).join('')}
@@ -2009,7 +2008,7 @@ const app = {
         m1k.classList.remove('active');
         m1k.classList.add('reached');
         const tag = m1k.querySelector('.milestone-tag');
-        if (tag) tag.textContent = '✓';
+        if (tag) tag.textContent = '';
       }
     }
     if (m10k) {
@@ -2039,7 +2038,7 @@ const app = {
     const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);
 
-    let texto = `📚 Junte-se ao Lino Livre na jornada dos 10 Milhões de Livros Livres! Já temos ${numFmt} obras abertas e gratuitas indexadas. Venha ler e contribuir:`;
+    let texto = ` Junte-se ao Lino Livre na jornada dos 10 Milhões de Livros Livres! Já temos ${numFmt} obras abertas e gratuitas indexadas. Venha ler e contribuir:`;
     if (typeof t === 'function') {
       const trad = t('goal.shareText', { n: numFmt });
       if (trad && !trad.startsWith('goal.')) texto = trad;
@@ -2073,9 +2072,12 @@ const app = {
     }, 3500);
   },
 
-  escape(str) {
+  escape(str, preserveEmoji = false) {
     if (!str) return '';
-    return String(str)
+    const value = preserveEmoji
+      ? String(str)
+      : String(str).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F1E6}-\u{1F1FF}\u{FE0E}\u{FE0F}\u{200D}]/gu, '');
+    return value
       .replace(/&/g, '&amp;')
       .replace(/</g, '&amp;lt;')
       .replace(/>/g, '&amp;gt;')

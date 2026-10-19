@@ -151,5 +151,29 @@
       "Linguagem Julia",
       "Gratuito"
     ]
+  },
+  {
+    "idExterno": "6aceb9b4007e34770b0bcb08",
+    "titulo": "Cursos Bônus - Agentic BI",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "Data Science Academy",
+    "url": "https://www.datascienceacademy.com.br/course/cursos-bonus-de-aperfeicoamento-profissional-agentic-bi",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Cursos bônus gratuitos e exclusivos para alunos da Formação Agentic Business Intelligence 4.0. Carga horária estimada: 40h a 60h. Certificado oficial gratuito de conclusão emitido pela Data Science Academy. 100% online e gratuito. Tags: Sistema Operacional Linux, Docker, Kubernetes, Governança de Dados, Soft Skills, E-Gov Analytics, Gratuito, Certificação Microsoft, Claude Code, CoPilot.",
+    "imagemUrl": "https://lwfiles000.mycourse.app/datascienceacademy-public/a4d5eab08043971aa455cfe31282479f.png",
+    "tags": [
+      "Sistema Operacional Linux",
+      "Docker",
+      "Kubernetes",
+      "Governança de Dados",
+      "Soft Skills",
+      "E-Gov Analytics",
+      "Gratuito",
+      "Certificação Microsoft",
+      "Claude Code",
+      "CoPilot"
+    ]
   }
 ]

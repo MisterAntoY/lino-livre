@@ -441,3 +441,4 @@ const dicasData = [
 ];
 
 module.exports = { dicasData };
+

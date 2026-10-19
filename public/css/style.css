@@ -1,16 +1,16 @@
 :root {
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --bg-page: #f8fafc;
+  --primary: #334155;
+  --primary-hover: #1e293b;
+  --bg-page: #f5f5f4;
   --bg-card: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-hover: 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --text-main: #1c1917;
+  --text-muted: #57534e;
+  --border: #e7e5e4;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --shadow-card: 0 1px 2px rgba(28, 25, 23, 0.05);
+  --shadow-hover: 0 2px 6px rgba(28, 25, 23, 0.08);
 }
 
 * {
@@ -20,7 +20,7 @@
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: var(--bg-page);
   color: var(--text-main);
   line-height: 1.5;
@@ -64,8 +64,7 @@ body {
 }
 
 .brand-icon {
-  font-size: 2rem;
-  line-height: 1;
+  display: none;
 }
 
 .brand-title {
@@ -101,11 +100,12 @@ body {
   transform: translateY(-50%);
   color: var(--text-muted);
   pointer-events: none;
+  display: none;
 }
 
 .search-bar input {
   width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.75rem;
+  padding: 0.8rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   font-size: 0.95rem;
@@ -118,7 +118,7 @@ body {
 
 .search-bar input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 3px rgba(51, 65, 85, 0.12);
 }
 
 .pills-container {
@@ -1023,8 +1023,8 @@ body {
 }
 
 .paper-swatch.active {
-  box-shadow: 0 0 0 2px #2563eb;
-  border-color: #2563eb;
+  box-shadow: 0 0 0 2px var(--primary);
+  border-color: var(--primary);
 }
 
 /* Stepper de Fonte */
@@ -1787,12 +1787,12 @@ body {
 
 .card-featured-guiadeti {
   border-color: #bfdbfe !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  background: #ffffff;
 }
 
 .card-featured-youtube {
   border-color: #fca5a5 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fff5f5 100%);
+  background: #ffffff;
 }
 
 .badge-guiadeti-pill {
@@ -1808,47 +1808,47 @@ body {
 
 .card-featured-bradesco {
   border-color: #cbd5e1;
-  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  background: #ffffff;
 }
 
 .card-featured-dio {
   border-color: #fbcfe8 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fdf2f8 100%);
+  background: #ffffff;
 }
 
 .card-featured-santander {
   border-color: #fecaca !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fff1f2 100%);
+  background: #ffffff;
 }
 
 .card-featured-cursoemvideo {
   border-color: #fed7aa !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+  background: #ffffff;
 }
 
 .card-featured-dsa {
   border-color: #bae6fd !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+  background: #ffffff;
 }
 
 .card-featured-fiap {
   border-color: #fecdd3 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fff1f2 100%);
+  background: #ffffff;
 }
 
 .card-featured-ibm {
   border-color: #bfdbfe !important;
-  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+  background: #ffffff;
 }
 
 .card-featured-cisco {
   border-color: #bae6fd !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+  background: #ffffff;
 }
 
 .card-featured-wmc {
   border-color: #f5d0fe !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fdf4ff 100%);
+  background: #ffffff;
 }
 
 .card-featured-cursa {
@@ -2125,7 +2125,7 @@ body {
 
 /* ==================== FONTES PARA CHINÊS (HAN) ==================== */
 html[lang^="zh"] body {
-  font-family: 'Noto Sans SC', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont,
                "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
@@ -2143,7 +2143,7 @@ html[lang^="zh"] .course-title {
 
 /* ==================== ROADMAPS & TRILHAS ==================== */
 .roadmap-banner {
-  background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+  background: #f5f5f4;
   border: 1px solid #c7d2fe;
 }
 
@@ -2179,7 +2179,7 @@ html[lang^="zh"] .course-title {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  background: #334155;
 }
 
 .roadmap-top {
@@ -2256,7 +2256,7 @@ html[lang^="zh"] .course-title {
 
 /* ==================== DICAS & FERRAMENTAS ==================== */
 .dicas-banner {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  background: #f5f5f4;
   border: 1px solid #fde68a;
 }
 
@@ -2392,7 +2392,7 @@ html[lang^="zh"] .course-title {
 
 /* ==================== COLEÇÃO DIGITAL MONUMENTAL DE ÁFRICA ==================== */
 .africa-collection-banner {
-  background: linear-gradient(135deg, #7c2d12 0%, #9a3412 40%, #b45309 100%);
+  background: #ffffff;
   color: #ffffff;
   border-radius: var(--radius-lg);
   padding: 1.75rem 2rem;
@@ -2404,7 +2404,7 @@ html[lang^="zh"] .course-title {
 }
 
 .africa-collection-banner::after {
-  content: "🌍";
+  content: none;
   position: absolute;
   right: 1.5rem;
   bottom: -0.5rem;
@@ -2555,11 +2555,9 @@ html[lang^="zh"] .course-title {
 .book-lang-badge.lang-de { background: #ffedd5; color: #7c2d12; border-color: #fed7aa; }
 .book-lang-badge.lang-zh { background: #fce7f3; color: #831843; border-color: #fbcfe8; }
 
-/* ==========================================================================
-   🎙️ MÓDULO DE PODCASTS & SPOTIFY
-   ========================================================================== */
+/* Podcasts & Spotify */
 .podcast-spotify-banner {
-  background: linear-gradient(135deg, #064e3b 0%, #065f46 45%, #047857 100%);
+  background: #ffffff;
   color: #ffffff;
   border-radius: var(--radius-lg);
   padding: 1.75rem 2rem;
@@ -2571,7 +2569,7 @@ html[lang^="zh"] .course-title {
 }
 
 .podcast-spotify-banner::after {
-  content: "🎙️";
+  content: none;
   position: absolute;
   right: 1.5rem;
   bottom: -0.5rem;
@@ -2886,7 +2884,7 @@ html[lang^="zh"] .course-title {
 }
 
 .goal-scoreboard-card {
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #0f2744 100%);
+  background: #ffffff;
   color: #ffffff;
   border-radius: var(--radius-lg);
   padding: 1.85rem 2.25rem;
@@ -2897,7 +2895,7 @@ html[lang^="zh"] .course-title {
 }
 
 .goal-scoreboard-card::after {
-  content: "🎯";
+  content: none;
   position: absolute;
   right: 1.5rem;
   top: 1rem;
@@ -2922,7 +2920,7 @@ html[lang^="zh"] .course-title {
 }
 
 .goal-badge {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: #f5f5f4;
   color: #451a03;
   font-size: 0.75rem;
   font-weight: 800;
@@ -2938,7 +2936,7 @@ html[lang^="zh"] .course-title {
 }
 
 .goal-title {
-  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-family: inherit;
   font-size: 1.85rem;
   font-weight: 800;
   color: #ffffff;
@@ -3031,37 +3029,22 @@ html[lang^="zh"] .course-title {
 .goal-progress-bar-bg {
   height: 16px;
   background: rgba(255, 255, 255, 0.12);
-  border-radius: 9999px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.15);
   margin-bottom: 1.15rem;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
 }
 
 .goal-progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #38bdf8 0%, #818cf8 40%, #eab308 85%, #f59e0b 100%);
-  border-radius: 9999px;
-  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #334155;
+  border-radius: var(--radius-sm);
+  transition: width 0.2s ease;
   min-width: 1.5%;
   position: relative;
-  box-shadow: 0 0 12px rgba(234, 179, 8, 0.5);
-}
-
-.goal-progress-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  animation: goalShimmer 2.5s infinite;
-}
-
-@keyframes goalShimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
+  box-shadow: none;
 }
 
 /* Marcos Históricos / Milestones */
@@ -3193,7 +3176,7 @@ html[lang^="zh"] .course-title {
 }
 
 .btn-goal-contrib {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: #334155;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-md);
@@ -3209,7 +3192,7 @@ html[lang^="zh"] .course-title {
 }
 
 .btn-goal-contrib:hover {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  background: #1e293b;
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
 }
@@ -3258,6 +3241,426 @@ html[lang^="zh"] .course-title {
   color: #ffffff;
 }
 
+.site-header,
+.book-card,
+.course-card,
+.roadmap-card,
+.dica-card,
+.podcast-card,
+.episodio-card,
+.modal-card,
+.dashboard-grid .dash-box,
+.stat-card {
+  box-shadow: var(--shadow-card);
+}
+
+.book-card:hover,
+.course-card:hover,
+.roadmap-card:hover,
+.dica-card:hover,
+.podcast-card:hover {
+  transform: none;
+  box-shadow: var(--shadow-hover);
+}
+
+.pill,
+.btn,
+.tab-btn,
+.paper-swatch,
+.modal-tab-btn {
+  border-radius: var(--radius-sm);
+}
+
+.highlight-pill-gold,
+.highlight-pill-africa,
+.pill-trilha.active,
+.pill-bradesco.active,
+.pill-youtube.active {
+  background: #f5f5f4 !important;
+  color: var(--text-main) !important;
+  border-color: var(--border) !important;
+}
+
+.card-featured-guiadeti,
+.card-featured-youtube,
+.card-featured-bradesco,
+.card-featured-dio,
+.card-featured-santander,
+.card-featured-cursoemvideo,
+.card-featured-dsa,
+.card-featured-fiap,
+.card-featured-ibm,
+.card-featured-cisco,
+.card-featured-wmc {
+  background: #ffffff;
+  border-color: var(--border) !important;
+}
+
+.roadmap-banner,
+.dicas-banner,
+.cursos-header-banner,
+.africa-collection-banner {
+  background: #ffffff;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.podcast-spotify-banner,
+.goal-scoreboard-card,
+.dash-goal-banner {
+  background: #ffffff !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: none !important;
+}
+
+.podcast-spotify-banner h2,
+.podcast-spotify-banner h3,
+.podcast-spotify-banner p,
+.goal-scoreboard-card .goal-title,
+.goal-scoreboard-card .goal-subtitle,
+.goal-scoreboard-card .counter-label,
+.goal-scoreboard-card .counter-odometer,
+.goal-scoreboard-card .counter-target,
+.goal-scoreboard-card .counter-pct,
+.goal-scoreboard-card .milestone-step,
+.goal-scoreboard-card .milestone-text,
+.goal-scoreboard-card .goal-stat-pill .stat-val,
+.goal-scoreboard-card .goal-stat-pill .stat-lbl {
+  color: var(--text-main) !important;
+  text-shadow: none;
+}
+
+.goal-scoreboard-card::after,
+.africa-collection-banner::after,
+.podcast-spotify-banner::after,
+.goal-progress-glow {
+  display: none;
+  content: none;
+}
+
+.goal-counter-box,
+.goal-stat-pill {
+  background: #fafaf9;
+  border-color: var(--border);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.goal-progress-bar-bg {
+  background: #f5f5f4;
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.goal-progress-bar-fill,
+.milestone-step.reached .milestone-dot,
+.milestone-step.active .milestone-dot,
+.milestone-step.milestone-target .milestone-dot.gold {
+  background: var(--primary);
+  box-shadow: none;
+}
+
+.milestone-tag,
+.goal-badge {
+  background: #f5f5f4;
+  color: var(--text-main);
+  box-shadow: none;
+}
+
+.goal-footer {
+  border-color: var(--border);
+}
+
+.goal-stat-pill:hover,
+.btn-goal-share,
+.btn-goal-share:hover {
+  background: #f5f5f4;
+  color: var(--text-main);
+}
+
+.btn-goal-whatsapp,
+.btn-goal-contrib,
+.btn-spotify {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.btn-goal-whatsapp:hover,
+.btn-goal-contrib:hover,
+.btn-spotify:hover {
+  background: var(--primary-hover);
+  color: #ffffff;
+  transform: none;
+}
+
+.spotify-badge {
+  background: #f5f5f4;
+  color: var(--text-main);
+}
+
+.roadmap-card::before {
+  content: none;
+}
+
+.kofi-card .whatsapp-qr {
+  background: #f5f5f4 !important;
+}
+
+.cursos-header-banner {
+  border-left-color: var(--primary);
+}
+
+.btn-whatsapp,
+.btn-whatsapp-outline,
+.btn-whatsapp:hover,
+.btn-whatsapp-outline:hover,
+.whatsapp-card.kofi-card {
+  color: var(--text-main);
+  background: #f5f5f4;
+  border-color: var(--border);
+}
+
+.btn-whatsapp,
+.btn-whatsapp-outline {
+  border: 1px solid var(--border);
+}
+
+.btn-whatsapp:hover,
+.btn-whatsapp-outline:hover {
+  color: var(--text-main);
+  background: #e7e5e4;
+}
+
+.btn-audio-control.primary {
+  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-audio-control.primary:hover {
+  background: var(--primary-hover);
+}
+
+.icon-whatsapp,
+.whatsapp-section-title .icon-whatsapp,
+.footer-links .icon-whatsapp {
+  color: currentColor;
+}
+
+.whatsapp-card,
+.whatsapp-card.kofi-card {
+  border-top-width: 1px;
+  border-top-color: var(--border);
+}
+
+.footer-links a {
+  color: var(--primary);
+}
+
+.dica-card:hover,
+.roadmap-card:hover {
+  border-color: var(--border);
+}
+
+.dica-pratica-box {
+  color: var(--text-main);
+  background: #f5f5f4;
+  border-left-color: var(--border);
+}
+
+.dica-pratica-box strong {
+  color: var(--text-main);
+}
+
+.counter-pct {
+  color: var(--text-muted);
+  background: #f5f5f4;
+  border-color: var(--border);
+}
+
+.btn-outline:hover,
+.btn-secondary,
+.btn-secondary:hover,
+.pill:hover,
+.roadmap-btn,
+.dica-btn,
+.btn-whatsapp,
+.btn-whatsapp-outline,
+.course-area,
+.course-level,
+.roadmap-badge-origem,
+.roadmap-nivel,
+.roadmap-platform,
+.podcast-category-badge,
+.episodio-show-tag {
+  color: var(--text-main);
+  background: #f5f5f4;
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.roadmap-btn:hover,
+.dica-btn:hover {
+  color: var(--text-main);
+  background: #e7e5e4;
+  border-color: var(--border);
+}
+
+.link-destaque {
+  color: var(--primary);
+}
+
+.africa-collection-banner h2,
+.podcast-spotify-banner h2 {
+  font-family: inherit;
+}
+
+.dash-goal-banner {
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.dash-goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.dash-goal-header h2 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.dash-goal-header p {
+  max-width: 620px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.dash-goal-badge,
+.dash-goal-percent {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: #f5f5f4;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.dash-goal-counter {
+  min-width: 220px;
+  padding: 0.75rem 1rem;
+  background: #fafaf9;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.dash-goal-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.dash-goal-number {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-goal-number span,
+.dash-goal-number strong {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.dash-goal-progress {
+  height: 10px;
+  overflow: hidden;
+  background: #f5f5f4;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.dash-goal-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: inherit;
+}
+
+.africa-collection-banner h2,
+.africa-collection-banner p,
+.africa-badge,
+.africa-stats-badge,
+.pill-lang-btn,
+.pill-lang-btn.pill-lang-reset,
+.pill-lang-btn:hover,
+.pill-lang-btn.pill-lang-reset:hover {
+  color: var(--text-main);
+  background: #f5f5f4;
+  border-color: var(--border);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.africa-collection-banner p {
+  background: transparent;
+}
+
+.banner-badge-primary,
+.badge-guiadeti-pill,
+.badge-youtube-cert,
+.data-badge-card,
+.dica-categoria-badge,
+.dica-btn,
+.book-lang-badge,
+.book-lang-badge.lang-pt,
+.book-lang-badge.lang-en,
+.book-lang-badge.lang-fr,
+.book-lang-badge.lang-de,
+.book-lang-badge.lang-zh {
+  color: var(--text-muted) !important;
+  background: #f5f5f4 !important;
+  border-color: var(--border) !important;
+  box-shadow: none;
+}
+
+.btn-kofi,
+.btn-kofi:hover {
+  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: none;
+}
+
+.btn-kofi:hover {
+  background: var(--primary-hover);
+  transform: none;
+}
+
+.goal-badge,
+.counter-pct,
+.milestone-tag,
+.banner-badge-primary,
+.africa-badge,
+.africa-stats-badge,
+.spotify-badge,
+.book-lang-badge,
+.badge-format {
+  border-radius: var(--radius-sm);
+}
+
 /* Responsividade Mobile */
 @media (max-width: 768px) {
   .goal-scoreboard-card {
@@ -3302,5 +3705,3 @@ html[lang^="zh"] .course-title {
     justify-content: center;
   }
 }
-
-

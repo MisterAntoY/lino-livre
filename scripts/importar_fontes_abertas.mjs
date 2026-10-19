@@ -784,8 +784,12 @@ async function importarSiyavula(aplicar) {
 // O pt.wikisource organiza os livros digitalizados no espaço "Index:" (ns104, nome
 // local "Galeria:"), onde o template ProofreadPage index expõe Título da obra,
 // Autor, Ano, Editora, Local e Progresso de revisão — metadados limpos e por livro.
-// Só importamos obras com Progresso=C (revisão completa) e cuja página de obra
-// existe no namespace 0 (resolvemos títulos/redirecionamentos via prop=info).
+// Destino de leitura: usamos a página-mãe da obra (ns0, texto revisto) quando
+// existe; caso contrário, a própria página Index, que expõe o leitor de scan do
+// livro digitalizado (mesmo princípio do leitor da Internet Archive). Assim nenhum
+// livro com scan fica de fora (~85% dos Index ainda não têm página-mãe montada).
+// Excluímos apenas tipos não-livro (periódicos etc.); o progresso de revisão é
+// registado na sinopse.
 //
 // Licença (nunca afirmar sem base):
 //  - autor com data de morte no Wikidata (P570) ≤ 1955 → 'dominio-publico'
@@ -933,19 +937,23 @@ async function importarWikisource(aplicar) {
     for (let i = 0; i < bloco.length; i += 50) {
       const lote = bloco.slice(i, i + 50);
       const j = await apiJson('https://pt.wikisource.org/w/api.php?' + new URLSearchParams({
-        format: 'json', action: 'query', prop: 'revisions', rvprop: 'content', rvslots: 'main',
+        format: 'json', action: 'query', prop: 'revisions|pageimages', pithumbsize: '400',
+        rvprop: 'content', rvslots: 'main',
         titles: lote.map(t => t.title).join('|'),
       }));
       for (const pg of Object.values(j.query?.pages || {})) {
         const txt = pg.revisions?.[0]?.slots?.main?.['*'] || '';
         if (!txt) continue;
-        const tituloObra = campoTxt(txt, 'Título');
-        if (!tituloObra) continue;                          // sem obra alvo → sem redirect
-        if (campoTxt(txt, 'Progresso') !== 'C') continue;   // só revisão completa
         const tipo = (campoTxt(txt, 'Type') || campoTxt(txt, 'Tipo')).toLowerCase();
         if (tipo && tipo !== 'book' && tipo !== 'livro') continue; // exclui periódicos etc.
         meta.set(pg.pageid, {
-          tituloObra,
+          // Título da obra pode não existir ainda como página (só subpáginas/scan):
+          // nesse caso fica null e o destino de leitura passa a ser a página Index.
+          tituloObra: campoTxt(txt, 'Título') || null,
+          progresso: campoTxt(txt, 'Progresso') || null,
+          // a API devolve o prefixo local "Galeria:"; usamos o canónico "Index:"
+          indexTitulo: pg.title.startsWith('Galeria:') ? 'Index:' + pg.title.slice(8) : pg.title,
+          capaIdx: pg.thumbnail?.source || null,
           autor: campoTxt(txt, 'Autor') || null,
           ano: parseInt(campoTxt(txt, 'Ano'), 10) || null,
           editora: campoTxt(txt, 'Editora') || null,
@@ -957,9 +965,9 @@ async function importarWikisource(aplicar) {
     }
 
     if (meta.size) {
-      // B. resolver páginas de obra (existência/canonicidade/capa)
-      const titulosObra = [...new Set([...meta.values()].map(m => m.tituloObra))];
-      const obras = await resolverObras(titulosObra);
+      // B. resolver páginas de obra (existência/canonicidade/capa) — só as que têm Título
+      const titulosObra = [...new Set([...meta.values()].map(m => m.tituloObra).filter(Boolean))];
+      const obras = titulosObra.length ? await resolverObras(titulosObra) : new Map();
 
       // C. enriquecimento Wikidata (autor + morte) para decidir licença/rótulo
       const titulosFinais = [...new Set([...obras.values()].filter(Boolean).map(o => o.titulo))];
@@ -969,10 +977,15 @@ async function importarWikisource(aplicar) {
       const c = novoConstrutor(fonteId, catId);
       await c.preparar();
       for (const [pageid, m] of meta) {
-        void pageid;
-        const obra = obras.get(m.tituloObra);
-        if (!obra) continue; // obra inexistente ou fora do ns0
-        const wd = wdObras.get(obra.titulo);
+        // destino: página-mãe (texto revisto) se existir; senão a página Index (leitor de scan)
+        const obra = m.tituloObra ? obras.get(m.tituloObra) : null;
+        const tituloObraUsado = m.tituloObra || m.indexTitulo
+          .replace(/^Index:/, '').replace(/\.(pdf|djvu|djv|png|jpe?g|gif)$/i, '');
+        const alvoPageid = obra ? obra.pageid : pageid;
+        const urlLeitura = obra
+          ? `https://pt.wikisource.org/wiki/${encodeURIComponent(obra.titulo)}`
+          : `https://pt.wikisource.org/wiki/${encodeURIComponent(m.indexTitulo)}`;
+        const wd = obra ? wdObras.get(obra.titulo) : null;
         const ai = wd?.autorQid ? wdAutores.get(wd.autorQid) : null;
         const autor = m.autor || ai?.label || null;
         const morte = ai?.morte ?? null;
@@ -981,16 +994,18 @@ async function importarWikisource(aplicar) {
         if (morte !== null) licenca = morte <= 1955 ? 'dominio-publico' : 'outro';
         else if (!wd?.autorQid) licenca = (m.ano !== null && m.ano <= 1875) ? 'dominio-publico' : 'outro';
         else licenca = 'outro'; // autor conhecido mas sem data de morte → não imputar PD
-        let sinopse = 'Texto digitalizado e revisto pela comunidade do Wikisource';
+        let sinopse = 'Livro digitalizado no Wikisource';
+        if (m.progresso === 'C') sinopse += ', texto revisto pela comunidade';
+        else if (m.progresso) sinopse += ', revisão de texto pendente';
         if (m.editora) sinopse += `, edição de ${m.editora}`;
         if (m.local) sinopse += ` (${m.local})`;
         if (m.ano) sinopse += `, ${m.ano}`;
         sinopse += '.';
         c.add({
-          titulo: obra.titulo, autor, idioma: IDIOMAS[m.idiomaRaw] || 'pt', licenca,
-          capaUrl: obra.capa, sinopse, ano: m.ano,
-          urlLeitura: `https://pt.wikisource.org/wiki/${encodeURIComponent(obra.titulo)}`,
-          formato: 'html', fonteIdExterno: String(obra.pageid),
+          titulo: tituloObraUsado, autor, idioma: IDIOMAS[m.idiomaRaw] || 'pt', licenca,
+          capaUrl: obra?.capa || m.capaIdx || null, sinopse, ano: m.ano,
+          urlLeitura,
+          formato: 'html', fonteIdExterno: String(alvoPageid),
         });
       }
 
@@ -1003,7 +1018,7 @@ async function importarWikisource(aplicar) {
         if (aplicar) ficheiros.forEach(applyFile);
         totalInseridos += c.livrosRegistos.length;
       }
-      console.log(`     … bloco ${Math.floor(off / CHUNK) + 1}/${Math.ceil(alvo.length / CHUNK)}: ${meta.size} Index com revisão completa, ${c.livrosRegistos.length} elegíveis (cursor ${cursor.processados + bloco.length}/${indexes.length})`);
+      console.log(`     … bloco ${Math.floor(off / CHUNK) + 1}/${Math.ceil(alvo.length / CHUNK)}: ${meta.size} livros elegíveis, ${c.livrosRegistos.length} registos (cursor ${cursor.processados + bloco.length}/${indexes.length})`);
     }
 
     cursor.processados += bloco.length;
