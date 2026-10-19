@@ -15,7 +15,7 @@ const { execSync } = require('node:child_process');
 
 const DIO_URL = 'https://www.dio.me/bootcamp';
 const DATA_FILE = path.join(__dirname, '../src/database/dioBootcampsData.json');
-const REPORT_FILE = path.join(__dirname, '../BOOTCAMPS-DIO-STATUS.md');
+const REPORT_FILE = path.join(__dirname, '../docs/plataformas/BOOTCAMPS-DIO-STATUS.md');
 
 function inferArea(name, skills) {
   const text = (name + ' ' + (skills || []).map(s => s.name || s).join(' ')).toLowerCase();

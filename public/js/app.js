@@ -1075,6 +1075,10 @@ const app = {
       const isOracleOne = (c.plataforma || '').includes('Oracle');
       const isGeneration = (c.plataforma || '').includes('Generation');
       const isWmc = (c.plataforma || '').includes('WoMakersCode');
+      const isCursa = (c.plataforma || '').includes('Cursa');
+      const isHarvard = (c.plataforma || '').includes('Harvard');
+      const isMit = (c.plataforma || '').includes('MIT');
+      const isStanford = (c.plataforma || '').includes('Stanford');
 
       if (isSantander) {
         btnTexto = '🏛️ Acessar Santander';
@@ -1088,6 +1092,18 @@ const app = {
       } else if (isDsa) {
         btnTexto = '🔬 Acessar DSA';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">🔬 Data Science Academy</span>`;
+      } else if (isCursa) {
+        btnTexto = '🎓 Estudar no Cursa';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">🎓 Cursa • Certificado Grátis</span>`;
+      } else if (isHarvard) {
+        btnTexto = '🏛️ Acessar Harvard PLL';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5; font-weight:600;">🏛️ Harvard Online</span>`;
+      } else if (isMit) {
+        btnTexto = '🏛️ Acessar MIT OCW';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;">🏛️ MIT OpenCourseWare</span>`;
+      } else if (isStanford) {
+        btnTexto = '🌲 Acessar Stanford';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#831843; border-color:#fbcfe8; font-weight:600;">🌲 Stanford Online</span>`;
       } else if (isFiap) {
         btnTexto = '🎓 Acessar FIAP';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffe4e6; color:#e11d48; border-color:#fecdd3; font-weight:600;">🎓 FIAP ON</span>`;
@@ -1158,23 +1174,28 @@ const app = {
             ? 'card-featured-cursoemvideo'
             : (isDsa
               ? 'card-featured-dsa'
-              : (isFiap
-                ? 'card-featured-fiap'
-                : (isIbm
-                  ? 'card-featured-ibm'
-                  : (isCisco
-                    ? 'card-featured-cisco'
-                    : (isWmc
-                      ? 'card-featured-wmc'
-                      : (isYouTube
-                        ? 'card-featured-youtube'
-                        : (isGuiaDeTI
-                          ? 'card-featured-guiadeti'
-                          : (isBradesco
-                            ? 'card-featured-bradesco'
-                            : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')))))))))));
+              : (isCursa
+                ? 'card-featured-cursa'
+                : (isHarvard
+                  ? 'card-featured-harvard'
+                  : (isFiap
+                    ? 'card-featured-fiap'
+                    : (isIbm
+                      ? 'card-featured-ibm'
+                      : (isCisco
+                        ? 'card-featured-cisco'
+                        : (isWmc
+                          ? 'card-featured-wmc'
+                          : (isYouTube
+                            ? 'card-featured-youtube'
+                            : (isGuiaDeTI
+                              ? 'card-featured-guiadeti'
+                              : (isBradesco
+                                ? 'card-featured-bradesco'
+                                : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')))))))))))));
 
-      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
+      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
+
 
       let logoHtml = '🏛️';
       if (isDio) {
@@ -1223,11 +1244,16 @@ const app = {
         logoHtml = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo">`;
       } else if (isEvg) {
         logoHtml = `<img src="/img/logos/evg.png" alt="EV.G" class="course-platform-logo">`;
+      } else if ((c.plataforma || '').includes('Cursa')) {
+        logoHtml = `<img src="/img/logos/cursa.svg" alt="Cursa" class="course-platform-logo">`;
       } else if ((c.plataforma || '').includes('MIT')) {
         logoHtml = `<img src="/img/logos/mit.png" alt="MIT" class="course-platform-logo">`;
       } else if ((c.plataforma || '').includes('Harvard')) {
         logoHtml = `<img src="/img/logos/harvard.png" alt="Harvard" class="course-platform-logo">`;
+      } else if ((c.plataforma || '').includes('Stanford')) {
+        logoHtml = `<span style="font-size:1.3rem;">🌲</span>`;
       }
+
 
       return `
         <article class="course-card ${cardClass}">

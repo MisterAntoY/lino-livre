@@ -532,6 +532,31 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resIbm = await request('/api/cursos?plataforma=IBM+SkillsBuild');
     assert.equal(resIbm.status, 200);
     assert.ok(resIbm.data.length >= 4, 'Deve conter cursos da IBM SkillsBuild');
+
+    // 14.6 - Canal Programação Web (Dimitry Lavalhere - YouTube)
+    const resProgWeb = await request('/api/cursos?plataforma=Programação%20Web');
+    assert.equal(resProgWeb.status, 200);
+    assert.ok(Array.isArray(resProgWeb.data));
+    assert.ok(resProgWeb.data.length >= 10, 'Deve conter pelo menos 10 cursos do canal Programação Web');
+    assert.ok(resProgWeb.data.some(c => c.titulo.includes('HTML')), 'Deve conter Curso Completo de HTML');
+    assert.ok(resProgWeb.data.some(c => c.titulo.includes('CSS')), 'Deve conter Curso Completo de CSS');
+    assert.ok(resProgWeb.data.some(c => c.titulo.includes('JavaScript')), 'Deve conter Curso Completo de JavaScript');
+    assert.ok(resProgWeb.data.some(c => c.titulo.includes('MySQL')), 'Deve conter Curso de Banco de Dados MySQL com PHP');
+    assert.ok(resProgWeb.data.some(c => c.titulo.includes('Git e GitHub')), 'Deve conter Curso de Git e GitHub');
+    assert.ok(resProgWeb.data.some(c => c.titulo.includes('Programador Web Moderno')), 'Deve conter Curso Programador Web Moderno');
+    assert.ok(resProgWeb.data.every(c => c.url.includes('youtube.com/playlist?list=PL2Fdisxwzt_')), 'URLs devem apontar para as playlists oficiais no YouTube');
+
+    // 14.7 - Jornada do Dev (jornadadodev.com.br)
+    const resJornada = await request('/api/cursos?plataforma=Jornada+do+Dev');
+    assert.equal(resJornada.status, 200);
+    assert.ok(Array.isArray(resJornada.data));
+    assert.ok(resJornada.data.length >= 50, 'Deve conter os cursos gratuitos da Jornada do Dev (>= 50)');
+    assert.ok(resJornada.data.some(c => c.titulo.includes('HTML5')), 'Deve conter curso de HTML5');
+    assert.ok(resJornada.data.some(c => c.titulo.includes('JavaScript')), 'Deve conter curso de JavaScript');
+    assert.ok(resJornada.data.some(c => c.titulo.includes('Python')), 'Deve conter curso de Python');
+    assert.ok(resJornada.data.some(c => c.titulo.includes('Node.js')), 'Deve conter curso de Node.js');
+    assert.ok(resJornada.data.some(c => c.url.includes('jornadadodev.com.br/cursos/')), 'URLs devem apontar para a plataforma Jornada do Dev');
+    assert.ok(resJornada.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos da Jornada do Dev devem ser gratuitos');
   });
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
@@ -569,7 +594,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
   // Teste 16: Recursos Técnicos e Cursos em Francês (FR)
   test('16. Acervo de Tecnologia e Programação em Francês (Livros e Cursos Open Access)', async () => {
     // 16.1 - Livros técnicos em francês
-    const resFr = await request('/api/livros?idioma=fr&limit=50');
+    const resFr = await request('/api/livros?idioma=fr&limit=100');
     assert.equal(resFr.status, 200);
     assert.ok(resFr.data.total >= 25, 'Deve conter ao menos 25 livros em francês cadastrados');
     assert.ok(resFr.data.data.some(l => l.titulo.includes('Pro Git')), 'Deve conter Pro Git em francês');
@@ -709,6 +734,20 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resBusca = await request('/api/dicas?busca=' + encodeURIComponent('procrastinação'));
     assert.equal(resBusca.status, 200);
     assert.ok(resBusca.data.length >= 1, 'Deve encontrar a dica sobre procrastinação');
+
+    // 21.5 - Filtrar por categoria angola (Repositórios de Angola - ADM Angola)
+    const resAngola = await request('/api/dicas?categoria=angola');
+    assert.equal(resAngola.status, 200);
+    assert.ok(Array.isArray(resAngola.data));
+    assert.equal(resAngola.data.length, 7, 'Deve conter exatamente 7 guias de repositórios online de Angola (ADM Angola)');
+    const titulosAngola = resAngola.data.map(d => d.titulo);
+    assert.ok(titulosAngola.some(t => t.includes('OAPEN')));
+    assert.ok(titulosAngola.some(t => t.includes('RCAAP')));
+    assert.ok(titulosAngola.some(t => t.includes('BNP Digital')));
+    assert.ok(titulosAngola.some(t => t.includes('CMI')));
+    assert.ok(titulosAngola.some(t => t.includes('Banco Mundial')));
+    assert.ok(titulosAngola.some(t => t.includes('UC Digitalis')));
+    assert.ok(titulosAngola.some(t => t.includes('Portal ADM Angola')));
   });
 
   // Teste 22: Conformidade Legal, Papel de Intermediário, DMCA Takedown e Termos de Uso
@@ -758,6 +797,97 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(enLocale.ui.footer.terms, 'en.json deve conter ui.footer.terms');
     assert.ok(enLocale.ui.legal.title, 'en.json deve conter ui.legal.title');
   });
+
+  // Teste 23: Repositório de Trabalhos Universitários e TFC da UAN (Universidade Agostinho Neto)
+  test('23. Repositório de Trabalhos Universitários e TFC da UAN (Universidade Agostinho Neto)', async () => {
+    // 23.1 - Filtrar por fonte uan-tfc
+    const resFonte = await request('/api/livros?fonte_slug=uan-tfc&limit=50');
+    assert.equal(resFonte.status, 200);
+    assert.ok(resFonte.data.total >= 21, 'Deve conter pelo menos 21 trabalhos de estudantes da UAN');
+    assert.equal(resFonte.data.data.length, 21, 'Deve retornar os 21 registros');
+
+    // 23.2 - Validação de metadados acadêmicos e integridade dos registros
+    const primeiro = resFonte.data.data[0];
+    assert.ok(primeiro.titulo, 'Deve conter título');
+    assert.ok(primeiro.autor_nome, 'Deve conter autor com nome de estudante');
+    assert.equal(primeiro.idioma, 'pt');
+    assert.equal(primeiro.licenca, 'cc-by');
+    assert.ok(primeiro.capa_url.includes('supabase.co'), 'Capa deve apontar para o storage público');
+    assert.ok(primeiro.links.length >= 1, 'Deve possuir link externo associado');
+    assert.ok(primeiro.links[0].url.includes('uan-mapa-portal.lovable.app/trabalhos/'), 'Link deve apontar para o portal da UAN');
+
+    // 23.3 - Teste de redirecionamento 302 em /ler/:linkId para trabalho da UAN
+    const linkId = primeiro.links[0].id;
+    const resLer = await request(`/api/livros/${primeiro.id}/ler/${linkId}`);
+    assert.equal(resLer.status, 302, 'Acesso ao trabalho universitário deve retornar HTTP 302');
+    assert.equal(resLer.headers.get('location'), primeiro.links[0].url, 'Location deve ser a URL oficial no portal da UAN');
+
+    // 23.4 - Filtrar por categoria de trabalhos universitários
+    const resCat = await request('/api/livros?categoria_id=' + encodeURIComponent('🎓 Teses & Trabalhos Universitários (UAN)'));
+    assert.equal(resCat.status, 200);
+    assert.ok(resCat.data.total >= 21, 'Filtro por categoria deve retornar todos os trabalhos da UAN');
+  });
+
+  // Teste 24: Catálogo Global de Cursos Abertos (Cursa em 5 Idiomas, Harvard PLL, MIT OCW e Stanford Online)
+  test('24. Catálogo Global de Cursos Abertos (Cursa em 5 Idiomas, Harvard PLL, MIT OCW e Stanford Online)', async () => {
+    // 24.1 - Cursa: Cursos gratuitos com certificado em 5 idiomas (PT, EN, ES, FR, HI)
+    const resCursa = await request('/api/cursos?plataforma=Cursa');
+    assert.equal(resCursa.status, 200);
+    assert.ok(Array.isArray(resCursa.data));
+    assert.ok(resCursa.data.length >= 50, 'Deve conter pelo menos 50 cursos catalogados da Cursa');
+
+    // Validação dos 5 idiomas
+    const plataformasCursa = resCursa.data.map(c => c.plataforma);
+    assert.ok(plataformasCursa.some(p => p.includes('Português')), 'Deve conter cursos Cursa em Português');
+    assert.ok(plataformasCursa.some(p => p.includes('English')), 'Deve conter cursos Cursa em Inglês');
+    assert.ok(plataformasCursa.some(p => p.includes('Español')), 'Deve conter cursos Cursa em Espanhol');
+    assert.ok(plataformasCursa.some(p => p.includes('Français')), 'Deve conter cursos Cursa em Francês');
+    assert.ok(plataformasCursa.some(p => p.includes('Hindi')), 'Deve conter cursos Cursa em Hindi');
+
+    // Validação de links cursa.app e menções a certificado gratuito
+    assert.ok(resCursa.data.every(c => c.url.startsWith('https://cursa.app/')), 'Todos os links Cursa devem apontar para https://cursa.app/');
+    assert.ok(resCursa.data.every(c => c.descricao && (
+      c.descricao.toLowerCase().includes('certificad') ||
+      c.descricao.toLowerCase().includes('certificat') ||
+      c.descricao.toLowerCase().includes('certificate') ||
+      c.descricao.includes('प्रमाणपत्र')
+    )), 'Todos os cursos Cursa devem mencionar certificado');
+
+    // 24.2 - Harvard Online / PLL Free: Cursos acadêmicos de ponta
+    const resHarvard = await request('/api/cursos?plataforma=' + encodeURIComponent('Harvard Online'));
+    assert.equal(resHarvard.status, 200);
+    assert.ok(Array.isArray(resHarvard.data));
+    assert.ok(resHarvard.data.length >= 20, 'Deve conter pelo menos 20 cursos gratuitos de Harvard Online (PLL)');
+    const titulosHarvard = resHarvard.data.map(c => c.titulo);
+    assert.ok(titulosHarvard.some(t => t.includes('CS50')), 'Deve conter cursos CS50');
+    assert.ok(titulosHarvard.some(t => t.includes('Data Science') || t.includes('R Basics')), 'Deve conter Data Science de Harvard');
+    assert.ok(titulosHarvard.some(t => t.includes('Justice')), 'Deve conter Justice de Michael Sandel');
+    assert.ok(resHarvard.data.every(c => c.url.includes('harvard.edu') || c.url.includes('edx.org')), 'Links devem apontar para Harvard ou edX');
+
+    // 24.3 - MIT OpenCourseWare
+    const resMit = await request('/api/cursos?plataforma=' + encodeURIComponent('MIT OpenCourseWare'));
+    assert.equal(resMit.status, 200);
+    assert.ok(Array.isArray(resMit.data));
+    assert.ok(resMit.data.length >= 4, 'Deve conter ao menos 4 cursos do MIT OCW');
+    assert.ok(resMit.data.some(c => c.titulo.includes('Python') || c.titulo.includes('6.0001')), 'Deve conter 6.0001 Python do MIT');
+    assert.ok(resMit.data.some(c => c.titulo.includes('Gilbert Strang') || c.titulo.includes('18.06')), 'Deve conter Álgebra Linear de Gilbert Strang');
+    assert.ok(resMit.data.every(c => c.url.includes('ocw.mit.edu')), 'Links do MIT devem apontar para ocw.mit.edu');
+
+    // 24.4 - Stanford Online
+    const resStanford = await request('/api/cursos?plataforma=' + encodeURIComponent('Stanford Online'));
+    assert.equal(resStanford.status, 200);
+    assert.ok(Array.isArray(resStanford.data));
+    assert.ok(resStanford.data.length >= 4, 'Deve conter ao menos 4 cursos de Stanford');
+    assert.ok(resStanford.data.some(c => c.titulo.includes('Andrew Ng') || c.titulo.includes('CS229')), 'Deve conter Machine Learning de Andrew Ng');
+    assert.ok(resStanford.data.every(c => c.url.includes('stanford.edu') || c.url.includes('coursera.org')), 'Links de Stanford devem ser oficiais');
+
+    // 24.5 - Redirecionamento HTTP 302 direto para a plataforma oficial
+    const primeiroCursa = resCursa.data[0];
+    const resRedirect = await request(`/api/cursos/${primeiroCursa.id}/acessar`);
+    assert.equal(resRedirect.status, 302, 'Acesso ao curso deve responder com HTTP 302');
+    assert.equal(resRedirect.headers.get('location'), primeiroCursa.url, 'Location deve coincidir com URL oficial do curso');
+  });
 });
+
 
 

@@ -780,6 +780,241 @@ async function importarSiyavula(aplicar) {
   return c.livrosRegistos.length;
 }
 
+// ───────────────── WIKISOURCE PT (livros digitalizados, ns Index:) ─────────────────
+// O pt.wikisource organiza os livros digitalizados no espaço "Index:" (ns104, nome
+// local "Galeria:"), onde o template ProofreadPage index expõe Título da obra,
+// Autor, Ano, Editora, Local e Progresso de revisão — metadados limpos e por livro.
+// Só importamos obras com Progresso=C (revisão completa) e cuja página de obra
+// existe no namespace 0 (resolvemos títulos/redirecionamentos via prop=info).
+//
+// Licença (nunca afirmar sem base):
+//  - autor com data de morte no Wikidata (P570) ≤ 1955 → 'dominio-publico'
+//    (regra dos 70 anos: morte + 70 ≤ 2025);
+//  - sem entidade de autor no Wikidata, ano de edição ≤ 1875 → 'dominio-publico'
+//    (autor nascido ≤ 1860 → morte ≤ 1950 na idade extrema → PD desde 2020);
+//  - autor no Wikidata sem data de morte, ou morte > 1955, ou ano > 1875 →
+//    'outro' (a página de destino, a que o leitor é redirecionado, mostra os
+//    termos reais). Embora o Wikisource só hospede PD ou licenças livres, não
+//    imputamos a licença específica sem confirmação documental.
+// Sempre: apenas metadados + redirect 302 para pt.wikisource.org (AGENTS.md).
+async function importarWikisource(aplicar) {
+  console.log('\n📖 WIKISOURCE (pt.wikisource.org — textos clássicos digitalizados)');
+  const UA = { 'User-Agent': 'LinoLivre/1.0 (educacional; lino-livre)' };
+  const CURSOR_FILE = '.scratch/wikisource-cursor.json';
+  const resetar = process.argv.includes('--reset');
+  let cursor = { processados: 0 };
+  if (!resetar) { try { const c = JSON.parse(fs.readFileSync(CURSOR_FILE, 'utf8')); if (typeof c?.processados === 'number') cursor = c; } catch {} }
+  const guardarCursor = () => { try { fs.writeFileSync(CURSOR_FILE, JSON.stringify(cursor, null, 2)); } catch {} };
+  const argMax = process.argv.find(a => a.startsWith('--max='));
+  const maxTotal = argMax ? Number(argMax.slice(6)) : Infinity;
+  const pausa = (ms) => new Promise(s => setTimeout(s, ms));
+
+  // fetch com timeout a cobrir fetch + json (Cloudflare/servidor podem enviar
+  // headers e estagnar o corpo — ver fix "slow-drip" do Gutenberg).
+  const apiJson = async (url) => {
+    for (let a = 0; a < 3; a++) {
+      try {
+        const ctl = new AbortController();
+        const to = setTimeout(() => ctl.abort(), 20000);
+        try {
+          const r = await fetch(url, { headers: UA, signal: ctl.signal });
+          if (r.ok) return await r.json();
+        } finally { clearTimeout(to); }
+        await pausa(3000);
+      } catch { await pausa(6000 * (a + 1)); }
+    }
+    throw new Error(`API não respondeu após 3 tentativas: ${url.slice(0, 100)}`);
+  };
+
+  // extrai campo do template ProofreadPage (primeira ocorrência até fim de linha,
+  // com suporte a ligação completa [[Alvo|Display]] e a alvos prefixados "Autor:").
+  const campoTxt = (txt, nome) => {
+    const m = txt.match(new RegExp('\\|' + nome + '=([^\\n]*)'));
+    if (!m) return '';
+    const v = m[1].trim();
+    const lk = v.match(/^\[\[([^\]]+)\]\]$/);
+    if (lk) { const p = lk[1].split('|'); return (p[1] || p[0]).replace(/^Autor:/, '').trim(); }
+    return v;
+  };
+
+  // 1. enumerar páginas Index (uma por livro digitalizado)
+  const indexes = [];
+  let cont = {};
+  for (;;) {
+    const params = new URLSearchParams({ format: 'json', action: 'query', list: 'allpages', apnamespace: '104', aplimit: '500', ...cont });
+    const j = await apiJson('https://pt.wikisource.org/w/api.php?' + params);
+    for (const p of (j.query?.allpages || [])) indexes.push({ pageid: p.pageid, title: p.title });
+    if (!j.continue) break;
+    cont = j.continue;
+    await pausa(300);
+  }
+  console.log(`   ✔ ${indexes.length} páginas Index (livros digitalizados)`);
+
+  const fonteId = await garantirFonte({ slug: 'wikisource', nome: 'Wikisource', tipo: 'api', url_base: 'https://pt.wikisource.org' });
+  const catId = await garantirCategoria('📖 Wikisource (Textos Clássicos)',
+    'Textos clássicos digitalizados e revistos pela comunidade do Wikisource (domínio público ou acesso livre). Leitura no próprio Wikisource (redirect 302).');
+
+  // resolver páginas de obra: canonicidade (aplica normalização + redirecionamentos),
+  // existência em ns0 e miniatura de capa. Devolve tituloPedido → {pageid,titulo,capa}|null.
+  const resolverObras = async (titulos) => {
+    const mapa = new Map();
+    for (let i = 0; i < titulos.length; i += 50) {
+      const lote = titulos.slice(i, i + 50);
+      const j = await apiJson('https://pt.wikisource.org/w/api.php?' + new URLSearchParams({
+        format: 'json', action: 'query', prop: 'info|pageimages', pithumbsize: '400',
+        redirects: '', titles: lote.join('|'),
+      }));
+      const remapear = new Map();
+      for (const n of (j.query?.normalized || [])) remapear.set(n.from, n.to);
+      for (const r of (j.query?.redirects || [])) remapear.set(r.from, r.to);
+      const resolver = (t) => { let x = t; for (let k = 0; k < 6 && remapear.has(x); k++) x = remapear.get(x); return x; };
+      const porTitulo = new Map();
+      for (const pg of Object.values(j.query?.pages || {})) {
+        if (pg.missing !== undefined || pg.ns !== 0) continue;
+        porTitulo.set(pg.title, { pageid: pg.pageid, titulo: pg.title, capa: pg.thumbnail?.source || null });
+      }
+      for (const t of lote) mapa.set(t, porTitulo.get(resolver(t)) || null);
+      await pausa(300);
+    }
+    return mapa;
+  };
+
+  // enriquecimento Wikidata: item da obra (P50 autor) + entidades dos autores
+  // (rótulo PT + data de morte P570). Devolve {obras: Map titulo→{autorQid}, autores: Map qid→{label,morte}}.
+  const enriquecer = async (titulosObra) => {
+    const obras = new Map();
+    const qids = new Set();
+    for (let i = 0; i < titulosObra.length; i += 50) {
+      const lote = titulosObra.slice(i, i + 50);
+      const j = await apiJson('https://www.wikidata.org/w/api.php?' + new URLSearchParams({
+        format: 'json', action: 'wbgetentities', sites: 'ptwikisource', titles: lote.join('|'),
+        props: 'claims|sitelinks', sitefilter: 'ptwikisource',
+      }));
+      for (const e of Object.values(j.entities || {})) {
+        if (e.missing !== undefined) continue;
+        const t = e.sitelinks?.ptwikisource?.title;
+        if (!t) continue;
+        const autorQid = e.claims?.P50?.[0]?.mainsnak?.datavalue?.value?.id || null;
+        if (autorQid) qids.add(autorQid);
+        obras.set(t, { autorQid });
+      }
+      await pausa(300);
+    }
+    const autores = new Map();
+    const ids = [...qids];
+    for (let i = 0; i < ids.length; i += 50) {
+      const lote = ids.slice(i, i + 50);
+      const j = await apiJson('https://www.wikidata.org/w/api.php?' + new URLSearchParams({
+        format: 'json', action: 'wbgetentities', ids: lote.join('|'), props: 'claims|labels', languages: 'pt',
+      }));
+      for (const e of Object.values(j.entities || {})) {
+        if (e.missing !== undefined) continue;
+        const morteRaw = e.claims?.P570?.[0]?.mainsnak?.datavalue?.value?.time;
+        const morte = morteRaw ? parseInt(String(morteRaw).match(/^([+-]?\d+)/)?.[1], 10) : null;
+        autores.set(e.id, { label: e.labels?.pt?.value || e.labels?.en?.value || null, morte: Number.isFinite(morte) ? morte : null });
+      }
+      await pausa(300);
+    }
+    return { obras, autores };
+  };
+
+  const IDIOMAS = { pt: 'pt', por: 'pt', en: 'en', eng: 'en', fr: 'fr', fre: 'fr', de: 'de', ger: 'de', es: 'es', spa: 'es', it: 'it', ita: 'it', la: 'la' };
+
+  const restantes = indexes.slice(cursor.processados);
+  const alvo = maxTotal === Infinity ? restantes : restantes.slice(0, maxTotal);
+  const CHUNK = 200;
+  let totalInseridos = 0;
+
+  for (let off = 0; off < alvo.length; off += CHUNK) {
+    const bloco = alvo.slice(off, off + CHUNK);
+
+    // A. conteúdo dos Index → campos do template (só Progresso=C e com Título de obra)
+    const meta = new Map(); // pageid → dados
+    for (let i = 0; i < bloco.length; i += 50) {
+      const lote = bloco.slice(i, i + 50);
+      const j = await apiJson('https://pt.wikisource.org/w/api.php?' + new URLSearchParams({
+        format: 'json', action: 'query', prop: 'revisions', rvprop: 'content', rvslots: 'main',
+        titles: lote.map(t => t.title).join('|'),
+      }));
+      for (const pg of Object.values(j.query?.pages || {})) {
+        const txt = pg.revisions?.[0]?.slots?.main?.['*'] || '';
+        if (!txt) continue;
+        const tituloObra = campoTxt(txt, 'Título');
+        if (!tituloObra) continue;                          // sem obra alvo → sem redirect
+        if (campoTxt(txt, 'Progresso') !== 'C') continue;   // só revisão completa
+        const tipo = (campoTxt(txt, 'Type') || campoTxt(txt, 'Tipo')).toLowerCase();
+        if (tipo && tipo !== 'book' && tipo !== 'livro') continue; // exclui periódicos etc.
+        meta.set(pg.pageid, {
+          tituloObra,
+          autor: campoTxt(txt, 'Autor') || null,
+          ano: parseInt(campoTxt(txt, 'Ano'), 10) || null,
+          editora: campoTxt(txt, 'Editora') || null,
+          local: campoTxt(txt, 'Local') || null,
+          idiomaRaw: (campoTxt(txt, 'Language') || campoTxt(txt, 'Idioma') || 'pt').toLowerCase(),
+        });
+      }
+      await pausa(300);
+    }
+
+    if (meta.size) {
+      // B. resolver páginas de obra (existência/canonicidade/capa)
+      const titulosObra = [...new Set([...meta.values()].map(m => m.tituloObra))];
+      const obras = await resolverObras(titulosObra);
+
+      // C. enriquecimento Wikidata (autor + morte) para decidir licença/rótulo
+      const titulosFinais = [...new Set([...obras.values()].filter(Boolean).map(o => o.titulo))];
+      const { obras: wdObras, autores: wdAutores } = await enriquecer(titulosFinais);
+
+      // D. compor registos
+      const c = novoConstrutor(fonteId, catId);
+      await c.preparar();
+      for (const [pageid, m] of meta) {
+        void pageid;
+        const obra = obras.get(m.tituloObra);
+        if (!obra) continue; // obra inexistente ou fora do ns0
+        const wd = wdObras.get(obra.titulo);
+        const ai = wd?.autorQid ? wdAutores.get(wd.autorQid) : null;
+        const autor = m.autor || ai?.label || null;
+        const morte = ai?.morte ?? null;
+        // decisão de licença (ver comentário no topo da função)
+        let licenca;
+        if (morte !== null) licenca = morte <= 1955 ? 'dominio-publico' : 'outro';
+        else if (!wd?.autorQid) licenca = (m.ano !== null && m.ano <= 1875) ? 'dominio-publico' : 'outro';
+        else licenca = 'outro'; // autor conhecido mas sem data de morte → não imputar PD
+        let sinopse = 'Texto digitalizado e revisto pela comunidade do Wikisource';
+        if (m.editora) sinopse += `, edição de ${m.editora}`;
+        if (m.local) sinopse += ` (${m.local})`;
+        if (m.ano) sinopse += `, ${m.ano}`;
+        sinopse += '.';
+        c.add({
+          titulo: obra.titulo, autor, idioma: IDIOMAS[m.idiomaRaw] || 'pt', licenca,
+          capaUrl: obra.capa, sinopse, ano: m.ano,
+          urlLeitura: `https://pt.wikisource.org/wiki/${encodeURIComponent(obra.titulo)}`,
+          formato: 'html', fonteIdExterno: String(obra.pageid),
+        });
+      }
+
+      // E. aplicar o bloco ANTES de avançar o cursor (progresso durável; se o
+      // apply falhar o erro propaga e o cursor mantém-se — re-executar refaz o bloco,
+      // com dedup por (fonte_id, fonte_id_externo) a tornar idempotente).
+      if (c.livrosRegistos.length) {
+        const tabelas = await c.fechar();
+        const ficheiros = gerarSqlLotes(tabelas, 'wikisource');
+        if (aplicar) ficheiros.forEach(applyFile);
+        totalInseridos += c.livrosRegistos.length;
+      }
+      console.log(`     … bloco ${Math.floor(off / CHUNK) + 1}/${Math.ceil(alvo.length / CHUNK)}: ${meta.size} Index com revisão completa, ${c.livrosRegistos.length} elegíveis (cursor ${cursor.processados + bloco.length}/${indexes.length})`);
+    }
+
+    cursor.processados += bloco.length;
+    if (aplicar) guardarCursor(); // dry-run não persiste (nada foi aplicado)
+    await pausa(400);
+  }
+
+  console.log(`   ✔ ${totalInseridos} livros Wikisource processados nesta execução`);
+  return totalInseridos;
+}
+
 // ───────────────────────── main ─────────────────────────
 
 const FONTES = {
@@ -790,6 +1025,7 @@ const FONTES = {
   chinese: importarChino,
   gutenberg: importarGutenberg,
   siyavula: importarSiyavula,
+  wikisource: importarWikisource,
 };
 
 const escolhida = process.argv[2] || 'todas';

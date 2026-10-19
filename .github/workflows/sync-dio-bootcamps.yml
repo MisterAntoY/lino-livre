@@ -39,7 +39,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/database/dioBootcampsData.json BOOTCAMPS-DIO-STATUS.md seed.sql biblioteca.db
+          git add src/database/dioBootcampsData.json docs/plataformas/BOOTCAMPS-DIO-STATUS.md seed.sql biblioteca.db
           if git diff --staged --quiet; then
             echo "Nenhuma novidade identificada nesta ronda semanal de bootcamps DIO."
           else

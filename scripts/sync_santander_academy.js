@@ -16,7 +16,7 @@ const { execSync } = require('node:child_process');
 const SITEMAP_URL = 'https://www.santanderopenacademy.com/sitemap.xml';
 const PORTAL_URL = 'https://www.santanderopenacademy.com/pt_br';
 const DATA_FILE = path.join(__dirname, '../src/database/santanderAcademyData.json');
-const REPORT_FILE = path.join(__dirname, '../SANTANDER-ACADEMY-STATUS.md');
+const REPORT_FILE = path.join(__dirname, '../docs/plataformas/SANTANDER-ACADEMY-STATUS.md');
 
 function inferAreaFromSlug(slug) {
   const text = slug.toLowerCase();

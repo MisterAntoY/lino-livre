@@ -326,6 +326,7 @@
           <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')">🌟 Os 100 Mais Lidos do Mundo</button>
           <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" onclick="app.filtrarPorCategoria('Autores Lusófonos Clássicos')">📜 Autores Lusófonos Clássicos</button>
           <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" onclick="app.filtrarPorCategoria('Literatura Angolana')">🇦🇴 Literatura Angolana</button>
+          <button class="pill highlight-pill-africa" data-categoria="🎓 Teses & Trabalhos Universitários (UAN)" onclick="app.filtrarPorCategoria('🎓 Teses & Trabalhos Universitários (UAN)')">🎓 Teses & Trabalhos UAN</button>
           <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" onclick="app.filtrarPorCategoria('Literatura Africana Lusófona')">🇨🇻 Literatura Africana Lusófona</button>
           <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" onclick="app.filtrarPorCategoria('Poesia Africana')">🇲🇿 Poesia Africana</button>
           <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" onclick="app.filtrarPorCategoria('🌍 Literatura & Vozes de África')">🌍 Literatura & Vozes de África</button>
@@ -350,6 +351,7 @@
         <span class="filter-label">Fonte / Acervo:</span>
         <div class="pills-container" id="pills-fontes">
           <button class="pill active" data-fonte="" onclick="app.filtrarPorFonteLivro('')">Todos os Acervos</button>
+          <button class="pill highlight-pill-africa" data-fonte="uan-tfc" onclick="app.filtrarPorFonteLivro('uan-tfc')">🇦🇴 UAN Repositório TFC</button>
           <button class="pill" data-fonte="dominiopublico" onclick="app.filtrarPorFonteLivro('dominiopublico')">🏛️ Domínio Público & África</button>
           <button class="pill" data-fonte="gutenberg" onclick="app.filtrarPorFonteLivro('gutenberg')">🌐 Project Gutenberg</button>
           <button class="pill" data-fonte="github-bibliotecadev" onclick="app.filtrarPorFonteLivro('github-bibliotecadev')">📂 BibliotecaDev</button>
@@ -406,9 +408,16 @@
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
           <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')" data-i18n="ui.courses.all">Todos</button>
+          <button class="pill" data-filtro="Cursa" onclick="app.filtrarCursosPorPlataforma('Cursa')"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo"> 🎓 Cursa App (Multilíngue)</button>
+          <button class="pill" data-filtro="Harvard" onclick="app.filtrarCursosPorPlataforma('Harvard')"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo"> 🏛️ Harvard Online (PLL)</button>
+          <button class="pill" data-filtro="MIT" onclick="app.filtrarCursosPorPlataforma('MIT')"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo"> 🏛️ MIT OCW</button>
+          <button class="pill" data-filtro="Stanford" onclick="app.filtrarCursosPorPlataforma('Stanford')">🌲 Stanford Online</button>
           <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo"> DIO Bootcamps</button>
+
           <button class="pill" data-filtro="Santander" onclick="app.filtrarCursosPorPlataforma('Santander')"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo"> Santander Academy</button>
           <button class="pill pill-youtube" data-filtro="Curso em Vídeo" onclick="app.filtrarCursosPorPlataforma('Curso em Vídeo')"><img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="pill-logo pill-logo-round"> Curso em Vídeo (Guanabara)</button>
+          <button class="pill pill-youtube" data-filtro="Programação Web" onclick="app.filtrarCursosPorPlataforma('Programação Web')"><img src="/img/logos/youtube.svg" alt="Programação Web" class="pill-logo"> Programação Web</button>
+          <button class="pill" data-filtro="Jornada do Dev" onclick="app.filtrarCursosPorPlataforma('Jornada do Dev')">🚀 Jornada do Dev</button>
           <button class="pill" data-filtro="Data Science Academy" onclick="app.filtrarCursosPorPlataforma('Data Science Academy')"><img src="/img/logos/dsa.png" alt="Data Science Academy" class="pill-logo"> Data Science Academy (DSA)</button>
           <button class="pill" data-filtro="FIAP ON" onclick="app.filtrarCursosPorPlataforma('FIAP ON')"><img src="/img/logos/fiap.png" alt="FIAP" class="pill-logo"> FIAP ON</button>
           <button class="pill" data-filtro="Eu Capacito" onclick="app.filtrarCursosPorPlataforma('Eu Capacito')"><img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="pill-logo"> Eu Capacito</button>
@@ -505,6 +514,7 @@
         <span class="filter-label" data-i18n="ui.tips.filters">Categorias de Dicas:</span>
         <div class="pills-container" id="pills-dicas-cat">
           <button class="pill active" data-cat="" onclick="app.filtrarDicasPorCategoria('')" data-i18n="ui.tips.all">Todas as Dicas</button>
+          <button class="pill highlight-pill-africa" data-cat="angola" onclick="app.filtrarDicasPorCategoria('angola')">🇦🇴 Repositórios de Angola (ADM)</button>
           <button class="pill highlight-pill-gold" data-cat="habitos" onclick="app.filtrarDicasPorCategoria('habitos')">⚡ Hábitos Atômicos (James Clear)</button>
           <button class="pill" data-cat="estudo" onclick="app.filtrarDicasPorCategoria('estudo')">🧠 Técnicas de Estudo & Foco</button>
           <button class="pill" data-cat="organizacao" onclick="app.filtrarDicasPorCategoria('organizacao')">📓 Organização & Notas</button>

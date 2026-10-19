@@ -27,7 +27,13 @@ const { roadmapShList } = require('./roadmapShData');
 const { podcastsShowsData } = require('./podcastsSeedData');
 const { literaturaLusofonaClassica } = require('./literaturaLusofonaClassicaSeedData');
 const { githubEsBooks } = require('./githubEsBooksSeedData');
+const { uanTrabalhosData } = require('./uanTrabalhosSeedData');
+const { programacaoWebCursos } = require('./programacaoWebSeedData');
+const { jornadaDoDevList } = require('./jornadaDoDevData');
+const { cursaCoursesList } = require('./cursaCoursesData');
+const { harvardCoursesList } = require('./harvardCoursesData');
 const {
+
   domCasmurroTexto,
   memoriasPosthumasTexto,
   oCorticoTexto,
@@ -105,6 +111,8 @@ function seed(dbInstance = null) {
   const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'manual', 'https://www.standardebooks.org', 1).lastInsertRowid;
   // Fonte de Livros Técnicos em Espanhol
   const fFreeBooksEs = insertFonte.run('github-freebooks-es', 'Free Programming Books ES (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
+  // Fonte Repositório Universitário TFC UAN
+  const fUanTfc = insertFonte.run('uan-tfc', 'Universidade Agostinho Neto (UAN) — Repositório TFC', 'manual', 'https://uan-mapa-portal.lovable.app/trabalhos', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -128,6 +136,7 @@ function seed(dbInstance = null) {
   const catAfricaLusofona = insertCat.run('Literatura Africana Lusófona', 'Literatura dos PALOP: Angola, Moçambique, Cabo Verde, Guiné-Bissau, São Tomé e Príncipe').lastInsertRowid;
   const catPoesiaAfricana = insertCat.run('Poesia Africana', 'Poesia de autores africanos de língua portuguesa e outras línguas africanas').lastInsertRowid;
   const catAutoresLusofonos = insertCat.run('Autores Lusófonos Clássicos', 'Grandes nomes da literatura em português: Camões, Pessoa, Eça, autores africanos e brasileiros clássicos').lastInsertRowid;
+  const catUanTfc = insertCat.run('🎓 Teses & Trabalhos Universitários (UAN)', 'Trabalhos de Fim de Curso (TFC) e investigações científicas de estudantes da Universidade Agostinho Neto (UAN)').lastInsertRowid;
 
   // 3. Inserir Autores
   const insertAutor = db.prepare('INSERT INTO autores (nome, nacionalidade, biografia) VALUES (?, ?, ?)');
@@ -545,7 +554,8 @@ function seed(dbInstance = null) {
     '🌍 Literatura & Vozes de África': catAfricaLit,
     '🌍 Contos & Tradição Oral Africana': catAfricaContos,
     '🌍 História & Sociedade Africana': catAfricaHist,
-    '🌍 Filosofia & Pensamento Africano': catAfricaFilo
+    '🌍 Filosofia & Pensamento Africano': catAfricaFilo,
+    '🎓 Teses & Trabalhos Universitários (UAN)': catUanTfc
   };
 
   const fonteMap = {
@@ -576,7 +586,8 @@ function seed(dbInstance = null) {
     'wikisource-de': fWikisourceDe,
     'archive-de': fArchiveDe,
     'archive-fr': fArchiveFr,
-    'archive-ru': fArchiveRu
+    'archive-ru': fArchiveRu,
+    'uan-tfc': fUanTfc
   };
 
   for (const b of githubBooks) {
@@ -1406,6 +1417,53 @@ function seed(dbInstance = null) {
     }
   }
 
+  // Inserir Trabalhos de Fim de Curso (TFC) da Universidade Agostinho Neto (UAN)
+  for (const b of uanTrabalhosData) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, b.nacionalidade || 'Angolana', b.biografia || 'Estudante universitário(a) e autor(a) de TFC na Universidade Agostinho Neto (UAN).').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catUanTfc;
+    const fId = fUanTfc;
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'cc-by';
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      b.isbn || null,
+      b.ano || 2024,
+      b.idioma || 'pt',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 75,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      0,
+      `${b.titulo.toUpperCase()}\n\n${b.subtitulo || ''}\n\n${b.sinopse}\n\nTrabalho de conclusão de curso para consulta pública e acadêmica.`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
   // 5. Inserir Cursos e Roadmaps (classificando com coluna 'tipo')
   const insertCurso = db.prepare(`
     INSERT INTO cursos (titulo, tipo, area, plataforma, url, licenca, nivel, descricao)
@@ -1464,7 +1522,28 @@ function seed(dbInstance = null) {
     insertCurso.run(fr.titulo, fr.tipo || 'curso', fr.area, fr.plataforma, fr.url, fr.licenca, fr.nivel, fr.descricao);
   }
 
+  // Cursos Gratuitos do canal Programação Web (Dimitry Lavalhere - YouTube)
+  for (const pw of programacaoWebCursos) {
+    insertCurso.run(pw.titulo, pw.tipo || 'curso', pw.area, pw.plataforma, pw.url, pw.licenca, pw.nivel, pw.descricao);
+  }
+
+  // Cursos Gratuitos da Plataforma Cursa (cursa.app - em PT, EN, ES, FR, HI com certificado gratuito)
+  for (const cur of cursaCoursesList) {
+    insertCurso.run(cur.titulo, cur.tipo || 'curso', cur.area, cur.plataforma, cur.url, cur.licenca, cur.nivel, cur.descricao);
+  }
+
+  // Cursos Gratuitos de Harvard Online (Harvard PLL Free) e Grandes Plataformas Acadêmicas (MIT OCW, Stanford)
+  for (const hvd of harvardCoursesList) {
+    insertCurso.run(hvd.titulo, hvd.tipo || 'curso', hvd.area, hvd.plataforma, hvd.url, hvd.licenca, hvd.nivel, hvd.descricao);
+  }
+
+  // Cursos Gratuitos da Jornada do Dev (jornadadodev.com.br - 60 cursos completos com certificado gratuito)
+  for (const j of jornadaDoDevList) {
+    insertCurso.run(j.titulo, j.tipo || 'curso', j.area, j.plataforma, j.url, j.licenca, j.nivel, j.descricao);
+  }
+
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)
+
   const insertShow = db.prepare(`
     INSERT INTO podcasts_shows (titulo, slug, descricao, capa_url, spotify_url, spotify_uri, categoria, idioma, ativo)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)

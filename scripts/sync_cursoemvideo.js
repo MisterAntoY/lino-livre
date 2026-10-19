@@ -15,7 +15,7 @@ const { execSync } = require('node:child_process');
 const PORTAL_URL = 'https://www.cursoemvideo.com/cursos/';
 const YOUTUBE_URL = 'https://www.youtube.com/@CursoemVideo';
 const DATA_FILE = path.join(__dirname, '../src/database/cursoEmVideoData.json');
-const REPORT_FILE = path.join(__dirname, '../CURSOEMVIDEO-STATUS.md');
+const REPORT_FILE = path.join(__dirname, '../docs/plataformas/CURSOEMVIDEO-STATUS.md');
 
 function generateReport(cursos, novos, dataIso) {
   const totalHoras = cursos.reduce((acc, c) => acc + (c.carga_horaria || 0), 0);

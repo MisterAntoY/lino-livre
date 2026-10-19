@@ -278,6 +278,165 @@ const dicasData = [
     url: 'https://cvv.org.br',
     gratuito: 'Gratuito 24h / Ligue 188',
     idioma: 'PT-BR'
+  },
+
+  // ==================== 7. HÁBITOS ATÔMICOS & DISCIPLINA (JAMES CLEAR) ====================
+  {
+    id: 23,
+    titulo: 'Regra dos 2 Minutos para Vencer a Procrastinação',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos (James Clear)',
+    icone: '⏳',
+    descricao: 'Quando você começar um novo hábito de estudos, ele deve levar menos de dois minutos para ser iniciado. O objetivo é dominar o ato de aparecer e vencer a inércia.',
+    dica_pratica: 'Em vez de planejar "vou estudar 3 horas hoje", defina a meta microscópica de "vou sentar, abrir o livro e ler 1 página" ou "abrir o editor de código e rodar 1 linha". Uma vez iniciado o processo, o atrito desaparece e continuar flui naturalmente.',
+    url: 'https://jamesclear.com/how-to-stop-procrastinating',
+    gratuito: 'Metodologia Aberta',
+    idioma: 'PT-BR / EN'
+  },
+  {
+    id: 24,
+    titulo: 'Empilhamento de Hábitos (Habit Stacking)',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos (James Clear)',
+    icone: '🧱',
+    descricao: 'A maneira mais rápida e consistente de criar um novo hábito de estudos é vinculá-lo diretamente a um hábito que você já faz de forma automática e diária.',
+    dica_pratica: 'Aplique a fórmula de James Clear: "Depois de [HÁBITO ATUAL], eu vou [NOVO HÁBITO]". Exemplo: "Depois de tomar meu café da manhã, vou sentar na mesa e revisar 10 cartões no Anki por 5 minutos".',
+    url: 'https://jamesclear.com/habit-stacking',
+    gratuito: 'Metodologia Aberta',
+    idioma: 'PT-BR / EN'
+  },
+  {
+    id: 25,
+    titulo: 'Design do Ambiente & Redução de Atrito',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos (James Clear)',
+    icone: '🏡',
+    descricao: 'O ambiente físico e digital é a força invisível que molda nossos hábitos. Facilite os bons comportamentos tornando os gatilhos óbvios e aumente o atrito das distrações.',
+    dica_pratica: 'Deixe o caderno de resumos ou o livro aberto sobre a mesa na noite anterior. Para o smartphone, adicione atrito: desligue notificações ou deixe o aparelho em outro cômodo durante os ciclos de estudo.',
+    url: 'https://jamesclear.com/environment-design-habits',
+    gratuito: 'Metodologia Aberta',
+    idioma: 'PT-BR / EN'
+  },
+  {
+    id: 26,
+    titulo: '1% Melhor Todos os Dias (O Poder dos Ganhos Compostos)',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos (James Clear)',
+    icone: '📈',
+    descricao: 'Se você melhorar apenas 1% a cada dia durante 365 dias, terminará o ano 37 vezes melhor. Os hábitos de estudo são os juros compostos do conhecimento.',
+    dica_pratica: 'Evite o ciclo destrutivo de estudar 8 horas na véspera de prova e ficar sem estudar por semanas. Trinta a quarenta minutos diários e consistentes vencem qualquer esforço esporádico de última hora.',
+    url: 'https://jamesclear.com/continuous-improvement',
+    gratuito: 'Metodologia Aberta',
+    idioma: 'PT-BR / EN'
+  },
+  {
+    id: 27,
+    titulo: 'Rastreador de Estudos & Regra de "Nunca Falhar Duas Vezes"',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos (James Clear)',
+    icone: '📅',
+    descricao: 'Visualizar o próprio progresso gera satisfação imediata. Quando imprevistos inevitáveis acontecerem, a regra inegociável é nunca falhar dois dias consecutivos.',
+    dica_pratica: 'Marque um "X" no calendário ou use um rastreador simples a cada sessão cumprida. Perder um único dia é um acidente da vida; falhar dois dias seguidos é o início de um novo hábito negativo.',
+    url: 'https://jamesclear.com/dont-break-the-chain',
+    gratuito: 'Metodologia Aberta',
+    idioma: 'PT-BR / EN'
+  },
+  {
+    id: 28,
+    titulo: 'Hábitos Baseados em Identidade ("Quem você deseja ser")',
+    categoria: 'habitos',
+    categoria_label: 'Hábitos Atômicos (James Clear)',
+    icone: '🎯',
+    descricao: 'A verdadeira mudança permanente ocorre no nível da identidade. O objetivo final não é "ler um livro", é se tornar um leitor. Não é "passar numa prova", é se tornar alguém dedicado ao aprendizado.',
+    dica_pratica: 'Cada página que você lê e cada exercício que você resolve é um voto que você deposita na pessoa que deseja se tornar. Antes de desistir diante da preguiça, pergunte-se: "O que um estudante disciplinado faria agora?".',
+    url: 'https://jamesclear.com/identity-based-habits',
+    gratuito: 'Metodologia Aberta',
+    idioma: 'PT-BR / EN'
+  },
+  // ==================== 8. REPOSITÓRIOS ONLINE DE ANGOLA (ADM ANGOLA) ====================
+  {
+    id: 29,
+    titulo: 'OAPEN — Coleção Especial de Livros Abertos sobre Angola',
+    categoria: 'angola',
+    categoria_label: '🏛️ Repositórios de Angola (ADM Angola)',
+    icone: '📚',
+    descricao: 'Biblioteca digital internacional com centenas de livros acadêmicos, monografias científicas e ensaios de pós-graduação sobre Angola e África sob licenças de Acesso Aberto (Open Access).',
+    dica_pratica: 'Excelente para teses de licenciatura e mestrado: pesquise por tópicos específicos como economia angolana, história do Reino do Congo, sociedade e línguas nacionais para ler livros completos gratuitos.',
+    url: 'https://library.oapen.org/discover?query=angola',
+    gratuito: '100% Gratuito / Open Access',
+    idioma: 'PT / EN / FR'
+  },
+  {
+    id: 30,
+    titulo: 'RCAAP & OpenDOAR — Repositórios Científicos Lusófonos & CPLP',
+    categoria: 'angola',
+    categoria_label: '🏛️ Repositórios de Angola (ADM Angola)',
+    icone: '🎓',
+    descricao: 'Portal agregador de acesso aberto que reúne a produção científica, dissertações de mestrado, teses e artigos de dezenas de universidades e centros de investigação lusófonos e de países da CPLP.',
+    dica_pratica: 'Pesquise por temas de investigação para encontrar trabalhos académicos de estudantes e professores angolanos, consultar bibliografias de referência e apoiar sua revisão de literatura.',
+    url: 'https://www.rcaap.pt/search.jsp',
+    gratuito: '100% Gratuito / Acesso Aberto',
+    idioma: 'Português'
+  },
+  {
+    id: 31,
+    titulo: 'BNP Digital — Acervo Histórico e Documental de Angola',
+    categoria: 'angola',
+    categoria_label: '🏛️ Repositórios de Angola (ADM Angola)',
+    icone: '🏛️',
+    descricao: 'Acervo digital com manuscritos raros, mapas cartográficos dos séculos XVII a XIX, coleções dos primeiros jornais de Luanda e Benguela e relatórios históricos oficiais em domínio público.',
+    dica_pratica: 'Ferramenta indispensável para estudantes de História, Direito, Antropologia e Ciências Sociais que necessitam de documentos históricos e fontes primárias autênticas.',
+    url: 'https://bndigital.bnportugal.gov.pt/',
+    gratuito: 'Domínio Público / Acesso Livre',
+    idioma: 'Português'
+  },
+  {
+    id: 32,
+    titulo: 'CMI (Chr. Michelsen Institute) — Investigação & Governação em Angola',
+    categoria: 'angola',
+    categoria_label: '🏛️ Repositórios de Angola (ADM Angola)',
+    icone: '📊',
+    descricao: 'O mais conceituado acervo internacional de relatórios de investigação aplicada sobre governação pública, finanças, transparência, direitos humanos e desenvolvimento socioeconómico de Angola.',
+    dica_pratica: 'Acesse relatórios temáticos completos e relatórios de políticas públicas ("policy briefs") com análises atualizadas sobre a economia, setor extractivo e descentralização em Angola.',
+    url: 'https://www.cmi.no/',
+    gratuito: '100% Gratuito / Open Access',
+    idioma: 'PT / EN'
+  },
+  {
+    id: 33,
+    titulo: 'Banco Mundial — Repositório Aberto de Conhecimento & Dados de Angola',
+    categoria: 'angola',
+    categoria_label: '🏛️ Repositórios de Angola (ADM Angola)',
+    icone: '🌐',
+    descricao: 'Repositório oficial Open Knowledge Repository (OKR) e Portal de Dados Abertos com análises macroeconómicas, diagnósticos de setores, relatórios de pobreza e planos estruturais de Angola.',
+    dica_pratica: 'Consulte indicadores económicos, relatórios de conjuntura económica angolana e dados demográficos para fundamentar pesquisas e projetos com fontes primárias de relevância mundial.',
+    url: 'https://openknowledge.worldbank.org/home',
+    gratuito: 'Acesso Aberto Governamental',
+    idioma: 'PT / EN'
+  },
+  {
+    id: 34,
+    titulo: 'UC Digitalis — Biblioteca Digital Científica e Lusófona',
+    categoria: 'angola',
+    categoria_label: '🏛️ Repositórios de Angola (ADM Angola)',
+    icone: '📖',
+    descricao: 'Plataforma digital da Universidade de Coimbra que disponibiliza milhares de volumes científicos, revistas especializadas, teses e ensaios dedicados à história, direito e cultura de Angola.',
+    dica_pratica: 'Navegue pelas coleções "Alma Mater" e "Pombalina" para aceder a ensaios jurídicos, botânicos e sociológicos com visualizador online e download gratuito de obras de referência.',
+    url: 'https://digitalis.uc.pt/',
+    gratuito: '100% Gratuito / Acesso Aberto',
+    idioma: 'Português'
+  },
+  {
+    id: 35,
+    titulo: 'Portal ADM Angola — Repositórios Online (Guia do Maior Acervo)',
+    categoria: 'angola',
+    categoria_label: '🏛️ Repositórios de Angola (ADM Angola)',
+    icone: '🇦🇴',
+    descricao: 'O portal da Administração Pública Angolana que cataloga e direciona para os 19 maiores repositórios digitais e bibliotecas académicas do mundo com acervos dedicados a Angola.',
+    dica_pratica: 'Excelente ponto de partida para localizar arquivos governamentais, bases de patentes, diretórios de teses da CPLP e plataformas de documentação sobre a função pública angolana.',
+    url: 'https://www.plataforma.admangola.com/biblioteca/repositórios-online',
+    gratuito: 'Guia Público Aberto',
+    idioma: 'Português'
   }
 ];
 

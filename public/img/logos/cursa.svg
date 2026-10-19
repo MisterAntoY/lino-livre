@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="cursa-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="10" fill="url(#cursa-grad)" />
+  <!-- Graduation Cap & Certificate Ribbon -->
+  <path d="M24 13L10 20L24 27L38 20L24 13Z" fill="#ffffff" />
+  <path d="M14 23.5V30C14 34.5 18.5 37 24 37C29.5 37 34 34.5 34 30V23.5L24 28.5L14 23.5Z" fill="#ffffff" opacity="0.9" />
+  <path d="M38 20.5V29C38 30 36.8 30.8 35.8 30.5L34 30V22.2L38 20.5Z" fill="#fed7aa" />
+</svg>

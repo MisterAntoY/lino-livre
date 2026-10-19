@@ -39,7 +39,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/database/dsaCoursesData.json DATA-SCIENCE-ACADEMY-STATUS.md
+          git add src/database/dsaCoursesData.json docs/plataformas/DATA-SCIENCE-ACADEMY-STATUS.md
           if git diff --staged --quiet; then
             echo "Nenhum novo curso gratuito identificado nesta ronda da Data Science Academy."
           else

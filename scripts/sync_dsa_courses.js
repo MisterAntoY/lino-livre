@@ -14,7 +14,7 @@ const path = require('node:path');
 
 const API_URL = 'https://www.datascienceacademy.com.br/api/courses';
 const DATA_FILE = path.join(__dirname, '../src/database/dsaCoursesData.json');
-const REPORT_FILE = path.join(__dirname, '../DATA-SCIENCE-ACADEMY-STATUS.md');
+const REPORT_FILE = path.join(__dirname, '../docs/plataformas/DATA-SCIENCE-ACADEMY-STATUS.md');
 
 function inferArea(title) {
   if (title.includes('Python')) return 'Desenvolvimento Web & Mobile';
