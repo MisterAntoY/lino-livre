@@ -1861,6 +1861,32 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #fef2f2 100%);
 }
 
+.card-featured-evg {
+  border-color: #86efac !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.card-featured-lumina {
+  border-color: #93c5fd !important;
+  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+}
+
+.card-featured-ifrs {
+  border-color: #86efac !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.card-featured-google {
+  border-color: #fde047 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fefce8 100%);
+}
+
+.card-featured-openbootcamp {
+  border-color: #c4b5fd !important;
+  background: linear-gradient(180deg, #ffffff 0%, #faf5ff 100%);
+}
+
+
 
 .pill-bradesco.active {
   background: #0284c7 !important;

@@ -8,7 +8,9 @@
     "seed": "node src/database/seed.js",
     "test": "node --test test/**/*.test.js",
     "livros": "node scripts/gerenciar_livros.js",
-    "livros:csv": "node scripts/gerenciar_livros.js --exportar-csv"
+    "livros:csv": "node scripts/gerenciar_livros.js --exportar-csv",
+    "cursos:sync": "node scripts/sincronizar_cursos.js",
+    "cursos:sync:remote": "node scripts/sincronizar_cursos.js --remote"
   },
   "keywords": [],
   "author": "",

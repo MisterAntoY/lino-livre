@@ -557,6 +557,51 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resJornada.data.some(c => c.titulo.includes('Node.js')), 'Deve conter curso de Node.js');
     assert.ok(resJornada.data.some(c => c.url.includes('jornadadodev.com.br/cursos/')), 'URLs devem apontar para a plataforma Jornada do Dev');
     assert.ok(resJornada.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos da Jornada do Dev devem ser gratuitos');
+
+    // 14.8 - Escola Virtual de Governo (EV.G / ENAP - escolavirtual.gov.br)
+    const resEvg = await request('/api/cursos?plataforma=EV.G');
+    assert.equal(resEvg.status, 200);
+    assert.ok(Array.isArray(resEvg.data));
+    assert.ok(resEvg.data.length >= 450, 'Deve conter os cursos gratuitos da EV.G / ENAP (>= 450)');
+    assert.ok(resEvg.data.some(c => c.url.includes('escolavirtual.gov.br/curso/')), 'URLs devem apontar para a plataforma Escola Virtual de Governo');
+    assert.ok(resEvg.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos da EV.G devem ser gratuitos');
+
+    // 14.9 - Fluência AI (fluencia.ai)
+    const resFluencia = await request('/api/cursos?plataforma=Flu%C3%AAncia+AI');
+    assert.equal(resFluencia.status, 200);
+    assert.ok(Array.isArray(resFluencia.data));
+    assert.ok(resFluencia.data.length >= 15, 'Deve conter as formações, módulos e publicações da Fluência AI (>= 15)');
+    assert.ok(resFluencia.data.some(c => c.titulo.includes('Método Fluência')), 'Deve conter o Método Fluência');
+    assert.ok(resFluencia.data.some(c => c.titulo.includes('AI-Native Product Design')), 'Deve conter AI-Native Product Design');
+    assert.ok(resFluencia.data.some(c => c.titulo.includes('Workshop')), 'Deve conter Workshop de Governança');
+    assert.ok(resFluencia.data.some(c => c.titulo.includes('Corporativa') || c.titulo.includes('Frontier Firms')), 'Deve conter formação corporativa');
+    assert.ok(resFluencia.data.some(c => c.url.includes('fluencia.ai')), 'URLs devem apontar para o domínio oficial da Fluência AI');
+
+    // 14.10 - Recode (recode.org.br - Recode PRO AI, impactAI, Programação, Games)
+    const resRecode = await request('/api/cursos?plataforma=Recode');
+    assert.equal(resRecode.status, 200);
+    assert.ok(Array.isArray(resRecode.data));
+    assert.ok(resRecode.data.length >= 35, 'Deve conter as formações gratuitas da Recode (>= 35)');
+    assert.ok(resRecode.data.some(c => c.titulo.includes('Recode PRO AI')), 'Deve conter o bootcamp Recode PRO AI');
+    assert.ok(resRecode.data.some(c => c.titulo.includes('impactAI')), 'Deve conter a trilha impactAI');
+    assert.ok(resRecode.data.some(c => c.titulo.includes('Desenvolvimento de Sistemas Web Básico')), 'Deve conter Desenvolvimento Web Básico');
+    assert.ok(resRecode.data.some(c => c.titulo.includes('Desenvolvimento de Games')), 'Deve conter Desenvolvimento de Games');
+    assert.ok(resRecode.data.some(c => c.titulo.includes('Mediação de Leitura')), 'Deve conter Mediação de Leitura para Bibliotecas');
+    assert.ok(resRecode.data.some(c => c.url.includes('recode.org.br')), 'URLs devem apontar para o portal da Recode');
+    assert.ok(resRecode.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos da Recode devem ser gratuitos');
+
+    // 14.11 - Code IoT (codeiot.org.br - Samsung & LSI-TEC / USP)
+    const resCodeIot = await request('/api/cursos?plataforma=Code+IoT');
+    assert.equal(resCodeIot.status, 200);
+    assert.ok(Array.isArray(resCodeIot.data));
+    assert.ok(resCodeIot.data.length >= 25, 'Deve conter as formações gratuitas do Code IoT (>= 25)');
+    assert.ok(resCodeIot.data.some(c => c.titulo.includes('Internet das Coisas')), 'Deve conter curso de Internet das Coisas');
+    assert.ok(resCodeIot.data.some(c => c.titulo.includes('Arduino')), 'Deve conter curso de Programação Física com Arduino');
+    assert.ok(resCodeIot.data.some(c => c.titulo.includes('Eletrônica')), 'Deve conter curso de Eletrônica Básica');
+    assert.ok(resCodeIot.data.some(c => c.titulo.includes('Aplicativos para Dispositivos Móveis')), 'Deve conter curso de App Inventor');
+    assert.ok(resCodeIot.data.some(c => c.titulo.includes('Samsung Innovation Campus') || c.titulo.includes('SIC')), 'Deve conter cursos do Samsung Innovation Campus');
+    assert.ok(resCodeIot.data.some(c => c.url.includes('codeiot.org.br')), 'URLs devem apontar para a plataforma Code IoT');
+    assert.ok(resCodeIot.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos do Code IoT devem ser gratuitos');
   });
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
@@ -886,6 +931,99 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resRedirect = await request(`/api/cursos/${primeiroCursa.id}/acessar`);
     assert.equal(resRedirect.status, 302, 'Acesso ao curso deve responder com HTTP 302');
     assert.equal(resRedirect.headers.get('location'), primeiroCursa.url, 'Location deve coincidir com URL oficial do curso');
+  });
+
+  // Teste 25: Plataformas Nacionais com Certificado Grátis (Fundação Bradesco, EV.G/ENAP, Lumina, IFRS) e Globais (Google Ateliê, OpenBootcamp) + Automação
+  test('25. Plataformas Nacionais com Certificado Grátis (Fundação Bradesco, EV.G/ENAP, Lumina, IFRS) e Globais (Google Ateliê, OpenBootcamp) + Automação', async () => {
+    // 25.1 - Fundação Bradesco (EV)
+    const resBradesco = await request('/api/cursos?plataforma=' + encodeURIComponent('Fundação Bradesco'));
+    assert.equal(resBradesco.status, 200);
+    assert.ok(Array.isArray(resBradesco.data));
+    assert.ok(resBradesco.data.length >= 60, 'Deve conter pelo menos 60 cursos da Fundação Bradesco');
+    assert.ok(resBradesco.data.some(c => c.titulo.includes('Excel')), 'Deve conter curso de Excel');
+    assert.ok(resBradesco.data.some(c => c.titulo.includes('Python')), 'Deve conter curso de Python');
+    assert.ok(resBradesco.data.every(c => c.url.includes('ev.org.br')), 'Todos os links Bradesco devem apontar para ev.org.br');
+
+    // 25.2 - EV.G - Escola Virtual de Governo (ENAP)
+    const resEvg = await request('/api/cursos?plataforma=' + encodeURIComponent('Escola Virtual de Governo'));
+    assert.equal(resEvg.status, 200);
+    assert.ok(Array.isArray(resEvg.data));
+    assert.ok(resEvg.data.length >= 400, 'Deve conter catálogo amplo da EV.G / ENAP (>= 400 cursos)');
+    assert.ok(resEvg.data.every(c => c.url.includes('escolavirtual.gov.br')), 'Links EV.G devem apontar para escolavirtual.gov.br');
+    assert.ok(resEvg.data.every(c => c.descricao.toLowerCase().includes('certifica')), 'Cursos EV.G devem mencionar certificado ou certificação');
+
+    // 25.3 - Lumina (UFRGS - Universidade Federal do Rio Grande do Sul)
+    const resLumina = await request('/api/cursos?plataforma=' + encodeURIComponent('Lumina'));
+    assert.equal(resLumina.status, 200);
+    assert.ok(Array.isArray(resLumina.data));
+    assert.ok(resLumina.data.length >= 15, 'Deve conter ao menos 15 cursos da Lumina UFRGS');
+    assert.ok(resLumina.data.some(c => c.titulo.includes('Divulgação Científica')), 'Deve conter Divulgação Científica');
+    assert.ok(resLumina.data.some(c => c.titulo.includes('Produção Textual') || c.titulo.includes('Artigo Científico')), 'Deve conter Artigo Científico');
+    assert.ok(resLumina.data.some(c => c.titulo.includes('Pensamento Computacional')), 'Deve conter Pensamento Computacional');
+    assert.ok(resLumina.data.every(c => c.url.includes('lumina.ufrgs.br')), 'Links devem apontar para lumina.ufrgs.br');
+
+    // 25.4 - IFRS (Instituto Federal do Rio Grande do Sul - Moodle MOOC)
+    const resIfrs = await request('/api/cursos?plataforma=' + encodeURIComponent('Instituto Federal'));
+    assert.equal(resIfrs.status, 200);
+    assert.ok(Array.isArray(resIfrs.data));
+    assert.ok(resIfrs.data.length >= 15, 'Deve conter ao menos 15 cursos MOOC do IFRS');
+    const titulosIfrs = resIfrs.data.map(c => c.titulo);
+    assert.ok(titulosIfrs.some(t => t.includes('Inglês')), 'Deve conter curso de Inglês');
+    assert.ok(titulosIfrs.some(t => t.includes('Espanhol')), 'Deve conter curso de Espanhol');
+    assert.ok(titulosIfrs.some(t => t.includes('Lógica de Programação') || t.includes('Java')), 'Deve conter cursos de informática');
+    assert.ok(titulosIfrs.some(t => t.includes('Matemática') || t.includes('Estatística') || t.includes('Física')), 'Deve conter ciências exatas');
+    assert.ok(resIfrs.data.every(c => c.url.includes('ifrs.edu.br')), 'Links IFRS devem apontar para ifrs.edu.br');
+
+    // 25.5 - Google Ateliê Digital (learndigital.withgoogle.com)
+    const resGoogle = await request('/api/cursos?plataforma=' + encodeURIComponent('Google Ateliê'));
+    assert.equal(resGoogle.status, 200);
+    assert.ok(Array.isArray(resGoogle.data));
+    assert.ok(resGoogle.data.length >= 10, 'Deve conter ao menos 10 cursos do Google Ateliê');
+    assert.ok(resGoogle.data.some(c => c.titulo.includes('Fundamentos do Marketing Digital')), 'Deve conter Fundamentos do Marketing Digital');
+    assert.ok(resGoogle.data.some(c => c.titulo.includes('Machine Learning') || c.titulo.includes('Inteligência Artificial')), 'Deve conter IA do Google');
+    assert.ok(resGoogle.data.every(c => c.url.includes('withgoogle.com') || c.url.includes('skillshop.exceedlms.com')), 'Links devem apontar para Google');
+
+    // 25.6 - OpenBootcamp / Kogno
+    const resOb = await request('/api/cursos?plataforma=' + encodeURIComponent('OpenBootcamp'));
+    assert.equal(resOb.status, 200);
+    assert.ok(Array.isArray(resOb.data));
+    assert.ok(resOb.data.length >= 12, 'Deve conter ao menos 12 cursos do OpenBootcamp');
+    const titulosOb = resOb.data.map(c => c.titulo);
+    assert.ok(titulosOb.some(t => t.includes('HTML5')), 'Deve conter HTML5');
+    assert.ok(titulosOb.some(t => t.includes('JavaScript')), 'Deve conter JavaScript');
+    assert.ok(titulosOb.some(t => t.includes('Python')), 'Deve conter Python');
+    assert.ok(titulosOb.some(t => t.includes('React')), 'Deve conter React');
+    assert.ok(titulosOb.some(t => t.includes('Docker')), 'Deve conter Docker');
+    assert.ok(resOb.data.every(c => c.url.includes('open-bootcamp.com')), 'Links devem apontar para open-bootcamp.com');
+
+    // 25.7 - Validador do Motor Automatizado (scripts/sincronizar_cursos.js)
+    const { validarCurso } = require('../scripts/sincronizar_cursos');
+    const valido = validarCurso({
+      titulo: 'Curso Teste Validação',
+      plataforma: 'Plataforma Teste',
+      url: 'https://exemplo.org/curso-teste',
+      descricao: 'Descrição com certificado'
+    });
+    assert.equal(valido.valido, true);
+    assert.equal(valido.curso.tipo, 'curso');
+
+    const invalidoLocal = validarCurso({
+      titulo: 'Curso Inválido',
+      plataforma: 'Teste',
+      url: 'file:///Users/mendes/Desktop/livro.pdf'
+    });
+    assert.equal(invalidoLocal.valido, false, 'Deve rejeitar URLs apontando para arquivos locais (violação AGENTS.md)');
+
+    // 25.8 - Redirecionamento HTTP 302 direto para cursos oficiais
+    const primeiroLumina = resLumina.data[0];
+    const resRedirectLumina = await request(`/api/cursos/${primeiroLumina.id}/acessar`);
+    assert.equal(resRedirectLumina.status, 302);
+    assert.equal(resRedirectLumina.headers.get('location'), primeiroLumina.url);
+
+    const primeiroGoogle = resGoogle.data[0];
+    const resRedirectGoogle = await request(`/api/cursos/${primeiroGoogle.id}/acessar`);
+    assert.equal(resRedirectGoogle.status, 302);
+    assert.equal(resRedirectGoogle.headers.get('location'), primeiroGoogle.url);
   });
 });
 

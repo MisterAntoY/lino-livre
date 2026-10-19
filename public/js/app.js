@@ -1079,6 +1079,9 @@ const app = {
       const isHarvard = (c.plataforma || '').includes('Harvard');
       const isMit = (c.plataforma || '').includes('MIT');
       const isStanford = (c.plataforma || '').includes('Stanford');
+      const isLumina = (c.plataforma || '').includes('Lumina') || (c.url || '').includes('lumina.ufrgs.br');
+      const isGoogleAtelie = (c.plataforma || '').includes('Google Ateliê') || (c.url || '').includes('learndigital.withgoogle.com') || (c.url || '').includes('skillshop.exceedlms.com');
+      const isOpenBootcamp = (c.plataforma || '').includes('OpenBootcamp') || (c.plataforma || '').includes('Kogno') || (c.url || '').includes('open-bootcamp.com');
 
       if (isSantander) {
         btnTexto = ' Acessar Santander';
@@ -1150,20 +1153,29 @@ const app = {
         btnTexto = t('courses.btnGuiadeti');
         extraBadge = `<span class="badge-guiadeti-pill">${t('courses.badgeGuiadeti')}</span>`;
       } else if (isBradesco) {
-        btnTexto = t('courses.btnBradesco');
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">${t('courses.badgeBradesco')}</span>`;
+        btnTexto = '🎓 Estudar na Fundação Bradesco';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; font-weight:600;">🏛️ Fundação Bradesco • Certificado Grátis</span>`;
+      } else if (isEvg) {
+        btnTexto = '📜 Acessar Curso na EV.G';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#86efac; font-weight:600;">🏛️ EV.G / ENAP • Certificado Oficial</span>`;
+      } else if (isLumina) {
+        btnTexto = '📜 Estudar na Lumina UFRGS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">🎓 Lumina (UFRGS) • Extensão</span>`;
+      } else if (isIfrs) {
+        btnTexto = '📜 Estudar no IFRS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;">🏛️ IFRS • Certificado Digital Grátis</span>`;
+      } else if (isGoogleAtelie) {
+        btnTexto = '🎓 Estudar no Google';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#b45309; border-color:#fde68a; font-weight:600;">🌐 Google Ateliê • Certificado Oficial</span>`;
+      } else if (isOpenBootcamp) {
+        btnTexto = '🚀 Acessar OpenBootcamp';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f5f3ff; color:#6d28d9; border-color:#ddd6fe; font-weight:600;">💻 OpenBootcamp • 100% Gratuito</span>`;
       } else if (isUsp) {
         btnTexto = ' Aulas USP';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;"> Cursos USP</span>`;
       } else if (isAlura) {
         btnTexto = ' Aulas Alura';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;"> Alura Aberta</span>`;
-      } else if (isEvg) {
-        btnTexto = ' Inscrição EV.G';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#bbf7d0;"> EV.G / ENAP</span>`;
-      } else if (isIfrs) {
-        btnTexto = ' Inscrição IFRS';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ede9fe; color:#5b21b6; border-color:#ddd6fe;"> IFRS Federal</span>`;
       }
 
       const cardClass = isSantander
@@ -1178,23 +1190,33 @@ const app = {
                 ? 'card-featured-cursa'
                 : (isHarvard
                   ? 'card-featured-harvard'
-                  : (isFiap
-                    ? 'card-featured-fiap'
-                    : (isIbm
-                      ? 'card-featured-ibm'
-                      : (isCisco
-                        ? 'card-featured-cisco'
-                        : (isWmc
-                          ? 'card-featured-wmc'
-                          : (isYouTube
-                            ? 'card-featured-youtube'
-                            : (isGuiaDeTI
-                              ? 'card-featured-guiadeti'
-                              : (isBradesco
-                                ? 'card-featured-bradesco'
-                                : (isUsp || isAlura || isEvg || isIfrs ? 'card-featured-guiadeti' : '')))))))))))));
+                  : (isEvg
+                    ? 'card-featured-evg'
+                    : (isLumina
+                      ? 'card-featured-lumina'
+                      : (isIfrs
+                        ? 'card-featured-ifrs'
+                        : (isGoogleAtelie
+                          ? 'card-featured-google'
+                          : (isOpenBootcamp
+                            ? 'card-featured-openbootcamp'
+                            : (isBradesco
+                              ? 'card-featured-bradesco'
+                              : (isFiap
+                                ? 'card-featured-fiap'
+                                : (isIbm
+                                  ? 'card-featured-ibm'
+                                  : (isCisco
+                                    ? 'card-featured-cisco'
+                                    : (isWmc
+                                      ? 'card-featured-wmc'
+                                      : (isYouTube
+                                        ? 'card-featured-youtube'
+                                        : (isGuiaDeTI
+                                          ? 'card-featured-guiadeti'
+                                          : (isUsp || isAlura ? 'card-featured-guiadeti' : '')))))))))))))))));
 
-      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isEvg || isIfrs;
+      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isEvg || isLumina || isIfrs || isGoogleAtelie || isOpenBootcamp || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isBradesco;
 
 
       let logoHtml = '';
@@ -1244,6 +1266,14 @@ const app = {
         logoHtml = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo">`;
       } else if (isEvg) {
         logoHtml = `<img src="/img/logos/evg.png" alt="EV.G" class="course-platform-logo">`;
+      } else if (isLumina) {
+        logoHtml = `<img src="/img/logos/lumina.svg" alt="Lumina UFRGS" class="course-platform-logo">`;
+      } else if (isIfrs) {
+        logoHtml = `<img src="/img/logos/ifrs.svg" alt="IFRS" class="course-platform-logo">`;
+      } else if (isGoogleAtelie) {
+        logoHtml = `<img src="/img/logos/google.svg" alt="Google Ateliê Digital" class="course-platform-logo">`;
+      } else if (isOpenBootcamp) {
+        logoHtml = `<img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="course-platform-logo">`;
       } else if ((c.plataforma || '').includes('Cursa')) {
         logoHtml = `<img src="/img/logos/cursa.svg" alt="Cursa" class="course-platform-logo">`;
       } else if ((c.plataforma || '').includes('MIT')) {

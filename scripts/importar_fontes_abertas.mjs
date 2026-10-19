@@ -42,7 +42,24 @@ function wrangler(cmd) {
   // maxBuffer: o wrangler imprime um resumo JSON por execute; com lotes grandes
   // (centenas de livros) ultrapassa o default de 1MB do Node e o spawnSync devolve
   // ENOBUFS. Os restantes scripts do repo usam já 50MB — alinhar aqui.
-  return execSync(`npx wrangler d1 execute ${DB} --remote ${cmd}`, { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 50 * 1024 * 1024 });
+  //
+  // Retry com backoff crescente: a API do Cloudflare D1 falha intermitentemente
+  // sob carga concorrente (rate-limit: "A request to the Cloudflare API ... failed").
+  // Sem retry, uma falha transitória de um SELECT (p. ex. maxId) abortava o run
+  // inteiro a meio. As operações são idempotentes (INSERT OR IGNORE + cursor),
+  // logo re-tentar é seguro.
+  const backoffs = [5, 15, 30, 60];
+  for (let a = 0; ; a++) {
+    try {
+      return execSync(`npx wrangler d1 execute ${DB} --remote ${cmd}`, { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 50 * 1024 * 1024 });
+    } catch (err) {
+      const msg = String(err?.message || '');
+      const transitoria = /A request to the Cloudflare API|error sending request|EAGAIN|ETIMEDOUT|ENOTFOUND|ECONNRESET|EPIPE|socket hang up|rate limit/i.test(msg);
+      if (!transitoria || a >= backoffs.length) throw err;
+      console.warn(`   ⚠ wrangler falhou (${msg.split('\n')[0].slice(0, 80)}) — retry em ${backoffs[a]}s`);
+      execSync(`sleep ${backoffs[a]}`, { stdio: 'ignore' });
+    }
+  }
 }
 
 /** INSERTs/DDL com emoji passam por ficheiro --file (imune a quoting de shell). */
@@ -813,21 +830,29 @@ async function importarWikisource(aplicar) {
   const maxTotal = argMax ? Number(argMax.slice(6)) : Infinity;
   const pausa = (ms) => new Promise(s => setTimeout(s, ms));
 
-  // fetch com timeout a cobrir fetch + json (Cloudflare/servidor podem enviar
-  // headers e estagnar o corpo — ver fix "slow-drip" do Gutenberg).
+  // fetch com timeout a cobrir fetch + json (servidor pode enviar headers e estagnar
+  // o corpo — ver fix "slow-drip" do Gutenberg). Regista o último erro/estado HTTP e
+  // respeita Retry-After quando o servidor limita (429/503).
   const apiJson = async (url) => {
-    for (let a = 0; a < 3; a++) {
+    let ultimo = 'sem resposta';
+    for (let a = 0; a < 4; a++) {
       try {
         const ctl = new AbortController();
         const to = setTimeout(() => ctl.abort(), 20000);
         try {
           const r = await fetch(url, { headers: UA, signal: ctl.signal });
           if (r.ok) return await r.json();
+          ultimo = `HTTP ${r.status}`;
+          const retryAfter = Number(r.headers.get('retry-after'));
+          if (Number.isFinite(retryAfter) && retryAfter > 0) {
+            await pausa(Math.min(retryAfter, 90) * 1000);
+            continue;
+          }
         } finally { clearTimeout(to); }
         await pausa(3000);
-      } catch { await pausa(6000 * (a + 1)); }
+      } catch (e) { ultimo = e.message; await pausa(6000 * (a + 1)); }
     }
-    throw new Error(`API não respondeu após 3 tentativas: ${url.slice(0, 100)}`);
+    throw new Error(`API falhou após 4 tentativas (${ultimo}): ${url.slice(0, 120)}`);
   };
 
   // extrai campo do template ProofreadPage (primeira ocorrência até fim de linha,

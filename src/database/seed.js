@@ -32,6 +32,14 @@ const { programacaoWebCursos } = require('./programacaoWebSeedData');
 const { jornadaDoDevList } = require('./jornadaDoDevData');
 const { cursaCoursesList } = require('./cursaCoursesData');
 const { harvardCoursesList } = require('./harvardCoursesData');
+const { evgCoursesList } = require('./evgCoursesData');
+const { luminaCoursesList } = require('./luminaCoursesData');
+const { ifrsCoursesList } = require('./ifrsCoursesData');
+const { googleAtelieCoursesList } = require('./googleAtelieCoursesData');
+const { openBootcampCoursesList } = require('./openBootcampCoursesData');
+const { fluenciaAiList } = require('./fluenciaAiData');
+const { recodeCoursesList } = require('./recodeData');
+const { codeIotCoursesList } = require('./codeIotData');
 const {
 
   domCasmurroTexto,
@@ -113,6 +121,8 @@ function seed(dbInstance = null) {
   const fFreeBooksEs = insertFonte.run('github-freebooks-es', 'Free Programming Books ES (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
   // Fonte Repositório Universitário TFC UAN
   const fUanTfc = insertFonte.run('uan-tfc', 'Universidade Agostinho Neto (UAN) — Repositório TFC', 'manual', 'https://uan-mapa-portal.lovable.app/trabalhos', 1).lastInsertRowid;
+  // Fonte Fluência AI (fluencia.ai)
+  const fFluencia = insertFonte.run('fluencia-ai', 'Fluência AI (fluencia.ai)', 'manual', 'https://www.fluencia.ai', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -1464,6 +1474,27 @@ function seed(dbInstance = null) {
     }
   }
 
+  // Inserir Tese do Método Fluência (Publicação Oficial Aberta da Fluência AI)
+  const autCamila = insertAutor.run('Camila Caligari', 'Brasileira', 'Especialista em inteligência artificial aplicada, design de produtos AI-Native e fundadora do Método Fluência.').lastInsertRowid;
+  const lTeseFluencia = insertLivro.run(
+    'Tese do Método Fluência: Criatividade e Liderança na Era da IA',
+    'Modelos mentais, pensamento crítico e arquitetura de sistemas com IA',
+    'FLUENCIA-TESE-2025',
+    2025,
+    'pt',
+    'Manifesto e tratado metodológico do Método Fluência. Ensina a superar o uso raso e passivo de prompts e ferramentas isoladas, desenvolvendo autonomia cognitiva, governança, pensamento computacional e liderança estratégica para a era das Frontier Firms.',
+    'https://static.wixstatic.com/media/dff43d_6723fca1326442e0b1c66157965eaf77~mv2.png',
+    42,
+    autCamila,
+    catData,
+    fFluencia,
+    'fluencia-tese-pdf',
+    'outro',
+    0,
+    'TESE DO MÉTODO FLUÊNCIA: CRIATIVIDADE E LIDERANÇA NA ERA DA IA\n\nPor Camila Caligari — Fluência AI.\n\nUm guia profundo sobre como pensar, decidir e construir sistemas com inteligência artificial com método, critério e impacto real.'
+  ).lastInsertRowid;
+  insertLink.run(lTeseFluencia, 'pdf', 'https://www.fluencia.ai/_files/ugd/dff43d_4b80c894cb58416b8539e7deda773405.pdf', 684472, 1);
+
   // 5. Inserir Cursos e Roadmaps (classificando com coluna 'tipo')
   const insertCurso = db.prepare(`
     INSERT INTO cursos (titulo, tipo, area, plataforma, url, licenca, nivel, descricao)
@@ -1540,6 +1571,46 @@ function seed(dbInstance = null) {
   // Cursos Gratuitos da Jornada do Dev (jornadadodev.com.br - 60 cursos completos com certificado gratuito)
   for (const j of jornadaDoDevList) {
     insertCurso.run(j.titulo, j.tipo || 'curso', j.area, j.plataforma, j.url, j.licenca, j.nivel, j.descricao);
+  }
+
+  // Cursos Gratuitos da Escola Virtual de Governo (EV.G / ENAP - escolavirtual.gov.br - 489 cursos com certificado oficial gratuito)
+  for (const evg of evgCoursesList) {
+    insertCurso.run(evg.titulo, evg.tipo || 'curso', evg.area, evg.plataforma, evg.url, evg.licenca, evg.nivel, evg.descricao);
+  }
+
+  // Cursos Gratuitos da Lumina UFRGS (lumina.ufrgs.br - com certificado de extensão universitária gratuito)
+  for (const lum of luminaCoursesList) {
+    insertCurso.run(lum.titulo, lum.tipo || 'curso', lum.area, lum.plataforma, lum.url, lum.licenca, lum.nivel, lum.descricao);
+  }
+
+  // Cursos Gratuitos do Instituto Federal do Rio Grande do Sul (IFRS Moodle MOOC - com certificado gratuito)
+  for (const ifrs of ifrsCoursesList) {
+    insertCurso.run(ifrs.titulo, ifrs.tipo || 'curso', ifrs.area, ifrs.plataforma, ifrs.url, ifrs.licenca, ifrs.nivel, ifrs.descricao);
+  }
+
+  // Cursos Gratuitos do Google Ateliê Digital (learndigital.withgoogle.com - com certificado oficial gratuito)
+  for (const ggl of googleAtelieCoursesList) {
+    insertCurso.run(ggl.titulo, ggl.tipo || 'curso', ggl.area, ggl.plataforma, ggl.url, ggl.licenca, ggl.nivel, ggl.descricao);
+  }
+
+  // Cursos Gratuitos do OpenBootcamp / Kogno (open-bootcamp.com - desenvolvimento de software 100% gratuito)
+  for (const ob of openBootcampCoursesList) {
+    insertCurso.run(ob.titulo, ob.tipo || 'curso', ob.area, ob.plataforma, ob.url, ob.licenca, ob.nivel, ob.descricao);
+  }
+
+  // Cursos, Workshops e Formações da Fluência AI (fluencia.ai - Método Fluência, AI-Native Design, Governança)
+  for (const f of fluenciaAiList) {
+    insertCurso.run(f.titulo, f.tipo || 'curso', f.area, f.plataforma, f.url, f.licenca, f.nivel, f.descricao);
+  }
+
+  // Cursos, Bootcamps e Formações Gratuitas da Recode (recode.org.br - Recode PRO AI, impactAI, Programação, Games)
+  for (const rc of recodeCoursesList) {
+    insertCurso.run(rc.titulo, rc.tipo || 'curso', rc.area, rc.plataforma, rc.url, rc.licenca, rc.nivel, rc.descricao);
+  }
+
+  // Cursos Gratuitos do Code IoT (codeiot.org.br - Samsung & LSI-TEC / USP - Internet das Coisas, Arduino, Robótica, IA)
+  for (const ci of codeIotCoursesList) {
+    insertCurso.run(ci.titulo, ci.tipo || 'curso', ci.area, ci.plataforma, ci.url, ci.licenca, ci.nivel, ci.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

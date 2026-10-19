@@ -1,0 +1,202 @@
+[
+  {
+    "titulo": "Método Fluência: Formação Completa em IA Aplicada ao Trabalho",
+    "tipo": "trilha",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/",
+    "licenca": "gratuito",
+    "nivel": "Todos os níveis",
+    "descricao": "Jornada de formação em AI Fluency criada para ajudar profissionais e organizações a desenvolverem uma relação madura, crítica e propositiva com a inteligência artificial. Aprenda a pensar, decidir e construir com IA com método, critério e impacto real, superando o uso superficial de atalhos e ferramentas soltas. Inclui Vaga Espelho Social para jovens da rede pública."
+  },
+  {
+    "titulo": "Método Fluência — Módulo 1: Pensar em IA (Modelos Mentais e Fundamentos)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Modelos mentais para o novo trabalho na Era Cognitiva. Compreensão do contexto de transformação, fundamentos de inteligência artificial generativa, pensamento computacional e como estruturar o raciocínio em camadas com LLMs antes de delegar tarefas para as máquinas."
+  },
+  {
+    "titulo": "Método Fluência — Módulo 2: Criar com IA (Expansão Cognitiva e Aprendizado Acelerado)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Como usar a inteligência artificial como mentora para aprendizado contínuo, autonomia, profundidade e exploração inteligente. Amplie sua capacidade analítica e criativa sem terceirizar o julgamento crítico, acelerando a síntese e a descoberta no fluxo de trabalho."
+  },
+  {
+    "titulo": "Método Fluência — Módulo 3: Projetar Sistemas com IA (Processos, Arquitetura e Prototipagem)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Do raciocínio ao protótipo de alta fidelidade: aprenda a mapear ineficiências em processos reais, definir limites e papéis para a inteligência artificial e construir a arquitetura de sistemas e produtos inteligentes funcionais."
+  },
+  {
+    "titulo": "Método Fluência — Módulo 4: Operar com IA (Automação, Assistentes e Equipes de Agentes)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Criação de ecossistemas operacionais inteligentes com modularidade e estrutura mínima. Construa assistentes personalizados, orquestre times de agentes autônomos e gerencie fluxos em background com governança e contexto contínuo."
+  },
+  {
+    "titulo": "AI-Native Product Design: Laboratório Prático de Produtos No-Code e Tool Calling",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/ai-native-product-design",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Laboratório guiado de 3 a 5 aulas para conceber e implementar produtos no-code resilientes com IA. Aborda a estratégia Reuse Before Generate, pipelines de decisão (onde a IA deve e não deve entrar), contratos de saída com Structured Outputs e Tool Calling, e validação com sentinelas e amostragem."
+  },
+  {
+    "titulo": "Workshop: Observabilidade e Governança em Produtos de IA (Framework SyntheticLab)",
+    "tipo": "workshop",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/workshop",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Programa imersivo para lideranças de produto e engenharia que buscam critério e método ao implementar IA. Ensina visibilidade de ponta a ponta sobre fluxos com LLMs, governança de dados, mitigação de alucinações e o framework SyntheticLab aplicado a cases reais."
+  },
+  {
+    "titulo": "Fluência em IA para Empresas: Capacitação Corporativa para Frontier Firms",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/corporativo",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Programa de 4 a 6 semanas que transforma colaboradores em solucionadores estratégicos. Focado na evolução organizacional para o modelo das Frontier Firms (Microsoft 2025), superando a inércia dos pilotos isolados e construindo cultura de inovação interna e ROI mensurável."
+  },
+  {
+    "titulo": "Tese do Método Fluência: Criatividade e Liderança na Era da IA",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/_files/ugd/dff43d_4b80c894cb58416b8539e7deda773405.pdf",
+    "licenca": "gratuito",
+    "nivel": "Todos os níveis",
+    "descricao": "Tratado técnico e manifesto metodológico oficial do Método Fluência (Camila Caligari). Explora por que a escalabilidade da IA é um desafio humano e cultural, desmistificando mitos e apresentando o framework das 4 fases para liderar na era dos modelos de linguagem."
+  },
+  {
+    "titulo": "Trilha Fluência AI: Ecossistema de Aprendizado e Cases de IA Aplicada",
+    "tipo": "trilha",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://www.fluencia.ai/linksuteis",
+    "licenca": "gratuito",
+    "nivel": "Todos os níveis",
+    "descricao": "Guia de navegação completo pelo ecossistema Fluência AI: treinamentos, workshops, newsletters aprofundadas, estudos de casos corporativos e análises críticas sobre a transição para produtos inteligentes."
+  },
+  {
+    "titulo": "Artigo Técnico: Ninguém aguenta mais ouvir falar de IA (E não, a culpa não é da IA)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/ninguem-aguenta-mais-ouvir-falar",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Ensaio aprofundado sobre o ruído e o hype desenfreado em torno da inteligência artificial, destacando o compromisso ético de tratar a tecnologia com responsabilidade e critério metodológico."
+  },
+  {
+    "titulo": "Artigo Técnico: Por que empresas mais maduras na adoção de IA estão se reestruturando a partir dela?",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/porque-empresas-mais-maduras-na-adocao",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Análise sobre como as organizações pioneiras (Frontier Firms) abandonam a mentalidade de 'ferramentas auxiliares' e reconstroem seus processos nucleares e modelos de negócio com IA nativa."
+  },
+  {
+    "titulo": "Artigo Técnico: Eficiência ou involução? Por que a IA está quebrando a inteligência das organizações",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/eficiencia-ou-involucao-por-que-a",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Como a automação cega sem método cria uma crise de coordenação cognitiva e dependência algorítmica, apontando caminhos para preservar a inteligência coletiva e o pensamento estratégico nas equipes."
+  },
+  {
+    "titulo": "Artigo Técnico: IA barateou a produção de software mas não barateou o custo do erro",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/ia-barateou-a-producao-de-software",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Discussão essencial sobre engenharia de software na era de LLMs: gerar código ficou trivial, mas validar, auditar e sustentar sistemas aumentou o risco e o custo das falhas não detectadas."
+  },
+  {
+    "titulo": "Artigo Técnico: Do design de interfaces à era da confiança (Evolução da responsabilidade no design)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/do-design-de-interfaces-a-era-da",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "A evolução do papel dos designers de produto: da estética visual e usabilidade de telas para a criação de sistemas baseados em confiança, explicabilidade e transparência de modelos autônomos."
+  },
+  {
+    "titulo": "Artigo Técnico: Tecnologia é realmente neutra? Modelos mentais e intenção",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/tecnologia-e-neutra",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Reflexão sobre a não-neutralidade das ferramentas e a importância crucial da intencionalidade humana, do contexto cultural e dos valores éticos na arquitetura de soluções tecnológicas."
+  },
+  {
+    "titulo": "Artigo Técnico: Mudanças nos motores de busca e o impacto para modelos de IA",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/google-mudou-um-detalhe-e-isso-muda",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Análise técnica sobre modificações nos parâmetros de indexação e buscas e seus desdobramentos de longo alcance para a distribuição de conteúdo, RAG (Retrieval-Augmented Generation) e ecossistemas digitais."
+  },
+  {
+    "titulo": "Artigo Técnico: Como formar pessoas e organizações para um mundo em constante mudança estrutural",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/como-formar-pessoas-e-organizacoes",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Estratégias pedagógicas e organizacionais para educação continuada diante de mudanças exponenciais: priorizando a adaptabilidade, fundamentos conceituais duradouros e capacidade de desaprender e reaprender."
+  },
+  {
+    "titulo": "Artigo Técnico: A ilusão de raciocínio da IA e os desafios cognitivos humanos",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/o-artigo-da-apple-mostrou-um-problema",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Perspectiva crítica sobre a pesquisa da Apple e a distinção fundamental entre reconhecimento estatístico de padrões e raciocínio genuíno, alertando para vieses cognitivos na interpretação de outputs de LLMs."
+  },
+  {
+    "titulo": "Artigo Técnico: Redefinindo o trabalho com IA — Fluência como habilidade estratégica essencial",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Fluência AI",
+    "url": "https://camilacaligari.substack.com/p/redefinindo-o-trabalho-com-ia",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Visão geral sobre o conceito de fluência em inteligência artificial como o diferencial competitivo decisivo para liderar fluxos autônomos, construir valor genuíno e transformar a produtividade em impacto real."
+  }
+]
