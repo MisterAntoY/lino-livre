@@ -1,8 +1,8 @@
 # 🎓 Data Science Academy (DSA) — Catálogo de Cursos Gratuitos
 
-> **Data de Atualização:** 2026-10-11  
+> **Data de Atualização:** 2026-10-19  
 > **Fonte Oficial:** [datascienceacademy.com.br](https://www.datascienceacademy.com.br)  
-> **Total de Cursos Gratuitos:** 7  
+> **Total de Cursos Gratuitos:** 8  
 > **Certificado Oficial:** Todos os cursos incluem certificado gratuito de conclusão.
 
 | Curso | Área | Nível | Carga Horária | URL Oficial |
@@ -14,6 +14,7 @@
 | **Cursos Bônus - Generative AI Engineer** | Ciência de Dados & Inteligência Artificial | Intermediário | Gratuito | [Acessar Curso](https://www.datascienceacademy.com.br/course/cursos-bonus-de-aperfeicoamento-profissional-ia-generativa) |
 | **Cursos Bônus - Microsoft Career e Certification Hub** | Metodologias Ágeis & Carreira Tech | Intermediário | Gratuito | [Acessar Curso](https://www.datascienceacademy.com.br/course/cursos-bonus-de-aperfeicoamento-profissional-microsoft-career-e-certification-hub) |
 | **Cursos Bônus de Aperfeiçoamento Profissional** | Metodologias Ágeis & Carreira Tech | Iniciante | Gratuito | [Acessar Curso](https://www.datascienceacademy.com.br/course/cursos-de-aperfeicoamento-profissional-bonus-da-formacao) |
+| **Cursos Bônus - Agentic BI** | Ciência de Dados & Inteligência Artificial | Iniciante | Gratuito | [Acessar Curso](https://www.datascienceacademy.com.br/course/cursos-bonus-de-aperfeicoamento-profissional-agentic-bi) |
 
 ---
 *Sincronização automática executada pelo repositório Lino Livre.*
