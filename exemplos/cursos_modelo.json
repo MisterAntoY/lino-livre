@@ -1,0 +1,11 @@
+[
+  {
+    "titulo": "Nome do Curso Exemplo",
+    "area": "Tecnologia",
+    "plataforma": "Nome da Plataforma Parceira",
+    "url": "https://plataforma.exemplo.org/curso/123",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Breve descrição do conteúdo programático e certificação gratuita."
+  }
+]

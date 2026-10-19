@@ -159,9 +159,20 @@ async function executarSincronizacao(opcoes = {}) {
   if (arquivoJson) {
     const caminho = path.resolve(arquivoJson);
     console.log(`📂 Lendo cursos do arquivo: ${caminho}`);
-    const conteudo = fs.readFileSync(caminho, 'utf8');
-    const dados = JSON.parse(conteudo);
-    listaCursos = Array.isArray(dados) ? dados : (dados.cursos || []);
+    if (!fs.existsSync(caminho)) {
+      console.error(`\n❌ Arquivo não encontrado: ${caminho}`);
+      console.error(`💡 Dica: Crie o arquivo ou utilize o modelo em 'exemplos/cursos_modelo.json'.`);
+      console.error(`   Exemplo de uso: node scripts/sincronizar_cursos.js --arquivo=exemplos/cursos_modelo.json\n`);
+      return;
+    }
+    try {
+      const conteudo = fs.readFileSync(caminho, 'utf8');
+      const dados = JSON.parse(conteudo);
+      listaCursos = Array.isArray(dados) ? dados : (dados.cursos || []);
+    } catch (err) {
+      console.error(`\n❌ Erro ao analisar JSON em ${caminho}: ${err.message}\n`);
+      return;
+    }
   } else {
     console.log('📚 Carregando catálogos integrados do Lino Livre...');
     listaCursos = carregarCursosPadrao();
