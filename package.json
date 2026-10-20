@@ -16,7 +16,8 @@
     "sync:mslearn": "node scripts/sync_ms_learn.js",
     "supabase:migrar": "node scripts/migrar_d1_para_supabase.js",
     "supabase:migrar:local": "node scripts/migrar_d1_para_supabase.js --local",
-    "supabase:dry-run": "node scripts/migrar_d1_para_supabase.js --dry-run --tabela=fontes"
+    "supabase:dry-run": "node scripts/migrar_d1_para_supabase.js --dry-run --tabela=fontes",
+    "postinstall": "prisma skills sync || exit 0"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
     "@cloudflare/workers-types": "^5.20261010.1",
     "@types/node": "^26.6.5",
     "@types/qrcode": "^1.5.6",
+    "prisma": "^8.0.0-rc.23",
     "typescript": "^7.0.2",
     "wrangler": "^4.149.0"
   }
