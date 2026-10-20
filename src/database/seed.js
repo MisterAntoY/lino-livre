@@ -28,6 +28,7 @@ const { roadmapShList } = require('./roadmapShData');
 const { podcastsShowsData } = require('./podcastsSeedData');
 const { literaturaLusofonaClassica } = require('./literaturaLusofonaClassicaSeedData');
 const { githubEsBooks } = require('./githubEsBooksSeedData');
+const { githubLivros } = require('./githubLivrosSeedData');
 const { uanTrabalhosData } = require('./uanTrabalhosSeedData');
 const { programacaoWebCursos } = require('./programacaoWebSeedData');
 const { jornadaDoDevList } = require('./jornadaDoDevData');
@@ -137,6 +138,8 @@ function seed(dbInstance = null) {
   const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'opds', 'https://www.standardebooks.org', 1).lastInsertRowid;
   const fLibriVox = insertFonte.run('librivox', 'LibriVox (Audiolivros de Domínio Público)', 'api', 'https://librivox.org', 1).lastInsertRowid;
   const fEuropeana = insertFonte.run('europeana', 'Europeana Open Data', 'api', 'https://api.europeana.eu', 1).lastInsertRowid;
+  // Fonte do Acervo de Repositórios GitHub de Livros (Fase 5 — 100 repos)
+  const fGithubLivros = insertFonte.run('github-livros-acervo', 'Repositórios GitHub de Livros (Acervo Aberto)', 'manual', 'https://github.com/topics/ebooks', 1).lastInsertRowid;
   // Fonte de Livros Técnicos em Espanhol
   const fFreeBooksEs = insertFonte.run('github-freebooks-es', 'Free Programming Books ES (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
   // Fonte Repositório Universitário TFC UAN
@@ -620,7 +623,8 @@ function seed(dbInstance = null) {
     'archive-fr': fArchiveFr,
     'archive-ru': fArchiveRu,
     'archive-it': fArchiveIt,
-    'uan-tfc': fUanTfc
+    'uan-tfc': fUanTfc,
+    'github-livros-acervo': fGithubLivros
   };
 
   for (const b of githubBooks) {
@@ -1486,6 +1490,61 @@ function seed(dbInstance = null) {
       lic,
       0,
       `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nRecurso libre para estudio y lectura en línea.`
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // FASE 5 — ACERVO: 100 Repositórios GitHub de Livros
+  // Apenas metadados + links externos (redireccionamento 302 para o GitHub).
+  // ZERO armazenamento local de ficheiros de livro.
+  // ═══════════════════════════════════════════════════════════════════════
+  for (const b of githubLivros) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(
+        b.autor,
+        'Comunidade Open Source / Curadores',
+        'Autor ou curador de acervos abertos hospedados no GitHub.'
+      ).lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catTecnologia;
+    const fId = fonteMap[b.fonteSlug] || fGithubLivros;
+
+    // Idempotência por (fonte_id, fonte_id_externo)
+    const existing = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existing) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || 2024,
+      b.idioma || 'en',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      b.licenca || 'outro',
+      0,
+      // Descritivo — NUNCA o conteúdo do livro (ver AGENTS.md)
+      `${b.titulo.toUpperCase()}\n\n${b.sinopse}\n\nRepositório GitHub de livros em domínio público ou licença aberta. Leitura e download através de redireccionamento 302 para a fonte original.`
     ).lastInsertRowid;
 
     if (b.links && Array.isArray(b.links)) {

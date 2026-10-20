@@ -321,6 +321,7 @@ export class RepoSupabase {
 
     if (q.area) params.area = `eq.${valorEq(q.area)}`;
     if (q.nivel) params.nivel = `eq.${valorEq(q.nivel)}`;
+    if (q.licenca) params.licenca = `eq.${valorEq(q.licenca)}`;
 
     const plataforma = q.plataforma?.trim();
     if (plataforma) params.plataforma = `ilike.*${limparTermo(plataforma)}*`;

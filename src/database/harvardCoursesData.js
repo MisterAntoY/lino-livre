@@ -257,7 +257,7 @@ const harvardCoursesList = [
     area: "Tecnologia",
     plataforma: "MIT OpenCourseWare",
     url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/",
-    licenca: "gratuito",
+    licenca: "cc-by-nc-sa",
     nivel: "Iniciante",
     descricao: "Curso oficial do Massachusetts Institute of Technology (MIT) introduzindo computação rigorosa, estruturas de dados, algoritmos de ordenação e simulação computacional com Python."
   },
@@ -267,7 +267,7 @@ const harvardCoursesList = [
     area: "Tecnologia",
     plataforma: "MIT OpenCourseWare",
     url: "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
-    licenca: "gratuito",
+    licenca: "cc-by-nc-sa",
     nivel: "Intermediário",
     descricao: "Curso clássico de algoritmos do MIT: análise assintótica, árvores AVL, tabelas hash, grafos, algoritmos de Dijkstra e Bellman-Ford, e programação dinâmica com provas matemáticas."
   },
@@ -277,7 +277,7 @@ const harvardCoursesList = [
     area: "Ciências Exatas",
     plataforma: "MIT OpenCourseWare",
     url: "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/",
-    licenca: "gratuito",
+    licenca: "cc-by-nc-sa",
     nivel: "Intermediário",
     descricao: "As lendárias aulas de álgebra linear do Prof. Gilbert Strang: matrizes, espaços vetoriais, ortogonalidade, determinantes, autovalores, autovetores e decomposição SVD."
   },
@@ -287,7 +287,7 @@ const harvardCoursesList = [
     area: "Ciências Exatas",
     plataforma: "MIT OpenCourseWare",
     url: "https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/",
-    licenca: "gratuito",
+    licenca: "cc-by-nc-sa",
     nivel: "Iniciante",
     descricao: "Fundamentos de física clássica: cinemática vetorial, leis de Newton, trabalho e energia cinética, conservação do momento linear e colisões com demonstrações experimentais."
   },

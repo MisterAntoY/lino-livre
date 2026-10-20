@@ -624,6 +624,48 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.ok(Array.isArray(data.fontes_proibidas_blacklist));
       assert.ok(data.fontes_proibidas_blacklist.some((f) => f.includes('Z-Library')));
     });
+
+    test('5.5 - GET /api/cursos filtra por plataforma e licença no Cloudflare Worker', async () => {
+      let sqlExecutada = '';
+      let paramsExecutados = [];
+
+      const env = {
+        DB: createMockD1({
+          allHandler: async (sql, params) => {
+            if (sql.includes('FROM cursos')) {
+              sqlExecutada = sql;
+              paramsExecutados = params;
+              return {
+                results: [
+                  {
+                    id: 101,
+                    titulo: 'Open Education Resources Essentials',
+                    area: 'Educação',
+                    plataforma: 'OER Commons',
+                    url: 'https://www.oercommons.org/courses/essentials',
+                    licenca: 'cc-by',
+                    nivel: 'Iniciante'
+                  }
+                ]
+              };
+            }
+            return { results: [] };
+          }
+        })
+      };
+
+      const res = await workerRequest('/api/cursos?plataforma=OER%20Commons&licenca=cc-by', { method: 'GET' }, env);
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.equal(data.length, 1);
+      assert.equal(data[0].plataforma, 'OER Commons');
+      assert.equal(data[0].licenca, 'cc-by');
+
+      assert.ok(sqlExecutada.includes('plataforma LIKE ?'), 'SQL deve filtrar por plataforma');
+      assert.ok(sqlExecutada.includes('licenca = ?'), 'SQL deve filtrar por licenca');
+      assert.ok(paramsExecutados.includes('%OER Commons%'), 'Parâmetros devem incluir termo da plataforma');
+      assert.ok(paramsExecutados.includes('cc-by'), 'Parâmetros devem incluir licença');
+    });
   });
 
   // =========================================================================

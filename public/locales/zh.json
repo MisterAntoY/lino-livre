@@ -125,7 +125,9 @@
       "badgeBradesco": "🏛️ Bradesco",
       "badgeYoutube": "📺 YouTube • 🎓 免费证书",
       "levelDefault": "不限级别",
-      "descFallback": "免费开放课程，提供学习资料。"
+      "descFallback": "免费开放课程，提供学习资料。",
+      "showingOf": "显示 {shown} / {total} 门课程",
+      "showMore": "再显示 {n} 门课程"
     },
     "roadmaps": {
       "bannerTitle": "职业学习路线图与进阶指南",

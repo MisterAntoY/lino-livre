@@ -142,7 +142,9 @@
       "badgeBradesco": "🏛️ Bradesco",
       "badgeYoutube": "📺 YouTube • 🎓 Free Certificate",
       "levelDefault": "All levels",
-      "descFallback": "Open course with free access and learning materials."
+      "descFallback": "Open course with free access and learning materials.",
+      "showingOf": "Showing {shown} of {total} courses",
+      "showMore": "Show {n} more courses"
     },
     "roadmaps": {
       "bannerTitle": "Career Roadmaps & Guided Learning Tracks",

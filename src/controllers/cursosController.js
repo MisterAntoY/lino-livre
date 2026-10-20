@@ -4,7 +4,7 @@ const { validarUrlRedirecionamento } = require('../utils/urlValidator');
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps } = req.query;
+    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps, licenca } = req.query;
 
     let query = 'SELECT * FROM cursos WHERE 1=1';
     const params = [];
@@ -12,6 +12,10 @@ function listar(req, res) {
     if (tipo) {
       query += ' AND tipo = ?';
       params.push(tipo);
+    }
+    if (licenca) {
+      query += ' AND licenca = ?';
+      params.push(licenca);
     }
     if (excluir_roadmaps === '1' || excluir_roadmaps === 'true') {
       query += " AND (tipo != 'roadmap' OR tipo IS NULL)";

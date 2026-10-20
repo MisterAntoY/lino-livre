@@ -945,7 +945,13 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
     }
 
     try {
-      verificarUrlConformidade(capa_url);
+      if (capa_url) {
+        if (/^https?:\/\//i.test(capa_url)) {
+          validarUrlRedirecionamento(capa_url);
+        } else {
+          verificarUrlConformidade(capa_url);
+        }
+      }
       if (Array.isArray(links)) {
         for (const l of links) {
           if (l?.url) validarUrlRedirecionamento(l.url);
@@ -1021,7 +1027,13 @@ app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
     }
 
     try {
-      verificarUrlConformidade(capa_url);
+      if (capa_url) {
+        if (/^https?:\/\//i.test(capa_url)) {
+          validarUrlRedirecionamento(capa_url);
+        } else {
+          verificarUrlConformidade(capa_url);
+        }
+      }
     } catch (confErr: any) {
       return c.json({ erro: confErr.message }, 400);
     }
@@ -1230,7 +1242,7 @@ app.get('/api/cursos', async (c) => {
     }
 
     const db = c.env.DB;
-    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps } = filtros;
+    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps, licenca } = filtros;
 
     let query = 'SELECT * FROM cursos WHERE 1=1';
     const params: any[] = [];
@@ -1238,6 +1250,10 @@ app.get('/api/cursos', async (c) => {
     if (tipo) {
       query += ' AND tipo = ?';
       params.push(tipo);
+    }
+    if (licenca) {
+      query += ' AND licenca = ?';
+      params.push(licenca);
     }
     if (excluir_roadmaps === '1' || excluir_roadmaps === 'true') {
       query += " AND (tipo != 'roadmap' OR tipo IS NULL)";

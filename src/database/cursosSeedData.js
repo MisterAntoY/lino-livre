@@ -1222,7 +1222,7 @@ const cursosData = [
     "Tecnologia",
     "MIT OpenCourseWare",
     "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/",
-    "gratuito",
+    "cc-by-nc-sa",
     "Iniciante",
     "Curso introdutório do Massachusetts Institute of Technology sobre computação e estruturas fundamentais em Python."
   ],

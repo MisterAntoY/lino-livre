@@ -1624,6 +1624,137 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(cssContent.includes('.modal-book-details-card'), 'CSS deve conter estilo do card de detalhes');
     assert.ok(cssContent.includes('.btn-format-download'), 'CSS deve conter estilo dos botões de formatos para download');
   });
+
+  // Teste 30: Intermediário de Cursos Gratuitos (Fase 7)
+  test('30. Cursos Gratuitos (Fase 7): Diretório Curado (OER Commons, OpenStax, MIT, CK-12, PhET, Khan), Filtros e Acesso 302', async () => {
+    // 30.1 - GET /api/cursos retorna lista e suporta filtro por plataforma (OER Commons)
+    const resOer = await request('/api/cursos?plataforma=OER%20Commons');
+    assert.equal(resOer.status, 200, 'GET /api/cursos?plataforma=OER+Commons deve responder 200');
+    assert.ok(Array.isArray(resOer.data), 'Resposta deve ser array de cursos');
+    assert.ok(resOer.data.length >= 10, 'Deve conter pelo menos 10 cursos da OER Commons');
+    for (const c of resOer.data) {
+      assert.ok(c.plataforma.includes('OER Commons'), 'Plataforma deve ser OER Commons');
+      assert.ok(c.url.startsWith('https://'), 'URL deve ser externa e segura');
+      assert.equal(c.licenca, 'cc-by', 'Cursos OER Commons devem ter licença cc-by');
+    }
+
+    // 30.2 - Filtro por OpenStax (CC BY)
+    const resOpenStax = await request('/api/cursos?plataforma=OpenStax');
+    assert.equal(resOpenStax.status, 200);
+    assert.ok(resOpenStax.data.length >= 5, 'Deve conter pelo menos 5 cursos OpenStax');
+    for (const c of resOpenStax.data) {
+      assert.ok(c.plataforma.includes('OpenStax'));
+      assert.equal(c.licenca, 'cc-by');
+    }
+
+    // 30.3 - Filtro por MIT OpenCourseWare (CC BY-NC-SA)
+    const resMit = await request('/api/cursos?plataforma=MIT');
+    assert.equal(resMit.status, 200);
+    assert.ok(resMit.data.length >= 10, 'Deve conter pelo menos 10 cursos do MIT OCW');
+    for (const c of resMit.data) {
+      assert.ok(c.plataforma.includes('MIT'));
+      assert.equal(c.licenca, 'cc-by-nc-sa');
+    }
+
+    // 30.4 - Filtro por CK-12 Foundation (CC BY-NC)
+    const resCk12 = await request('/api/cursos?plataforma=CK-12');
+    assert.equal(resCk12.status, 200);
+    assert.ok(resCk12.data.length >= 5, 'Deve conter pelo menos 5 cursos do CK-12');
+    for (const c of resCk12.data) {
+      assert.ok(c.plataforma.includes('CK-12'));
+      assert.equal(c.licenca, 'cc-by-nc');
+    }
+
+    // 30.5 - Filtro por PhET Interactive Simulations (CC BY)
+    const resPhet = await request('/api/cursos?plataforma=PhET');
+    assert.equal(resPhet.status, 200);
+    assert.ok(resPhet.data.length >= 5, 'Deve conter pelo menos 5 cursos/simulações PhET');
+    for (const c of resPhet.data) {
+      assert.ok(c.plataforma.includes('PhET'));
+      assert.equal(c.licenca, 'cc-by');
+    }
+
+    // 30.6 - Filtro por Khan Academy (CC BY-NC-SA)
+    const resKhan = await request('/api/cursos?plataforma=Khan%20Academy');
+    assert.equal(resKhan.status, 200);
+    assert.ok(resKhan.data.length >= 5, 'Deve conter pelo menos 5 cursos da Khan Academy');
+    for (const c of resKhan.data) {
+      assert.ok(c.plataforma.includes('Khan Academy'));
+      assert.equal(c.licenca, 'cc-by-nc-sa');
+    }
+
+    // 30.7 - Filtro direto por licenca (GET /api/cursos?licenca=cc-by)
+    const resLicCcBy = await request('/api/cursos?licenca=cc-by&limit=20');
+    assert.equal(resLicCcBy.status, 200);
+    assert.ok(resLicCcBy.data.length > 0);
+    for (const c of resLicCcBy.data) {
+      assert.equal(c.licenca, 'cc-by');
+    }
+
+    // 30.8 - Critério de aceite da Fase 7: >= 30 cursos e >= 5 plataformas no acervo
+    const db = getDatabase();
+    const totalCursos = db.prepare('SELECT COUNT(*) AS total FROM cursos').get().total;
+    const totalPlataformas = db.prepare('SELECT COUNT(DISTINCT plataforma) AS total FROM cursos').get().total;
+    assert.ok(totalCursos >= 30, `Acervo deve conter >= 30 cursos (encontrado: ${totalCursos})`);
+    assert.ok(totalPlataformas >= 5, `Acervo deve conter >= 5 plataformas (encontrado: ${totalPlataformas})`);
+
+    // 30.9 - Conformidade Legal: Zero armazenamento local e Redirecionamento 302 estrito
+    const cursoOer = resOer.data[0];
+    const resAcesso = await request(`/api/cursos/${cursoOer.id}/acessar`);
+    assert.equal(resAcesso.status, 302, 'Acesso ao curso deve responder com HTTP 302');
+    assert.equal(resAcesso.headers.get('location'), cursoOer.url, 'Location deve apontar para o link oficial externo');
+
+    const resAcessoInexistente = await request('/api/cursos/999999/acessar');
+    assert.equal(resAcessoInexistente.status, 404, 'Acesso a curso inexistente deve retornar 404');
+
+    // 30.10 - CRUD: POST /api/cursos exige chave administrativa e valida URLs externas
+    const resPostSemAuth = await request('/api/cursos', {
+      method: 'POST',
+      body: JSON.stringify({
+        titulo: 'Curso Novo Sem Auth',
+        area: 'Tecnologia',
+        plataforma: 'OER Commons',
+        url: 'https://www.oercommons.org/courses/example'
+      })
+    });
+    assert.equal(resPostSemAuth.status, 401, 'POST sem chave administrativa deve retornar 401');
+
+    const resPostComAuth = await request('/api/cursos', {
+      method: 'POST',
+      headers: { 'x-admin-key': process.env.ADMIN_API_KEY },
+      body: JSON.stringify({
+        titulo: 'Introdução ao Open Education',
+        area: 'Educação',
+        plataforma: 'OER Commons',
+        url: 'https://www.oercommons.org/courses/intro-oer',
+        licenca: 'cc-by',
+        nivel: 'Iniciante',
+        descricao: 'Guia introdutório para utilização de recursos educacionais abertos.'
+      })
+    });
+    assert.equal(resPostComAuth.status, 201, 'POST com chave administrativa deve cadastrar com 201');
+    assert.ok(resPostComAuth.data.id, 'Curso criado deve receber ID');
+
+    // Remoção com DELETE
+    const resDel = await request(`/api/cursos/${resPostComAuth.data.id}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-key': process.env.ADMIN_API_KEY }
+    });
+    assert.equal(resDel.status, 200, 'DELETE deve remover curso com 200');
+
+    // Rejeição de URLs suspeitas / SSRF
+    const resSsrf = await request('/api/cursos', {
+      method: 'POST',
+      headers: { 'x-admin-key': process.env.ADMIN_API_KEY },
+      body: JSON.stringify({
+        titulo: 'Curso Malicioso',
+        area: 'Invasão',
+        plataforma: 'Hacker',
+        url: 'http://169.254.169.254/latest/meta-data/'
+      })
+    });
+    assert.equal(resSsrf.status, 400, 'URL SSRF/metadados deve ser rejeitada com 400');
+  });
 });
 
 

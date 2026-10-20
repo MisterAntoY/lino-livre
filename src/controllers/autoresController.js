@@ -38,12 +38,16 @@ function listar(req, res) {
 
 function obterPorId(req, res) {
   try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id) || id <= 0) {
+      return res.status(404).json({ erro: 'Autor não encontrado' });
+    }
     const db = getDatabase();
-    const autor = db.prepare('SELECT * FROM autores WHERE id = ?').get(req.params.id);
+    const autor = db.prepare('SELECT * FROM autores WHERE id = ?').get(id);
     if (!autor) {
       return res.status(404).json({ erro: 'Autor não encontrado' });
     }
-    const livros = db.prepare('SELECT id, titulo, ano_publicacao, quantidade_disponivel FROM livros WHERE autor_id = ?').all(req.params.id);
+    const livros = db.prepare('SELECT id, titulo, ano_publicacao, leituras, capa_url FROM livros WHERE autor_id = ?').all(id);
     res.json({ ...autor, livros });
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao buscar autor: ' + err.message });

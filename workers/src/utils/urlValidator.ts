@@ -39,20 +39,31 @@ export function validarUrlRedirecionamento(url: string | null | undefined): stri
     throw new Error(`Protocolo '${parsed.protocol}' não permitido para redirecionamento`);
   }
 
-  const hostname = parsed.hostname.toLowerCase();
+  const rawHost = parsed.hostname.toLowerCase();
+  const cleanHost = rawHost.replace(/^\[|\]$/g, '');
 
-  // Bloqueio de IPs privados / rede local (Prevenção SSRF e redirecionamentos internos)
-  if (
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '0.0.0.0' ||
-    hostname === '169.254.169.254' ||
-    hostname.startsWith('10.') ||
-    hostname.startsWith('192.168.') ||
-    /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(hostname) ||
-    hostname.endsWith('.internal') ||
-    hostname.endsWith('.local')
-  ) {
+  // Bloqueio abrangente de loopback, IPv6 local, redes privadas (RFC 1918) e metadados de nuvem (SSRF)
+  const isLoopbackOrPrivate = (
+    cleanHost === 'localhost' ||
+    cleanHost === '0.0.0.0' ||
+    cleanHost === '::1' ||
+    cleanHost === '::' ||
+    cleanHost.startsWith('127.') ||
+    cleanHost.startsWith('0.') ||
+    cleanHost.startsWith('10.') ||
+    cleanHost.startsWith('192.168.') ||
+    cleanHost.startsWith('169.254.') ||
+    /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(cleanHost) ||
+    cleanHost.startsWith('fe80:') ||
+    cleanHost.startsWith('fe80::') ||
+    cleanHost.startsWith('fc') ||
+    cleanHost.startsWith('fd') ||
+    cleanHost.includes('::ffff:127.') ||
+    cleanHost.endsWith('.internal') ||
+    cleanHost.endsWith('.local')
+  );
+
+  if (isLoopbackOrPrivate) {
     throw new Error('Redirecionamento para endereços de rede interna/local é estritamente proibido');
   }
 

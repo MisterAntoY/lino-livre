@@ -111,8 +111,14 @@ function listarEpisodiosRecentes(req, res) {
 function ouvirEpisodio(req, res) {
   try {
     const id = parseInt(req.params.id, 10);
+    if (!id || isNaN(id) || id <= 0) {
+      return res.status(400).json({ erro: 'ID do episódio inválido' });
+    }
     const db = getDatabase();
-    db.prepare(`UPDATE podcasts_episodios SET reproducoes = reproducoes + 1 WHERE id = ?`).run(id);
+    const result = db.prepare(`UPDATE podcasts_episodios SET reproducoes = reproducoes + 1 WHERE id = ?`).run(id);
+    if (result.changes === 0) {
+      return res.status(404).json({ erro: 'Episódio não encontrado' });
+    }
     res.json({ sucesso: true, id });
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao registar reprodução: ' + err.message });

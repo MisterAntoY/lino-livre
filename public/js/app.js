@@ -28,6 +28,7 @@ const app = {
   episodiosRecentes: [],
   paginaAtual: 1,
   totalPaginas: 1,
+  cursosRenderizados: 0,
   debounceTimer: null,
   debounceCursosTimer: null,
   debounceRoadmapsTimer: null,
@@ -1158,7 +1159,7 @@ const app = {
     }
   },
 
-  renderizarCursos(lista) {
+  renderizarCursos(lista, acrescentar = false) {
     const grid = document.getElementById('grade-cursos');
 
     if (!lista || lista.length === 0) {
@@ -1166,7 +1167,22 @@ const app = {
       return;
     }
 
-    grid.innerHTML = lista.map(c => {
+    // O directório traz milhares de cursos. Renderizar todos de uma vez
+    // weighs o DOM (e a paint) sem qualquer ganho: a resposta vem inteira
+    // da API, por isso revelamos a lista aos poucos, sem novo pedido.
+    const POR_PAGINA = 48;
+    const total = lista.length;
+
+    let inicio = 0;
+    if (!acrescentar) {
+      this.cursosRenderizados = Math.min(POR_PAGINA, total);
+      grid.innerHTML = '';
+    } else {
+      inicio = this.cursosRenderizados || 0;
+      this.cursosRenderizados = Math.min(inicio + POR_PAGINA, total);
+    }
+
+    const html = lista.slice(inicio, this.cursosRenderizados).map(c => {
       const isSantander = (c.plataforma || '').includes('Santander') || (c.titulo || '').includes('Santander');
       const isDio = (c.plataforma || '').includes('DIO') || (c.titulo || '').includes('DIO');
       const isCursoEmVideo = (c.plataforma || '').includes('Curso em Vídeo') || (c.titulo || '').includes('Curso em Vídeo');
@@ -1466,6 +1482,33 @@ const app = {
         </article>
       `;
     }).join('');
+
+    if (inicio > 0) {
+      grid.insertAdjacentHTML('beforeend', html);
+    } else {
+      grid.innerHTML = html;
+    }
+
+    // Rodapé: estado da lista e botão para revelar mais (sem novo pedido).
+    const anterior = document.getElementById('cursos-rodape');
+    if (anterior) anterior.remove();
+
+    const restantes = total - this.cursosRenderizados;
+    const rodape = document.createElement('div');
+    rodape.id = 'cursos-rodape';
+    rodape.className = 'cursos-rodape';
+    rodape.innerHTML = `
+      <p class="cursos-contagem">${t('ui.courses.showingOf', { shown: this.cursosRenderizados, total })}</p>
+      ${restantes > 0 ? `<button id="btn-cursos-mais" class="btn btn-secondary">${t('ui.courses.showMore', { n: Math.min(POR_PAGINA, restantes) })}</button>` : ''}
+    `;
+    grid.parentElement.appendChild(rodape);
+
+    const btnMais = document.getElementById('btn-cursos-mais');
+    if (btnMais) {
+      btnMais.addEventListener('click', () => {
+        this.renderizarCursos(lista, true);
+      });
+    }
   },
 
   // ==================== ROADMAPS & TRILHAS ====================

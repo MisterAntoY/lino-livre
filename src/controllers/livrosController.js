@@ -298,7 +298,13 @@ function criar(req, res) {
     }
 
     try {
-      verificarUrlConformidade(capa_url);
+      if (capa_url) {
+        if (/^https?:\/\//i.test(capa_url)) {
+          validarUrlRedirecionamento(capa_url);
+        } else {
+          verificarUrlConformidade(capa_url);
+        }
+      }
       if (Array.isArray(links)) {
         for (const l of links) {
           if (l?.url) validarUrlRedirecionamento(l.url);
@@ -381,7 +387,13 @@ function atualizar(req, res) {
     }
 
     try {
-      verificarUrlConformidade(capa_url);
+      if (capa_url) {
+        if (/^https?:\/\//i.test(capa_url)) {
+          validarUrlRedirecionamento(capa_url);
+        } else {
+          verificarUrlConformidade(capa_url);
+        }
+      }
     } catch (confErr) {
       return res.status(400).json({ erro: confErr.message });
     }

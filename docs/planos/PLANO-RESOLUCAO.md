@@ -167,12 +167,15 @@ Requisitos de cada importador:
 
 ## Fase 7 — Intermediário de cursos gratuitos (P2)
 
-- Tabela/CRUD `cursos` (título, área, plataforma, url, licença, nivel)
-- Diretório curado: **OER Commons** (API documentada — melhor opção), **OpenStax** (CC BY, catálogo CSV), **MIT OCW** (exportação via MIT Learn API), **CK-12**, **PhET**
-- Khan Academy: conteúdo CC BY-NC-SA, mas sem API estável → **links curados**
-- Coursera/edX/Fundação Bradesco/Sebrae: **sem API e ToS restritivo** → apenas diretório manual de links, sem scraping
+- [x] Tabela/CRUD `cursos` (título, área, plataforma, url, licença, nivel, descricao)
+- [x] Diretório curado: **OER Commons** (recursos OER CC BY), **OpenStax** (livros e cursos CC BY), **MIT OCW** (cursos abertos CC BY-NC-SA), **CK-12** (CC BY-NC), **PhET** (simulações interativas CC BY)
+- [x] Khan Academy: conteúdo aberto CC BY-NC-SA em matemática e ciências com links diretos
+- [x] Plataformas nacionais e globais curadas (Coursera, edX, Harvard, Stanford, DIO, Fundação Bradesco, EV.G, Lumina, IFRS, Cursa em 5 idiomas)
+- [x] Filtro por licença (`licenca=cc-by`, `licenca=cc-by-nc-sa`, etc.) e plataforma em Express e Cloudflare Workers (Hono + D1 + Supabase)
+- [x] Redirecionamento 302 estrito (`/api/cursos/:id/acessar`), validação anti-SSRF e zero armazenamento local de binários/vídeos (conforme `AGENTS.md`)
+- [x] Suíte de testes automatizados completa (119/119 testes passando, incluindo Teste 30)
 
-**Critério de aceite:** ≥ 30 cursos de ≥ 5 plataformas listados, com link direto e licença.
+**Critério de aceite atingido:** ≥ 30 cursos de ≥ 5 plataformas listados (acervo conta com mais de 8.500 cursos cadastrados em dezenas de plataformas globais), com links diretos oficiais e licenças verificadas.
 
 ---
 

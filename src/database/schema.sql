@@ -194,3 +194,22 @@ CREATE TABLE IF NOT EXISTS contadores (
 );
 
 CREATE INDEX IF NOT EXISTS idx_contadores_dimensao ON contadores(dimensao, total DESC);
+
+-- Fila de Moderação e Sugestões da Comunidade
+CREATE TABLE IF NOT EXISTS sugestoes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titulo TEXT NOT NULL,
+    autor_nome TEXT,
+    ano_publicacao INTEGER,
+    categoria_id INTEGER,
+    licenca TEXT DEFAULT 'outro',
+    formato TEXT DEFAULT 'html',
+    url_link TEXT NOT NULL,
+    capa_url TEXT,
+    sinopse TEXT,
+    status TEXT NOT NULL DEFAULT 'pendente' CHECK (status IN ('pendente', 'aprovado', 'rejeitado')),
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_sugestoes_status ON sugestoes(status);
+
