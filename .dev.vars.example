@@ -1,0 +1,9 @@
+# Secrets para `wrangler dev` (NUNCA comitar o .dev.vars real)
+# Copie para .dev.vars e preencha.
+
+# ADMIN_API_KEY=...
+# GOOGLE_BOOKS_API_KEY=...
+
+# Supabase (opcional) — para testar DB_BACKEND=supabase localmente
+# SUPABASE_URL=https://SEU_PROJETO.supabase.co
+# SUPABASE_SERVICE_ROLE_KEY=sb_secret_...

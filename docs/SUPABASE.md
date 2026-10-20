@@ -155,8 +155,9 @@ necessário apagar nada no Supabase.
 
 ## 7. Limitações conhecidas
 
-- Escritas e importações continuam a usar a D1.
+- Escritas e importações continuam a usar a D1. Após escritas administrativas,
+  sincronize com `node scripts/migrar_d1_para_supabase.js --reiniciar`
+  (relê tudo e faz upsert por `id`).
 - `conteudo_texto` é omitido por omissão na migração.
 - A ordenação de cursos no Supabase é `area, titulo` (a D1 coloca primeiro o
   Guia de TI).
-- `recalcular_estatisticas()` não corre automaticamente sem `pg_cron`.
