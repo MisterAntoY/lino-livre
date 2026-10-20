@@ -85,6 +85,41 @@ async function lerContador(db: any, dimensao: string, chave: string): Promise<nu
   }
 }
 
+// Contagem de resultados de busca sem varrer a tabela de livros: a FTS tem
+// exatamente uma linha por livro, por isso COUNT(*) do MATCH é o total.
+// Custa ~10 linhas lidas em vez de ~104.848.
+async function contarNaFts(db: any, termo: string): Promise<number | null> {
+  if (!termo) return null;
+  try {
+    const row = await db.prepare(
+      'SELECT COUNT(*) AS total FROM livros_fts WHERE livros_fts MATCH ?'
+    ).bind(`${termo}*`).first();
+    return row ? Number((row as any).total) : null;
+  } catch {
+    return null;
+  }
+}
+
+// Tabelas existentes na D1 — cacheadas por isolate para não repetir a
+// consulta a sqlite_master em cada pedido.
+let cacheTabelas: { tabelas: Set<string>; timestamp: number } | null = null;
+const TABELAS_CACHE_TTL = 10 * 60 * 1000;
+
+async function tabelaExiste(db: any, nome: string): Promise<boolean> {
+  if (!cacheTabelas || Date.now() - cacheTabelas.timestamp > TABELAS_CACHE_TTL) {
+    try {
+      const res = await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all();
+      cacheTabelas = {
+        tabelas: new Set(((res.results || []) as any[]).map((r) => String(r.name).toLowerCase())),
+        timestamp: Date.now()
+      };
+    } catch {
+      return false;
+    }
+  }
+  return cacheTabelas.tabelas.has(nome.toLowerCase());
+}
+
 // Erro de cota da D1 (free tier) — permite degradar em vez de devolver 500.
 function ehErroDeCota(err: any): boolean {
   // Cota esgotada OU tabelas de agregados ainda não criadas (antes do 1º cron).
@@ -297,22 +332,31 @@ app.get('/api/autores', async (c) => {
   try {
     const db = c.env.DB;
     const busca = (c.req.query('busca') || c.req.query('q') || '').trim();
+    const nomeExato = (c.req.query('nome') || '').trim();
     const limitParam = c.req.query('limit') || c.req.query('limite');
     const pageParam = c.req.query('page') || c.req.query('pagina');
 
-    let query = `
-      SELECT a.*, COUNT(l.id) AS total_livros
-      FROM autores a
-      LEFT JOIN livros l ON l.autor_id = a.id
-    `;
+    // A contagem de livros por autor vem de autor_totais (índice), e não de
+    // um LEFT JOIN sobre os 104.848 livros — esse JOIN era, depois do
+    // dashboard, o maior ofensor de leituras da API.
+    const temTotais = await tabelaExiste(db, 'autor_totais');
+
+    let query = temTotais
+      ? `SELECT a.*, COALESCE(t.total, 0) AS total_livros
+           FROM autores a LEFT JOIN autor_totais t ON t.autor_id = a.id`
+      : `SELECT a.*, 0 AS total_livros FROM autores a`;
     const params: any[] = [];
 
-    if (busca) {
+    if (nomeExato) {
+      // Correspondência exata — usa o índice de autores(nome).
+      query += ' WHERE a.nome = ? COLLATE NOCASE';
+      params.push(nomeExato);
+    } else if (busca) {
       query += ' WHERE a.nome LIKE ?';
       params.push(`%${busca}%`);
     }
 
-    query += ' GROUP BY a.id ORDER BY a.nome ASC';
+    query += ' ORDER BY a.nome ASC';
 
     if (limitParam || pageParam) {
       const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
@@ -322,7 +366,21 @@ app.get('/api/autores', async (c) => {
       params.push(limit, offset);
     }
 
-    const autores = (await db.prepare(query).bind(...params).all()).results;
+    const autores = (await db.prepare(query).bind(...params).all()).results as any[];
+
+    // Sem a tabela de totais (ainda antes da migração), conta apenas os
+    // autores devolvidos: a consulta usa idx_livros_autor e não varre a
+    // tabela de livros inteira.
+    if (!temTotais && autores.length > 0) {
+      const ids = autores.map((a) => a.id);
+      const contagens = (await db.prepare(
+        `SELECT autor_id, COUNT(*) AS total FROM livros
+         WHERE autor_id IN (${ids.map(() => '?').join(',')}) GROUP BY autor_id`
+      ).bind(...ids).all()).results as any[];
+      const porAutor = new Map(contagens.map((r) => [Number(r.autor_id), Number(r.total)]));
+      for (const a of autores) a.total_livros = porAutor.get(a.id) || 0;
+    }
+
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(autores);
   } catch (err: any) {
@@ -472,15 +530,13 @@ app.get('/api/livros', async (c) => {
     // e deixa o planejador usar os índices compostos de popularidade.
     const filtros: string[] = [];
     const params: any[] = [];
+    const termoBusca = busca && busca.trim() ? busca.trim().replace(/['"*]/g, '') : '';
 
-    if (busca && busca.trim()) {
-      const termoLimpo = busca.trim().replace(/['"*]/g, '');
-      if (termoLimpo) {
-        filtros.push(`l.id IN (
-          SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
-        )`);
-        params.push(`${termoLimpo}*`);
-      }
+    if (termoBusca) {
+      filtros.push(`l.id IN (
+        SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
+      )`);
+      params.push(`${termoBusca}*`);
     }
 
     if (categoria_id) {
@@ -540,15 +596,22 @@ app.get('/api/livros', async (c) => {
     const whereSql = filtros.length ? ` AND ${filtros.join(' AND ')}` : '';
 
     // Total a partir dos agregados quando o filtro é simples. Só cai no
-    // COUNT(*) (varredura de 104k linhas) para busca/formato/autor/combinações.
+    // COUNT(*) (varredura de 104k linhas) para combinações de filtros.
     let totalConhecido: number | null = null;
-    const temBusca = !!(busca && busca.trim());
+    const temBusca = !!termoBusca;
     const temFormato = !!formato;
     const filtrosDiretos = filtros.filter((f) => !f.startsWith('l.id IN'));
     if (filtros.includes('1=0')) {
       totalConhecido = 0;
+    } else if (temBusca && !temFormato && filtrosDiretos.length === 0) {
+      // Busca pura: a FTS tem uma linha por livro, logo o COUNT do MATCH é
+      // o total — lê ~10 linhas em vez de varrer os 104.848 livros.
+      totalConhecido = await contarNaFts(db, termoBusca);
+    } else if (temFormato && !temBusca && filtrosDiretos.length === 0) {
+      // Formato puro: contador pré-computado (cron diário).
+      totalConhecido = await lerContador(db, 'formato', String(formato).toLowerCase());
     } else if (temBusca || temFormato) {
-      // Busca/formato têm contagem própria; não usar totais do acervo.
+      // Busca/formato combinados com outros filtros: contagem própria.
       totalConhecido = null;
     } else if (filtrosDiretos.length === 0) {
       totalConhecido = await lerEstatistica(db, 'total_livros');
@@ -1656,10 +1719,25 @@ app.get('/api/creditos', async (c) => {
 
     if (db) {
       try {
-        const row = await db.prepare('SELECT COUNT(*) AS total FROM livros').first<any>();
-        totalLivros = row?.total || 0;
+        // Usa os agregados pré-computados pelo cron (00:10 UTC): lê ~40 linhas
+        // em vez de varrer a tabela de livros duas vezes (COUNT + GROUP BY).
+        const stats = (await db.prepare('SELECT chave, valor FROM estatisticas').all()).results as any[];
+        const porChave = new Map(stats.map((r) => [String(r.chave), Number(r.valor)]));
+        totalLivros = porChave.get('total_livros') || 0;
+        const licencas = (await db.prepare(
+          "SELECT chave AS licenca, total FROM contadores WHERE dimensao = 'licenca' ORDER BY total DESC"
+        ).all()).results as any[];
+        distribuicaoLicencas = licencas.map((r) => ({ licenca: r.licenca, total: r.total }));
+      } catch (_) {
+        // Agregados ainda indisponíveis: cálculo direto (correto, mas caro).
+        try {
+          const row = await db.prepare('SELECT COUNT(*) AS total FROM livros').first<any>();
+          totalLivros = row?.total || 0;
+          distribuicaoLicencas = (await db.prepare('SELECT licenca, COUNT(*) AS total FROM livros GROUP BY licenca ORDER BY total DESC').all()).results as any[];
+        } catch (_) {}
+      }
+      try {
         fontesAtivas = (await db.prepare('SELECT id, slug, nome, tipo, url_base FROM fontes WHERE ativa = 1 ORDER BY id ASC').all()).results;
-        distribuicaoLicencas = (await db.prepare('SELECT licenca, COUNT(*) AS total FROM livros GROUP BY licenca ORDER BY total DESC').all()).results;
       } catch (_) {}
     }
 
@@ -1719,9 +1797,12 @@ async function recomputarEstatisticas(db: D1Database): Promise<void> {
     db.prepare(`CREATE TABLE IF NOT EXISTS contadores (
       dimensao TEXT NOT NULL, chave TEXT NOT NULL, rotulo TEXT,
       total INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (dimensao, chave))`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS autor_totais (
+      autor_id INTEGER PRIMARY KEY, total INTEGER NOT NULL DEFAULT 0)`),
     db.prepare('CREATE INDEX IF NOT EXISTS idx_contadores_dimensao ON contadores(dimensao, total DESC)'),
     db.prepare('DELETE FROM contadores'),
-    db.prepare('DELETE FROM estatisticas')
+    db.prepare('DELETE FROM estatisticas'),
+    db.prepare('DELETE FROM autor_totais')
   ]);
 
   // Lote 2 — contadores por dimensão (uma varredura por grupo, ~765k linhas
@@ -1746,7 +1827,12 @@ async function recomputarEstatisticas(db: D1Database): Promise<void> {
       FROM links_livros GROUP BY formato`),
     db.prepare(`INSERT INTO contadores (dimensao, chave, rotulo, total)
       SELECT 'curso_tipo', COALESCE(tipo, 'outro'), COALESCE(tipo, 'outro'), COUNT(*)
-      FROM cursos GROUP BY COALESCE(tipo, 'outro')`)
+      FROM cursos GROUP BY COALESCE(tipo, 'outro')`),
+    // Contagem de livros por autor: uma única varredura agrupada, para que
+    // /api/autores não tenha de juntar a tabela de 104.848 livros.
+    db.prepare(`INSERT INTO autor_totais (autor_id, total)
+      SELECT autor_id, COUNT(*) FROM livros
+      WHERE autor_id IS NOT NULL GROUP BY autor_id`)
   ]);
 
   // Lote 3 — totais gerais.
