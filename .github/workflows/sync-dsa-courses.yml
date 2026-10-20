@@ -44,5 +44,6 @@ jobs:
             echo "Nenhum novo curso gratuito identificado nesta ronda da Data Science Academy."
           else
             git commit -m "chore(sync): atualizar catálogo de cursos gratuitos da Data Science Academy [skip ci]"
+            git pull --rebase origin main
             git push origin main
           fi
