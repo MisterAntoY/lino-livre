@@ -464,6 +464,32 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
         assert.equal(data.status, 'pendente');
       }
     });
+
+    test('4.7 - POST /api/livros rejeita links da lista negra de pirataria (ex: libgen, z-library)', async () => {
+      const env = {
+        ADMIN_API_KEY: ADMIN_SECRET,
+        DB: createMockD1()
+      };
+
+      const res = await workerRequest('/api/livros', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': ADMIN_SECRET
+        },
+        body: JSON.stringify({
+          titulo: 'Livro Ilegal no Worker',
+          licenca: 'dominio-publico',
+          links: [
+            { formato: 'pdf', url: 'https://libgen.is/book/test.pdf' }
+          ]
+        })
+      }, env);
+
+      assert.equal(res.status, 400, 'Worker deve rejeitar link da lista negra com 400');
+      const data = await res.json();
+      assert.match(data.erro, /lista negra de pirataria/i);
+    });
   });
 
   // =========================================================================
@@ -543,6 +569,34 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
 
       const resCurso = await workerRequest('/api/cursos/999/acessar', { method: 'GET' }, env);
       assert.equal(resCurso.status, 404, 'Curso inexistente deve retornar 404');
+    });
+
+    test('5.4 - GET /api/creditos retorna métricas de compliance e lista de fontes aprovadas', async () => {
+      const env = {
+        DB: createMockD1({
+          firstHandler: async (sql) => {
+            if (sql.includes('COUNT(*) AS total FROM livros')) return { total: 104848 };
+            return null;
+          },
+          allHandler: async (sql) => {
+            if (sql.includes('FROM fontes')) {
+              return { results: [{ id: 1, slug: 'gutenberg', nome: 'Project Gutenberg', tipo: 'api', url_base: 'https://gutenberg.org' }] };
+            }
+            if (sql.includes('GROUP BY licenca')) {
+              return { results: [{ licenca: 'dominio-publico', total: 100000 }] };
+            }
+            return { results: [] };
+          }
+        })
+      };
+
+      const res = await workerRequest('/api/creditos', { method: 'GET' }, env);
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.equal(data.status, 'ativo');
+      assert.equal(data.metricas_compliance.itens_com_licenca_verificada_percentual, 100);
+      assert.ok(Array.isArray(data.fontes_proibidas_blacklist));
+      assert.ok(data.fontes_proibidas_blacklist.some((f) => f.includes('Z-Library')));
     });
   });
 

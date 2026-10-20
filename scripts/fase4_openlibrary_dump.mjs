@@ -38,6 +38,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import readline from 'node:readline';
+import { Readable } from 'node:stream';
 
 const DB = process.env.D1_DATABASE || 'lino-livre-db';
 const DB_LOCAL = 'biblioteca.db';
@@ -217,19 +218,44 @@ function acessoAberto(rec) {
 }
 
 // ── Streaming do dump ─────────────────────────────────────────────────────
-async function streamDump(url, onLinha, inicioLinha = 0, limiteBytes = null) {
-  // Accept-Encoding: identity → o servidor entrega os bytes .gz crus.
-  // Descomprimimos uma única vez com zlib.createGunzip.
-  const headers = { 'User-Agent': USER_AGENT, 'Accept-Encoding': 'identity' };
-  let intervalo = {};
-  if (limiteBytes) intervalo = { Range: `bytes=0-${limiteBytes - 1}` };
+/**
+ * Resolve a cadeia de redireccionamentos manualmente até ao URL final.
+ * Necessário porque o fetch perde o cabeçalho Range ao seguir os 302 do
+ * archive.org para os nós ia*.us.archive.org (que são os que suportam Range).
+ */
+async function resolverUrlFinal(url, maxRedirecoes = 5) {
+  let atual = url;
+  for (let i = 0; i < maxRedirecoes; i++) {
+    const res = await fetch(atual, {
+      method: 'HEAD',
+      redirect: 'manual',
+      headers: { 'User-Agent': USER_AGENT, 'Accept-Encoding': 'identity' }
+    });
+    const loc = res.headers.get('location');
+    if (res.status >= 300 && res.status < 400 && loc) {
+      atual = new URL(loc, atual).toString();
+      continue;
+    }
+    return atual;
+  }
+  return atual;
+}
 
-  const res = await fetch(url, { headers: { ...headers, ...intervalo } });
+async function streamDump(url, onLinha, inicioLinha = 0, limiteBytes = null) {
+  // 1) Resolve o URL final (para o Range não se perder nos 302)
+  const finalUrl = await resolverUrlFinal(url);
+
+  // 2) Pede o intervalo (sonda) ou o ficheiro completo
+  const headers = { 'User-Agent': USER_AGENT, 'Accept-Encoding': 'identity' };
+  if (limiteBytes) headers.Range = `bytes=0-${limiteBytes - 1}`;
+
+  const res = await fetch(finalUrl, { headers });
   if (!res.ok && res.status !== 206) throw new Error(`HTTP ${res.status} ao abrir o dump`);
 
+  // 3) Descomprime UMA vez (o ficheiro é .gz servido sem Content-Encoding)
+  //    res.body é um Web ReadableStream (undici) → converter para Node Readable
   const gunzip = zlib.createGunzip({ chunkSize: 1 << 20 });
-  // gunzip é um Transform (Node stream), não um ReadableStream — usa-se .pipe()
-  const src = res.body.pipe(gunzip);
+  const src = Readable.fromWeb(res.body).pipe(gunzip);
 
   const rl = readline.createInterface({ input: src, crlfDelay: Infinity });
   let n = 0;

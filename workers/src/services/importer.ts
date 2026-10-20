@@ -1,5 +1,7 @@
 // Importer service for Cloudflare Workers (D1 SQLite + Web Fetch)
 
+const USER_AGENT_OFICIAL = 'LinoLivre/2.0 (+https://lino-livre.linolivre.workers.dev; contato@linolivre.workers.dev; biblioteca digital aberta educacional)';
+
 export async function executarImportacaoD1(db: D1Database, jobId: number, fonteSlug: string, query: string): Promise<void> {
   try {
     await db.prepare("UPDATE import_jobs SET status = 'em_curso' WHERE id = ?").bind(jobId).run();
@@ -98,7 +100,7 @@ export async function executarImportacaoD1(db: D1Database, jobId: number, fonteS
 async function buscarGutenberg(query: string) {
   const url = `https://gutendex.com/books/?search=${encodeURIComponent(query || 'literatura')}&languages=pt`;
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'LinoLivre/2.0 (contato@linolivre.workers.dev)' }
+    headers: { 'User-Agent': USER_AGENT_OFICIAL }
   });
   if (!res.ok) throw new Error(`Gutendex respondeu status ${res.status}`);
   const data: any = await res.json();
@@ -139,7 +141,7 @@ async function buscarGutenberg(query: string) {
 async function buscarOpenLibrary(query: string) {
   const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&has_fulltext=true&limit=10`;
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'LinoLivre/2.0 (contato@linolivre.workers.dev)' }
+    headers: { 'User-Agent': USER_AGENT_OFICIAL }
   });
   if (!res.ok) throw new Error(`Open Library respondeu status ${res.status}`);
   const data: any = await res.json();
@@ -189,7 +191,7 @@ export async function buscarWikisource(query: string): Promise<any[]> {
   let data: any = null;
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'LinoLivre/2.0 (contato@linolivre.workers.dev)' }
+      headers: { 'User-Agent': USER_AGENT_OFICIAL }
     });
     if (res.ok) data = await res.json();
   } catch (_) {}
@@ -254,7 +256,7 @@ export async function buscarLibriVox(query: string): Promise<any[]> {
   for (const u of urls) {
     try {
       const res = await fetch(u, {
-        headers: { 'User-Agent': 'LinoLivre/2.0 (contato@linolivre.workers.dev)' }
+        headers: { 'User-Agent': USER_AGENT_OFICIAL }
       });
       if (res.ok) {
         const json: any = await res.json();
@@ -330,7 +332,7 @@ export async function buscarStandardEbooks(query: string): Promise<any[]> {
   let xmlText = '';
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'LinoLivre/2.0 (contato@linolivre.workers.dev)' }
+      headers: { 'User-Agent': USER_AGENT_OFICIAL }
     });
     if (res.ok) xmlText = await res.text();
   } catch (_) {}
@@ -414,7 +416,7 @@ export async function buscarEuropeana(query: string): Promise<any[]> {
   let data: any = null;
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'LinoLivre/2.0 (contato@linolivre.workers.dev)' }
+      headers: { 'User-Agent': USER_AGENT_OFICIAL }
     });
     if (res.ok) data = await res.json();
   } catch (_) {}

@@ -147,11 +147,11 @@ Requisitos de cada importador:
 
 ## Fase 5 — Compliance e licenciamento (P0, contínuo)
 
-- [ ] Lista de fontes aprovadas documentada; lista negra de fontes piratas
-- [ ] Respeito a `robots.txt` e Termos de Uso de cada fonte; User-Agent identificável
-- [ ] Campo `licenca` preenchido em 100% dos itens; página pública de "Créditos e Licenças"
-- [ ] Atenção a prazos de domínio público (BR/PT/EUA: vida+70): obra PD num país pode não o ser noutro — quando divergente, manter só *link* à fonte original
-- [ ] Privacidade: a aplicação **não recolhe** números de telefone nem mensagens do WhatsApp (só mostra o link da comunidade)
+- [x] Lista de fontes aprovadas documentada; lista negra de fontes piratas (ver `docs/FONTES-E-COMPLIANCE.md` e bloqueio anti-pirataria no código)
+- [x] Respeito a `robots.txt` e Termos de Uso de cada fonte; User-Agent identificável (`LinoLivre/2.0`)
+- [x] Campo `licenca` preenchido em 100% dos itens; página pública de "Créditos e Licenças" (`/creditos.html`) e endpoint `GET /api/creditos`
+- [x] Atenção a prazos de domínio público (BR/PT/EUA: vida+70): obra PD num país pode não o ser noutro — quando divergente, manter só *link* à fonte original (zero armazenamento local, HTTP 302)
+- [x] Privacidade: a aplicação **não recolhe** números de telefone nem mensagens do WhatsApp (só mostra o link da comunidade)
 
 ---
 

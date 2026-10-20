@@ -1473,6 +1473,97 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const totalLivrosDepois = db.prepare('SELECT COUNT(*) AS total FROM livros').get().total;
     assert.equal(totalLivrosDepois, totalLivrosAntes, 'Re-execução de importação não pode duplicar obras');
   });
+
+  // Teste 28: Compliance e Licenciamento (Fase 5)
+  test('28. Compliance e Licenciamento (Fase 5): Fontes Aprovadas, Anti-Pirataria (Blacklist), Auditoria 100% Licenças e Créditos', async () => {
+    // 28.1 - GET /api/creditos retorna estrutura completa de governança e compliance
+    const resCreditos = await request('/api/creditos');
+    assert.equal(resCreditos.status, 200, 'GET /api/creditos deve retornar status 200');
+    assert.equal(resCreditos.data.status, 'ativo');
+    assert.equal(resCreditos.data.metricas_compliance.itens_com_licenca_verificada_percentual, 100);
+    assert.equal(resCreditos.data.metricas_compliance.zero_armazenamento_local, true);
+    assert.equal(resCreditos.data.metricas_compliance.redirecionamento_protocolo, 'HTTP 302');
+    assert.ok(Array.isArray(resCreditos.data.fontes_aprovadas));
+    assert.ok(Array.isArray(resCreditos.data.fontes_proibidas_blacklist));
+    assert.ok(resCreditos.data.fontes_proibidas_blacklist.some(f => f.includes('Z-Library')));
+    assert.ok(resCreditos.data.fontes_proibidas_blacklist.some(f => f.includes('Library Genesis')));
+
+    // 28.2 - Páginas públicas de compliance e transparência (/creditos, /legal, /termos, /robots.txt)
+    const resPagCreditos = await request('/creditos');
+    assert.equal(resPagCreditos.status, 200);
+    assert.ok(String(resPagCreditos.data).includes('Créditos, Fontes Oficiais e Licenças do Acervo'));
+
+    const resPagLegal = await request('/legal');
+    assert.equal(resPagLegal.status, 200);
+    assert.ok(String(resPagLegal.data).includes('Termos de Uso, Isenção de Responsabilidade'));
+
+    const resPagTermos = await request('/termos');
+    assert.equal(resPagTermos.status, 200);
+
+    const resRobots = await request('/robots.txt');
+    assert.equal(resRobots.status, 200);
+    assert.ok(String(resRobots.data).includes('Disallow: /api/'));
+
+    // 28.3 - Bloqueio de fontes piratas (Blacklist anti-pirataria)
+    const resPirataLibgen = await request('/api/livros', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        titulo: 'Obra Ilegal de Teste',
+        licenca: 'dominio-publico',
+        links: [
+          { formato: 'pdf', url: 'https://libgen.is/book/index.php?md5=teste123' }
+        ]
+      })
+    });
+    assert.equal(resPirataLibgen.status, 400, 'Cadastro com link do LibGen deve ser rejeitado com 400');
+    assert.match(resPirataLibgen.data.erro, /lista negra de pirataria/i);
+
+    const resPirataZlib = await request('/api/livros', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        titulo: 'Obra Ilegal Z-Lib',
+        licenca: 'dominio-publico',
+        links: [
+          { formato: 'epub', url: 'https://z-library.se/book/999/download' }
+        ]
+      })
+    });
+    assert.equal(resPirataZlib.status, 400, 'Cadastro com link do Z-Library deve ser rejeitado com 400');
+    assert.match(resPirataZlib.data.erro, /lista negra de pirataria/i);
+
+    const resPirataAnnas = await request('/api/livros', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        titulo: 'Obra Ilegal Anna Archive',
+        licenca: 'dominio-publico',
+        capa_url: 'https://annas-archive.org/cover.jpg'
+      })
+    });
+    assert.equal(resPirataAnnas.status, 400, 'Cadastro com capa de fonte proibida deve ser rejeitado com 400');
+    assert.match(resPirataAnnas.data.erro, /lista negra de pirataria/i);
+
+    // 28.4 - Auditoria estrita da base de dados: 100% de itens com licença válida
+    const db = getDatabase();
+    const licInvalida = db.prepare(`
+      SELECT COUNT(*) AS total
+      FROM livros
+      WHERE licenca IS NULL OR licenca = '' OR licenca NOT IN ('dominio-publico','cc0','cc-by','cc-by-sa','cc-by-nc','outro')
+    `).get().total;
+    assert.equal(licInvalida, 0, 'Nenhum livro pode ter licença nula ou inválida no acervo');
+
+    // 28.5 - Privacidade garantida: ausência de coleta de números de telefone e webhooks invasivos
+    const resComunidade = await request('/api/comunidade');
+    assert.equal(resComunidade.status, 200);
+    assert.ok(resComunidade.data.url.startsWith('https://chat.whatsapp.com/'));
+    assert.equal(resComunidade.data.telefone, undefined);
+
+    const resCanal = await request('/api/canal');
+    assert.equal(resCanal.status, 200);
+    assert.ok(resCanal.data.url.startsWith('https://whatsapp.com/channel/'));
+  });
 });
 
 

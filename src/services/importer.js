@@ -189,7 +189,7 @@ async function executarImportacao(jobId, fonteSlug, query) {
 async function buscarGutenberg(query) {
   const url = `https://gutendex.com/books/?search=${encodeURIComponent(query || 'literatura')}&languages=pt`;
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'LinoLivre/1.0 (biblioteca@escola.gov.br)' }
+    headers: { 'User-Agent': USER_AGENT_OFICIAL }
   });
   if (!res.ok) throw new Error(`Gutendex respondeu status ${res.status}`);
   const data = await res.json();
@@ -230,7 +230,7 @@ async function buscarGutenberg(query) {
 async function buscarOpenLibrary(query) {
   const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&has_fulltext=true&limit=10`;
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'LinoLivre/1.0 (biblioteca@escola.gov.br)' }
+    headers: { 'User-Agent': USER_AGENT_OFICIAL }
   });
   if (!res.ok) throw new Error(`Open Library respondeu status ${res.status}`);
   const data = await res.json();
@@ -402,7 +402,7 @@ async function buscarGuiaDeTI(query = '') {
   for (const u of urls) {
     try {
       const res = await fetch(u, {
-        headers: { 'User-Agent': 'LinoLivre/1.0 (biblioteca@escola.gov.br)' }
+        headers: { 'User-Agent': USER_AGENT_OFICIAL }
       });
       if (res.ok) {
         const text = await res.text();
@@ -526,7 +526,7 @@ async function buscarWikisource(query = '') {
   let data = null;
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+      headers: { 'User-Agent': USER_AGENT_OFICIAL },
       signal: AbortSignal.timeout(10000)
     });
     if (res.ok) {
@@ -604,7 +604,7 @@ async function buscarLibriVox(query = '') {
   for (const u of urlsTentativa) {
     try {
       const res = await fetch(u, {
-        headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+        headers: { 'User-Agent': USER_AGENT_OFICIAL },
         signal: AbortSignal.timeout(10000)
       });
       if (res.ok) {
@@ -693,7 +693,7 @@ async function buscarStandardEbooks(query = '') {
   let xmlText = '';
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+      headers: { 'User-Agent': USER_AGENT_OFICIAL },
       signal: AbortSignal.timeout(10000)
     });
     if (res.ok) {
@@ -798,7 +798,7 @@ async function buscarEuropeana(query = '') {
   let data = null;
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+      headers: { 'User-Agent': USER_AGENT_OFICIAL },
       signal: AbortSignal.timeout(10000)
     });
     if (res.ok) {
@@ -895,7 +895,7 @@ async function enriquecerComGoogleBooks(item) {
       : `intitle:${encodeURIComponent(item.titulo)}`;
     const url = `https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=1`;
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'LinoLivre/2.0 (metadata-enricher@linolivre.workers.dev)' },
+      headers: { 'User-Agent': USER_AGENT_OFICIAL },
       signal: AbortSignal.timeout(3000)
     });
     if (!res.ok) return item;
