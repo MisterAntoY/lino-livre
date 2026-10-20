@@ -8,7 +8,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { execSync } = require('node:child_process');
-const { githubLivrosTraducoes } = require('../src/database/githubLivrosTraducoes');
+const githubLivrosTraducoes = require('../src/database/githubLivrosTraducoes');
 
 const LOCALES_DIR = path.join(__dirname, '..', 'public', 'locales');
 const LOCALES = ['pt', 'pt-br', 'en', 'es', 'de', 'zh', 'fr'];
