@@ -1564,6 +1564,59 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resCanal.status, 200);
     assert.ok(resCanal.data.url.startsWith('https://whatsapp.com/channel/'));
   });
+
+  // Teste 29: Frontend e Experiência do Usuário (Fase 6)
+  test('29. Frontend (Fase 6): Acervo com Filtros de Licença, Modal Livro com Formatos de Download e Rodapé Comunitário', async () => {
+    const fs = await import('node:fs');
+
+    // 29.1 - Página Principal (/): contém filtro de licença, modal livro, leitor e bloco comunitário
+    const resHome = await request('/');
+    assert.equal(resHome.status, 200, 'A página principal deve retornar status 200');
+    const htmlHome = String(resHome.data);
+
+    assert.ok(htmlHome.includes('id="pills-licencas"'), 'Deve conter barra de filtros de licença no Acervo');
+    assert.ok(htmlHome.includes('data-licenca="dominio-publico"'), 'Deve conter opção de filtro Domínio Público');
+    assert.ok(htmlHome.includes('data-licenca="cc-by"'), 'Deve conter opção de filtro CC BY');
+    assert.ok(htmlHome.includes('id="modal-detalhes-livro"'), 'Deve conter o modal dedicado de detalhes da obra (Página Livro)');
+    assert.ok(htmlHome.includes('id="detalhes-formatos-lista"'), 'Deve conter container de formatos disponíveis para download/leitura');
+    assert.ok(htmlHome.includes('id="modal-leitor"'), 'Deve conter o leitor imersivo ultraleve');
+    assert.ok(htmlHome.includes('id="secao-whatsapp"'), 'Deve conter bloco de adesão comunitária WhatsApp');
+    assert.ok(htmlHome.includes('chat.whatsapp.com'), 'Deve conter link direto para a comunidade WhatsApp');
+
+    // 29.2 - Rodapé de todas as páginas públicas deve conter link curto "Comunidade WhatsApp"
+    const paginas = ['/', '/legal', '/termos', '/creditos'];
+    for (const rota of paginas) {
+      const resPag = await request(rota);
+      assert.equal(resPag.status, 200, `Rota ${rota} deve responder 200`);
+      const body = String(resPag.data);
+      assert.ok(
+        body.includes('Comunidade WhatsApp') && body.includes('chat.whatsapp.com'),
+        `Página ${rota} deve conter link curto 'Comunidade WhatsApp' no rodapé`
+      );
+    }
+
+    // 29.3 - API /api/livros filtra com precisão pelo parâmetro licenca
+    const resLicDp = await request('/api/livros?licenca=dominio-publico&limit=10');
+    assert.equal(resLicDp.status, 200);
+    assert.ok(resLicDp.data.data.length > 0, 'Deve retornar livros sob domínio público');
+    for (const item of resLicDp.data.data) {
+      assert.equal(item.licenca, 'dominio-publico', 'Todos os itens filtrados devem ter licenca dominio-publico');
+    }
+
+    // 29.4 - Detalhes da obra via GET /api/livros/:id contém todos os metadados para a Página Livro
+    const livroId = resLicDp.data.data[0].id;
+    const resLivro = await request(`/api/livros/${livroId}`);
+    assert.equal(resLivro.status, 200);
+    assert.ok(resLivro.data.titulo, 'Obra deve conter título');
+    assert.ok(resLivro.data.licenca, 'Obra deve conter licença');
+    assert.ok(Array.isArray(resLivro.data.links), 'Obra deve listar formatos e links associados');
+    assert.ok(resLivro.data.links.length > 0, 'Obra deve conter ao menos um link de acesso');
+
+    // 29.5 - CSS do design system inclui estilos do modal de detalhes e botões de download
+    const cssContent = fs.readFileSync('public/css/style.css', 'utf-8');
+    assert.ok(cssContent.includes('.modal-book-details-card'), 'CSS deve conter estilo do card de detalhes');
+    assert.ok(cssContent.includes('.btn-format-download'), 'CSS deve conter estilo dos botões de formatos para download');
+  });
 });
 
 

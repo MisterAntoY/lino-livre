@@ -86,7 +86,16 @@
       "defaultLicense": "Gemeinfrei",
       "availableCatalog": "Dieses Werk ist im digitalen Katalog verfügbar.",
       "errorOpen": "Fehler beim Öffnen des Werks: {msg}",
-      "errorDetails": "Buchdetails konnten nicht geladen werden"
+      "errorDetails": "Buchdetails konnten nicht geladen werden",
+      "federatedSearch": "Globale Suche",
+      "federatedTitle": "Globale Föderierte Suche",
+      "federatedSearching": "Globale Kataloge werden parallel abgefragt…",
+      "federatedResults": "föderierte Ergebnisse",
+      "federatedSources": "Kataloge",
+      "federatedDegraded": "teilweise Degradierung",
+      "federatedEmpty": "Keine Ergebnisse in den globalen Katalogen für diesen Begriff.",
+      "federatedHint": "Begriff eingeben, um globale Kataloge parallel abzufragen.",
+      "federatedError": "Fehler in der föderierten Suche: {msg}"
     },
     "courses": {
       "bannerBadge": "⭐ Freie Online-Kurse & Zertifikate",

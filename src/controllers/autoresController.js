@@ -3,13 +3,33 @@ const { getDatabase } = require('../database');
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const autores = db.prepare(`
+    const busca = (req.query.busca || req.query.q || '').trim();
+    const limitParam = req.query.limit || req.query.limite;
+    const pageParam = req.query.page || req.query.pagina;
+
+    let query = `
       SELECT a.*, COUNT(l.id) AS total_livros
       FROM autores a
       LEFT JOIN livros l ON l.autor_id = a.id
-      GROUP BY a.id
-      ORDER BY a.nome ASC
-    `).all();
+    `;
+    const params = [];
+
+    if (busca) {
+      query += ' WHERE a.nome LIKE ?';
+      params.push(`%${busca}%`);
+    }
+
+    query += ' GROUP BY a.id ORDER BY a.nome ASC';
+
+    if (limitParam || pageParam) {
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
+      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const offset = (page - 1) * limit;
+      query += ' LIMIT ? OFFSET ?';
+      params.push(limit, offset);
+    }
+
+    const autores = db.prepare(query).all(...params);
     res.json(autores);
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao buscar autores: ' + err.message });

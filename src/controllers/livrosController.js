@@ -1,24 +1,7 @@
 const { getDatabase } = require('../database');
+const { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS } = require('../utils/urlValidator');
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
-
-const DOMINIOS_PROIBIDOS = [
-  'z-lib', 'zlibrary', 'z-library',
-  'libgen', 'library.lol',
-  'sci-hub', 'scihub',
-  'annas-archive', 'anna-archive',
-  'b-ok', 'bookfi', 'pdfdrive'
-];
-
-function verificarUrlConformidade(url) {
-  if (!url) return;
-  const urlLower = String(url).toLowerCase();
-  for (const dom of DOMINIOS_PROIBIDOS) {
-    if (urlLower.includes(dom)) {
-      throw new Error(`URL rejeitada por violar a política de compliance e legalidade (fonte não autorizada / lista negra de pirataria: ${dom}). O Lino Livre veda estritamente o uso de repositórios piratas (ver /legal e docs/FONTES-E-COMPLIANCE.md).`);
-    }
-  }
-}
 
 // Dimensões pequenas (fontes/categorias) em cache: evita LIKE e JOINs na tabela livros
 let cacheDimensoes = null;
@@ -263,9 +246,10 @@ function lerRedirect(req, res) {
     // Incrementar contador de leituras atômico
     db.prepare('UPDATE livros SET leituras = leituras + 1 WHERE id = ?').run(id);
 
-    // Redirect 302 para a fonte externa
-    if (link.url && link.url.startsWith('http')) {
-      return res.redirect(302, link.url);
+    // Redirect 302 para a fonte externa após validação estrita
+    if (link.url) {
+      const urlDestino = validarUrlRedirecionamento(link.url);
+      return res.redirect(302, urlDestino);
     }
 
     // Se for formato web local

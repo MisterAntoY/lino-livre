@@ -157,11 +157,11 @@ Requisitos de cada importador:
 
 ## Fase 6 — Frontend (P1)
 
-- Página **Acervo**: cards com capa, filtros (área/categoria, idioma, formato, licença), busca instantânea (FTS), paginação
-- Página **Livro**: sinopse, autor, licença, botões **"Ler online"** (EPUB.js para `.epub` quando houver ficheiro local; senão abre a fonte) e **"Baixar"** por formato
-- Página **Início**: dashboard com totais por área, destaques e o bloco **"Junte-se à comunidade"** (botão + QR code, Fase 8)
-- Rodapé de todas as páginas: link curto "Comunidade WhatsApp"
-- Estilo: manter design system já existente (sem Tailwind extra; CSS atual é suficiente)
+- [x] Página **Acervo**: cards com capa, filtros (área/categoria, idioma, formato, licença), busca instantânea (FTS), paginação
+- [x] Página **Livro**: modal dedicado de detalhes (`#modal-detalhes-livro`), sinopse, autor, licença, botões **"Ler online"** (leitor ultraleve no navegador ou redirecionamento 302 à fonte aberta) e **"Baixar"** por formato (PDF, EPUB, TXT, HTML)
+- [x] Página **Início**: dashboard com totais por área, destaques e o bloco **"Junte-se à comunidade"** (botão + QR code, Fase 8)
+- [x] Rodapé de todas as páginas: link curto "Comunidade WhatsApp" em `index.html`, `legal.html`, `termos.html` e `creditos.html`
+- [x] Estilo: manter design system já existente (sem Tailwind extra; CSS atual é suficiente e responsivo)
 
 ---
 

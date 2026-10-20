@@ -169,7 +169,13 @@ function classificacaoAcesso(d) {
   if (d.printdisabled === true) return null;
   // Sem identificador de edição digital não há leitura full-text garantida
   if (!edicoes.length) return null;
-  return 'dominio-publico';
+
+  // Só classifica como domínio público estrito se a publicação tiver comprovação histórica (pré-1928)
+  const ano = d.first_publish_year || (Array.isArray(d.publish_year) && d.publish_year.length ? d.publish_year[0] : null);
+  if (ano && ano <= 1928) {
+    return 'dominio-publico';
+  }
+  return 'outro';
 }
 
 // ── Escrita de lotes SQL (streaming) ──────────────────────────────────────

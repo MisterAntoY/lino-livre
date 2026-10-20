@@ -46,6 +46,11 @@ self.addEventListener('fetch', (event) => {
   
   // Skip non-GET requests
   if (request.method !== 'GET') return;
+
+  // Não interceptar requisições para a API dinâmica:
+  // Garante que o navegador e o CDN da Cloudflare respeitem o Cache-Control
+  // sem servir dados estáticos ou desatualizados do cache local do Service Worker.
+  if (url.pathname.startsWith('/api/')) return;
   
   // Skip cross-origin requests (except fonts and images)
   if (url.origin !== location.origin) {

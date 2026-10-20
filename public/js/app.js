@@ -9,13 +9,16 @@ const app = {
   categoriaAtiva: '',
   fonteLivroAtiva: '',
   formatoAtivo: '',
+  licencaAtiva: '',
   filtroIdiomaLivro: '',
+  livroModalAtual: null,
   areaCursoAtiva: '',
   fonteCursoAtiva: '',
   plataformaCursoAtiva: '',
   origemRoadmapAtiva: '',
   catDicaAtiva: '',
   termoBusca: '',
+  buscaFederadaAtiva: false,
   termoBuscaCursos: '',
   termoBuscaRoadmaps: '',
   termoBuscaDicas: '',
@@ -70,13 +73,28 @@ const app = {
       });
     });
 
-    await Promise.all([
+    window.addEventListener('hashchange', () => {
+      this.verificarLinkDiretoLivro();
+    });
 
+    await Promise.all([
       this.carregarLivros(),
       this.carregarPlacarMeta(),
       this.carregarCategoriasSelect(),
       this.verificarComunidadeECanal()
     ]);
+
+    this.verificarLinkDiretoLivro();
+  },
+
+  verificarLinkDiretoLivro() {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#livro-')) {
+      const id = parseInt(hash.replace('#livro-', ''), 10);
+      if (id > 0) {
+        setTimeout(() => this.abrirDetalhesLivro(id), 300);
+      }
+    }
   },
 
   // ==================== IDIOMA ====================
@@ -165,7 +183,85 @@ const app = {
       this.termoBusca = (document.getElementById('filtro-busca').value || '').trim();
       this.paginaAtual = 1;
       this.carregarLivros();
+      if (this.buscaFederadaAtiva && this.termoBusca) this.carregarBuscaFederada();
     }, 250);
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  // FASE 4 — BUSCA FEDERADA GLOBAL (motor distribuído com RRF)
+  // ═══════════════════════════════════════════════════════════
+  alternarBuscaFederada() {
+    this.buscaFederadaAtiva = !this.buscaFederadaAtiva;
+    const btn = document.getElementById('btn-busca-federada');
+    const painel = document.getElementById('painel-federada');
+    if (btn) btn.classList.toggle('active', this.buscaFederadaAtiva);
+    if (painel) painel.classList.toggle('hidden', !this.buscaFederadaAtiva);
+    if (this.buscaFederadaAtiva) {
+      this.termoBusca = (document.getElementById('filtro-busca')?.value || '').trim();
+      if (!this.termoBusca) {
+        const grid = document.getElementById('grade-federada');
+        const stats = document.getElementById('federada-stats');
+        if (stats) stats.textContent = typeof t === 'function' ? t('ui.books.federatedHint') : 'Escreva um termo para pesquisar';
+        if (grid) grid.innerHTML = '';
+      } else {
+        this.carregarBuscaFederada();
+      }
+    }
+  },
+
+  async carregarBuscaFederada() {
+    const grid = document.getElementById('grade-federada');
+    const stats = document.getElementById('federada-stats');
+    if (!grid) return;
+    if (!this.termoBusca) {
+      grid.innerHTML = '';
+      if (stats) stats.textContent = typeof t === 'function' ? t('ui.books.federatedHint') : 'Escreva um termo para pesquisar';
+      return;
+    }
+
+    grid.innerHTML = `<div class="loading">${t('ui.books.federatedSearching')}</div>`;
+
+    try {
+      const res = await fetch(`/api/busca/federada?q=${encodeURIComponent(this.termoBusca)}&limite=36`);
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || 'Erro na busca federada');
+
+      const itens = json.resultados || [];
+      const ups = json.upstreams || [];
+      const okCount = ups.filter(u => u.estado === 'ok').length;
+
+      if (stats) {
+        stats.textContent = `${itens.length} ${t('ui.books.federatedResults')} \u00b7 ${okCount}/${ups.length} ${t('ui.books.federatedSources')} \u00b7 ${json.duracao_ms}ms${json.degradado ? ' \u00b7 ' + t('ui.books.federatedDegraded') : ''}${json.cache ? ' \u26a1 cache' : ''}`;
+      }
+
+      if (!itens.length) {
+        grid.innerHTML = `<div class="loading">${t('ui.books.federatedEmpty')}</div>`;
+        return;
+      }
+
+      grid.innerHTML = itens.map(x => `
+        <article class="fed-card">
+          <div class="fed-card-body">
+            <h3 class="fed-title">${this.escape(x.titulo || '')}</h3>
+            <p class="fed-author">${this.escape(x.autor || t('books.defaultAuthor'))}${x.ano ? ' \u2022 ' + x.ano : ''}</p>
+            ${x.sinopse ? `<p class="fed-synopsis">${this.escape(x.sinopse)}</p>` : ''}
+            <div class="fed-tags">
+              <span class="fed-tag fed-source">${this.escape(x.fonte || '')}</span>
+              ${(x.fontes || []).length > 1 ? `<span class="fed-tag fed-multi">\u{1F517} ${x.fontes.length}</span>` : ''}
+              ${x.licenca ? `<span class="fed-tag">${this.escape(x.licenca)}</span>` : ''}
+            </div>
+            <div class="fed-actions">
+              <a class="btn btn-primary btn-sm" href="${this.sanitizeUrl(x.url, '#')}" target="_blank" rel="noopener noreferrer">
+                ${t('books.readOnline')} \u2197
+              </a>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    } catch (err) {
+      grid.innerHTML = `<div class="loading" style="color:#b91c1c">${this.escape(t('ui.books.federatedError', { msg: err.message }))}</div>`;
+      if (stats) stats.textContent = '';
+    }
   },
 
   filtrarPorCategoria(categoria) {
@@ -204,6 +300,15 @@ const app = {
     this.carregarLivros();
   },
 
+  filtrarPorLicenca(licenca) {
+    this.licencaAtiva = licenca;
+    document.querySelectorAll('#pills-licencas .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-licenca') === licenca);
+    });
+    this.paginaAtual = 1;
+    this.carregarLivros();
+  },
+
   async carregarLivros() {
     const grid = document.getElementById('grade-livros');
     grid.innerHTML = `<div class="loading">${t('books.searching')}</div>`;
@@ -214,6 +319,7 @@ const app = {
       if (this.categoriaAtiva) params.append('categoria_id', this.obterCategoriaId(this.categoriaAtiva));
       if (this.fonteLivroAtiva) params.append('fonte_slug', this.fonteLivroAtiva);
       if (this.formatoAtivo) params.append('formato', this.formatoAtivo);
+      if (this.licencaAtiva) params.append('licenca', this.licencaAtiva);
       if (this.filtroIdiomaLivro) params.append('idioma', this.filtroIdiomaLivro);
       params.append('page', this.paginaAtual);
       params.append('limit', 12);
@@ -264,7 +370,7 @@ const app = {
     }
 
     grid.innerHTML = lista.map(l => {
-      const capaUrl = l.capa_url || '/capas/dom_casmurro.jpg';
+      const capaUrl = this.sanitizeUrl(l.capa_url, '/capas/dom_casmurro.jpg');
       const licencaFormatada = traduzirLicenca(l.licenca || 'dominio-publico');
       
       const links = l.links || [];
@@ -351,21 +457,22 @@ const app = {
         de: ' DE',
         zh: ' ZH'
       };
-      const flagLabel = langFlags[l.idioma] || (l.idioma || 'PT').toUpperCase();
+      const rawLang = String(l.idioma || 'pt').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
+      const flagLabel = langFlags[rawLang] || this.escape(rawLang.toUpperCase());
       const isAfrica = (l.categoria_nome && l.categoria_nome.includes('África'));
 
       return `
         <article class="book-card ${isAfrica ? 'book-card-africa' : ''}">
-          <div class="book-cover-container">
+          <div class="book-cover-container" onclick="app.abrirDetalhesLivro(${l.id})" style="cursor:pointer;" title="Ver detalhes da obra e formatos">
             <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
             <span class="badge-format">${flagLabel}</span>
           </div>
 
           <div class="book-details">
-            <h3 class="book-title">${this.escape(l.titulo)}</h3>
+            <h3 class="book-title" onclick="app.abrirDetalhesLivro(${l.id})" style="cursor:pointer;" title="Ver detalhes da obra e formatos">${this.escape(l.titulo)}</h3>
             <p class="book-author">${this.escape(l.autor_nome || t('books.defaultAuthor'))} ${l.ano_publicacao ? `• ${l.ano_publicacao}` : ''}</p>
             <div>
-              <span class="book-lang-badge lang-${l.idioma || 'pt'}">${flagLabel}</span>
+              <span class="book-lang-badge lang-${rawLang}">${flagLabel}</span>
               <span class="badge-license">${this.escape(licencaFormatada)}</span>
               ${isAfrica ? `<span class="africa-stats-badge" style="background:#fef3c7; color:#78350f; border-color:#f59e0b; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700;"> Coleção África</span>` : ''}
             </div>
@@ -385,6 +492,9 @@ const app = {
 
             <div class="book-actions">
               ${botoesAcaoHtml}
+              <button class="btn btn-outline" onclick="app.abrirDetalhesLivro(${l.id})" title="Ver sinopse e formatos para baixar">
+                ℹ Detalhes
+              </button>
             </div>
           </div>
         </article>
@@ -620,10 +730,12 @@ const app = {
   },
 
   carregarPreferenciasLeitor() {
-    this.temaPapel = localStorage.getItem('lino_tema_papel') || 'creme';
-    this.tamanhoFonte = parseInt(localStorage.getItem('lino_tamanho_fonte'), 10) || 22;
-    this.brilho = parseFloat(localStorage.getItem('lino_brilho')) || 1;
-    this.alinhamento = localStorage.getItem('lino_alinhamento') || 'justify';
+    const temaSalvo = localStorage.getItem('lino_tema_papel');
+    this.temaPapel = ['creme', 'sepia', 'noturno'].includes(temaSalvo) ? temaSalvo : 'creme';
+    this.tamanhoFonte = Math.min(32, Math.max(14, parseInt(localStorage.getItem('lino_tamanho_fonte'), 10) || 22));
+    this.brilho = Math.min(1.5, Math.max(0.5, parseFloat(localStorage.getItem('lino_brilho')) || 1));
+    const alignSalvo = localStorage.getItem('lino_alinhamento');
+    this.alinhamento = ['left', 'center', 'right', 'justify'].includes(alignSalvo) ? alignSalvo : 'justify';
   },
 
   aplicarPreferenciasLeitor() {
@@ -635,20 +747,21 @@ const app = {
   },
 
   mudarTemaPapel(tema, salvar = true) {
-    this.temaPapel = tema;
+    const temaLimpo = ['creme', 'sepia', 'noturno'].includes(tema) ? tema : 'creme';
+    this.temaPapel = temaLimpo;
     const container = document.getElementById('leitor-container');
     if (container) {
       container.classList.remove('theme-creme', 'theme-sepia', 'theme-noturno');
-      container.classList.add(`theme-${tema}`);
+      container.classList.add(`theme-${temaLimpo}`);
     }
     document.querySelectorAll('.paper-swatch').forEach(btn => {
-      btn.classList.toggle('active', btn.id === `swatch-${tema}`);
+      btn.classList.toggle('active', btn.id === `swatch-${temaLimpo}`);
     });
-    if (salvar) localStorage.setItem('lino_tema_papel', tema);
+    if (salvar) localStorage.setItem('lino_tema_papel', temaLimpo);
   },
 
   ajustarBrilho(val, salvar = true) {
-    this.brilho = parseFloat(val) || 1;
+    this.brilho = Math.min(1.5, Math.max(0.5, parseFloat(val) || 1));
     const bodyScroll = document.getElementById('reader-body-scroll');
     if (bodyScroll) {
       bodyScroll.style.filter = `brightness(${this.brilho})`;
@@ -668,13 +781,14 @@ const app = {
   },
 
   mudarAlinhamento(align, salvar = true) {
-    this.alinhamento = align;
+    const alignLimpo = ['left', 'center', 'right', 'justify'].includes(align) ? align : 'justify';
+    this.alinhamento = alignLimpo;
     const textoEl = document.getElementById('leitor-texto');
-    if (textoEl) textoEl.style.textAlign = align;
+    if (textoEl) textoEl.style.textAlign = alignLimpo;
     document.querySelectorAll('.btn-align').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-align') === align);
+      btn.classList.toggle('active', btn.getAttribute('data-align') === alignLimpo);
     });
-    if (salvar) localStorage.setItem('lino_alinhamento', align);
+    if (salvar) localStorage.setItem('lino_alinhamento', alignLimpo);
   },
 
   togglePainelAjustes() {
@@ -1071,7 +1185,7 @@ const app = {
       const desc = c.descricao || '';
       if (desc.includes('[INSCRIÇÕES ABERTAS')) {
         const m = desc.match(/Finaliza em ([^\]]+)/);
-        const prazo = m ? m[1] : '';
+        const prazo = m ? this.escape(m[1].trim()) : '';
         deadlineBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#15803d; border-color:#86efac; font-weight:600;" title="Inscrições abertas"> Inscrições Abertas${prazo ? ' (' + prazo + ')' : ''}</span>`;
       } else if (desc.includes('[Finalizado em')) {
         deadlineBadge = `<span class="badge-guiadeti-pill" title="Edição anterior disponível para estudo">Concluído (Histórico)</span>`;
@@ -1454,7 +1568,7 @@ const app = {
           <p class="roadmap-platform">${logoRoadmap} <span>${this.escape(r.plataforma)}</span></p>
           <p class="roadmap-desc">${this.escape(r.descricao || 'Árvore de habilidades e guia passo a passo estruturado para desenvolvimento técnico.')}</p>
 
-          <a class="btn roadmap-btn" href="${this.escape(r.url, true)}" target="_blank" rel="noopener noreferrer">
+          <a class="btn roadmap-btn" href="${this.sanitizeUrl(r.url)}" target="_blank" rel="noopener noreferrer">
              Acessar Roadmap Interativo ↗
           </a>
         </article>
@@ -1533,6 +1647,16 @@ const app = {
     const grid = document.getElementById('podcasts-grid');
     if (!grid) return;
 
+    if (!grid._hasShowListener) {
+      grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-ouvir-show');
+        if (!btn) return;
+        const slug = btn.getAttribute('data-slug');
+        if (slug) this.ouvirShowCompleto(slug);
+      });
+      grid._hasShowListener = true;
+    }
+
     if (!lista || lista.length === 0) {
       grid.innerHTML = `<div class="loading">Nenhum programa de podcast encontrado para os filtros selecionados.</div>`;
       return;
@@ -1540,10 +1664,12 @@ const app = {
 
     grid.innerHTML = lista.map(s => {
       const totalEp = s.total_episodios || (s.episodios || []).length || 0;
+      const capaUrl = this.sanitizeUrl(s.capa_url, 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80');
+      const spotifyUrl = this.sanitizeUrl(s.spotify_url, '');
       return `
         <article class="podcast-card">
           <div class="podcast-cover-box">
-            <img src="${s.capa_url || 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80'}" alt="${this.escape(s.titulo)}" class="podcast-cover-img" loading="lazy">
+            <img src="${capaUrl}" alt="${this.escape(s.titulo)}" class="podcast-cover-img" loading="lazy">
             <span class="podcast-category-badge">${this.escape(s.categoria || 'Educação')}</span>
           </div>
 
@@ -1557,13 +1683,13 @@ const app = {
             </div>
 
             <div class="podcast-card-actions">
-              ${s.spotify_url ? `
-                <a class="btn btn-spotify" href="${s.spotify_url}" target="_blank" rel="noopener noreferrer" style="flex:1; justify-content:center; font-size:0.85rem;">
+              ${spotifyUrl ? `
+                <a class="btn btn-spotify" href="${spotifyUrl}" target="_blank" rel="noopener noreferrer" style="flex:1; justify-content:center; font-size:0.85rem;">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="vertical-align:middle;margin-right:4px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.352-.676.463-1.028.247-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.158-.893-.561-.092-.403.158-.802.561-.894 4.571-1.045 8.49-.606 11.649 1.336.352.217.462.678.247 1.029zm1.467-3.262c-.27.44-.848.58-1.288.31-3.224-1.982-8.139-2.555-11.952-1.398-.497.151-1.026-.135-1.177-.633-.151-.497.135-1.026.633-1.177 4.364-1.325 9.773-.687 13.473 1.589.44.27.58.848.311 1.309zm.126-3.41c-3.864-2.295-10.239-2.506-13.916-1.39-.594.18-1.222-.162-1.402-.756-.18-.594.162-1.222.756-1.402 4.23-1.284 11.272-1.037 15.702 1.593.535.317.71 1.01.393 1.545-.317.534-1.01.71-1.533.41z"/></svg>
                   Spotify
                 </a>
               ` : ''}
-              <button class="btn btn-outline" style="flex:1; justify-content:center; font-size:0.85rem;" onclick="app.ouvirShowCompleto('${s.slug}')">
+              <button class="btn btn-outline btn-ouvir-show" style="flex:1; justify-content:center; font-size:0.85rem;" data-slug="${this.escape(s.slug)}">
                 ▶ Ouvir Show
               </button>
             </div>
@@ -1584,6 +1710,19 @@ const app = {
   renderizarEpisodiosRecentes(lista) {
     const container = document.getElementById('episodios-recentes-container');
     if (!container) return;
+
+    if (!container._hasPlayListener) {
+      container.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-play-ep');
+        if (!btn) return;
+        const embedUrl = btn.getAttribute('data-spotify-embed');
+        const id = btn.getAttribute('data-ep-id');
+        const titulo = btn.getAttribute('data-ep-title');
+        const showTitulo = btn.getAttribute('data-ep-show');
+        this.tocarEpisodioSpotify(embedUrl, id, titulo, showTitulo);
+      });
+      container._hasPlayListener = true;
+    }
 
     if (!lista || lista.length === 0) {
       container.innerHTML = `<div class="loading">Nenhum episódio recente disponível no momento.</div>`;
@@ -1607,11 +1746,11 @@ const app = {
           </div>
 
           <div class="episodio-actions">
-            <button class="btn-play-ep" onclick="app.tocarEpisodioSpotify('${ep.spotify_embed_url}', ${ep.id}, '${this.escape(ep.titulo)}', '${this.escape(ep.show_titulo)}')">
+            <button class="btn-play-ep" data-spotify-embed="${this.sanitizeUrl(ep.spotify_embed_url)}" data-ep-id="${ep.id || ''}" data-ep-title="${this.escape(ep.titulo)}" data-ep-show="${this.escape(ep.show_titulo || '')}">
               ▶ Tocar
             </button>
             ${ep.spotify_url ? `
-              <a class="btn btn-spotify" style="padding:0.45rem 0.85rem; font-size:0.8rem;" href="${ep.spotify_url}" target="_blank" rel="noopener noreferrer" title="Abrir na App Spotify">
+              <a class="btn btn-spotify" style="padding:0.45rem 0.85rem; font-size:0.8rem;" href="${this.sanitizeUrl(ep.spotify_url)}" target="_blank" rel="noopener noreferrer" title="Abrir na App Spotify">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:middle;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.352-.676.463-1.028.247-2.816-1.721-6.36-2.111-10.536-1.157-.402.092-.801-.158-.893-.561-.092-.403.158-.802.561-.894 4.571-1.045 8.49-.606 11.649 1.336.352.217.462.678.247 1.029zm1.467-3.262c-.27.44-.848.58-1.288.31-3.224-1.982-8.139-2.555-11.952-1.398-.497.151-1.026-.135-1.177-.633-.151-.497.135-1.026.633-1.177 4.364-1.325 9.773-.687 13.473 1.589.44.27.58.848.311 1.309zm.126-3.41c-3.864-2.295-10.239-2.506-13.916-1.39-.594.18-1.222-.162-1.402-.756-.18-.594.162-1.222.756-1.402 4.23-1.284 11.272-1.037 15.702 1.593.535.317.71 1.01.393 1.545-.317.534-1.01.71-1.533.41z"/></svg>
               </a>
             ` : ''}
@@ -2017,6 +2156,151 @@ const app = {
     if (modalNovoLivro) modalNovoLivro.classList.add('hidden');
     const modalLegal = document.getElementById('modal-legal');
     if (modalLegal) modalLegal.classList.add('hidden');
+    const modalDetalhes = document.getElementById('modal-detalhes-livro');
+    if (modalDetalhes) modalDetalhes.classList.add('hidden');
+    this.livroAtual = null;
+    this.livroModalAtual = null;
+    if (window.location.hash.startsWith('#livro-')) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  },
+
+  async abrirDetalhesLivro(livroId) {
+    try {
+      const res = await fetch(`/api/livros/${livroId}`);
+      if (!res.ok) throw new Error(t('books.errorDetails'));
+      const livro = await res.json();
+      this.livroModalAtual = livro;
+
+      const modal = document.getElementById('modal-detalhes-livro');
+      if (!modal) return;
+
+      const capaUrl = this.sanitizeUrl(livro.capa_url, '/capas/dom_casmurro.jpg');
+      const licencaFormatada = traduzirLicenca(livro.licenca || 'dominio-publico');
+      const sinopse = I18N.sinopse(livro.id, livro.sinopse || t('books.synopsisFallback'));
+      const rawLang = String(livro.idioma || 'pt').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
+
+      const elTitulo = document.getElementById('detalhes-titulo');
+      if (elTitulo) elTitulo.textContent = livro.titulo || '';
+
+      const elAutor = document.getElementById('detalhes-autor');
+      if (elAutor) elAutor.textContent = livro.autor_nome || t('books.defaultAuthor');
+
+      const elCat = document.getElementById('detalhes-categoria');
+      if (elCat) elCat.textContent = traduzirCategoria(livro.categoria_nome) || t('books.defaultCategory');
+
+      const elCapa = document.getElementById('detalhes-capa');
+      if (elCapa) {
+        elCapa.src = capaUrl;
+        elCapa.alt = t('books.coverOf', { t: livro.titulo });
+      }
+
+      const elBadgeIdioma = document.getElementById('detalhes-badge-idioma');
+      if (elBadgeIdioma) elBadgeIdioma.textContent = rawLang.toUpperCase();
+
+      const elLeituras = document.getElementById('detalhes-leituras');
+      if (elLeituras) elLeituras.textContent = livro.leituras > 0 ? `${livro.leituras.toLocaleString()} leituras` : 'Leitura Aberta';
+
+      const elAno = document.getElementById('detalhes-ano');
+      if (elAno) elAno.textContent = livro.ano_publicacao ? `Ano ${livro.ano_publicacao}` : 'Clássico';
+
+      const elPaginas = document.getElementById('detalhes-paginas');
+      if (elPaginas) elPaginas.textContent = livro.paginas > 0 ? `${livro.paginas} páginas` : 'Digital';
+
+      const elFonte = document.getElementById('detalhes-fonte');
+      if (elFonte) elFonte.textContent = livro.fonte_nome || 'Repositório Aberto';
+
+      const elLicenca = document.getElementById('detalhes-licenca');
+      if (elLicenca) elLicenca.textContent = licencaFormatada;
+
+      const elLicencaDesc = document.getElementById('detalhes-licenca-desc');
+      if (elLicencaDesc) {
+        const descMap = {
+          'dominio-publico': 'Obra em Domínio Público: livre de direitos autorais patrimoniais. Reprodução, leitura e download 100% livres e legais.',
+          'cc0': 'CC0 1.0 Universal: Dedicação ao domínio público a nível mundial. Sem direitos reservados.',
+          'cc-by': 'Creative Commons Atribuição (CC BY): Permite partilha e adaptação, mediante atribuição ao autor original.',
+          'cc-by-sa': 'Creative Commons Atribuição-CompartilhaIgual (CC BY-SA): Obras derivadas devem manter a mesma licença aberta.',
+          'cc-by-nc': 'Creative Commons NãoComercial (CC BY-NC): Acesso e partilha livres para fins educativos e não comerciais.',
+          'outro': 'Acesso Aberto Autorizado: Indexação autorizada via ligação externa direta ao repositório público oficial.'
+        };
+        elLicencaDesc.textContent = descMap[livro.licenca] || descMap['dominio-publico'];
+      }
+
+      const elSinopse = document.getElementById('detalhes-sinopse');
+      if (elSinopse) elSinopse.textContent = sinopse;
+
+      // Renderizar botões de formatos para download / acesso externo
+      const listaFormatos = document.getElementById('detalhes-formatos-lista');
+      if (listaFormatos) {
+        const links = livro.links || [];
+        if (links.length === 0) {
+          listaFormatos.innerHTML = '<span style="font-size:0.85rem;color:var(--text-muted)">Nenhum link externo catalogado no momento.</span>';
+        } else {
+          listaFormatos.innerHTML = links.map(lnk => {
+            const fmt = (lnk.formato || 'link').toLowerCase();
+            let tamanhoLabel = '';
+            if (lnk.tamanho_bytes > 0) {
+              const mb = (lnk.tamanho_bytes / (1024 * 1024)).toFixed(1);
+              tamanhoLabel = mb > 0.1 ? ` (${mb} MB)` : ` (${Math.round(lnk.tamanho_bytes / 1024)} KB)`;
+            }
+            const iconMap = {
+              pdf: '📕',
+              epub: '📗',
+              html: '🌐',
+              txt: '📄',
+              audiobook: '🎧'
+            };
+            const icon = iconMap[fmt] || '🔗';
+            const actionLabel = (fmt === 'html') ? 'Acessar Web / HTML' : `Baixar ${fmt.toUpperCase()}`;
+            return `
+              <a href="/api/livros/${livro.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" class="btn-format-download format-${fmt}">
+                <span>${icon}</span>
+                <strong>${actionLabel}</strong>
+                <span class="format-size">${tamanhoLabel}</span>
+                <span class="format-redirect-arrow">↗</span>
+              </a>
+            `;
+          }).join('');
+        }
+      }
+
+      // Atualizar URL hash para navegação / compartilhamento direto
+      history.replaceState(null, '', `#livro-${livro.id}`);
+
+      modal.classList.remove('hidden');
+    } catch (err) {
+      this.mostrarToast(t('books.errorDetails') || 'Não foi possível carregar os detalhes do livro');
+    }
+  },
+
+  abrirLeitorDoModal() {
+    if (!this.livroModalAtual) return;
+    const id = this.livroModalAtual.id;
+    this.fecharModais();
+    this.abrirLeitorOuLink(id);
+  },
+
+  compartilharLivroAtual() {
+    if (!this.livroModalAtual) return;
+    const l = this.livroModalAtual;
+    const url = `${window.location.origin}/#livro-${l.id}`;
+    const texto = `📚 Leia "${l.titulo}" (${l.autor_nome || 'Autor Clássico'}) gratuitamente no Lino Livre:`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: `${l.titulo} — Lino Livre`,
+        text: texto,
+        url: url
+      }).catch(() => {});
+    } else {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(`${texto} ${url}`).then(() => {
+          this.mostrarToast('Link da obra copiado para a área de transferência!');
+        }).catch(() => {});
+      }
+      const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto + ' ' + url)}`;
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+    }
   },
 
   abrirModalLegal(secao = 'termos') {
@@ -2052,15 +2336,39 @@ const app = {
     const conteudo = document.getElementById('novo-conteudo').value;
     const adminKey = (document.getElementById('novo-admin-key')?.value || '').trim();
 
-    // Se o usuário não fornecer a chave administrativa no envio, informar de forma amigável
+    // Se o usuário não fornecer a chave administrativa no envio, submeter para fila de moderação pública
     if (!adminKey) {
-      this.mostrarToast(
-        t('form.adminKeyRequired') ||
-        'Nota: Apenas administradores com chave autorizada podem publicar diretamente. Contribuições públicas de links devem possuir comprovação de licença aberta ou domínio público e passam por auditoria prévia.'
-      );
-      this.fecharModais();
-      e.target.reset();
-      return;
+      if (!urlLink) {
+        this.mostrarToast('Para sugerir uma nova obra sem chave de administração, forneça o link externo oficial de acesso.');
+        return;
+      }
+      try {
+        const resSugestao = await fetch('/api/sugestoes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            titulo,
+            autor_nome: autorNome,
+            categoria_id: categoriaId ? parseInt(categoriaId, 10) : null,
+            ano_publicacao: ano ? parseInt(ano, 10) : null,
+            licenca: licenca || 'outro',
+            formato: formato || 'html',
+            url_link: urlLink,
+            capa_url: capaUrl || null,
+            sinopse: sinopse || null
+          })
+        });
+        const dataSugestao = await resSugestao.json();
+        if (!resSugestao.ok) throw new Error(dataSugestao.erro || 'Erro ao enviar sugestão');
+
+        this.mostrarToast('Obrigado! A sua sugestão de obra aberta foi enviada para moderação e verificação de licença.');
+        this.fecharModais();
+        e.target.reset();
+        return;
+      } catch (err) {
+        this.mostrarToast(`Erro ao enviar sugestão: ${err.message}`);
+        return;
+      }
     }
 
     const links = [];
@@ -2279,15 +2587,31 @@ const app = {
   },
 
   escape(str, preserveEmoji = false) {
-    if (!str) return '';
+    if (str === null || str === undefined) return '';
     const value = preserveEmoji
       ? String(str)
       : String(str).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F1E6}-\u{1F1FF}\u{FE0E}\u{FE0F}\u{200D}]/gu, '');
     return value
       .replace(/&/g, '&amp;')
-      .replace(/</g, '&amp;lt;')
-      .replace(/>/g, '&amp;gt;')
-      .replace(/"/g, '&amp;quot;');
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  },
+
+  sanitizeUrl(url, fallback = '') {
+    if (!url || typeof url !== 'string') return fallback;
+    const trimmed = url.trim();
+    if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
+      return this.escape(trimmed);
+    }
+    try {
+      const parsed = new URL(trimmed);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return this.escape(parsed.href);
+      }
+    } catch (_) {}
+    return fallback;
   }
 };
 

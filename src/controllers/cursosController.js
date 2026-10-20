@@ -1,4 +1,5 @@
 const { getDatabase } = require('../database');
+const { validarUrlRedirecionamento } = require('../utils/urlValidator');
 
 function listar(req, res) {
   try {
@@ -44,8 +45,19 @@ function listar(req, res) {
       params.push(termo, termo, termo);
     }
 
-    // Guia de TI como fonte principal destacada no topo
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, area ASC, titulo ASC";
+    // Guia de TI como fonte principal destacada no topo, ordenação estável por id
+    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, id ASC";
+
+    const limitParam = req.query.limit || req.query.limite;
+    const pageParam = req.query.page || req.query.pagina;
+    if (limitParam || pageParam) {
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
+      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const offset = (page - 1) * limit;
+      query += ' LIMIT ? OFFSET ?';
+      params.push(limit, offset);
+    }
+
     const cursos = db.prepare(query).all(...params);
     res.json(cursos);
   } catch (err) {
@@ -75,6 +87,17 @@ function listarRoadmaps(req, res) {
     }
 
     query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
+
+    const limitParam = req.query.limit || req.query.limite;
+    const pageParam = req.query.page || req.query.pagina;
+    if (limitParam || pageParam) {
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
+      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const offset = (page - 1) * limit;
+      query += ' LIMIT ? OFFSET ?';
+      params.push(limit, offset);
+    }
+
     const roadmaps = db.prepare(query).all(...params);
     res.json(roadmaps);
   } catch (err) {
@@ -100,6 +123,13 @@ function criar(req, res) {
       return res.status(400).json({ erro: 'Campos obrigatórios: titulo, area, plataforma, url' });
     }
 
+    let urlValida;
+    try {
+      urlValida = validarUrlRedirecionamento(url);
+    } catch (err) {
+      return res.status(400).json({ erro: 'URL do curso inválida ou não autorizada: ' + err.message });
+    }
+
     const db = getDatabase();
     const result = db.prepare(`
       INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
@@ -108,7 +138,7 @@ function criar(req, res) {
       titulo.trim(),
       area.trim(),
       plataforma.trim(),
-      url.trim(),
+      urlValida,
       licenca || 'gratuito',
       nivel || 'Iniciante',
       descricao ? descricao.trim() : null
@@ -139,8 +169,9 @@ function acessarRedirect(req, res) {
     if (!curso) {
       return res.status(404).json({ erro: 'Curso não encontrado' });
     }
-    // Redirecionamento HTTP 302 direto para o curso oficial
-    res.redirect(302, curso.url);
+    // Redirecionamento HTTP 302 direto para o curso oficial após validação estrita
+    const urlDestino = validarUrlRedirecionamento(curso.url);
+    res.redirect(302, urlDestino);
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao redirecionar para o curso: ' + err.message });
   }

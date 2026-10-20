@@ -86,7 +86,16 @@
       "defaultLicense": "Domaine public",
       "availableCatalog": "Cette œuvre est disponible dans le catalogue numérique.",
       "errorOpen": "Erreur lors de l'ouverture de l'œuvre : {msg}",
-      "errorDetails": "Impossible de charger les détails du livre"
+      "errorDetails": "Impossible de charger les détails du livre",
+      "federatedSearch": "Recherche Globale",
+      "federatedTitle": "Recherche Fédérée Globale",
+      "federatedSearching": "Interrogation des catalogues globaux en parallèle…",
+      "federatedResults": "résultats fédérés",
+      "federatedSources": "catalogues",
+      "federatedDegraded": "dégradation partielle",
+      "federatedEmpty": "Aucun résultat dans les catalogues globaux pour ce terme.",
+      "federatedHint": "Saisissez un terme pour interroger les catalogues globaux en parallèle.",
+      "federatedError": "Erreur de recherche fédérée : {msg}"
     },
     "courses": {
       "bannerBadge": "⭐ Cours en ligne & Certifications gratuites",

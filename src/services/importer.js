@@ -154,7 +154,7 @@ async function executarImportacao(jobId, fonteSlug, query) {
         categoriaId,
         fonte.id,
         String(item.id_externo),
-        item.licenca || 'dominio-publico',
+        item.licenca || 'outro',
         item.conteudo_texto || null
       );
 
@@ -237,8 +237,9 @@ async function buscarOpenLibrary(query) {
 
   const resultados = [];
   for (const doc of (data.docs || [])) {
+    if (!doc.key || !doc.title) continue;
     const autorNome = doc.author_name ? doc.author_name[0] : 'Autor Clássico';
-    const idExterno = doc.key ? doc.key.replace('/works/', '') : `ol-${Math.random()}`;
+    const idExterno = doc.key.replace('/works/', '');
     const capaId = doc.cover_i;
     const capaUrl = capaId ? `https://covers.openlibrary.org/b/id/${capaId}-L.jpg` : null;
 
@@ -246,14 +247,18 @@ async function buscarOpenLibrary(query) {
       { formato: 'html', url: `https://openlibrary.org${doc.key}` }
     ];
 
+    // Só classifica como domínio público se tiver comprovação de data histórica (pré-1928)
+    const anoPub = doc.first_publish_year || null;
+    const licenca = (anoPub && anoPub <= 1928) ? 'dominio-publico' : 'outro';
+
     resultados.push({
       id_externo: idExterno,
       titulo: doc.title,
       autor_nome: autorNome,
       idioma: doc.language ? doc.language[0] : 'pt',
-      ano_publicacao: doc.first_publish_year || null,
+      ano_publicacao: anoPub,
       capa_url: capaUrl,
-      licenca: 'dominio-publico',
+      licenca,
       sinopse: doc.subtitle || `Registro de acervo aberto na Open Library.`,
       links
     });
@@ -487,7 +492,7 @@ async function buscarGuiaDeTI(query = '') {
       n.area.toLowerCase().includes(q) ||
       n.plataforma.toLowerCase().includes(q)
     );
-    return filtrados.length > 0 ? filtrados : normalizados;
+    return filtrados;
   }
 
   return normalizados;

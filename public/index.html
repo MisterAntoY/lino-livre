@@ -147,9 +147,9 @@
   </style>
   
   <!-- Full CSS loaded asynchronously -->
-  <link rel="stylesheet" href="/css/style.css?v=20261009" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="/css/style.css?v=20261021" media="print" onload="this.media='all'">
   
-  <noscript><link rel="stylesheet" href="/css/style.css?v=20261009"></noscript>
+  <noscript><link rel="stylesheet" href="/css/style.css?v=20261021"></noscript>
   
   <!-- Service Worker for offline caching -->
   <script>
@@ -362,8 +362,23 @@
 
     <!-- Filtros e Busca -->
     <section class="container filter-section">
-      <div class="search-bar">
-        <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()">
+      <div class="search-bar-wrap">
+        <div class="search-bar">
+          <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()">
+        </div>
+        <button class="btn btn-federada" id="btn-busca-federada" onclick="app.alternarBuscaFederada()" title="Consultar catálogos globais em paralelo (Fase 4)">
+          <span class="fed-icon">🌐</span>
+          <span data-i18n="ui.books.federatedSearch">Busca Global</span>
+        </button>
+      </div>
+
+      <!-- Resultados da Busca Federada Global (Fase 4 — motor distribuído RRF) -->
+      <div id="painel-federada" class="federada-panel hidden">
+        <div class="federada-header">
+          <span class="federada-badge">🌐 <span data-i18n="ui.books.federatedTitle">Busca Federada Global</span></span>
+          <span class="federada-stats" id="federada-stats"></span>
+        </div>
+        <div id="grade-federada" class="federada-grid"></div>
       </div>
 
       <!-- Filtros de Idiomas dos Livros -->
@@ -424,7 +439,7 @@
         </div>
       </div>
 
-      <!-- Filtros de Formato e Licença -->
+      <!-- Filtros de Formato -->
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.books.format">Formato:</span>
         <div class="pills-container" id="pills-formatos">
@@ -433,6 +448,20 @@
           <button class="pill" data-formato="epub" onclick="app.filtrarPorFormato('epub')">EPUB</button>
           <button class="pill" data-formato="html" onclick="app.filtrarPorFormato('html')" data-i18n="ui.books.webFormat">Web / HTML</button>
           <button class="pill" data-formato="txt" onclick="app.filtrarPorFormato('txt')">TXT</button>
+        </div>
+      </div>
+
+      <!-- Filtros de Licença Legal -->
+      <div class="filter-row">
+        <span class="filter-label" data-i18n="ui.books.licenseFilter">Licença:</span>
+        <div class="pills-container" id="pills-licencas">
+          <button class="pill active" data-licenca="" onclick="app.filtrarPorLicenca('')" data-i18n="ui.books.allLicenses">Todas as Licenças</button>
+          <button class="pill" data-licenca="dominio-publico" onclick="app.filtrarPorLicenca('dominio-publico')" data-i18n="ui.licenses.dominio-publico">Domínio Público</button>
+          <button class="pill" data-licenca="cc0" onclick="app.filtrarPorLicenca('cc0')" data-i18n="ui.licenses.cc0">CC0 (Dedicação Pública)</button>
+          <button class="pill" data-licenca="cc-by" onclick="app.filtrarPorLicenca('cc-by')" data-i18n="ui.licenses.cc-by">CC BY (Atribuição)</button>
+          <button class="pill" data-licenca="cc-by-sa" onclick="app.filtrarPorLicenca('cc-by-sa')" data-i18n="ui.licenses.cc-by-sa">CC BY-SA</button>
+          <button class="pill" data-licenca="cc-by-nc" onclick="app.filtrarPorLicenca('cc-by-nc')" data-i18n="ui.licenses.cc-by-nc">CC BY-NC</button>
+          <button class="pill" data-licenca="outro" onclick="app.filtrarPorLicenca('outro')" data-i18n="ui.licenses.outro">Acesso Aberto / Outro</button>
         </div>
       </div>
     </section>
@@ -798,14 +827,14 @@
       <div class="footer-col">
         <h4 class="footer-heading" data-i18n="ui.footer.headingCommunity">Comunidade & Suporte</h4>
         <ul class="footer-nav-list">
-          <li id="footer-links-container" class="hidden">
-            <a id="link-footer-comunidade" href="#" target="_blank" rel="noopener noreferrer">
+          <li id="footer-links-container">
+            <a id="link-footer-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
               <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-              <span data-i18n="ui.footer.group">Grupo WhatsApp</span>
+              <span data-i18n="ui.footer.group">Comunidade WhatsApp</span>
             </a>
           </li>
-          <li id="footer-canal-container" class="hidden">
-            <a id="link-footer-canal" href="#" target="_blank" rel="noopener noreferrer">
+          <li id="footer-canal-container">
+            <a id="link-footer-canal" href="https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X" target="_blank" rel="noopener noreferrer">
               <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
               <span data-i18n="ui.footer.channel">Canal WhatsApp</span>
             </a>
@@ -999,6 +1028,98 @@
     </div>
   </div>
 
+  <!-- MODAL: DETALHES DA OBRA E FORMATOS DE DOWNLOAD ("PÁGINA LIVRO") -->
+  <div id="modal-detalhes-livro" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="detalhes-titulo">
+    <div class="modal-card modal-book-details-card">
+      <div class="modal-card-header">
+        <div class="book-details-modal-title-group">
+          <span class="badge-format" id="detalhes-badge-idioma">PT</span>
+          <h3 id="detalhes-titulo" class="modal-book-title">Título da Obra</h3>
+        </div>
+        <button class="btn-close" onclick="app.fecharModais()" aria-label="Fechar" title="Fechar">&times;</button>
+      </div>
+
+      <div class="modal-card-body book-details-modal-body">
+        <div class="book-details-layout">
+          <!-- Coluna Esquerda: Capa e Metadados Rápidos -->
+          <div class="book-details-cover-col">
+            <div class="book-details-cover-wrap">
+              <img id="detalhes-capa" src="/capas/dom_casmurro.jpg" alt="Capa do Livro" class="book-details-cover" onerror="this.src='/capas/dom_casmurro.jpg'">
+            </div>
+            <div class="book-details-quick-meta">
+              <div class="quick-meta-pill" id="detalhes-leituras-pill" title="Contagem de Leituras">
+                <span>📖</span> <span id="detalhes-leituras">0 leituras</span>
+              </div>
+              <div class="quick-meta-pill" id="detalhes-ano-pill" title="Ano de Publicação">
+                <span>📅</span> <span id="detalhes-ano">Ano —</span>
+              </div>
+              <div class="quick-meta-pill" id="detalhes-paginas-pill" title="Extensão">
+                <span>📄</span> <span id="detalhes-paginas">Páginas —</span>
+              </div>
+              <div class="quick-meta-pill" id="detalhes-fonte-pill" title="Fonte Oficial Conectada">
+                <span>🏛️</span> <span id="detalhes-fonte">Fonte Aberta</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Informações, Licença e Ações -->
+          <div class="book-details-info-col">
+            <div class="book-details-meta-header">
+              <p class="book-details-author" id="detalhes-autor">Autor</p>
+              <span class="book-details-category" id="detalhes-categoria">Categoria</span>
+            </div>
+
+            <!-- Caixa de Licença Legal -->
+            <div class="book-license-box">
+              <div class="license-box-header">
+                <span class="license-shield">🛡️</span>
+                <strong>Licença:</strong>
+                <span class="badge-license" id="detalhes-licenca">Domínio Público</span>
+              </div>
+              <p class="license-box-desc" id="detalhes-licenca-desc">
+                Obra em Domínio Público ou licença aberta educacional. Acesso livre, leitura online e download educativo irrestritos.
+              </p>
+            </div>
+
+            <!-- Sinopse -->
+            <div class="book-synopsis-section">
+              <h4 class="section-subheading">Sinopse da Obra</h4>
+              <p class="book-synopsis-text" id="detalhes-sinopse">Sinopse da obra...</p>
+            </div>
+
+            <!-- Ações Principais: Leitura Online -->
+            <div class="book-actions-primary">
+              <button id="btn-detalhes-ler-online" class="btn btn-primary btn-lg" onclick="app.abrirLeitorDoModal()">
+                📖 Ler Online no Navegador
+              </button>
+              <button id="btn-detalhes-compartilhar" class="btn btn-secondary btn-lg" onclick="app.compartilharLivroAtual()">
+                🔗 Partilhar Obra
+              </button>
+            </div>
+
+            <!-- Seção de Formatos Disponíveis para Baixar -->
+            <div class="book-formats-download-section">
+              <h4 class="section-subheading" data-i18n="ui.books.formatsAvailable">Formatos Disponíveis para Baixar ou Acessar</h4>
+              <p class="formats-subtext">Acesso direto via intermediário seguro (HTTP 302) para os repositórios oficiais:</p>
+              <div class="formats-download-grid" id="detalhes-formatos-lista">
+                <!-- Preenchido dinamicamente com botões por formato -->
+              </div>
+            </div>
+
+            <!-- Nota de Intermediação Legal -->
+            <div class="legal-intermediary-notice">
+              <p>⚖️ <em>O Lino Livre atua unicamente como indexador intermediário. Nenhum arquivo binário é armazenado localmente nos nossos servidores.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn btn-secondary" onclick="app.fecharModais()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: ADICIONAR NOVO LIVRO DIGITAL -->
   <div id="modal-novo-livro" class="modal-backdrop hidden">
     <div class="modal-card">
@@ -1162,7 +1283,7 @@
   <div id="toast" class="toast hidden"></div>
 
 
-  <script defer src="/js/i18n.js?v=20261020"></script>
-  <script defer src="/js/app.js?v=20261020"></script>
+  <script defer src="/js/i18n.js?v=20261021"></script>
+  <script defer src="/js/app.js?v=20261021"></script>
 </body>
 </html>

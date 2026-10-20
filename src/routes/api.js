@@ -74,6 +74,16 @@ const legalController = require('../controllers/legalController');
 router.get('/legal', legalController.obterDiretrizesLegais);
 router.get('/creditos', legalController.obterCreditos);
 
+// 10. Sugestões da Comunidade (Fila de Moderação)
+const sugestoesController = require('../controllers/sugestoesController');
+router.post('/sugestoes', sugestoesController.criar);
+router.get('/sugestoes', verificarAdmin, sugestoesController.listar);
+
+// 11. Busca Federada Global (Fase 4 — motor distribuído com RRF)
+const buscaFederadaController = require('../controllers/buscaFederadaController');
+router.get('/busca/federada', buscaFederadaController.buscar);
+router.get('/busca/federada/diagnostico', buscaFederadaController.diagnostico);
+
 module.exports = router;
 
 

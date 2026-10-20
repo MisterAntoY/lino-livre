@@ -62,6 +62,13 @@
     "books": {
       "languageFilter": "Idioma:",
       "allLanguages": "Todos os Idiomas",
+      "licenseFilter": "Licença:",
+      "allLicenses": "Todas as Licenças",
+      "viewDetails": "Ver Detalhes",
+      "formatsAvailable": "Formatos Disponíveis para Baixar ou Acessar",
+      "readOnlineNav": "Ler Online no Navegador",
+      "shareBook": "Partilhar Obra",
+      "shareBookCopied": "Link da obra copiado para a área de transferência!",
       "africaBannerTitle": "O Maior Acervo de Livros Digitais de África",
       "africaBannerDesc": "Obras-primas da literatura africana, contos da tradição oral ancestral, história das grandes civilizações e filosofia em 5 idiomas: Português, English, Français, Deutsch e 中文. Todos os livros possuem leitura online multi-capítulos sem necessidade de baixar arquivos pesados.",
       "catAfricaLit": "🌍 Literatura & Vozes de África",
@@ -106,7 +113,16 @@
       "defaultLicense": "Domínio Público",
       "availableCatalog": "Esta obra está disponível no catálogo digital.",
       "errorOpen": "Erro ao abrir obra: {msg}",
-      "errorDetails": "Não foi possível carregar os detalhes do livro"
+      "errorDetails": "Não foi possível carregar os detalhes do livro",
+      "federatedSearch": "Busca Global",
+      "federatedTitle": "Busca Federada Global",
+      "federatedSearching": "A consultar catálogos globais em paralelo…",
+      "federatedResults": "resultados federados",
+      "federatedSources": "catálogos",
+      "federatedDegraded": "degradação parcial",
+      "federatedEmpty": "Nenhum resultado nos catálogos globais para este termo.",
+      "federatedHint": "Escreva um termo para consultar catálogos globais em paralelo.",
+      "federatedError": "Erro na busca federada: {msg}"
     },
     "courses": {
       "bannerBadge": "⭐ Cursos Livres & Certificações Gratuitas",

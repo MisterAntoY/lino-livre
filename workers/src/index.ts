@@ -5,6 +5,8 @@ import { RepoSupabase, obterConfigSupabase, backendSupabase } from './supabase';
 import { generateQrCodeSvg } from './utils/qrcode';
 import { dicasData } from '../../src/database/dicasData';
 import { executarImportacaoD1 } from './services/importer';
+import { obterMotor } from './services/federacaoBusca';
+import { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS } from './utils/urlValidator';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -24,22 +26,15 @@ app.use('/api/livros/:id', cacheDeBorda);
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
-const DOMINIOS_PROIBIDOS = [
-  'z-lib', 'zlibrary', 'z-library',
-  'libgen', 'library.lol',
-  'sci-hub', 'scihub',
-  'annas-archive', 'anna-archive',
-  'b-ok', 'bookfi', 'pdfdrive'
-];
-
-function verificarUrlConformidade(url?: string | null) {
-  if (!url) return;
-  const urlLower = String(url).toLowerCase();
-  for (const dom of DOMINIOS_PROIBIDOS) {
-    if (urlLower.includes(dom)) {
-      throw new Error(`URL rejeitada por violar a política de compliance e legalidade (fonte não autorizada / lista negra de pirataria: ${dom}). O Lino Livre veda estritamente o uso de repositórios piratas (ver /legal e docs/FONTES-E-COMPLIANCE.md).`);
-    }
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) {
+    return false;
   }
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
 }
 
 // ────────────────────────────────────────────────────────────
@@ -55,7 +50,7 @@ async function verificarAdminWorker(c: any, next: any) {
   }
   const providedKey = headerKey || bearerToken;
 
-  if (!adminKey || !providedKey || providedKey !== adminKey) {
+  if (!adminKey || !providedKey || !timingSafeEqualStr(providedKey, adminKey)) {
     return c.json({ erro: 'Acesso não autorizado: chave administrativa necessária' }, 401);
   }
 
@@ -301,13 +296,33 @@ app.delete('/api/categorias/:id', verificarAdminWorker, async (c) => {
 app.get('/api/autores', async (c) => {
   try {
     const db = c.env.DB;
-    const autores = (await db.prepare(`
+    const busca = (c.req.query('busca') || c.req.query('q') || '').trim();
+    const limitParam = c.req.query('limit') || c.req.query('limite');
+    const pageParam = c.req.query('page') || c.req.query('pagina');
+
+    let query = `
       SELECT a.*, COUNT(l.id) AS total_livros
       FROM autores a
       LEFT JOIN livros l ON l.autor_id = a.id
-      GROUP BY a.id
-      ORDER BY a.nome ASC
-    `).all()).results;
+    `;
+    const params: any[] = [];
+
+    if (busca) {
+      query += ' WHERE a.nome LIKE ?';
+      params.push(`%${busca}%`);
+    }
+
+    query += ' GROUP BY a.id ORDER BY a.nome ASC';
+
+    if (limitParam || pageParam) {
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
+      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const offset = (page - 1) * limit;
+      query += ' LIMIT ? OFFSET ?';
+      params.push(limit, offset);
+    }
+
+    const autores = (await db.prepare(query).bind(...params).all()).results;
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(autores);
   } catch (err: any) {
@@ -740,7 +755,8 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
         c.executionCtx.waitUntil(repo.registrarLeitura(id));
 
         if (link.url && String(link.url).startsWith('http')) {
-          return c.redirect(String(link.url), 302);
+          const urlSegura = validarUrlRedirecionamento(String(link.url));
+          return c.redirect(urlSegura, 302);
         }
         const conteudo = await repo.conteudoTexto(id);
         return c.json({
@@ -748,7 +764,10 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
           url: link.url,
           conteudo_texto: conteudo
         });
-      } catch (err) {
+      } catch (err: any) {
+        if (err.message && err.message.includes('rejeitada por violar')) {
+          return c.json({ erro: err.message }, 400);
+        }
         console.error('Supabase leitura falhou; a usar D1:', err);
       }
     }
@@ -769,7 +788,8 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
     );
 
     if (link.url && link.url.startsWith('http')) {
-      return c.redirect(link.url, 302);
+      const urlSegura = validarUrlRedirecionamento(link.url);
+      return c.redirect(urlSegura, 302);
     }
 
     return c.json({
@@ -1011,6 +1031,66 @@ app.get('/api/import/:id', async (c) => {
   }
 });
 
+// 5.5 Sugestões da Comunidade (Moderação Pública)
+app.post('/api/sugestoes', async (c) => {
+  try {
+    const body = await c.req.json<any>();
+    const { titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato, url_link, capa_url, sinopse } = body || {};
+
+    if (!titulo || typeof titulo !== 'string' || titulo.trim().length < 2) {
+      return c.json({ erro: 'Título da obra é obrigatório' }, 400);
+    }
+
+    if (!url_link || typeof url_link !== 'string') {
+      return c.json({ erro: 'URL de leitura pública ou página do acervo é obrigatória' }, 400);
+    }
+
+    let urlValida: string;
+    try {
+      urlValida = validarUrlRedirecionamento(url_link);
+    } catch (err: any) {
+      return c.json({ erro: 'URL inválida ou não autorizada: ' + err.message }, 400);
+    }
+
+    const db = c.env.DB;
+    const res = await db.prepare(`
+      INSERT INTO sugestoes (
+        titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato,
+        url_link, capa_url, sinopse, status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')
+    `).bind(
+      titulo.trim().slice(0, 250),
+      autor_nome ? String(autor_nome).trim().slice(0, 150) : null,
+      ano_publicacao ? parseInt(ano_publicacao, 10) : null,
+      categoria_id ? parseInt(categoria_id, 10) : null,
+      licenca || 'outro',
+      formato || 'html',
+      urlValida,
+      capa_url ? String(capa_url).trim().slice(0, 500) : null,
+      sinopse ? String(sinopse).trim().slice(0, 1000) : null
+    ).run();
+
+    return c.json({
+      sucesso: true,
+      mensagem: 'Sugestão recebida com sucesso! Passará pela curadoria do Lino Livre antes de ser publicada.',
+      id: res.meta?.last_row_id
+    }, 201);
+  } catch (err: any) {
+    return c.json({ erro: 'Erro ao processar sugestão: ' + err.message }, 500);
+  }
+});
+
+app.get('/api/sugestoes', verificarAdminWorker, async (c) => {
+  try {
+    const status = c.req.query('status') || 'pendente';
+    const db = c.env.DB;
+    const sugestoes = (await db.prepare('SELECT * FROM sugestoes WHERE status = ? ORDER BY criado_em DESC LIMIT 50').bind(status).all()).results;
+    return c.json(sugestoes);
+  } catch (err: any) {
+    return c.json({ erro: 'Erro ao listar sugestões: ' + err.message }, 500);
+  }
+});
+
 // 6. Cursos
 app.get('/api/cursos', async (c) => {
   try {
@@ -1068,7 +1148,18 @@ app.get('/api/cursos', async (c) => {
       params.push(termo, termo, termo);
     }
 
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, area ASC, titulo ASC";
+    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, id ASC";
+
+    const limitParam = filtros.limit || filtros.limite;
+    const pageParam = filtros.page || filtros.pagina;
+    if (limitParam || pageParam) {
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
+      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const offset = (page - 1) * limit;
+      query += ' LIMIT ? OFFSET ?';
+      params.push(limit, offset);
+    }
+
     const cursos = (await db.prepare(query).bind(...params).all()).results;
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(cursos);
@@ -1112,6 +1203,17 @@ app.get('/api/roadmaps', async (c) => {
     }
 
     query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
+
+    const limitParam = filtros.limit || filtros.limite;
+    const pageParam = filtros.page || filtros.pagina;
+    if (limitParam || pageParam) {
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
+      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const offset = (page - 1) * limit;
+      query += ' LIMIT ? OFFSET ?';
+      params.push(limit, offset);
+    }
+
     const roadmaps = (await db.prepare(query).bind(...params).all()).results;
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(roadmaps);
@@ -1152,8 +1254,12 @@ app.get('/api/cursos/:id/acessar', async (c) => {
       try {
         const curso = await repo.curso(id);
         if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
-        return c.redirect(String((curso as any).url), 302);
-      } catch (err) {
+        const urlSegura = validarUrlRedirecionamento(String((curso as any).url));
+        return c.redirect(urlSegura, 302);
+      } catch (err: any) {
+        if (err.message && err.message.includes('rejeitada por violar')) {
+          return c.json({ erro: err.message }, 400);
+        }
         console.error('Supabase acessar curso falhou; a usar D1:', err);
       }
     }
@@ -1161,7 +1267,8 @@ app.get('/api/cursos/:id/acessar', async (c) => {
     const db = c.env.DB;
     const curso = await db.prepare('SELECT id, titulo, url FROM cursos WHERE id = ?').bind(id).first<{ url: string }>();
     if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
-    return c.redirect(curso.url, 302);
+    const urlSegura = validarUrlRedirecionamento(curso.url);
+    return c.redirect(urlSegura, 302);
   } catch (err: any) {
     return c.json({ erro: 'Erro ao redirecionar para o curso: ' + err.message }, 500);
   }
@@ -1174,12 +1281,19 @@ app.post('/api/cursos', verificarAdminWorker, async (c) => {
       return c.json({ erro: 'Campos obrigatórios: titulo, area, plataforma, url' }, 400);
     }
 
+    let urlValida: string;
+    try {
+      urlValida = validarUrlRedirecionamento(url);
+    } catch (err: any) {
+      return c.json({ erro: 'URL do curso inválida ou não autorizada: ' + err.message }, 400);
+    }
+
     const db = c.env.DB;
     const res = await db.prepare(`
       INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `).bind(
-      titulo.trim(), area.trim(), plataforma.trim(), url.trim(),
+      titulo.trim(), area.trim(), plataforma.trim(), urlValida,
       licenca || 'gratuito', nivel || 'Iniciante', descricao ? descricao.trim() : null
     ).run();
 
@@ -1421,6 +1535,68 @@ app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
   } catch (err: any) {
     return c.json({ erro: 'Erro ao registar reprodução: ' + err.message }, 500);
   }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FASE 4 — BUSCA FEDERADA GLOBAL (motor distribuído com RRF)
+// Interroga vários catálogos abertos em paralelo na borda e funde os
+// resultados num ranking único. Apenas METADADOS (zero armazenamento).
+// ═══════════════════════════════════════════════════════════════════════════
+app.get('/api/busca/federada', async (c) => {
+  const q = String(c.req.query('q') ?? c.req.query('busca') ?? '').trim();
+  if (!q) {
+    return c.json({ erro: 'Parâmetro "q" (termo de busca) é obrigatório' }, 400);
+  }
+  const limite = Math.min(
+    100,
+    Math.max(1, parseInt(c.req.query('limite') ?? '30', 10) || 30)
+  );
+
+  try {
+    const motor = obterMotor();
+    const r = await motor.buscar(q, { limite });
+
+    // Sanitização de output (defesa em profundidade)
+    const seguros = (r.resultados ?? [])
+      .map((x: any) => ({
+        id: String(x.id ?? ''),
+        titulo: String(x.titulo ?? '').replace(/[<>\"']/g, ''),
+        autor: x.autor ? String(x.autor).replace(/[<>\"']/g, '') : null,
+        ano: Number.isFinite(x.ano) ? x.ano : null,
+        idioma: x.idioma ? String(x.idioma).slice(0, 12) : null,
+        fonte: x.fonte,
+        fontes: x.fontes,
+        url: /^https?:\/\//i.test(String(x.url ?? '')) ? x.url : null,
+        capa: /^https?:\/\//i.test(String(x.capa ?? '')) ? x.capa : null,
+        sinopse: x.sinopse ? String(x.sinopse).replace(/[<>\"']/g, '').slice(0, 300) : null,
+        licenca: x.licenca,
+        score: x.score
+      }))
+      .filter((x: any) => x.url); // só resultados com link externo válido (302)
+
+    return c.json({
+      q: q.slice(0, 200),
+      total: seguros.length,
+      resultados: seguros,
+      upstreams: r.upstreams,
+      duracao_ms: r.duracao_ms,
+      degradado: r.degradado,
+      cache: r.cache === true,
+      motor: 'federado-distribuido-rrf',
+      k: 60
+    });
+  } catch (err: any) {
+    return c.json({ erro: 'Erro na busca federada: ' + err.message }, 500);
+  }
+});
+
+// Diagnóstico do motor federado
+app.get('/api/busca/federada/diagnostico', (c) => {
+  return c.json({
+    motor: 'federado-distribuido-rrf',
+    k: 60,
+    upstreams: obterMotor().diagnostico()
+  });
 });
 
 // Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade

@@ -54,6 +54,15 @@
       "categoryFilter": "Category:"
     },
     "books": {
+      "languageFilter": "Language:",
+      "allLanguages": "All Languages",
+      "licenseFilter": "License:",
+      "allLicenses": "All Licenses",
+      "viewDetails": "View Details",
+      "formatsAvailable": "Formats Available to Download or Read",
+      "readOnlineNav": "Read Online in Browser",
+      "shareBook": "Share Work",
+      "shareBookCopied": "Book link copied to clipboard!",
       "searchPlaceholder": "Search by title or author...",
       "categories": "Categories:",
       "all": "All",
@@ -94,7 +103,16 @@
       "defaultLicense": "Public Domain",
       "availableCatalog": "This work is available in the digital catalogue.",
       "errorOpen": "Error opening work: {msg}",
-      "errorDetails": "Could not load the book details"
+      "errorDetails": "Could not load the book details",
+      "federatedSearch": "Global Search",
+      "federatedTitle": "Global Federated Search",
+      "federatedSearching": "Querying global catalogues in parallel…",
+      "federatedResults": "federated results",
+      "federatedSources": "catalogues",
+      "federatedDegraded": "partial degradation",
+      "federatedEmpty": "No results in the global catalogues for this term.",
+      "federatedHint": "Type a term to query global catalogues in parallel.",
+      "federatedError": "Federated search error: {msg}"
     },
     "courses": {
       "bannerBadge": "⭐ Free Online Courses & Certifications",

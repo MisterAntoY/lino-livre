@@ -126,8 +126,8 @@ class EscritorLotes {
     }
     for (const l of this.livroBuf) {
       linhas.push(
-        `INSERT OR IGNORE INTO livros (id, titulo, idioma, sinopse, capa_url, ano_publicacao, autor_id, categoria_id, fonte_id, fonte_id_externo, licenca, leituras, conteudo_texto) VALUES ` +
-        `(${l.id}, ${esc(l.titulo)}, ${esc(l.idioma)}, ${esc(l.sinopse)}, ${esc(l.capaUrl)}, ${esc(l.ano)}, ${l.autorId}, ${l.categoriaId}, ${l.fonteId}, ${esc(l.fonteIdExterno)}, ${esc(l.licenca)}, 0, NULL);`
+        `INSERT OR IGNORE INTO livros (id, titulo, idioma, sinopse, capa_url, ano_publicacao, paginas, autor_id, categoria_id, fonte_id, fonte_id_externo, licenca, leituras, conteudo_texto) VALUES ` +
+        `(${l.id}, ${esc(l.titulo)}, ${esc(l.idioma)}, ${esc(l.sinopse)}, ${esc(l.capaUrl)}, ${esc(l.ano)}, ${esc(l.paginas ?? null)}, ${l.autorId}, ${l.categoriaId}, ${l.fonteId}, ${esc(l.fonteIdExterno)}, ${esc(l.licenca)}, 0, NULL);`
       );
     }
     for (const k of this.linkBuf) {
@@ -219,6 +219,128 @@ function acessoAberto(rec) {
 
 // ── Streaming do dump ─────────────────────────────────────────────────────
 /**
+ * Baixa um segmento [inicio, fim] do dump para um ficheiro temporário.
+ * Retoma dentro do segmento se a ligação cair (offset parcial gravado).
+ */
+async function baixarSegmento(url, inicio, fim, destino, onProgresso) {
+  const tmp = destino + '.parcial';
+  let offset = inicio;
+  try { offset = inicio + (fs.existsSync(tmp) ? fs.statSync(tmp).size : 0); } catch {}
+
+  if (offset > fim) { fs.renameSync(tmp, destino); return; }
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const headers = {
+        'User-Agent': USER_AGENT,
+        'Accept-Encoding': 'identity',
+        Range: `bytes=${offset}-${fim}`
+      };
+      const res = await fetch(url, { headers });
+      if (res.status !== 206 && res.status !== 200) throw new Error(`HTTP ${res.status}`);
+
+      const out = fs.createWriteStream(tmp, { flags: 'a' });
+      const w = res.body.pipeThrough(new WritableStream({
+        write(chunk) {
+          return new Promise((resolve, reject) => {
+            out.write(Buffer.from(chunk), (err) => err ? reject(err) : resolve());
+          });
+        }
+      }));
+      await new Promise((resolve, reject) => {
+        w.then(() => out.end(resolve)).catch(reject);
+        res.body.pipeTo(w).catch(reject);
+      });
+      await new Promise(r => out.on('close', r));
+
+      const size = fs.statSync(tmp).size;
+      if (inicio + size - 1 >= fim) {
+        fs.renameSync(tmp, destino);
+        onProgresso?.();
+        return;
+      }
+      // segmento incompleto → retoma
+      offset = inicio + size;
+      throw new Error(`Segmento incompleto (${size} bytes) — a retomar`);
+    } catch (err) {
+      if (attempt === MAX_RETRIES) throw err;
+      const espera = 2000 * attempt;
+      console.warn(`      ⚠ segmento [${inicio}-${fim}] tentativa ${attempt}: ${String(err.message).slice(0, 90)} — aguarda ${espera}ms`);
+      await new Promise(r => setTimeout(r, espera));
+    }
+  }
+}
+
+/**
+ * Faz download paralelo do dump em N segmentos e devolve um stream
+ * de leitura ORDERED (segmento 0, 1, 2 ...), com gunzip aplicado.
+ * Contorna a limitação de velocidade por ligação (o archive.org estrangula
+ * cada TCP a ~10-15 KB/s; N ligações em paralelo = N × essa velocidade).
+ */
+async function streamDumpParalelo(url, onLinha, inicioLinha = 0, opcoes = {}) {
+  const { segmentos = 8, dir = '.scratch/fase4-partes', tamanhoTotal = null } = opcoes;
+
+  const finalUrl = await resolverUrlFinal(url);
+  const total = tamanhoTotal || await obterTamanho(finalUrl);
+  console.log(`   → download paralelo: ${segmentos} segmentos sobre ${(total/1e9).toFixed(2)} GB`);
+
+  fs.mkdirSync(dir, { recursive: true });
+  const tamSeg = Math.ceil(total / segmentos);
+  const ficheiros = [];
+
+  // Descarrega os segmentos em paralelo
+  const fila = [];
+  for (let i = 0; i < segmentos; i++) {
+    const inicio = i * tamSeg;
+    const fim = Math.min(inicio + tamSeg - 1, total - 1);
+    if (inicio > fim) break;
+    const dest = path.join(dir, `seg-${String(i).padStart(3, '0')}.part`);
+    ficheiros.push(dest);
+    fila.push(baixarSegmento(finalUrl, inicio, fim, dest, () => {
+      const feitos = ficheiros.filter(f => fs.existsSync(f)).length;
+      console.log(`   ✔ segmento ${feitos}/${segmentos} completo`);
+    }).catch(e => { console.warn(`   ⚠ segmento ${i} falhou: ${e.message}`); }));
+  }
+
+  // Aguarda que pelo menos o primeiro segmento esteja pronto para começar a ler
+  while (fila.length && !fs.existsSync(ficheiros[0])) {
+    await Promise.race([Promise.all(fila).catch(() => {}), new Promise(r => setTimeout(r, 500))]);
+    if (!fs.existsSync(ficheiros[0]) && fila.every(p => p.isSettled?.())) break;
+  }
+  await Promise.allSettled(fila);
+
+  // Lê os segmentos por ordem, aplicando gunzip uma única vez
+  const gunzip = zlib.createGunzip({ chunkSize: 1 << 20 });
+  gunzip.on('error', () => {});
+
+  let buffer = '';
+  let n = 0;
+  for (const f of ficheiros) {
+    if (!fs.existsSync(f)) continue;
+    const rs = fs.createReadStream(f, { highWaterMark: 1 << 20 });
+    for await (const chunk of rs.pipe(gunzip)) {
+      buffer += chunk.toString('utf-8');
+      let idx;
+      while ((idx = buffer.indexOf('\n')) !== -1) {
+        const linha = buffer.slice(0, idx);
+        buffer = buffer.slice(idx + 1);
+        n++;
+        if (n <= inicioLinha) continue;
+        if (linha.trim() === '') continue;
+        onLinha(linha, n);
+      }
+    }
+  }
+  return n;
+}
+
+async function obterTamanho(url) {
+  const res = await fetch(url, { method: 'HEAD', headers: { 'User-Agent': USER_AGENT, 'Accept-Encoding': 'identity' } });
+  const len = res.headers.get('content-length');
+  return len ? parseInt(len, 10) : 0;
+}
+
+/**
  * Resolve a cadeia de redireccionamentos manualmente até ao URL final.
  * Necessário porque o fetch perde o cabeçalho Range ao seguir os 302 do
  * archive.org para os nós ia*.us.archive.org (que são os que suportam Range).
@@ -241,6 +363,36 @@ async function resolverUrlFinal(url, maxRedirecoes = 5) {
   return atual;
 }
 
+/**
+ * Lê o dump a partir de um ficheiro local (.gz) — usado para validação
+ * offline, dumps espelhados, e testes de regressão do parser.
+ */
+async function streamDumpLocal(caminho, onLinha, inicioLinha = 0) {
+  const gunzip = zlib.createGunzip({ chunkSize: 1 << 20 });
+  gunzip.on('error', () => {});
+  const src = fs.createReadStream(caminho).pipe(gunzip);
+  let buffer = '';
+  let n = 0;
+  try {
+    for await (const chunk of src) {
+      buffer += chunk.toString('utf-8');
+      let idx;
+      while ((idx = buffer.indexOf('\n')) !== -1) {
+        const linha = buffer.slice(0, idx);
+        buffer = buffer.slice(idx + 1);
+        n++;
+        if (n <= inicioLinha) continue;
+        if (linha.trim() === '') continue;
+        onLinha(linha, n);
+      }
+    }
+  } catch (e) {
+    // ficheiro truncado (sonda parcial) — as linhas completas já foram processadas
+    if (!/unexpected end of file|Z_BUF_ERROR/i.test(String(e.message))) throw e;
+  }
+  return n;
+}
+
 async function streamDump(url, onLinha, inicioLinha = 0, limiteBytes = null) {
   // 1) Resolve o URL final (para o Range não se perder nos 302)
   const finalUrl = await resolverUrlFinal(url);
@@ -257,13 +409,39 @@ async function streamDump(url, onLinha, inicioLinha = 0, limiteBytes = null) {
   const gunzip = zlib.createGunzip({ chunkSize: 1 << 20 });
   const src = Readable.fromWeb(res.body).pipe(gunzip);
 
-  const rl = readline.createInterface({ input: src, crlfDelay: Infinity });
+  // 4) Divisor de linhas manual, tolerante a erro (sonda truncada → gunzip
+  //    emite "unexpected end of file" mas já entregou todas as linhas completas)
+  let buffer = '';
   let n = 0;
-  for await (const linha of rl) {
+  let erro = null;
+
+  gunzip.on('error', (e) => { erro = e; });
+
+  try {
+    for await (const chunk of src) {
+      buffer += chunk.toString('utf-8');
+      let idx;
+      while ((idx = buffer.indexOf('\n')) !== -1) {
+        const linha = buffer.slice(0, idx);
+        buffer = buffer.slice(idx + 1);
+        n++;
+        if (n <= inicioLinha) continue;
+        if (linha.trim() === '') continue;
+        onLinha(linha, n);
+      }
+    }
+  } catch (e) {
+    erro = e;
+  }
+
+  // última linha sem \n
+  if (buffer.trim() !== '') {
     n++;
-    if (n <= inicioLinha) continue;
-    if (linha.trim() === '') continue;
-    onLinha(linha, n);
+    if (n > inicioLinha) onLinha(buffer, n);
+  }
+
+  if (erro && !/unexpected end of file|Z_BUF_ERROR/i.test(String(erro.message))) {
+    throw erro;
   }
   return n;
 }
@@ -294,6 +472,12 @@ async function executar(args) {
   const sondaBytes = idxProbe !== -1 ? parseInt(args[idxProbe + 1], 10) : 0;
   const idxFonte = args.indexOf('--fonte');
   const nomeFonte = idxFonte !== -1 ? args[idxFonte + 1] : 'editions';
+  const idxFich = args.indexOf('--ficheiro');
+  const ficheiroLocal = idxFich !== -1 ? args[idxFich + 1] : null;
+  const idxPar = args.indexOf('--paralelo');
+  const segmentos = idxPar !== -1 ? Math.max(1, parseInt(args[idxPar + 1], 10)) : 8;
+  const idxMaxBytes = args.indexOf('--max-bytes');
+  const maxBytes = idxMaxBytes !== -1 ? parseInt(args[idxMaxBytes + 1], 10) : null;
 
   banner('FASE 4 — Ingestão do dump massivo da Open Library (meta: 10.000.000)');
   const dump = DUMPS[nomeFonte];
@@ -315,67 +499,82 @@ async function executar(args) {
   const inicio = Date.now();
   let ultimaGravacao = 0;
 
+  // Closure de processamento de uma linha do dump
+  const processarLinha = (linha, n) => {
+    linhasProcessadas++;
+    if (total >= meta) return;
+
+    const p = parseLinhaTSV(linha);
+    if (!p) return;
+
+    const rec = p.dados;
+    const acesso = acessoAberto(rec);
+    if (!acesso) return;
+
+    const extId = `ol-dump-${p.chave.replace('/books/', '')}`;
+    if (dedup.tem(extId)) return;
+    dedup.adicionar(extId);
+
+    const titulo = String(rec.title || '').trim();
+    if (!titulo) return;
+
+    const autores = extrairAutores(rec);
+    const autorObj = escritor.autor(
+      autores.length ? `Autor ${autores[0]}` : 'Autor Desconhecido'
+    );
+
+    const idioma = mapearIdioma((rec.languages || []).map(l => l?.key || l));
+    const paginas = Number.isFinite(rec.number_of_pages) ? rec.number_of_pages : null;
+    const capaUrl = rec.covers && rec.covers.length
+      ? `https://covers.openlibrary.org/b/id/${rec.covers[0]}-M.jpg`
+      : `https://archive.org/services/img/${acesso.ocaid}`;
+
+    let sinopse = 'Edição aberta do acervo massivo da Open Library, com texto integral legível no Internet Archive.';
+    if (Array.isArray(rec.subjects) && rec.subjects.length) {
+      sinopse += ` Assuntos: ${rec.subjects.slice(0, 3).join(', ')}.`;
+    }
+    if (rec.subtitle) sinopse = `${String(rec.subtitle).slice(0, 150)} ${sinopse}`;
+    sinopse = sinopse.slice(0, 400);
+
+    escritor.livro({
+      titulo: titulo.slice(0, 250),
+      idioma,
+      sinopse,
+      capaUrl,
+      ano: extrairAno(rec),
+      paginas,
+      autorId: autorObj.id,
+      categoriaId: catId,
+      fonteId,
+      fonteIdExterno: extId,
+      licenca: 'dominio-publico',
+      urlLeitura: acesso.url
+    });
+
+    total++;
+
+    // checkpoint periódico
+    if (Date.now() - ultimaGravacao > 15000) {
+      gravarCP({ linha: n, total, concluido: false, fonte: nomeFonte });
+      ultimaGravacao = Date.now();
+      const seg = (Date.now() - inicio) / 1000;
+      console.log(`   ✔ linha ${n.toLocaleString('pt-PT')} | ${total.toLocaleString('pt-PT')} ingeridas | ${(total / Math.max(seg, 1)).toFixed(0)}/s`);
+    }
+  };
+
   try {
-    await streamDump(dump.url, (linha, n) => {
-      linhasProcessadas++;
-      if (total >= meta) return;
-
-      const p = parseLinhaTSV(linha);
-      if (!p) return;
-
-      const rec = p.dados;
-      const acesso = acessoAberto(rec);
-      if (!acesso) return;
-
-      const extId = `ol-dump-${p.chave.replace('/books/', '')}`;
-      if (dedup.tem(extId)) return;
-      dedup.adicionar(extId);
-
-      const titulo = String(rec.title || '').trim();
-      if (!titulo) return;
-
-      const autores = extrairAutores(rec);
-      const autorObj = escritor.autor(
-        autores.length ? `Autor ${autores[0]}` : 'Autor Desconhecido'
-      );
-
-      const idioma = mapearIdioma((rec.languages || []).map(l => l?.key || l));
-      const paginas = Number.isFinite(rec.number_of_pages) ? rec.number_of_pages : null;
-      const capaUrl = rec.covers && rec.covers.length
-        ? `https://covers.openlibrary.org/b/id/${rec.covers[0]}-M.jpg`
-        : `https://archive.org/services/img/${acesso.ocaid}`;
-
-      let sinopse = 'Edição aberta do acervo massivo da Open Library, com texto integral legível no Internet Archive.';
-      if (Array.isArray(rec.subjects) && rec.subjects.length) {
-        sinopse += ` Assuntos: ${rec.subjects.slice(0, 3).join(', ')}.`;
-      }
-      if (rec.subtitle) sinopse = `${String(rec.subtitle).slice(0, 150)} ${sinopse}`;
-      sinopse = sinopse.slice(0, 400);
-
-      escritor.livro({
-        titulo: titulo.slice(0, 250),
-        idioma,
-        sinopse,
-        capaUrl,
-        ano: extrairAno(rec),
-        autorId: autorObj.id,
-        categoriaId: catId,
-        fonteId,
-        fonteIdExterno: extId,
-        licenca: 'dominio-publico',
-        urlLeitura: acesso.url
+    if (ficheiroLocal) {
+      console.log(`   → modo local: ${ficheiroLocal}`);
+      await streamDumpLocal(ficheiroLocal, (linha, n) => processarLinha(linha, n), cp.linha);
+    } else if (sondaBytes) {
+      await streamDump(dump.url, (linha, n) => processarLinha(linha, n), cp.linha, sondaBytes);
+    } else {
+      await streamDumpParalelo(dump.url, (linha, n) => processarLinha(linha, n), cp.linha, {
+        segmentos,
+        dir: path.resolve('.scratch/fase4-partes'),
+        tamanhoTotal: dump.bytes
       });
-
-      total++;
-
-      // checkpoint periódico
-      if (Date.now() - ultimaGravacao > 15000) {
-        gravarCP({ linha: n, total, concluido: false, fonte: nomeFonte });
-        ultimaGravacao = Date.now();
-        const seg = (Date.now() - inicio) / 1000;
-        console.log(`   ✔ linha ${n.toLocaleString('pt-PT')} | ${total.toLocaleString('pt-PT')} ingeridas | ${(total / Math.max(seg, 1)).toFixed(0)}/s`);
-      }
-    }, cp.linha, sondaBytes || null);
+    }
   } catch (err) {
     console.warn(`\n⚠ Interrompido: ${err.message}`);
   }

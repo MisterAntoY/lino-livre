@@ -117,3 +117,51 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: npx wrangler deploy
+
+      - name: 🧪 Smoke Test de Produção (Endpoints Públicos)
+        run: |
+          set -uo pipefail
+          echo "🔍 A verificar disponibilidade dos endpoints essenciais..."
+          WORKER_URL="https://lino-livre.linolivre.workers.dev"
+
+          # 1. Página inicial
+          HTTP_HOME=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/")
+          echo "GET / -> HTTP $HTTP_HOME"
+          if [ "$HTTP_HOME" -ne 200 ]; then
+            echo "::error::Página inicial respondeu com HTTP $HTTP_HOME"
+            exit 1
+          fi
+
+          # 2. Dashboard
+          HTTP_DASH=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/api/dashboard")
+          echo "GET /api/dashboard -> HTTP $HTTP_DASH"
+          if [ "$HTTP_DASH" -ne 200 ] && [ "$HTTP_DASH" -ne 503 ]; then
+            echo "::error::Dashboard respondeu com HTTP $HTTP_DASH (esperado 200 ou 503 degradado)"
+            exit 1
+          fi
+
+          # 3. Livros (paginação)
+          HTTP_LIVROS=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/api/livros?page=1&limit=5")
+          echo "GET /api/livros -> HTTP $HTTP_LIVROS"
+          if [ "$HTTP_LIVROS" -ne 200 ] && [ "$HTTP_LIVROS" -ne 503 ]; then
+            echo "::error::API de livros respondeu com HTTP $HTTP_LIVROS"
+            exit 1
+          fi
+
+          # 4. Cursos
+          HTTP_CURSOS=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/api/cursos?limit=5")
+          echo "GET /api/cursos -> HTTP $HTTP_CURSOS"
+          if [ "$HTTP_CURSOS" -ne 200 ] && [ "$HTTP_CURSOS" -ne 503 ]; then
+            echo "::error::API de cursos respondeu com HTTP $HTTP_CURSOS"
+            exit 1
+          fi
+
+          # 5. Sugestões de moderação (POST sem dados deve dar 400)
+          HTTP_SUG=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$WORKER_URL/api/sugestoes" -H "Content-Type: application/json" -d '{}')
+          echo "POST /api/sugestoes (validação) -> HTTP $HTTP_SUG"
+          if [ "$HTTP_SUG" -ne 400 ]; then
+            echo "::error::POST /api/sugestoes não validou payload corretamente (esperado 400, obteve $HTTP_SUG)"
+            exit 1
+          fi
+
+          echo "✅ Todos os smoke tests de produção passaram com sucesso!"

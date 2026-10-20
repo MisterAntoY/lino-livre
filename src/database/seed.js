@@ -1796,7 +1796,28 @@ function seed(dbInstance = null) {
 }
 
 if (require.main === module) {
-  seed();
+  if (process.env.NODE_ENV === 'production') {
+    console.error('❌ Execução de seed é estritamente proibida em ambiente de produção!');
+    process.exit(1);
+  }
+
+  const db = getDatabase();
+  let totalExistente = 0;
+  try {
+    totalExistente = db.prepare('SELECT COUNT(*) AS total FROM livros').get()?.total || 0;
+  } catch (_) {}
+
+  const temFlagReset = process.argv.includes('--reset') || process.argv.includes('--force');
+
+  if (totalExistente > 0 && !temFlagReset) {
+    console.error(`\n⚠️  ATENÇÃO: A base de dados local já contém ${totalExistente} livros indexados.`);
+    console.error('   O seed executa um reset destrutivo das tabelas locais.');
+    console.error('   Para confirmar o reset e recriar os dados de demonstração, execute:\n');
+    console.error('   npm run seed -- --reset\n');
+    process.exit(1);
+  }
+
+  seed(db);
 }
 
 module.exports = { seed };

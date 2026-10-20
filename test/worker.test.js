@@ -732,4 +732,110 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.equal(resultado.status, 404);
     });
   });
+
+  // =========================================================================
+  // CENÁRIO 7: Fila de Moderação (/api/sugestoes) e Proteção SSRF
+  // =========================================================================
+  describe('Cenário 7: Fila de Moderação (/api/sugestoes) e Proteção SSRF', () => {
+    const envD1 = {
+      ADMIN_API_KEY: ADMIN_SECRET,
+      DB: createMockD1({
+        runHandler: async (sql, bindings) => {
+          if (sql.includes('INSERT INTO sugestoes')) {
+            return { meta: { last_row_id: 42, changes: 1 } };
+          }
+          return { meta: { last_row_id: 1, changes: 1 } };
+        },
+        allHandler: async (sql, bindings) => {
+          if (sql.includes('FROM sugestoes')) {
+            return {
+              results: [
+                { id: 42, titulo: 'Livro Sugerido', autor_nome: 'Autor Teste', url_link: 'https://exemplo.org/livro', status: 'pendente' }
+              ]
+            };
+          }
+          if (sql.includes('FROM autores')) {
+            return {
+              results: [
+                { id: 1, nome: 'Autor 1', total_livros: 1 },
+                { id: 2, nome: 'Autor 2', total_livros: 2 }
+              ]
+            };
+          }
+          return { results: [] };
+        }
+      })
+    };
+
+    test('7.1 - POST /api/sugestoes rejeita submissão sem título ou sem URL com 400', async () => {
+      const resSemTitulo = await workerRequest('/api/sugestoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url_link: 'https://archive.org/book' })
+      }, envD1);
+      assert.equal(resSemTitulo.status, 400);
+
+      const resSemUrl = await workerRequest('/api/sugestoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ titulo: 'Meu Livro Aberto' })
+      }, envD1);
+      assert.equal(resSemUrl.status, 400);
+    });
+
+    test('7.2 - POST /api/sugestoes rejeita links de domínios proibidos / pirataria com 400', async () => {
+      const res = await workerRequest('/api/sugestoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titulo: 'Obra Ilegal',
+          url_link: 'http://libgen.is/book/123.pdf'
+        })
+      }, envD1);
+      assert.equal(res.status, 400);
+      const data = await res.json();
+      assert.ok(data.erro.includes('política de compliance') || data.erro.includes('não autorizada'));
+    });
+
+    test('7.3 - POST /api/sugestoes aceita sugestão legítima e enfileira como pendente com 201', async () => {
+      const res = await workerRequest('/api/sugestoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titulo: 'O Guarani',
+          autor_nome: 'José de Alencar',
+          url_link: 'https://pt.wikisource.org/wiki/O_Guarani',
+          licenca: 'dominio-publico'
+        })
+      }, envD1);
+      assert.equal(res.status, 201);
+      const data = await res.json();
+      assert.equal(data.sucesso, true);
+      assert.equal(data.id, 42);
+    });
+
+    test('7.4 - GET /api/sugestoes rejeita requisições sem chave administrativa com 401', async () => {
+      const res = await workerRequest('/api/sugestoes', { method: 'GET' }, envD1);
+      assert.equal(res.status, 401);
+    });
+
+    test('7.5 - GET /api/sugestoes retorna lista de sugestões com x-admin-key válida', async () => {
+      const res = await workerRequest('/api/sugestoes', {
+        method: 'GET',
+        headers: { 'x-admin-key': ADMIN_SECRET }
+      }, envD1);
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(Array.isArray(data));
+      assert.equal(data.length, 1);
+      assert.equal(data[0].id, 42);
+    });
+
+    test('7.6 - GET /api/autores com parâmetro limit aplica paginação e devolve 200', async () => {
+      const res = await workerRequest('/api/autores?limit=2', { method: 'GET' }, envD1);
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(Array.isArray(data));
+    });
+  });
 });
