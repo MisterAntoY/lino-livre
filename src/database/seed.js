@@ -1591,7 +1591,11 @@ function seed(dbInstance = null) {
       b.fonteIdExterno,
       lic,
       0,
-      `${b.titulo.toUpperCase()}\n\n${b.subtitulo || ''}\n\n${b.sinopse}\n\nTrabalho de conclusão de curso para consulta pública e acadêmica.`
+      // AGENTS.md §1.4 + auditoria DOMINIO-PUBLICO-VERIFICACAO §6.1:
+      // teses e TFC da UAN são obras contemporâneas sob copyright — não podem
+      // ter texto integral na base de dados. Leitura apenas via 302 para a
+      // fonte original; a sinopse (metadado) continua disponível no catálogo.
+      null
     ).lastInsertRowid;
 
     if (b.links && Array.isArray(b.links)) {
