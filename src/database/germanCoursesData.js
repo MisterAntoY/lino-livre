@@ -73,7 +73,7 @@ const germanCoursesList = [
     "url": "https://learn.microsoft.com/de-de/training/paths/build-javascript-applications-typescript/",
     "licenca": "gratuito",
     "nivel": "Intermediário",
-    "descricao": "Offizieller Lernpfad von Microsoft Learn in deutscher Sprache: Typisierung, Schnittstellen, Generics, Namespaces und die Integration von TypeScript in moderne Webanwendungen."
+    "descricao": "Offizieller Lernpfad von Microsoft Learn in deutscher Sprache: Typisierung, Schnittstellen, Generics, Namespaces und die Integration von TypeScript in moderne Webanwendungen mit kostenloser Zertifizierung und Zertifikat."
   },
   {
     "titulo": "Python 3 Kurs für Anfänger und Fortgeschrittene",

@@ -11,7 +11,8 @@
     "livros:csv": "node scripts/gerenciar_livros.js --exportar-csv",
     "cursos:sync": "node scripts/sincronizar_cursos.js",
     "cursos:sync:remote": "node scripts/sincronizar_cursos.js --remote",
-    "sync:ocean": "node scripts/sync_ocean_brasil.js"
+    "sync:ocean": "node scripts/sync_ocean_brasil.js",
+    "sync:mslearn": "node scripts/sync_ms_learn.js"
   },
   "keywords": [],
   "author": "",

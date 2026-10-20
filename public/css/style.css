@@ -1856,6 +1856,11 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
 }
 
+.card-featured-mslearn {
+  border-color: #0284c7 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+}
+
 .card-featured-cursa {
   border-color: #c7d2fe !important;
   background: linear-gradient(180deg, #ffffff 0%, #eef2ff 100%);

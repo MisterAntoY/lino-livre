@@ -45,7 +45,7 @@ const app = {
     velocidade: 1.0,
     utterance: null
   },
-  totalLivrosAcervo: 104518,
+  totalLivrosAcervo: 104848,
 
   async init() {
     // 1. Internacionalização: carrega pt + idioma preferido e aplica ao DOM
@@ -1154,8 +1154,8 @@ const app = {
         btnTexto = ' Acessar AWS';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fffbeb; color:#b45309; border-color:#fde68a; font-weight:600;"> AWS Skill Builder</span>`;
       } else if (isMsLearn) {
-        btnTexto = ' Acessar Microsoft';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd; font-weight:600;"> Microsoft Learn</span>`;
+        btnTexto = c.tipo === 'roadmap' ? '🗺️ Explorar Trilha no Learn' : '🎓 Acessar Curso no Microsoft Learn';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd; font-weight:600;">☁️ Microsoft Learn • Oficial</span>`;
       } else if (isFcc) {
         btnTexto = ' Estudar no freeCodeCamp';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;"> freeCodeCamp</span>`;
@@ -1230,9 +1230,11 @@ const app = {
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;"> Alura Aberta</span>`;
       }
 
-      const cardClass = isOcean
-        ? 'card-featured-ocean'
-        : (isSantander
+      const cardClass = isMsLearn
+        ? 'card-featured-mslearn'
+        : (isOcean
+          ? 'card-featured-ocean'
+          : (isSantander
           ? 'card-featured-santander'
           : (isDio
             ? 'card-featured-dio'
@@ -2065,11 +2067,11 @@ const app = {
       }
     } catch (_) {}
 
-    this.atualizarPlacarMeta(this.totalLivrosAcervo || 104518);
+    this.atualizarPlacarMeta(this.totalLivrosAcervo || 104848);
   },
 
   atualizarPlacarMeta(total) {
-    if (!total || total < 1) total = this.totalLivrosAcervo || 104518;
+    if (!total || total < 1) total = this.totalLivrosAcervo || 104848;
     this.totalLivrosAcervo = total;
 
     const meta = 10000000;
@@ -2151,7 +2153,7 @@ const app = {
   },
 
   compartilharMeta10M() {
-    const total = this.totalLivrosAcervo || 104518;
+    const total = this.totalLivrosAcervo || 104848;
     const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
     const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);

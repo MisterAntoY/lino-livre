@@ -53,6 +53,7 @@ const { techGuideList } = require('./techGuideData');
 const { kaSolutionList } = require('./kaSolutionData');
 const { ebacCoursesList } = require('./ebacData');
 const { oceanBrasilList } = require('./oceanBrasilData');
+const { msLearnList } = require('./msLearnData');
 const {
 
   domCasmurroTexto,
@@ -1689,6 +1690,11 @@ function seed(dbInstance = null) {
   // Samsung Ocean Brasil (Cursos, Trilhas e Workshops em parceria com USP & UEA)
   for (const oc of oceanBrasilList) {
     insertCurso.run(oc.titulo, oc.tipo || 'curso', oc.area, oc.plataforma, oc.url, oc.licenca, oc.nivel, oc.descricao);
+  }
+
+  // Microsoft Learn (Cursos Oficiais, Applied Skills e Trilhas de Aprendizagem em Português pt-pt)
+  for (const ms of msLearnList) {
+    insertCurso.run(ms.titulo, ms.tipo || 'curso', ms.area, ms.plataforma, ms.url, ms.licenca, ms.nivel, ms.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

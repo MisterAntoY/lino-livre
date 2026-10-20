@@ -1,0 +1,48 @@
+name: ☁️ Sincronização Semanal - Microsoft Learn
+
+on:
+  schedule:
+    # Executa toda segunda-feira às 09:00 UTC (de 1 em 1 semana)
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-mslearn:
+    name: ☁️ Atualizar Cursos e Trilhas do Microsoft Learn (pt-pt)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Instalar dependências
+        run: npm install
+
+      - name: 🔄 Executar sincronizador Microsoft Learn
+        run: node scripts/sync_ms_learn.js
+
+      - name: 🧪 Validar integridade dos testes
+        run: npm test
+
+      - name: 💾 Commit e Push das atualizações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/database/msLearnData.json src/database/msLearnData.js docs/plataformas/MICROSOFT-LEARN-STATUS.md biblioteca.db
+          if git diff --staged --quiet; then
+            echo "Nenhum curso ou trilha nova identificada nesta ronda semanal do Microsoft Learn."
+          else
+            git commit -m "chore(sync): atualizar cursos e trilhas do Microsoft Learn (pt-pt) [skip ci]"
+            git push origin main
+          fi

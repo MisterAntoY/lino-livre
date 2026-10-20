@@ -704,6 +704,25 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resRedirectOcean = await request(`/api/cursos/${primeiroOcean.id}/acessar`);
     assert.equal(resRedirectOcean.status, 302);
     assert.equal(resRedirectOcean.headers.get('location'), primeiroOcean.url);
+
+    // 14.21 - Microsoft Learn (Cursos Oficiais e Trilhas de Aprendizagem em Português pt-pt)
+    const resMsLearn = await request('/api/cursos?plataforma=Microsoft+Learn');
+    assert.equal(resMsLearn.status, 200);
+    assert.ok(Array.isArray(resMsLearn.data));
+    assert.ok(resMsLearn.data.length >= 500, 'Deve conter catálogo expressivo do Microsoft Learn (>= 500 cursos e trilhas)');
+    assert.ok(resMsLearn.data.some(c => c.tipo === 'roadmap'), 'Deve conter trilhas formativas de aprendizagem registradas como roadmaps');
+    assert.ok(resMsLearn.data.some(c => c.tipo === 'curso'), 'Deve conter cursos e applied skills');
+    assert.ok(resMsLearn.data.some(c => c.titulo.includes('Azure') || c.titulo.includes('GitHub') || c.titulo.includes('Python')), 'Deve conter cursos de Azure, GitHub ou Python');
+    assert.ok(resMsLearn.data.every(c => c.url.includes('learn.microsoft.com/')), 'Todos os links devem apontar para o domínio oficial learn.microsoft.com');
+    const msPt = resMsLearn.data.filter(c => c.plataforma === 'Microsoft Learn');
+    assert.ok(msPt.every(c => c.url.includes('/pt-pt/')), 'Catálogo principal de Microsoft Learn deve apontar para a versão pt-pt');
+    assert.ok(msPt.every(c => c.descricao.toLowerCase().includes('certifica')), 'Todos os cursos Microsoft Learn devem mencionar certificado ou credencial oficial');
+
+    // Validação de redirecionamento 302 direto (AGENTS.md)
+    const primeiroMs = resMsLearn.data[0];
+    const resRedirectMs = await request(`/api/cursos/${primeiroMs.id}/acessar`);
+    assert.equal(resRedirectMs.status, 302);
+    assert.equal(resRedirectMs.headers.get('location'), primeiroMs.url);
   });
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
@@ -981,15 +1000,20 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resCursa = await request('/api/cursos?plataforma=Cursa');
     assert.equal(resCursa.status, 200);
     assert.ok(Array.isArray(resCursa.data));
-    assert.ok(resCursa.data.length >= 50, 'Deve conter pelo menos 50 cursos catalogados da Cursa');
+    assert.ok(resCursa.data.length >= 4000, 'Deve conter mais de 4.000 cursos e exercícios catalogados da Cursa em 5 idiomas');
 
     // Validação dos 5 idiomas
-    const plataformasCursa = resCursa.data.map(c => c.plataforma);
-    assert.ok(plataformasCursa.some(p => p.includes('Português')), 'Deve conter cursos Cursa em Português');
-    assert.ok(plataformasCursa.some(p => p.includes('English')), 'Deve conter cursos Cursa em Inglês');
-    assert.ok(plataformasCursa.some(p => p.includes('Español')), 'Deve conter cursos Cursa em Espanhol');
-    assert.ok(plataformasCursa.some(p => p.includes('Français')), 'Deve conter cursos Cursa em Francês');
-    assert.ok(plataformasCursa.some(p => p.includes('Hindi')), 'Deve conter cursos Cursa em Hindi');
+    const cursosPt = resCursa.data.filter(c => c.plataforma.includes('Português'));
+    const cursosEn = resCursa.data.filter(c => c.plataforma.includes('English'));
+    const cursosEs = resCursa.data.filter(c => c.plataforma.includes('Español'));
+    const cursosFr = resCursa.data.filter(c => c.plataforma.includes('Français'));
+    const cursosHi = resCursa.data.filter(c => c.plataforma.includes('Hindi'));
+
+    assert.ok(cursosPt.length >= 1400, 'Deve conter pelo menos 1400 cursos Cursa em Português');
+    assert.ok(cursosEn.length >= 1400, 'Deve conter pelo menos 1400 cursos Cursa em Inglês');
+    assert.ok(cursosEs.length >= 700, 'Deve conter pelo menos 700 cursos Cursa em Espanhol');
+    assert.ok(cursosFr.length >= 350, 'Deve conter pelo menos 350 cursos Cursa em Francês');
+    assert.ok(cursosHi.length >= 200, 'Deve conter pelo menos 200 cursos Cursa em Hindi');
 
     // Validação de links cursa.app e menções a certificado gratuito
     assert.ok(resCursa.data.every(c => c.url.startsWith('https://cursa.app/')), 'Todos os links Cursa devem apontar para https://cursa.app/');
