@@ -1,6 +1,6 @@
 # 🏛️ Relatório de Monitoramento Semanal - Santander Open Academy
 
-**Última verificação:** 2026-10-19T20:27:00.521Z
+**Última verificação:** 2026-10-20T09:37:27.313Z
 **Portal oficial:** [santanderopenacademy.com](https://www.santanderopenacademy.com/pt_br)
 **Periodicidade:** Semanal e sob demanda via GitHub Actions
 
@@ -10,44 +10,7 @@
 - **Bootcamps & Bolsas Ativos (Inscrições Abertas):** 14
 - **Cursos Contínuos com Certificado Gratuito:** 817
 - **Programas Históricos Encerrados:** 1
-- **Novos Programas Identificados nesta Ronda:** 763
-
-## 🆕 Novos Programas Adicionados Recentemente
-
-| Programa | Área | Parceiro | Finalização | Link Direto |
-|---|---|---|---|---|
-| **Santander: 2workshopselbstwirksamkeittudresden** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/2WorkshopSelbstwirksamkeitTUDresden) |
-| **Santander: Huwisu Hu Berlin Summer University 2025** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/huwisu-hu-berlin-summer-university-2025) |
-| **Santander: Dein Sprachkurs MIT Babbel 12 Monate 1 Sprache 3 Ausgabe** | Tecnologia & Guias Digitais | MIT Professional Education | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/dein-sprachkurs-mit-babbel-12-monate-1-sprache-3-ausgabe) |
-| **Santander: Dolmetschen Intensiv** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/dolmetschen-intensiv) |
-| **Santander: Workshop Praesentation Moderation 2025 26** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/workshop-praesentation-moderation-2025-26) |
-| **Santander: Workshop Praesentation Moderation 2026** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/workshop-praesentation-moderation-2026) |
-| **Santander: Dein Sprachkurs MIT Babbel 12 Monate 1 Sprache 2 Ausgabe** | Tecnologia & Guias Digitais | MIT Professional Education | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/dein-sprachkurs-mit-babbel-12-monate-1-sprache-2-ausgabe) |
-| **Santander: 4 Workshop Gespraechsfuehrung Und Rhetorik** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/4-workshop-gespraechsfuehrung-und-rhetorik) |
-| **Santander: 1 Workshop Standortbestimmung To Determine Where I Stand Tu Dresden** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/1-workshop-standortbestimmung-to-determine-where-i-stand-tu-dresden) |
-| **Santander: 4 Workshop Karrierewege Bewerbung Und Selbstpraesentation** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/4-workshop-karrierewege-bewerbung-und-selbstpraesentation) |
-| **Santander: 3 Workshop Digital Empowerment** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/3-workshop-digital-empowerment) |
-| **Santander: Tech4all Apple Geraete Fuer Studium Beruf Und Weiterbildung** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/tech4all-apple-geraete-fuer-studium-beruf-und-weiterbildung) |
-| **Santander: Huberlin.summer.huwisu.secondcall** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/huberlin.summer.huwisu.secondcall) |
-| **Santander: Dein Sprachkurs MIT Babbel 12 Monate 1 Sprache 4 Ausgabe** | Tecnologia & Guias Digitais | MIT Professional Education | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/dein-sprachkurs-mit-babbel-12-monate-1-sprache-4-ausgabe) |
-| **Santander: Campus Espana Dein Spanischkurs An Der Uni Salamanca** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/campus-espana-dein-spanischkurs-an-der-uni-salamanca) |
-| **Santander: Ki Und Uebersetzen** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/ki-und-uebersetzen) |
-| **Santander: Dein Online Spanischkurs An Der Uni Salamanca** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/de/program/dein-online-spanischkurs-an-der-uni-salamanca) |
-| **Santander: Xxvi Jornadas Formativas En Emprendimiento E Innovacion** | Tecnologia & Guias Digitais | Ada Tech | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/ca/program/xxvi-jornadas-formativas-en-emprendimiento-e-innovacion) |
-| **Santander: Programa De Suport Al Tfg I Tfm Universitat De Lleida** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/ca/program/programa-de-suport-al-tfg-i-tfm-universitat-de-lleida) |
-| **Santander: Xxvii Jornadas Formativas En Emprendimiento E Innovacion** | Tecnologia & Guias Digitais | Ada Tech | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/ca/program/xxvii-jornadas-formativas-en-emprendimiento-e-innovacion) |
-| **Santander: Webinar Autonoma Entrepreneurship And Innovation** | Desenvolvimento Web & Mobile | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/webinar-autonoma-entrepreneurship-and-innovation) |
-| **Santander: Teaching With Purpose 2026** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/teaching-with-purpose-2026) |
-| **Santander: European Innovation Academy Tecnico 2026** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/european-innovation-academy-tecnico-2026) |
-| **Santander: Skills For Work 2026** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/skills-for-work-2026) |
-| **Santander: Climate And Energy Act Now** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/climate-and-energy-act-now) |
-| **Santander: Treasure Hunting Summer Term 2026** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/treasure-hunting-summer-term-2026) |
-| **Santander: Escola 42 Porto Piscine 18** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/escola-42-porto-piscine-18) |
-| **Santander: Ddc Welcome Center At Tu Dresden German Language Course A1 1 Wise 25 26** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/ddc-welcome-center-at-tu-dresden-german-language-course-a1-1-wise-25-26) |
-| **Santander: Ddc Welcome Center At Tu Dresden German Language Course A2 1 Wise 25 26** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/ddc-welcome-center-at-tu-dresden-german-language-course-a2-1-wise-25-26) |
-| **Santander: Ddc Welcome Center At Tu Dresden German Language Course B1 1 Wise 25 26** | Tecnologia & Guias Digitais | Santander Open Academy | Contínuo | [Acessar Oportunidade](https://app.santanderopenacademy.com/en/program/ddc-welcome-center-at-tu-dresden-german-language-course-b1-1-wise-25-26) |
-
-*(Exibindo os primeiros 30 de 763 novos itens adicionados)*
+- **Novos Programas Identificados nesta Ronda:** 0
 
 ## 🟢 Bootcamps e Bolsas com Inscrições Abertas (Data de Finalização)
 
