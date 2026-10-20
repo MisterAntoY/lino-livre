@@ -224,10 +224,11 @@ Requisitos de cada importador:
 
 ## Fase 10 — Documentação e arranque (P1)
 
-- Nome **Lino Livre** aplicado ao `<title>` e ao cabeçalho de `public/index.html`, ao `README.md` e ao campo `name` do `package.json` (`lino-livre`)
-- README atualizado ao novo escopo (funções, endpoints, fontes, licenças, como importar)
-- `.env.example` com `WHATSAPP_COMMUNITY_URL` e a chave opcional da Google Books — sem segredos commitados
-- `git commit` por fase, no ramo `main` existente
+- [x] Nome **Lino Livre** aplicado ao `<title>` e ao cabeçalho de `public/index.html`, ao `README.md` e ao campo `name` do `package.json` (`lino-livre`)
+- [x] README atualizado ao novo escopo (funções, endpoints, fontes, licenças, como importar, 7 idiomas e testes)
+- [x] `.env.example` com `WHATSAPP_COMMUNITY_URL`, `WHATSAPP_CHANNEL_URL` e `ADMIN_API_KEY` — sem segredos commitados
+- [x] `git commit` por fase, sincronizado no ramo `main` existente
+- [x] `AGENTS.md` consolidado com todas as diretrizes invioláveis, arquitetura de intermediário 302, histórico de decisões e resoluções técnicas de incidentes
 
 ---
 

@@ -79,16 +79,20 @@ O site é uma única aplicação com seletor de idioma no cabeçalho.
 | `POST` | `/api/livros` | Cadastro com validação de licença obrigatória |
 | `PUT` | `/api/livros/:id` | Atualização dos metadados da obra |
 | `DELETE` | `/api/livros/:id` | Remoção da obra e links em cascata |
-| `GET` | `/api/cursos` | Diretório de cursos livres com filtro por `area` e `nivel` |
-| `POST` | `/api/cursos` | Cadastro de novo curso no diretório |
+| `GET` | `/api/cursos` | Diretório de cursos livres com filtro por `plataforma`, `area`, `nivel`, `licenca` e `busca` |
+| `GET` | `/api/cursos/:id/acessar` | Redirecionamento seguro HTTP 302 direto à plataforma educacional externa |
+| `POST` | `/api/cursos` | Cadastro de novo curso no diretório (requer chave administrativa) |
 | `GET` | `/api/fontes` | Lista de fontes abertas ativas |
-| `POST` | `/api/import` | Disparo assíncrono de importação idempotente (Gutenberg, Open Library) |
+| `POST` | `/api/import` | Disparo assíncrono de importação idempotente (Gutenberg, Open Library, Wikisource, LibriVox, Standard Ebooks, Europeana) |
 | `GET` | `/api/import/:id` | Status e progresso do job de importação |
 | `GET` | `/api/dashboard` | Métricas do acervo: totais por área, idioma, formato, licenças e fontes |
 | `GET` | `/api/comunidade` | Devolve a URL da comunidade WhatsApp (ou 404 se não configurado) |
 | `GET` | `/api/comunidade/qrcode.svg`| QR code dinâmico em SVG para a comunidade |
 | `GET` | `/api/canal` | Devolve a URL do canal do WhatsApp (ou 404 se não configurado) |
 | `GET` | `/api/canal/qrcode.svg` | QR code dinâmico em SVG para o canal |
+| `GET` | `/comunidade` | Página pública do Cartaz Escolar para impressão A4 com QR codes e passo a passo |
+| `GET` | `/creditos` | Painel público de auditoria, fontes oficiais e compliance de licenças |
+| `GET` | `/api/creditos` | Métricas de conformidade e auditoria em tempo real |
 
 ---
 
@@ -121,21 +125,30 @@ Acesse no navegador: **[http://localhost:3000](http://localhost:3000)**
 
 ## 🧪 Testes Automatizados
 
-A aplicação conta com uma suite completa de testes cobrindo todas as fases do plano:
+A aplicação conta com uma suite completa de **145 testes automatizados** cobrindo todas as fases do plano:
 
 ```bash
+# Executar todos os testes (integração, banco, federado, segurança, worker)
 npm test
+
+# Executar apenas testes do Cloudflare Worker (Hono + D1 + Supabase fallback)
+npm run test:worker
+
+# Validar tipagem TypeScript
+npx tsc --noEmit
 ```
 
 ### Critérios Validados:
-- [x] CRUD de livro digital com recusa de licenças inválidas.
-- [x] Busca FTS5 por título e autor.
-- [x] Paginação correta (`page`, `limit`, `total`).
-- [x] Redirecionamento 302 em leitura com contador atômico.
-- [x] Importação idempotente sem duplicação de registros.
-- [x] Deleção em cascata (`ON DELETE CASCADE`) de livros e links.
-- [x] Agregações do dashboard por área, idioma e formato.
-- [x] Geração e entrega de QR codes SVG para WhatsApp com fallback 404.
+- [x] CRUD de livro digital com recusa estrita de licenças inválidas (HTTP 400).
+- [x] Busca FTS5 de alta relevância com autor desnormalizado e sanitização contra injection.
+- [x] Paginação correta (`page`, `limit`, `total`, `total_pages`).
+- [x] Redirecionamento HTTP 302 em leitura e cursos com contador atômico e zero armazenamento local.
+- [x] Importação idempotente assíncrona sem duplicação de registros (`UNIQUE (fonte_id, fonte_id_externo)`).
+- [x] Deleção em cascata (`ON DELETE CASCADE`) de livros e links associados.
+- [x] Agregações do dashboard e tabela pré-computada `autor_totais` para evitar full table scans na D1.
+- [x] Geração e entrega dinâmica de QR codes SVG para WhatsApp com fallback 404.
+- [x] Cartaz escolar em `/comunidade` com suporte a impressão A4 (`@media print`).
+- [x] Prevenção de IDOR, Anti-SSRF (bloqueio de 127.0.0.0/8, IPv6 local, AWS metadata) e WAF de borda contra scanners (HTTP 403) e sondas (HTTP 404).
 - [x] Zero referências a termos ou lógica de empréstimo físico no código.
 
 ---

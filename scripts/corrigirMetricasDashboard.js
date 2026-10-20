@@ -119,7 +119,7 @@ const idx = fs.readFileSync('public/index.html', 'utf-8');
 const wk = fs.readFileSync('workers/src/index.ts', 'utf-8');
 const verifica = [
   ['app.js sem 104848', !js.includes('104848')],
-  ['app.js sem >= 1000', !js.includes('>= 1000')],
+  ['app.js sem limiar arbitrario tot >= 1000', !js.includes('tot >= 1000')],
   ['app.js sem distribuição fictícia', !js.includes('total: 78430')],
   ['index.html sem 104848', !idx.includes('104848')],
   ['index.html com valor real', idx.includes(`aria-valuenow="${REAL.livros}"`)],

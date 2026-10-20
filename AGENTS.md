@@ -1,169 +1,162 @@
-# 🤖 MEMÓRIA, ARQUITETURA E REGRAS PARA AGENTES (ATUAIS E FUTUROS)
+# 🤖 MEMÓRIA E REGRAS PARA AGENTES (ATUAIS E FUTUROS)
 
-> **DOCUMENTO NORMATIVO E HISTÓRICO DE DECISÕES DO LINO LIVRE**
->
-> **Atenção Agentes de IA (Gemini, Claude, GPT, Cursor, Antigravity, etc.):**
-> Este documento consolida a arquitetura, as diretrizes de compliance legal invioláveis, todas as interações e decisões das Fases 0 a 10 e o histórico de resolução de incidentes técnicos.
-> **Leia e respeite este arquivo integralmente antes de modificar qualquer código no repositório.**
+> **ATENÇÃO AGENTES DE IA (Antigravity, Gemini, Claude, GPT, Cursor, etc.):**
+> 
+> Esta é uma diretriz de arquitetura, legalidade, cybersegurança e histórico operacional inviolável para todo e qualquer trabalho neste repositório. Todos os agentes devem respeitar estas diretrizes integralmente antes de propor, modificar ou executar código.
 
 ---
 
-## 🏛️ 1. Diretriz Principal Inviolável: Servidor Intermediário (Zero Armazenamento Local)
+## 🏛️ 1. Diretriz Principal: Servidor Intermediário (Zero Armazenamento Local de Livros)
 
 1. **Sem Armazenamento de Arquivos/Livros:** 
-   - O servidor web, a API, os buckets de objetos e o banco de dados deste projeto **NUNCA** devem armazenar, hospedar ou guardar arquivos de livros (PDF, EPUB, TXT, MOBI, MP3, MP4 ou quaisquer binários).
+   - O servidor web, a API e o banco de dados deste projeto **NUNCA** devem armazenar, hospedar ou guardar arquivos de livros (PDF, EPUB, TXT, MOBI ou quaisquer binários).
    - O banco de dados guarda unicamente **metadados** (título, autor, categoria, idioma, licença) e **links de redirecionamento para URLs externas**.
+
 2. **Papel Exclusivo de Intermediário:**
-   - A aplicação funciona **estritamente como uma plataforma intermediária e indexadora de busca pública**.
-   - Toda leitura/download feita pelo usuário ocorre através de um redirecionamento (**HTTP 302**) para o provedor original ou repositório externo onde o arquivo está efetivamente hospedado.
-3. **Fundamento da Defesa Legal:**
-   - Em caso de notificação jurídica, disputa ou processo legal, a linha de defesa do responsável e da aplicação baseia-se no facto de que o servidor **não armazena nem distribui diretamente nenhum arquivo de obra** em sua infraestrutura física ou de banco de dados, atuando unicamente como ponte/redirecionador para links públicos disponíveis na internet.
-4. **Política Anti-Pirataria (Lista Negra Estrita):**
-   - É terminantemente proibido indexar, armazenar links ou aceitar cadastros de domínios conhecidos de pirataria (shadow libraries):
-     - `Z-Library` (`z-lib.*`, `singlelogin.*`, `b-ok.*`)
-     - `Library Genesis` (`libgen.*`)
-     - `Sci-Hub` (`sci-hub.*`)
-     - `Anna's Archive` (`annas-archive.*`)
-     - `PDF Drive`, `BookFi` e similares.
-   - Qualquer link para esses domínios deve ser sumariamente rejeitado com erro HTTP 400 pelo validador central (`src/utils/urlValidator.js` e `workers/src/utils/urlValidator.ts`).
-5. **Privacidade Absoluta:**
-   - A plataforma **não recolhe** números de telefone, dados pessoais ou mensagens de usuários. Não há integração com Meta Cloud API, webhooks invasivos ou robôs espiões.
+   - A aplicação funciona **estritamente como uma plataforma intermediária e indexadora de busca educacional**.
+   - Toda leitura/download feita pelo usuário ocorre através de um redirecionamento (HTTP 302) para o provedor original ou repositório externo onde o arquivo está efetivamente hospedado.
+
+3. **Fundamento da Defesa Legal (Lei n.º 15/14 de Angola & Convenções Internacionais):**
+   - Em caso de notificação jurídica, disputa ou processo legal, a linha de defesa do responsável e da aplicação baseia-se no fato de que o servidor **não armazena nem distribui diretamente nenhum arquivo de obra** em sua infraestrutura física ou de banco de dados, atuando unicamente como ponte/redirecionador para links públicos disponíveis na internet.
+   - O Lino Livre opera sem fins lucrativos, com zero monetização e com canais diretos de desindexação ágil (DMCA / Notificação Legal com compromisso de remoção em até 48 horas úteis, conforme documentado em [`docs/LEGAL.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/LEGAL.md)).
+
+4. **Coluna `conteudo_texto` — Regra Inviolável de Domínio Público:**
+   - Conforme auditado em [`docs/auditorias/DOMINIO-PUBLICO-VERIFICACAO.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/DOMINIO-PUBLICO-VERIFICACAO.md), **100% dos textos integrais** armazenados na coluna `conteudo_texto` devem pertencer comprovadamente ao **Domínio Público universal** (autores clássicos falecidos há mais de 70 anos: Machado de Assis, Camões, Alencar, Aluísio Azevedo, Lima Barreto, Fernando Pessoa). Nenhuma obra sob copyright contemporâneo pode ter texto integral inserido no banco.
+
+5. **Dever de Todos os Agentes:**
+   - **NÃO** crie tabelas, colunas, pastas no servidor ou buckets para upload/armazenamento direto dos arquivos de livros.
+   - **NÃO** altere a lógica de redirecionamento 302 para servir arquivos diretamente do sistema de arquivos local do servidor.
+   - Mantenha sempre a integridade da arquitetura de intermediação em todas as novas rotas, scripts de importação e refatorações.
 
 ---
 
-## 🗺️ 2. Histórico de Decisões e Interações por Fases (Fases 0 a 10)
+## 🛡️ 2. Arquitetura de Cybersegurança e Controles Defensivos
 
-### Fase 0 — Decisões Arquiteturais e Pilha Tecnológica
-- **Stack Tecnológico:**
-  - **Backend Local/Node:** Node.js (≥ 22) + Express 5 + SQLite (`node:sqlite` nativo via `DatabaseSync`) + FTS5.
-  - **Edge / Produção Serverless:** Cloudflare Workers (Hono + TypeScript) com D1 Database + Supabase Postgres (modo híbrido/fallback) e Cloudflare Workers Assets para estáticos.
-  - **Frontend:** Vanilla HTML5, CSS customizado responsivo e JavaScript limpo (sem Tailwind extra nem frameworks pesados).
-- **Descarte de Alunos/Empréstimos:** Decisão irrevogável de focar apenas no acervo digital público.
+Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:
 
-### Fase 1 — Eliminação do Modelo de Empréstimos Físicos (P0)
-- **Eliminações:**
-  - Deletado `src/controllers/emprestimosController.js`.
-  - Removidas rotas `/emprestimos`, `/devolver`, `/renovar`.
-  - Excluídas as tabelas `emprestimos`, `historico_emprestimos` e as colunas de estoque físico (`quantidade_total`, `quantidade_disponivel`).
-  - Atualizados os testes para cobrir estritamente catálogo digital.
+### 2.1. Autenticação Administrativa Fail-Closed & Anti-Timing Attack
+- **Mutações Protegidas:** Todas as rotas que alteram dados (`POST/PUT/DELETE /api/livros`, `/api/categorias`, `/api/autores`, `/api/cursos`, `/api/import`, `/api/admin/*`) e a visualização da moderação (`GET /api/sugestoes`) exigem autenticação administrativa.
+- **Fail-Closed em Produção:** Se a variável de ambiente `ADMIN_API_KEY` não for configurada no servidor, mutações são imediatamente rejeitadas (HTTP 503 no Express, HTTP 401 no Worker).
+- **Tempo Constante:** A comparação de chaves (`x-admin-key` ou `Authorization: Bearer <key>`) utiliza `crypto.timingSafeEqual` no Express e `timingSafeEqualStr` no Worker, prevenindo ataques de temporização (timing attacks).
+- **Gerador de Chaves:** Disponível em [`scripts/gerar_chave_admin.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/gerar_chave_admin.js) para criar chaves de 256 bits com a flag `--salvar-env`.
 
-### Fase 2 — Modelo de Dados Digital (P0)
-- Criação do esquema definitivo em `src/database/schema.sql`:
-  - `fontes` (slug, nome, tipo, url_base, ativa)
-  - `livros` (titulo, subtitulo, isbn, ano, idioma, sinopse, capa_url, autor_id, categoria_id, fonte_id, licenca, leituras)
-  - `links_livros` (livro_id, formato, url, tamanho_bytes, link_externo)
-  - `cursos` (titulo, area, plataforma, url, licenca, nivel, tipo, descricao)
-  - `import_jobs` (fonte_id, query, status, total, processados, erro)
-  - `livros_fts` (Virtual Table SQLite FTS5 sincronizada por triggers com autor desnormalizado).
+### 2.2. Prevenção de SQLi e Sanitização FTS5 contra DoS
+- **Prepared Statements:** 100% das consultas dinâmicas usam marcadores posicionais `?` com `db.prepare(...).bind(...)` ou `db.prepare(...).run/all(...)`.
+- **FTS5 Query Sanitization:** Toda busca textual passa pela função `sanitizarFts5`. Operadores especiais e pontuações (`(`, `:`, `*`, `AND`, `OR`, `NOT`, `NEAR`) são neutralizados e encapsulados como literais puros (`"token"*`), prevenindo exceções de sintaxe SQLite e ataques de negação de serviço (DoS).
 
-### Fases 3 & 4 — Ingestão Escalar e Motor Federado Distribuído (P1)
-- **Motor Federado Distribuído (RRF — Reciprocal Rank Fusion):**
-  - Algoritmo RRF com constante $k=60$ para combinar resultados do catálogo local e catálogos remotos abertos.
-  - Deduplicação inteligente de edições por chave canônica `titulo_normalizado + autor_normalizado`.
-  - Degradação graciosa em timeout ou falha de upstreams.
-- **Importadores Oficiais Assíncronos:**
-  - Project Gutenberg (via Gutendex JSON).
-  - Open Library / Internet Archive (somente obras com download livre e domínio público).
-  - Wikisource (MediaWiki API para fontes primárias em português).
-  - LibriVox (audiolivros em domínio público).
-  - Standard Ebooks (OPDS de clássicos com tipografia de alta qualidade).
-  - Europeana (patrimônio cultural europeu).
-  - Enriquecimento opcional via Google Books API (capas e sinopses).
-- **Idempotência Garantida:** Restrição `UNIQUE (fonte_id, fonte_id_externo)` para impedir registros duplicados.
+### 2.3. Defesa Anti-SSRF e Open Redirect
+- **Validador Obrigatório:** Todo redirecionamento e submissão de link externo passa por `validarUrlRedirecionamento` em [`src/utils/urlValidator.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/utils/urlValidator.js) e [`workers/src/utils/urlValidator.ts`](file:///Users/mendes/Desktop/I%20am%20Abc/workers/src/utils/urlValidator.ts).
+- **Regras:**
+  - Apenas protocolos `http:` e `https:` são aceitos.
+  - Bloqueio estrito de redes locais (`localhost`, `127.0.0.1`, `0.0.0.0`), faixas privadas RFC 1918 (`10.*`, `172.16-31.*`, `192.168.*`), endereços de metadados em nuvem (`169.254.169.254`) e TLDs internos (`.local`, `.internal`).
+  - Bloqueio sistemático de domínios da blacklist de pirataria (`z-lib`, `libgen`, `sci-hub`, `annas-archive`, `pdfdrive`, etc.).
 
-### Fase 5 — Compliance, Licenciamento & Acervo de 100 Repositórios GitHub (P0)
-- **Auditoria de Licenças:** 100% dos livros e cursos possuem campo `licenca` obrigatório (`dominio-publico`, `cc0`, `cc-by`, `cc-by-sa`, `cc-by-nc`, `outro`).
-- **Página de Compliance:** Criação de `/creditos.html` e endpoint `GET /api/creditos` com métricas auditáveis.
-- **Acervo GitHub Curado:** Ingestão de 100 repositórios técnicos canônicos (Harvard, Stanford, Oxford, Linux, Free-Programming-Books), com capas SVG exclusivas geradas e sinopses localizadas.
+### 2.4. WAF de Borda contra Scanners e Sondas
+- **Middlewares WAF:** Ativos em [`src/app.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/app.js) e [`workers/src/index.ts`](file:///Users/mendes/Desktop/I%20am%20Abc/workers/src/index.ts).
+- **Bloqueio de Scanners Ofensivos:** Ferramentas automatizadas (`sqlmap`, `nikto`, `dirbuster`, `gobuster`, `acunetix`, `nuclei`, `masscan`, `wpscan`, `zgrab`) recebem **HTTP 403 Forbidden** imediato.
+- **Bloqueio de Sondas Sensíveis:** Acessos a caminhos de sonda (`/.env`, `/.git`, `/wp-admin`, `/phpmyadmin`, `/.aws`) recebem **HTTP 404 estrito** sem processamento de banco de dados.
 
-### Fase 6 — Frontend e Experiência do Usuário (P1)
-- **Acervo Interativo:**
-  - Barra de filtros rápidos por tipo de licença (`#pills-licencas`).
-  - Modal dedicado de Detalhes da Obra (`#modal-detalhes-livro`) com sinopse, capas em alta definição e botões de download por formato (PDF, EPUB, TXT, HTML).
-  - Leitor imersivo ultraleve em navegador para obras em texto e audiolivros.
-  - Suporte a Deep Links via URL Hash (`/#livro-123`) e botão "Partilhar Obra".
-  - Internacionalização (i18n) completa em **7 idiomas**: Português (`pt`), Português do Brasil (`pt-br`), Inglês (`en`), Espanhol (`es`), Francês (`fr`), Alemão (`de`) e Mandarim (`zh`).
-
-### Fase 7 — Intermediário de Cursos Gratuitos e Recursos Educacionais Abertos (P2)
-- **Diretório Curado de OER:**
-  - **OER Commons:** 15 cursos e módulos abertos (CC BY).
-  - **OpenStax:** 8 livros/cursos didáticos universitários (CC BY).
-  - **MIT OpenCourseWare:** 11 cursos clássicos do MIT (CC BY-NC-SA).
-  - **CK-12 Foundation:** 5 cursos de ciências e matemática (CC BY-NC).
-  - **PhET Interactive Simulations:** 6 simulações interativas de física e química (CC BY).
-  - **Khan Academy Brasil:** 6 trilhas abertas de matemática e ciências (CC BY-NC-SA).
-  - **Plataformas Globais/Nacionais:** Cursa (em 5 idiomas), Harvard PLL, Stanford Online, DIO Bootcamps, Fundação Bradesco, EV.G, Lumina, IFRS e Guia de TI.
-- **Acesso Seguro 302:** Endpoint `GET /api/cursos/:id/acessar` com redirecionamento validado e zero armazenamento de vídeos/mídia no servidor.
-- **Filtros por Licença:** Suporte a parâmetro `licenca` em `GET /api/cursos` no Express e no Cloudflare Worker.
-
-### Fase 8 — Comunidade WhatsApp & Cartaz Escolar para Impressão (P1)
-- **Dois Pontos de Acesso WhatsApp:**
-  - 💬 **Grupo de Leitores ("Lino, quero ler!")**: `WHATSAPP_COMMUNITY_URL` para pedidos de livros e resenhas.
-  - 📢 **Canal Oficial ("Livros e Cursos — Lino Livre")**: `WHATSAPP_CHANNEL_URL` de sentido único e com privacidade total para novidades.
-- **Geração Dinâmica de QR Code:**
-  - `GET /api/comunidade/qrcode.svg` e `GET /api/canal/qrcode.svg` com biblioteca `qrcode` e cache em memória.
-- **Cartaz Escolar para Impressão A4 ([`public/comunidade.html`](file:///Users/mendes/Desktop/I%20am%20Abc/public/comunidade.html) / `/comunidade`):**
-  - Layout pronto para afixar em murais escolares e bibliotecas.
-  - Regras CSS `@media print` sem margens excessivas ou botões de tela.
-  - Passo a passo de leitura do código com a câmara do telemóvel.
-
-### Fase 9 — Suíte de Testes Automatizados e Resiliência (P1)
-- **145 Testes Automatizados (100% Verdes):**
-  - `test/api.test.js`: 32 testes de integração (CRUD, FTS5, paginação, 302, comunidade, cursos, WAF).
-  - `test/worker.test.js`: 9 cenários do Worker Cloudflare (D1, Supabase fallback, 503 degradado, rate limit, matching FTS).
-  - `test/fase34.test.js`: Ingestores, RRF e conformidade de metadados.
-  - `test/security_idor_tdd.test.js`: Prevenção de IDOR, Anti-SSRF, sanitização de IPv4/IPv6 e proteção de limites anti-DoS.
-  - `test/library.test.js`: Constraints de domínio e integridade relacional.
-
-### Fase 10 — Documentação, Arranque e CI/CD (P1)
-- Alinhamento de nomes, marcas e variáveis (`.env.example`).
-- Pipeline GitHub Actions (`.github/workflows/deploy.yml`) com execução de testes automatizados e deploy contínuo para Cloudflare Workers.
+### 2.5. Cabeçalhos de Segurança HTTP Rígidos
+Ambos os backends aplicam:
+- `Content-Security-Policy (CSP)`
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+- `Origin-Agent-Cluster: ?1`
+- `Strict-Transport-Security (HSTS)` em ambiente de produção
 
 ---
 
-## 🛠️ 3. Decisões Técnicas Críticas & Resolução de Incidentes
+## 🏗️ 3. Decisões de Arquitetura de Dados: Estratégia Híbrida (D1 + Supabase)
 
-| Incidente / Desafio | Causa Raiz | Solução Adotada & Regra Definitiva |
-|---|---|---|
-| **Erro Cloudflare Deploy (código 10000 / 9109)** | O token da Cloudflare usado na action possuía restrição de IP estático ou permissão insuficiente para runners dinâmicos do GitHub Actions (ex: IP `134.33.102.120`). | O token precisa ter permissões de `Worker Scripts: Edit`, `Account Settings: Read` e `D1: Edit` sem restrição de IP estático no painel da Cloudflare. |
-| **Discrepância na Contagem de Busca FTS5** | A função de contagem rápida `contarNaFts` recebia termo pré-formatado diferente da consulta principal. | A contagem na FTS deve receber o termo cru e passar pela mesma função `limparTermoFts`, garantindo que o `total` bata 100% com os itens retornados. |
-| **Estouro de Cota da D1 (Full Table Scans)** | Consultas de autores e filtros sem índices forçavam a D1 a varrer os 104.848 livros a cada requisição. | Criada tabela pré-computada `autor_totais`, índice case-insensitive `autores(nome COLLATE NOCASE)` e índice composto `(autor_id, id)` na migração `0005`. |
-| **Vulnerabilidade SSRF em Capas** | Rotas administrativas aceitavam URLs arbitrárias para `capa_url`. | `capa_url` e links passam por `validarUrlRedirecionamento`, que bloqueia loopbacks (`127.0.0.0/8`), IPv6 local (`::1`, `fe80::`), metadados AWS/Cloud (`169.254.169.254`) e redes RFC 1918. |
-| **Degradação de Supabase / D1** | Falhas de conexão externa quebravam a API no Edge. | Arquitetura com fallback: requisições tentam Supabase; em caso de erro, recorrem à D1. Se ambos falharem, o cache de memória devolve HTTP 200 ou 503 com `Retry-After: 30`. |
-| **WAF de Borda contra Scanners** | Scanners automatizados (sqlmap, nikto, dirbuster) consumiam requisições da borda. | Middleware de WAF bloqueia User-Agents maliciosos com HTTP 403 e retorna HTTP 404 estrito para sondas de arquivos confidenciais (`/.env`, `/.git`). |
-| **Padronização de Licenças de Cursos** | Alguns cursos do MIT OCW estavam como `gratuito` genérico. | Alinhada a licença estrita: MIT OCW é `cc-by-nc-sa`; OpenStax é `cc-by`; PhET é `cc-by`; CK-12 é `cc-by-nc`. |
+### 3.1. Cloudflare D1 como Banco de Borda Primário (Produção Ativa)
+- **Decisão:** `"DB_BACKEND": "d1"` permanece como o backend ativo em [`wrangler.jsonc`](file:///Users/mendes/Desktop/I%20am%20Abc/wrangler.jsonc).
+- **Justificativa:** O Cloudflare D1 (`lino-livre-db`) opera na Edge Network com latência mínima global, busca FTS5 integrada e redirecionamentos 302 instantâneos.
+- **Eficiência e Controle de Cotas D1 (5M leituras/dia):**
+  - Todas as consultas com paginação forçam limite máximo (`Math.min(limit, 500)`).
+  - Consultas comuns usam tabelas de agregados pré-computados (`estatisticas`, `contadores`, `autor_totais`), evitando varreduras de 104k linhas.
+  - Cron diário às 00:10 UTC recalcula agregados e mantém os índices compostos de performance declarados em [`migrations/0005_indices_performance.sql`](file:///Users/mendes/Desktop/I%20am%20Abc/migrations/0005_indices_performance.sql).
+  - Cache de borda via Cloudflare Cache API protege rotas GET de leituras repetidas na D1.
 
----
-
-## 💻 4. Guia Rápido de Comandos para Agentes
-
-```bash
-# Executar a suíte completa de testes automatizados (145 testes)
-npm test
-
-# Executar apenas testes do Cloudflare Worker
-npm run test:worker
-
-# Verificar tipagem estrita TypeScript (sem emitir binários)
-npx tsc --noEmit
-
-# Repovoar o banco local com todas as fontes, livros e cursos limpos
-npm run seed -- --reset
-
-# Sincronizar catálogo de cursos locais e remotos
-npm run cursos:sync
-
-# Exportar catálogo consolidado para CSV
-npm run livros:csv
-
-# Iniciar servidor Express de desenvolvimento
-npm start
-```
+### 3.2. Supabase como Backend Auxiliar / Híbrido (Migração Parcial)
+- **Diretriz do Usuário:** *"Não migre completamente para o supabase, migre parcialmente."*
+- **Finalidade:** Armazenamento relacional PostgreSQL auxiliar para metadados selecionados e fallback de alta disponibilidade.
+- **Status das Tabelas Sincronizadas Parcialmente:**
+  - `fontes`: 34 registros.
+  - `categorias`: 20 registros.
+  - `cursos`: 8.541 registros.
+- **Script de Migração Parcial:** [`scripts/migrar_d1_para_supabase.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/migrar_d1_para_supabase.js).
 
 ---
 
-## 🔒 5. Compromisso Contínuo dos Agentes
-- **Nunca** quebre os 145 testes automatizados.
-- **Nunca** hospede arquivos de mídia locais.
-- **Sempre** rode `npm test` e `npx tsc --noEmit` antes de qualquer commit.
-- **Sempre** garanta que qualquer novo curso ou livro contenha uma licença aberta válida e comprovada.
+## ⏰ 4. Automações Periódicas Agendadas (Background Cron Jobs)
+
+O sistema mantém rotinas de ingestão e sincronização autônomas agendadas:
+
+1. **Samsung Ocean Brasil (Semanal):**
+   - **Script:** [`scripts/sync_ocean_brasil.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/sync_ocean_brasil.js)
+   - **Agendamento:** `0 8 * * 1` (toda segunda-feira às 08:00 UTC)
+   - **Função:** Sincroniza o catálogo oficial de capacitações e cursos gratuitos da Samsung Ocean (Android, Python, IoT, IA, UX/UI, Cloud) no SQLite e D1 com deduplicação idempotente por URL.
+
+2. **Microsoft Learn em Português pt-pt (Semanal):**
+   - **Script:** [`scripts/sync_ms_learn.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/sync_ms_learn.js)
+   - **Agendamento:** `0 9 * * 1` (toda segunda-feira às 09:00 UTC)
+   - **Função:** Consulta a API pública oficial do Microsoft Learn (`learn.microsoft.com/api/catalog?locale=pt-pt`), atualiza módulos e trilhas de aprendizagem (Azure, DevOps, C#, Power BI, Cybersegurança) com certificados gratuitos.
+
+3. **Recálculo de Agregados D1 (Diário):**
+   - **Agendamento:** `10 0 * * *` (todos os dias às 00:10 UTC em [`wrangler.jsonc`](file:///Users/mendes/Desktop/I%20am%20Abc/wrangler.jsonc))
+   - **Função:** Executa `recomputarEstatisticas` logo após a reposição da cota diária da Cloudflare.
+
+---
+
+## 📱 5. Comunidade e Canal WhatsApp (Fase 8)
+
+- **Diretriz:** Apenas links diretos e QR codes gerados dinamicamente. Sem bots proprietários, sem Cloud API da Meta e com zero coleta de números de telefone ou dados pessoais dos usuários.
+- **Canais Integrados:**
+  - 📢 **Canal Oficial ("Livros e Cursos — Lino Livre"):** Comunicação de mão única para anúncios de novas obras e cursos com certificados.
+  - 💬 **Grupo de Leitores ("Lino, quero ler!"):** Espaço comunitário aberto para troca de resenhas e pedidos de obras abertas.
+- **Endpoints de QR Code SVG:**
+  - `GET /api/comunidade/qrcode.svg`: QR Code SVG dinâmico para a comunidade com cache em memória.
+  - `GET /api/canal/qrcode.svg`: QR Code SVG dinâmico para o canal oficial.
+- **Cartaz Escolar para Impressão:** Disponível em [`public/comunidade.html`](file:///Users/mendes/Desktop/I%20am%20Abc/public/comunidade.html) com formatação responsiva A4 e `@media print` para murais de escolas e universidades.
+
+---
+
+## 🎨 6. Interface do Usuário e Experiência Acessível
+
+- **Navegação por Abas:** As abas principais do catálogo (Livros Digitais, Cursos Gratuitos, Roadmaps & Trilhas, Podcasts, Dicas & Ferramentas, Métricas & Fontes) utilizam seletores resilientes e isolamento de eventos de clique em [`public/js/app.js`](file:///Users/mendes/Desktop/I%20am%20Abc/public/js/app.js).
+- **Rótulos de Licenças Abertas:** Licenças do tipo `outro` são traduzidas em todos os idiomas para **"Acesso Externo Aberto" / "Open External Access"** para evitar ambiguidades jurídicas com Domínio Público ou Creative Commons.
+- **Transparência de Leituras:** O catálogo só exibe contadores de leitura quando houver registros reais (`leituras > 0`). Caso contrário, apresenta a etiqueta neutra `"Leitura Aberta"`.
+
+---
+
+## 🚀 7. Pipeline de CI/CD e Qualidade de Código
+
+- **Arquivo:** [`.github/workflows/deploy.yml`](file:///Users/mendes/Desktop/I%20am%20Abc/.github/workflows/deploy.yml)
+- **Regras do Pipeline:**
+  1. **Fail-Closed em Migrações D1:** Se a aplicação de qualquer migração falhar, o deploy é imediatamente interrompido.
+  2. **Verificação Estática:** `npx tsc --noEmit` obrigatório em TypeScript.
+  3. **Suíte Completa de Testes:** Execução de `npm test` antes de liberar o build.
+  4. **Smoke Tests Pós-Deploy:**
+     - `GET /` -> HTTP 200
+     - `GET /api/dashboard` -> HTTP 200 ou 503
+     - `GET /api/livros?page=1&limit=5` -> HTTP 200
+     - `GET /api/cursos?limit=5` -> HTTP 200
+     - `POST /api/sugestoes` (validação vazia) -> HTTP 400
+     - `POST /api/livros` sem chave administrativa -> **HTTP 401**
+     - `GET /api/livros` com User-Agent `sqlmap` (WAF) -> **HTTP 403**
+
+---
+
+## 🧪 8. Testes Automatizados e Paridade de Ambientes
+
+- **Comando:** `npm test`
+- **Cobertura:** 145 testes automatizados distribuídos em 29 suítes, cobrindo:
+  - Testes de integração de API Express ([`test/api.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/api.test.js))
+  - Testes do Cloudflare Worker com D1 mockada ([`test/worker.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/worker.test.js))
+  - Testes de domínio, integridade e triggers FTS5 ([`test/library.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/library.test.js))
+  - Testes de ingestão escalar e busca federada RRF ([`test/buscaFederada.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/buscaFederada.test.js))
+  - Testes do acervo GitHub e metadados multilíngues ([`test/fase5.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/fase5.test.js))
+  - Testes de segurança, IDOR, SSRF e WAF ([`test/seguranca.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/seguranca.test.js))
+- **Regra de Ouro:** Nenhum código deve ser promovido à branch `main` sem que todos os testes passem com 100% de sucesso.
