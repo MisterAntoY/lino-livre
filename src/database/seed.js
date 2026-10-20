@@ -12,6 +12,7 @@ const { wikisourceAlema } = require('./wikisourceAlemaSeedData');
 const { archiveAlema } = require('./archiveAlemaSeedData');
 const { archiveFrances } = require('./archiveFrancesSeedData');
 const { archiveRussa } = require('./archiveRussaSeedData');
+const { archiveItaliana } = require('./archiveItalianaSeedData');
 const { githubOrgsAlema } = require('./githubOrgsAlemaSeedData');
 const { romanceClassics } = require('./romanceClassicsSeedData');
 const { worldClassicsList } = require('./worldClassicsSeedData');
@@ -130,6 +131,7 @@ function seed(dbInstance = null) {
   const fArchiveDe = insertFonte.run('archive-de', 'Internet Archive — Cânone Clássico Alemão', 'manual', 'https://archive.org', 1).lastInsertRowid;
   const fArchiveFr = insertFonte.run('archive-fr', 'Internet Archive — Cânone Clássico Francês', 'manual', 'https://archive.org', 1).lastInsertRowid;
   const fArchiveRu = insertFonte.run('archive-ru', 'Internet Archive — Cânone Clássico Russo', 'manual', 'https://archive.org', 1).lastInsertRowid;
+  const fArchiveIt = insertFonte.run('archive-it', 'Internet Archive — Cânone Clássico Italiano', 'manual', 'https://archive.org', 1).lastInsertRowid;
   // Fontes de Filosofia (apenas metadados + links externos)
   const fFilosofia = insertFonte.run('github-filosofia', 'Filosofia no GitHub (Listas, Cursos e Ferramentas)', 'manual', 'https://github.com/topics/philosophy', 1).lastInsertRowid;
   const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'manual', 'https://www.standardebooks.org', 1).lastInsertRowid;
@@ -615,6 +617,7 @@ function seed(dbInstance = null) {
     'archive-de': fArchiveDe,
     'archive-fr': fArchiveFr,
     'archive-ru': fArchiveRu,
+    'archive-it': fArchiveIt,
     'uan-tfc': fUanTfc
   };
 
@@ -1236,6 +1239,55 @@ function seed(dbInstance = null) {
       null,
       b.ano || null,
       b.idioma || 'ru',
+      b.sinopse,
+      b.capaUrl,
+      b.paginas || 0,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      b.leituras || 0,
+      ''      // SEM conteúdo local - apenas intermediário
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'html';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
+
+  // Inserir Cânone Clássico Italiano no Internet Archive
+  // (Dante, Petrarca, Boccaccio, Machiavelli, Ariosto, Tasso, Goldoni, Foscolo, Leopardi,
+  //  Manzoni, Pellico, Nievo, Verga, D'Annunzio, Serao, Svevo, Pascoli, Alfieri)
+  // IMPORTANTE: Apenas metadados + links externos — NENHUM conteúdo armazenado localmente (AGENTS.md)
+  for (const b of archiveItaliana) {
+    let aut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(b.autor);
+    let aId;
+    if (!aut) {
+      aId = insertAutor.run(b.autor, 'Italiana', 'Autor clássico de obras em língua italiana em domínio público.').lastInsertRowid;
+    } else {
+      aId = aut.id;
+    }
+
+    const cId = catMap[b.categoria] || catDidaticos;
+    const fId = fonteMap[b.fonteSlug] || fManual;
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'outro';
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      null,
+      b.ano || null,
+      b.idioma || 'it',
       b.sinopse,
       b.capaUrl,
       b.paginas || 0,
