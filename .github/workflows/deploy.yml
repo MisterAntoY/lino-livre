@@ -8,6 +8,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+  # A conta está no plano gratuito da D1, cujo limite diário de linhas lidas
+  # (5M/dia) repõe às 00:00 UTC. Quando a cota esgota, nem as migrações nem
+  # o deploy consegue falar com a D1 (erro 7500) e o site devolve 503.
+  # O cron do Worker (00:10 UTC) repõe os agregados pré-calculados logo após
+  # a reposição — por isso o deploy agendado corre às 00:05 UTC: aplica as
+  # migrações pendentes e publica o Worker a tempo de o cron às 00:10 reduzir
+  # o consumo de leituras para ~300 linhas por pedido.
+  schedule:
+    - cron: '5 0 * * *'
 
 jobs:
   test:
@@ -35,7 +44,7 @@ jobs:
   deploy:
     name: 🚀 Deploy para Cloudflare Workers & D1
     needs: test
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout do repositório
@@ -80,7 +89,9 @@ jobs:
           # 2) Acesso à D1 (exige "D1: Edit"). Falha aqui interrompe o deploy.
           if ! D1=$(npx wrangler d1 migrations list lino-livre-db --remote 2>&1); then
             echo "$D1"
-            if echo "$D1" | grep -q "9109"; then
+            if echo "$D1" | grep -q "7500"; then
+              echo "::error::Quota da D1 esgotada: a conta excedeu o limite diário de linhas lidas do plano gratuito (erro 7500). Não é problema do token — a quota reinicia à meia-noite UTC. Opções: esperar pela reposição, upgrade para plano pago, ou reduzir as leituras da D1."
+            elif echo "$D1" | grep -q "9109"; then
               echo "::error::Token com filtro de IP (9109): a D1 não será acessada até o filtro ser removido."
             else
               echo "::error::Token sem acesso à D1 (falta o escopo 'D1: Edit'): migrações são obrigatórias para o deploy."
