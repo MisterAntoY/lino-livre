@@ -14,6 +14,9 @@ create schema if not exists extensions;
 create extension if not exists pg_trgm with schema extensions;
 grant usage on schema extensions to postgres, anon, authenticated, service_role;
 
+-- Resolve gin_trgm_ops quer a extensão esteja em "extensions" quer em "public".
+set search_path = public, extensions;
+
 -- ── Tabelas ─────────────────────────────────────────────────
 
 create table if not exists fontes (

@@ -2385,9 +2385,13 @@ const app = {
       // 1. Cadastrar autor se necessário
       let autorId = null;
       if (autorNome) {
-        const resAutores = await fetch('/api/autores');
+        // Correspondência exata no servidor (índice de autores(nome)): evita
+        // trazer os ~38 mil autores para procurar um nome no cliente.
+        const resAutores = await fetch(`/api/autores?nome=${encodeURIComponent(autorNome.trim())}`);
         const autores = await resAutores.json();
-        const autExistente = (autores || []).find(a => a.nome.toLowerCase() === autorNome.trim().toLowerCase());
+        const autExistente = Array.isArray(autores)
+          ? autores.find(a => a.nome.toLowerCase() === autorNome.trim().toLowerCase())
+          : null;
         if (autExistente) {
           autorId = autExistente.id;
         } else {

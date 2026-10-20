@@ -13,6 +13,16 @@ const app = new Hono<{ Bindings: Bindings }>();
 // Enable CORS
 app.use('/api/*', cors());
 
+// Cabeçalhos de segurança HTTP globais
+app.use('*', async (c, next) => {
+  await next();
+  c.header('X-Content-Type-Options', 'nosniff');
+  c.header('X-Frame-Options', 'DENY');
+  c.header('Referrer-Policy', 'strict-origin-when-cross-origin');
+  c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  c.header('Cross-Origin-Opener-Policy', 'same-origin');
+});
+
 // Cache de borda para leituras públicas. Registado antes das rotas para
 // envolver os handlers (o Cache API evita invocações e leituras na D1).
 app.use('/api/dashboard', cacheDeBorda);

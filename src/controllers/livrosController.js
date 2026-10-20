@@ -3,6 +3,22 @@ const { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
+/**
+ * Sanitiza termos para busca no SQLite FTS5.
+ * Neutraliza caracteres especiais e operadores (AND, OR, NOT, NEAR, aspas, dois pontos, asteriscos, parênteses)
+ * evitando exceções de sintaxe (SQLITE_ERROR: fts5: syntax error near ...) e ataques de DoS via busca.
+ */
+function sanitizarFts5(termo) {
+  if (!termo || typeof termo !== 'string') return null;
+  const tokens = termo
+    .replace(/[^\p{L}\p{N}\s-]/gu, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (tokens.length === 0) return null;
+  return tokens.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
+}
+
 // Dimensões pequenas (fontes/categorias) em cache: evita LIKE e JOINs na tabela livros
 let cacheDimensoes = null;
 let cacheDimensoesEm = 0;
@@ -41,12 +57,12 @@ function listar(req, res) {
 
     // Busca FTS5 se o termo de busca for informado
     if (busca && busca.trim()) {
-      const termoLimpo = busca.trim().replace(/['"*]/g, '');
-      if (termoLimpo) {
+      const matchQuery = sanitizarFts5(busca);
+      if (matchQuery) {
         filtros.push(`l.id IN (
           SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
         )`);
-        params.push(`${termoLimpo}*`);
+        params.push(matchQuery);
       }
     }
 
