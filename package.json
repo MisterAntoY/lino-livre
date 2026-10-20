@@ -27,6 +27,7 @@
     "compression": "^1.8.2",
     "express": "^5.2.1",
     "hono": "^4.13.13",
+    "pg": "^8.23.1",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {
