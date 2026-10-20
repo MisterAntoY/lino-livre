@@ -20,12 +20,6 @@ console.log('Valores reais:', JSON.stringify(REAL), '| faltam:', faltam);
 {
   const p = 'workers/src/index.ts';
   let s = fs.readFileSync(p, 'utf-8');
-  const antigo = `      resumo_estavel: {
-        total_livros: 104848,
-        total_autores: 37919,
-        total_cursos: 8541,
-        total_fontes: 34
-      }`;
   const novo = `      // Valores REAIS do acervo (fonte: seed local). Actualizar quando o
       // acervo crescer, para que o painel nunca apresente números fictícios.
       resumo_estavel: {
@@ -35,8 +29,14 @@ console.log('Valores reais:', JSON.stringify(REAL), '| faltam:', faltam);
         total_cursos: ${REAL.cursos},
         total_fontes: ${REAL.fontes}
       }`;
-  if (s.includes(antigo)) { s = s.replace(antigo, novo); fs.writeFileSync(p, s, 'utf-8'); console.log('✔ workers/src/index.ts: resumo_estavel com valores reais'); }
-  else console.log('⚠ workers/src/index.ts: padrão não encontrado');
+  const regex = /resumo_estavel:\s*\{[\s\S]*?\}/;
+  if (regex.test(s)) {
+    s = s.replace(/(\/\/[^\n]*\n\s*)*resumo_estavel:\s*\{[\s\S]*?\}/, novo);
+    fs.writeFileSync(p, s, 'utf-8');
+    console.log('✔ workers/src/index.ts: resumo_estavel com valores reais');
+  } else {
+    console.log('⚠ workers/src/index.ts: padrão não encontrado');
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -95,6 +95,8 @@ console.log('Valores reais:', JSON.stringify(REAL), '| faltam:', faltam);
 
   // marcos: 1.000 NÃO foi atingido (997); 10k/100k também não
   s = s.replace(/<div class="milestone-step reached" id="milestone-1k"/, '<div class="milestone-step active" id="milestone-1k"');
+  // Garante que só há 1 tag de "Próximo" no marco 1k
+  s = s.replace(/(<div class="milestone-step active" id="milestone-1k"[\s\S]*?)(<span class="milestone-tag"[^>]*>[^<]*<\/span>\s*)+/g, '$1');
   s = s.replace(/(<div class="milestone-step active" id="milestone-1k"[^>]*>\s*<span class="milestone-dot"><\/span>\s*<span class="milestone-text">1\.000<\/span>)/,
     '$1\n              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>');
   s = s.replace(/<div class="milestone-step reached" id="milestone-10k"/, '<div class="milestone-step" id="milestone-10k"');
@@ -103,10 +105,9 @@ console.log('Valores reais:', JSON.stringify(REAL), '| faltam:', faltam);
   s = s.replace(/(<div class="milestone-step active" id="milestone-1m"[^>]*>\s*<span class="milestone-dot"><\/span>\s*<span class="milestone-text">1\.000\.000<\/span>)\s*<span class="milestone-tag"[^>]*>Próximo<\/span>/,
     '$1');
 
-  // barra de progresso coerente
-  const pct = ((REAL.livros / META) * 100).toFixed(2);
-  s = s.replace(/id="placar-barra-progresso" style="width: [\d.]+%;"/, `id="placar-barra-progresso" style="width: ${pct}%;"`);
-  s = s.replace(/id="placar-barra-progresso" style="width: 1%;"/, `id="placar-barra-progresso" style="width: ${pct}%;"`);
+  // barra de progresso coerente (mínimo visual de 1%)
+  const visualPct = Math.max(1, Math.round(((REAL.livros / META) * 100)));
+  s = s.replace(/id="placar-barra-progresso" style="width: [^"]+;"/, `id="placar-barra-progresso" style="width: ${visualPct}%;"`);
 
   fs.writeFileSync(p, s, 'utf-8');
   console.log('✔ public/index.html: placeholders e marcos reais');

@@ -897,7 +897,8 @@ app.get('/api/livros', async (c) => {
     } else {
       c.header('Cache-Control', 'public, max-age=300');
     }
-    const totalCatalogoConhecido = 104848;
+    // Total REAL do acervo (fonte: seed local) — nunca números fictícios.
+    const totalCatalogoConhecido = 997;
     return c.json({
       page: numPage,
       pagina: numPage,
