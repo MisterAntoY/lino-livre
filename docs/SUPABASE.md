@@ -33,6 +33,18 @@ leitura pública.
 > O schema é idempotente (`if not exists` / `create or replace`), pode ser
 > executado novamente após atualizações.
 
+Alternativa por linha de comando (sem SQL Editor):
+
+```bash
+npm run supabase:schema
+# ou apenas verificar o que existe:
+npm run supabase:schema -- --verificar
+```
+
+Requer `DIRECT_URL` válido no `.env` (connection string *Session pooler*,
+porta 5432). Se a password estiver errada, o script indica como a repor:
+**Dashboard → Project Settings → Database → Reset database password**.
+
 ## 2. Configurar o Worker
 
 ```bash
@@ -67,6 +79,9 @@ Pré-requisitos: schema aplicado e `.env` com `SUPABASE_URL` +
 `Secret_keys`).
 
 ```bash
+# Ver o estado atual (não lê da D1)
+npm run supabase:status
+
 # Testar leitura sem escrever (recomendado)
 node scripts/migrar_d1_para_supabase.js --dry-run --tabela=fontes
 
@@ -91,6 +106,20 @@ Opções:
 | `--com-conteudo` | Inclui `livros.conteudo_texto` |
 | `--reiniciar` | Ignora o checkpoint |
 | `--dry-run` | Lê e conta, sem escrever no Supabase |
+| `--status` | Mostra contagens/ausências no Supabase (não lê da D1) |
+
+O script faz uma **pré-verificação** das tabelas antes de começar: se alguma
+faltar, aborta imediatamente em vez de deixar uma migração parcial. Use
+`--tabela=` para migrar uma tabela de cada vez.
+
+### Migração parcial
+
+Se a migração parou a meio (por exemplo, só `fontes`/`categorias`/`cursos`):
+
+1. `npm run supabase:status` — identifica as tabelas ausentes.
+2. Aplique `supabase/schema.sql` no SQL Editor (ou `npm run supabase:schema`).
+3. Volte a correr `npm run supabase:migrar` — o checkpoint retoma no último
+   `id` de cada tabela; as linhas já enviadas não são duplicadas (upsert).
 
 Por omissão, `conteudo_texto` **não** é migrado (mantém a base leve e o modelo
 de intermediação). Se precisar do texto integral no Supabase, use
@@ -101,6 +130,13 @@ de intermediação). Se precisar do texto integral no Supabase, use
 A migração lê cada linha uma vez. Com a cota gratuita da D1 (5M linhas/dia) é
 possível migrar ~104k livros + ~200k links, mas **não** repetir a migração no
 mesmo dia. O script pode ser retomado no dia seguinte a partir do checkpoint.
+
+Quando a cota acaba, o erro da Cloudflare é `code: 7500` ("exceeded D1's free
+tier daily row read limit"). O script traduz isso numa mensagem clara e guarda
+o checkpoint. Opções:
+
+- esperar pelo reset às **00:00 UTC** e voltar a correr;
+- ou mudar para **Workers Paid** (remove o limite diário de leitura da D1).
 
 ## 4. Verificar
 
