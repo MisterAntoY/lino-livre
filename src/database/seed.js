@@ -321,7 +321,7 @@ function seed(dbInstance = null) {
     espumasFlutuantesTexto
   ).lastInsertRowid;
   insertLink.run(l6, 'html', 'https://pt.wikisource.org/wiki/Espumas_Fluctuantes', 0, 1);
-  insertLink.run(l6, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000067.pdf', 0, 1);
+  insertLink.run(l6, 'pdf', 'https://archive.org/download/espumasfluctuant00alveuoft/espumasfluctuant00alveuoft.pdf', 0, 1);
 
   // Livro 7: Iracema
   const l7 = insertLivro.run(
