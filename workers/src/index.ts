@@ -21,6 +21,24 @@ app.use('*', async (c, next) => {
   c.header('Referrer-Policy', 'strict-origin-when-cross-origin');
   c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   c.header('Cross-Origin-Opener-Policy', 'same-origin');
+  c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  c.header(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "img-src 'self' data: https:",
+      "connect-src 'self'",
+      "media-src 'self' https:",
+      "frame-src 'self' https://www.youtube.com https://open.spotify.com",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'"
+    ].join('; ')
+  );
 });
 
 // Cache de borda para leituras públicas. Registado antes das rotas para
@@ -114,6 +132,9 @@ async function lerContador(db: any, dimensao: string, chave: string): Promise<nu
 // Contagem de resultados de busca sem varrer a tabela de livros: a FTS tem
 // exatamente uma linha por livro, por isso COUNT(*) do MATCH é o total.
 // Custa ~10 linhas lidas em vez de ~104.848.
+// Recebe o termo CRU e sanitiza-o exactamente como a consulta principal
+// (sanitizarFts5) — sanitizar duas vezes devolveria uma expressão mais
+// larga do que a usada nos resultados, e o total deixaria de bater certo.
 async function contarNaFts(db: any, termo: string): Promise<number | null> {
   if (!termo) return null;
   const matchQuery = sanitizarFts5(termo);
@@ -925,7 +946,7 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
       verificarUrlConformidade(capa_url);
       if (Array.isArray(links)) {
         for (const l of links) {
-          verificarUrlConformidade(l?.url);
+          if (l?.url) validarUrlRedirecionamento(l.url);
         }
       }
     } catch (confErr: any) {

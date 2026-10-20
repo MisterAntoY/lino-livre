@@ -301,7 +301,7 @@ function criar(req, res) {
       verificarUrlConformidade(capa_url);
       if (Array.isArray(links)) {
         for (const l of links) {
-          verificarUrlConformidade(l.url);
+          if (l?.url) validarUrlRedirecionamento(l.url);
         }
       }
     } catch (confErr) {
