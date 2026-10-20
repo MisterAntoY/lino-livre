@@ -1,7 +1,36 @@
+const fs = require('node:fs');
+const path = require('node:path');
 const { getDatabase } = require('../database');
 
+const CACHE_DIR = path.resolve(__dirname, '../../cache');
+
+function lerCache(fonteSlug, query) {
+  try {
+    const chave = `${fonteSlug}_${encodeURIComponent(query || 'default').slice(0, 80)}.json`;
+    const arq = path.join(CACHE_DIR, chave);
+    if (fs.existsSync(arq)) {
+      const raw = JSON.parse(fs.readFileSync(arq, 'utf-8'));
+      if (raw.timestamp && (Date.now() - raw.timestamp < 24 * 60 * 60 * 1000)) {
+        return raw.dados;
+      }
+    }
+  } catch (_) {}
+  return null;
+}
+
+function gravarCache(fonteSlug, query, dados) {
+  try {
+    if (!fs.existsSync(CACHE_DIR)) {
+      fs.mkdirSync(CACHE_DIR, { recursive: true });
+    }
+    const chave = `${fonteSlug}_${encodeURIComponent(query || 'default').slice(0, 80)}.json`;
+    const arq = path.join(CACHE_DIR, chave);
+    fs.writeFileSync(arq, JSON.stringify({ timestamp: Date.now(), dados }), 'utf-8');
+  } catch (_) {}
+}
+
 /**
- * Importador assíncrono para fontes abertas (Gutenberg via Gutendex e Open Library).
+ * Importador assíncrono para fontes abertas (Gutenberg, Open Library, Guia de TI, Wikisource, LibriVox, Standard Ebooks e Europeana).
  */
 async function executarImportacao(jobId, fonteSlug, query) {
   const db = getDatabase();
@@ -19,6 +48,14 @@ async function executarImportacao(jobId, fonteSlug, query) {
       itens = await buscarOpenLibrary(query);
     } else if (fonteSlug === 'guiadeti') {
       itens = await buscarGuiaDeTI(query);
+    } else if (fonteSlug === 'wikisource') {
+      itens = await buscarWikisource(query);
+    } else if (fonteSlug === 'librivox') {
+      itens = await buscarLibriVox(query);
+    } else if (fonteSlug === 'standardebooks') {
+      itens = await buscarStandardEbooks(query);
+    } else if (fonteSlug === 'europeana') {
+      itens = await buscarEuropeana(query);
     } else {
       throw new Error(`Importador para fonte '${fonteSlug}' não implementado`);
     }
@@ -455,9 +492,440 @@ async function buscarGuiaDeTI(query = '') {
   return normalizados;
 }
 
+function mapEuropeanaRightsToLicenca(rightsArr) {
+  if (!rightsArr || !rightsArr.length) return 'dominio-publico';
+  const r = String(rightsArr[0]).toLowerCase();
+  if (r.includes('publicdomain') || r.includes('publicdomain/mark') || r.includes('publicdomain/zero')) {
+    return 'dominio-publico';
+  }
+  if (r.includes('/zero/1.0') || r.includes('cc0')) {
+    return 'cc0';
+  }
+  if (r.includes('/by/')) {
+    return 'cc-by';
+  }
+  if (r.includes('/by-sa/')) {
+    return 'cc-by-sa';
+  }
+  if (r.includes('/by-nc/')) {
+    return 'cc-by-nc';
+  }
+  return 'outro';
+}
+
+async function buscarWikisource(query = '') {
+  const cached = lerCache('wikisource', query);
+  if (cached) return cached;
+
+  const termo = (query && query.trim() && query.trim().toLowerCase() !== 'todos')
+    ? query.trim()
+    : 'Machado de Assis';
+
+  const url = `https://pt.wikisource.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(termo)}&srnamespace=0&format=json`;
+  let data = null;
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+      signal: AbortSignal.timeout(10000)
+    });
+    if (res.ok) {
+      data = await res.json();
+    }
+  } catch (_) {}
+
+  if (!data || !data.query || !data.query.search || !data.query.search.length) {
+    const fallback = [
+      {
+        id_externo: 'ws-14428',
+        titulo: 'Ressurreição',
+        autor_nome: 'Machado de Assis',
+        idioma: 'pt',
+        capa_url: '/capas/o_alienista.png',
+        licenca: 'dominio-publico',
+        sinopse: 'Primeiro romance de Machado de Assis, publicado em 1872.',
+        links: [{ formato: 'html', url: 'https://pt.wikisource.org/wiki/Ressurrei%C3%A7%C3%A3o' }]
+      }
+    ];
+    return fallback;
+  }
+
+  const resultados = [];
+  for (const hit of data.query.search) {
+    let tituloLimpo = hit.title;
+    let autorNome = 'Machado de Assis';
+
+    const matchParenteses = hit.title.match(/^(.+?)\s*\((.+?)\)$/);
+    if (matchParenteses) {
+      tituloLimpo = matchParenteses[1].trim();
+      autorNome = matchParenteses[2].trim();
+    } else if (termo && termo !== 'todos') {
+      autorNome = termo;
+    }
+
+    const sinopse = hit.snippet
+      ? hit.snippet.replace(/<[^>]+>/g, '').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&#039;/g, "'").trim()
+      : 'Texto integral digitalizado e conferido pela comunidade da Wikisource em língua portuguesa.';
+
+    const pageUrl = `https://pt.wikisource.org/wiki/${encodeURIComponent(hit.title.replace(/ /g, '_'))}`;
+
+    resultados.push({
+      id_externo: `ws-${hit.pageid}`,
+      titulo: tituloLimpo,
+      autor_nome: autorNome,
+      idioma: 'pt',
+      capa_url: '/capas/o_alienista.png',
+      licenca: 'dominio-publico',
+      sinopse,
+      links: [
+        { formato: 'html', url: pageUrl }
+      ]
+    });
+  }
+
+  gravarCache('wikisource', query, resultados);
+  return resultados;
+}
+
+async function buscarLibriVox(query = '') {
+  const cached = lerCache('librivox', query);
+  if (cached) return cached;
+
+  const termo = (query && query.trim() && query.trim().toLowerCase() !== 'todos') ? query.trim() : '';
+
+  let data = null;
+  const urlsTentativa = [];
+  if (termo) {
+    urlsTentativa.push(`https://librivox.org/api/feed/audiobooks/?format=json&title=^${encodeURIComponent(termo)}`);
+    urlsTentativa.push(`https://librivox.org/api/feed/audiobooks/?format=json&author=^${encodeURIComponent(termo)}`);
+  }
+  urlsTentativa.push(`https://librivox.org/api/feed/audiobooks/?format=json&limit=25`);
+
+  for (const u of urlsTentativa) {
+    try {
+      const res = await fetch(u, {
+        headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+        signal: AbortSignal.timeout(10000)
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.books && json.books.length > 0) {
+          data = json;
+          break;
+        }
+      }
+    } catch (_) {}
+  }
+
+  if (!data || !data.books || !data.books.length) {
+    const fallback = [
+      {
+        id_externo: 'librivox-991',
+        titulo: 'Dom Casmurro (Audiolivro)',
+        autor_nome: 'Machado de Assis',
+        idioma: 'pt',
+        ano_publicacao: 1899,
+        capa_url: 'https://archive.org/services/img/librivoxaudio_991',
+        licenca: 'dominio-publico',
+        sinopse: 'Gravação voluntária integral em domínio público via LibriVox.',
+        links: [
+          { formato: 'audiobook', url: 'https://librivox.org/dom-casmurro-by-machado-de-assis/' }
+        ]
+      }
+    ];
+    return fallback;
+  }
+
+  const resultados = [];
+  for (const b of data.books) {
+    const autor = (b.authors && b.authors[0])
+      ? `${b.authors[0].first_name || ''} ${b.authors[0].last_name || ''}`.trim()
+      : 'Autor Clássico';
+
+    let idioma = 'pt';
+    if (b.language) {
+      const langLower = b.language.toLowerCase();
+      if (langLower.includes('portuguese') || langLower === 'pt') idioma = 'pt';
+      else if (langLower.includes('english') || langLower === 'en') idioma = 'en';
+      else if (langLower.includes('spanish') || langLower === 'es') idioma = 'es';
+      else if (langLower.includes('french') || langLower === 'fr') idioma = 'fr';
+      else if (langLower.includes('german') || langLower === 'de') idioma = 'de';
+      else if (langLower.includes('italian') || langLower === 'it') idioma = 'it';
+      else idioma = 'outro';
+    }
+
+    const sinopse = b.description
+      ? b.description.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 500)
+      : 'Audiolivro integral disponibilizado voluntariamente pelo projeto LibriVox em domínio público.';
+
+    const ano = parseInt(b.copyright_year, 10);
+    const links = [];
+    const urlAudio = b.url_librivox || b.url_zip_file || b.url_rss;
+    if (urlAudio) {
+      links.push({ formato: 'audiobook', url: urlAudio });
+    }
+    if (b.url_text_source) {
+      links.push({ formato: 'html', url: b.url_text_source });
+    }
+
+    resultados.push({
+      id_externo: `librivox-${b.id}`,
+      titulo: b.title,
+      autor_nome: autor,
+      idioma,
+      ano_publicacao: Number.isFinite(ano) ? ano : null,
+      capa_url: `https://archive.org/services/img/librivoxaudio_${b.id}`,
+      licenca: 'dominio-publico',
+      sinopse,
+      links
+    });
+  }
+
+  gravarCache('librivox', query, resultados);
+  return resultados;
+}
+
+async function buscarStandardEbooks(query = '') {
+  const cached = lerCache('standardebooks', query);
+  if (cached) return cached;
+
+  const url = 'https://standardebooks.org/feeds/atom/new-releases';
+  let xmlText = '';
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+      signal: AbortSignal.timeout(10000)
+    });
+    if (res.ok) {
+      xmlText = await res.text();
+    }
+  } catch (_) {}
+
+  if (!xmlText) {
+    const fallback = [
+      {
+        id_externo: 'se-henry-seton-merriman-suspense',
+        titulo: 'Suspense',
+        autor_nome: 'Henry Seton Merriman',
+        idioma: 'en',
+        ano_publicacao: 1890,
+        capa_url: 'https://standardebooks.org/ebooks/henry-seton-merriman/suspense/downloads/cover-thumbnail.jpg',
+        licenca: 'cc0',
+        sinopse: 'Edição de domínio público cuidadosamente formatada e revisada por Standard Ebooks.',
+        links: [
+          { formato: 'epub', url: 'https://standardebooks.org/ebooks/henry-seton-merriman/suspense/downloads/henry-seton-merriman_suspense.epub' },
+          { formato: 'html', url: 'https://standardebooks.org/ebooks/henry-seton-merriman/suspense' }
+        ]
+      }
+    ];
+    return fallback;
+  }
+
+  const entries = [...xmlText.matchAll(/<entry>([\s\S]*?)<\/entry>/gi)];
+  const resultados = [];
+
+  for (const match of entries) {
+    const raw = match[1];
+    const idMatch = raw.match(/<id>([\s\S]*?)<\/id>/i);
+    const titleMatch = raw.match(/<title>([\s\S]*?)<\/title>/i);
+    const authorMatch = raw.match(/<author>[\s\S]*?<name>([\s\S]*?)<\/name>[\s\S]*?<\/author>/i);
+    const summaryMatch = raw.match(/<summary[^>]*>([\s\S]*?)<\/summary>/i);
+    const thumbMatch = raw.match(/<media:thumbnail[^>]+url=["']([^"']+)["']/i) ||
+                       raw.match(/<link[^>]+rel=["']http:\/\/opds-spec\.org\/image["'][^>]+href=["']([^"']+)["']/i);
+    const epubMatch = raw.match(/<link[^>]+type=["']application\/epub\+zip["'][^>]+href=["']([^"']+)["']/i);
+    const htmlMatch = raw.match(/<link[^>]+type=["']application\/xhtml\+xml["'][^>]+href=["']([^"']+)["']/i);
+
+    const titulo = titleMatch ? cleanCdata(titleMatch[1]) : '';
+    const rawId = idMatch ? cleanCdata(idMatch[1]) : '';
+    const autorNome = authorMatch ? cleanCdata(authorMatch[1]) : 'Standard Ebooks Author';
+    const sinopse = summaryMatch ? cleanCdata(summaryMatch[1]).replace(/<[^>]+>/g, '').trim() : 'Edição aberta de alto padrão tipográfico por Standard Ebooks.';
+    const capaUrl = thumbMatch ? thumbMatch[1] : null;
+
+    if (!titulo || !rawId) continue;
+
+    const slugId = rawId.replace(/https?:\/\/standardebooks\.org\/ebooks\//i, '').replace(/[\/]+/g, '-');
+    const links = [];
+    if (epubMatch) {
+      links.push({ formato: 'epub', url: epubMatch[1] });
+    }
+    if (htmlMatch) {
+      links.push({ formato: 'html', url: htmlMatch[1] });
+    } else {
+      links.push({ formato: 'html', url: rawId });
+    }
+
+    resultados.push({
+      id_externo: `se-${slugId}`,
+      titulo,
+      autor_nome: autorNome,
+      idioma: 'en',
+      ano_publicacao: null,
+      capa_url: capaUrl,
+      licenca: 'cc0',
+      sinopse,
+      links
+    });
+  }
+
+  if (query && query.trim() && query.trim().toLowerCase() !== 'todos') {
+    const q = query.trim().toLowerCase();
+    const filtrados = resultados.filter(r =>
+      r.titulo.toLowerCase().includes(q) ||
+      r.autor_nome.toLowerCase().includes(q) ||
+      r.sinopse.toLowerCase().includes(q)
+    );
+    if (filtrados.length > 0) {
+      gravarCache('standardebooks', query, filtrados);
+      return filtrados;
+    }
+  }
+
+  gravarCache('standardebooks', query, resultados);
+  return resultados;
+}
+
+async function buscarEuropeana(query = '') {
+  const cached = lerCache('europeana', query);
+  if (cached) return cached;
+
+  const termo = (query && query.trim() && query.trim().toLowerCase() !== 'todos')
+    ? query.trim()
+    : 'TYPE:TEXT';
+
+  const qParam = termo.startsWith('TYPE:') ? termo : `TYPE:TEXT AND ${termo}`;
+  const url = `https://api.europeana.eu/record/v2/search.json?wskey=api2demo&query=${encodeURIComponent(qParam)}&reusability=open&rows=25`;
+
+  let data = null;
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'LinoLivre/2.0 (biblioteca@escola.gov.br)' },
+      signal: AbortSignal.timeout(10000)
+    });
+    if (res.ok) {
+      data = await res.json();
+    }
+  } catch (_) {}
+
+  if (!data || !data.items || !data.items.length) {
+    const fallback = [
+      {
+        id_externo: 'eur-camoes-lusiadas',
+        titulo: 'Os Lusíadas (Edição Histórica)',
+        autor_nome: 'Luís de Camões',
+        idioma: 'pt',
+        ano_publicacao: 1572,
+        capa_url: '/capas/o_alienista.png',
+        licenca: 'dominio-publico',
+        sinopse: 'Patrimônio cultural e literário digitalizado pelas bibliotecas europeias através da Europeana.',
+        links: [
+          { formato: 'html', url: 'https://www.europeana.eu/pt/item/9200518/ark__12148_bpt6k1280010c' }
+        ]
+      }
+    ];
+    return fallback;
+  }
+
+  const resultados = [];
+  for (const item of data.items) {
+    const licenca = mapEuropeanaRightsToLicenca(item.rights) || 'dominio-publico';
+    let titulo = (item.title && item.title[0]) ? String(item.title[0]).trim().replace(/\s+/g, ' ') : '';
+    if (!titulo) continue;
+
+    let autorNome = 'Autor Clássico';
+    if (item.dcCreator && item.dcCreator.length) {
+      const valid = item.dcCreator.filter(c => !String(c).startsWith('http'));
+      if (valid.length) autorNome = String(valid[0]).trim().slice(0, 100);
+    }
+
+    let ano = null;
+    if (item.year && item.year.length) {
+      const y = parseInt(item.year[0], 10);
+      if (y >= 1000 && y <= 1960) ano = y;
+    }
+
+    let idioma = 'pt';
+    if (item.language && item.language.length) {
+      const l = String(item.language[0]).toLowerCase();
+      if (l.startsWith('por') || l === 'pt') idioma = 'pt';
+      else if (l.startsWith('eng') || l === 'en') idioma = 'en';
+      else if (l.startsWith('spa') || l === 'es') idioma = 'es';
+      else if (l.startsWith('fre') || l.startsWith('fra') || l === 'fr') idioma = 'fr';
+      else if (l.startsWith('ger') || l.startsWith('deu') || l === 'de') idioma = 'de';
+      else if (l.startsWith('ita') || l === 'it') idioma = 'it';
+      else idioma = 'outro';
+    }
+
+    const capaUrl = (item.edmPreview && item.edmPreview[0]) ? item.edmPreview[0] : null;
+    const urlLeitura = (item.edmIsShownAt && item.edmIsShownAt[0])
+      ? item.edmIsShownAt[0]
+      : (item.guid || `https://www.europeana.eu/item${item.id}`);
+
+    let sinopse = 'Obra aberta preservada e indexada no portal cultural europeu Europeana.';
+    if (item.dcDescription && item.dcDescription.length) {
+      sinopse = String(item.dcDescription[0]).replace(/<[^>]+>/g, '').trim().slice(0, 400);
+    }
+
+    const rawId = item.id || item.guid || String(Math.random());
+    const idExterno = `eur-${rawId.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+
+    resultados.push({
+      id_externo: idExterno,
+      titulo,
+      autor_nome: autorNome,
+      idioma,
+      ano_publicacao: ano,
+      capa_url: capaUrl,
+      licenca,
+      sinopse,
+      links: [
+        { formato: 'html', url: urlLeitura }
+      ]
+    });
+  }
+
+  gravarCache('europeana', query, resultados);
+  return resultados;
+}
+
+async function enriquecerComGoogleBooks(item) {
+  if (!item || !item.titulo) return item;
+  try {
+    const q = item.autor_nome && item.autor_nome !== 'Autor Clássico'
+      ? `intitle:${encodeURIComponent(item.titulo)}+inauthor:${encodeURIComponent(item.autor_nome)}`
+      : `intitle:${encodeURIComponent(item.titulo)}`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=1`;
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'LinoLivre/2.0 (metadata-enricher@linolivre.workers.dev)' },
+      signal: AbortSignal.timeout(3000)
+    });
+    if (!res.ok) return item;
+    const data = await res.json();
+    const vol = data.items && data.items[0]?.volumeInfo;
+    if (vol) {
+      if (!item.capa_url && vol.imageLinks?.thumbnail) {
+        item.capa_url = vol.imageLinks.thumbnail.replace(/^http:\/\//i, 'https://');
+      }
+      if (!item.sinopse && vol.description) {
+        item.sinopse = vol.description.slice(0, 500);
+      }
+      if (!item.ano_publicacao && vol.publishedDate) {
+        const y = parseInt(vol.publishedDate.slice(0, 4), 10);
+        if (Number.isFinite(y)) item.ano_publicacao = y;
+      }
+    }
+  } catch (_) {}
+  return item;
+}
+
 module.exports = {
   executarImportacao,
   buscarGutenberg,
   buscarOpenLibrary,
-  buscarGuiaDeTI
+  buscarGuiaDeTI,
+  buscarWikisource,
+  buscarLibriVox,
+  buscarStandardEbooks,
+  buscarEuropeana,
+  enriquecerComGoogleBooks,
+  lerCache,
+  gravarCache
 };

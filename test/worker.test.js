@@ -432,6 +432,38 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
 
       assert.equal(res.status, 200, 'Bearer token válido deve conceder acesso com 200');
     });
+
+    test('4.6 - POST /api/import aceita fontes da Fase 4 (wikisource, librivox, standardebooks, europeana)', async () => {
+      const fontesFase4 = ['wikisource', 'librivox', 'standardebooks', 'europeana'];
+      for (const fonteSlug of fontesFase4) {
+        const env = {
+          ADMIN_API_KEY: ADMIN_SECRET,
+          DB: createMockD1({
+            firstHandler: async (sql) => {
+              if (sql.includes('FROM fontes')) {
+                return { id: 8, slug: fonteSlug, nome: `Fonte ${fonteSlug}`, ativa: 1 };
+              }
+              return null;
+            },
+            runHandler: async () => ({ meta: { changes: 1, last_row_id: 101 } })
+          })
+        };
+
+        const res = await workerRequest('/api/import', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-key': ADMIN_SECRET
+          },
+          body: JSON.stringify({ fonte: fonteSlug, query: 'literatura' })
+        }, env);
+
+        assert.equal(res.status, 202, `Deve aceitar importação da fonte ${fonteSlug}`);
+        const data = await res.json();
+        assert.equal(data.fonte, fonteSlug);
+        assert.equal(data.status, 'pendente');
+      }
+    });
   });
 
   // =========================================================================

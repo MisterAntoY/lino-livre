@@ -134,7 +134,9 @@ function seed(dbInstance = null) {
   const fArchiveIt = insertFonte.run('archive-it', 'Internet Archive — Cânone Clássico Italiano', 'manual', 'https://archive.org', 1).lastInsertRowid;
   // Fontes de Filosofia (apenas metadados + links externos)
   const fFilosofia = insertFonte.run('github-filosofia', 'Filosofia no GitHub (Listas, Cursos e Ferramentas)', 'manual', 'https://github.com/topics/philosophy', 1).lastInsertRowid;
-  const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'manual', 'https://www.standardebooks.org', 1).lastInsertRowid;
+  const fStandardEbooks = insertFonte.run('standardebooks', 'Standard Ebooks (domínio público)', 'opds', 'https://www.standardebooks.org', 1).lastInsertRowid;
+  const fLibriVox = insertFonte.run('librivox', 'LibriVox (Audiolivros de Domínio Público)', 'api', 'https://librivox.org', 1).lastInsertRowid;
+  const fEuropeana = insertFonte.run('europeana', 'Europeana Open Data', 'api', 'https://api.europeana.eu', 1).lastInsertRowid;
   // Fonte de Livros Técnicos em Espanhol
   const fFreeBooksEs = insertFonte.run('github-freebooks-es', 'Free Programming Books ES (GitHub)', 'manual', 'https://github.com/EbookFoundation/free-programming-books', 1).lastInsertRowid;
   // Fonte Repositório Universitário TFC UAN

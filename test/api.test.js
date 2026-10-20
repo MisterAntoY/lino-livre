@@ -73,6 +73,100 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
 </channel></rss>`
         };
       }
+      if (urlStr.includes('wikisource.org')) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            query: {
+              search: [
+                {
+                  pageid: 14428,
+                  title: 'Ressurreição (Machado de Assis)',
+                  snippet: 'por <span class="searchmatch">Machado</span> <span class="searchmatch">de</span> <span class="searchmatch">Assis</span> 1872.'
+                }
+              ]
+            }
+          })
+        };
+      }
+      if (urlStr.includes('librivox.org')) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            books: [
+              {
+                id: '991',
+                title: 'Dom Casmurro (Audiolivro)',
+                description: 'Audiolivro integral gravado por voluntários da LibriVox.',
+                language: 'Portuguese',
+                copyright_year: '1899',
+                url_librivox: 'https://librivox.org/dom-casmurro/',
+                authors: [{ first_name: 'Machado de', last_name: 'Assis' }]
+              }
+            ]
+          })
+        };
+      }
+      if (urlStr.includes('standardebooks.org')) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () => `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <entry>
+    <id>https://standardebooks.org/ebooks/henry-seton-merriman/suspense</id>
+    <title>Suspense</title>
+    <author><name>Henry Seton Merriman</name></author>
+    <summary>Classic novel produced by Standard Ebooks.</summary>
+    <media:thumbnail url="https://standardebooks.org/cover.jpg"/>
+    <link href="https://standardebooks.org/suspense.epub" type="application/epub+zip"/>
+    <link href="https://standardebooks.org/suspense.html" type="application/xhtml+xml"/>
+  </entry>
+</feed>`
+        };
+      }
+      if (urlStr.includes('europeana.eu')) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            items: [
+              {
+                id: '/9200518/camoes_lusiadas',
+                title: ['Os Lusíadas (Europeana)'],
+                dcCreator: ['Luís de Camões'],
+                language: ['pt'],
+                year: ['1572'],
+                rights: ['http://creativecommons.org/publicdomain/mark/1.0/'],
+                edmPreview: ['https://europeana.eu/preview.jpg'],
+                edmIsShownAt: ['https://purl.pt/lusiadas']
+              }
+            ]
+          })
+        };
+      }
+      if (urlStr.includes('googleapis.com/books')) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            items: [
+              {
+                volumeInfo: {
+                  title: 'Dom Casmurro',
+                  description: 'Obra realista enriquecida via Google Books API.',
+                  publishedDate: '1899',
+                  imageLinks: {
+                    thumbnail: 'https://books.google.com/cover-lino.jpg'
+                  }
+                }
+              }
+            ]
+          })
+        };
+      }
       return originalFetch(url, options);
     };
 
@@ -1269,6 +1363,115 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     });
     // O endpoint /ouvir é público (pode responder 200 ou 500 se id não existir, mas NÃO 401)
     assert.notEqual(resOuvirPod.status, 401, 'POST /api/podcasts/episodios/:id/ouvir permanece público sem exigir 401');
+  });
+
+  // Teste 27: Importadores da Fase 4 (Wikisource, LibriVox, Standard Ebooks, Europeana e Google Books)
+  test('27. Importadores da Fase 4: Wikisource, LibriVox, Standard Ebooks, Europeana e Enriquecimento Google Books', async () => {
+    // 27.1 - Wikisource: importação assíncrona com leitor direto HTML e licença pública
+    const resWs = await request('/api/import', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        fonte: 'wikisource',
+        query: 'Machado de Assis'
+      })
+    });
+    assert.equal(resWs.status, 202);
+    assert.ok(resWs.data.job_id);
+    assert.equal(resWs.data.fonte, 'wikisource');
+
+    // Aguardar conclusão do job assíncrono
+    await new Promise(r => setTimeout(r, 200));
+    const jobWs = await request(`/api/import/${resWs.data.job_id}`);
+    assert.equal(jobWs.data.status, 'concluido');
+    assert.ok(jobWs.data.processados > 0);
+
+    // 27.2 - LibriVox: audiolivros de domínio público com formato audiobook
+    const resLv = await request('/api/import', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        fonte: 'librivox',
+        query: 'Dom Casmurro'
+      })
+    });
+    assert.equal(resLv.status, 202);
+    assert.equal(resLv.data.fonte, 'librivox');
+
+    await new Promise(r => setTimeout(r, 200));
+    const jobLv = await request(`/api/import/${resLv.data.job_id}`);
+    assert.equal(jobLv.data.status, 'concluido');
+    assert.ok(jobLv.data.processados > 0);
+
+    // 27.3 - Standard Ebooks: acervo livre de alta qualidade tipográfica com licença cc0
+    const resSe = await request('/api/import', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        fonte: 'standardebooks',
+        query: 'Suspense'
+      })
+    });
+    assert.equal(resSe.status, 202);
+    assert.equal(resSe.data.fonte, 'standardebooks');
+
+    await new Promise(r => setTimeout(r, 200));
+    const jobSe = await request(`/api/import/${resSe.data.job_id}`);
+    assert.equal(jobSe.data.status, 'concluido');
+    assert.ok(jobSe.data.processados > 0);
+
+    // 27.4 - Europeana: acervo aberto do patrimônio cultural europeu
+    const resEur = await request('/api/import', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        fonte: 'europeana',
+        query: 'Camoes'
+      })
+    });
+    assert.equal(resEur.status, 202);
+    assert.equal(resEur.data.fonte, 'europeana');
+
+    await new Promise(r => setTimeout(r, 200));
+    const jobEur = await request(`/api/import/${resEur.data.job_id}`);
+    assert.equal(jobEur.data.status, 'concluido');
+    assert.ok(jobEur.data.processados > 0);
+
+    // 27.5 - Conformidade com AGENTS.md e integridade de licenças
+    const db = getDatabase();
+    const livrosFase4 = db.prepare(`
+      SELECT l.*, f.slug AS fonte_slug
+      FROM livros l
+      JOIN fontes f ON f.id = l.fonte_id
+      WHERE f.slug IN ('wikisource', 'librivox', 'standardebooks', 'europeana')
+    `).all();
+    assert.ok(livrosFase4.length >= 4, 'Deve conter obras de todas as fontes da Fase 4');
+
+    const licencaValida = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
+    for (const livro of livrosFase4) {
+      assert.ok(licencaValida.includes(livro.licenca), `Licença '${livro.licenca}' do livro '${livro.titulo}' deve ser válida`);
+      const links = db.prepare('SELECT * FROM links_livros WHERE livro_id = ?').all(livro.id);
+      assert.ok(links.length > 0, `Livro '${livro.titulo}' deve ter pelo menos um link`);
+      for (const link of links) {
+        assert.equal(link.link_externo, 1, 'Link deve ser estritamente externo (zero armazenamento binário local)');
+        assert.ok(link.url.startsWith('http://') || link.url.startsWith('https://'));
+      }
+    }
+
+    // 27.6 - Idempotência: re-executar não gera duplicações de registros
+    const totalLivrosAntes = db.prepare('SELECT COUNT(*) AS total FROM livros').get().total;
+    const resIdempotente = await request('/api/import', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
+      body: JSON.stringify({
+        fonte: 'wikisource',
+        query: 'Machado de Assis'
+      })
+    });
+    assert.equal(resIdempotente.status, 202);
+    await new Promise(r => setTimeout(r, 200));
+    const totalLivrosDepois = db.prepare('SELECT COUNT(*) AS total FROM livros').get().total;
+    assert.equal(totalLivrosDepois, totalLivrosAntes, 'Re-execução de importação não pode duplicar obras');
   });
 });
 
