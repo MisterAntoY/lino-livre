@@ -289,6 +289,13 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resAutor.status, 200);
     assert.ok(resAutor.data.data.length > 0);
     assert.ok(resAutor.data.data.some(l => l.autor_nome && l.autor_nome.includes('Machado')));
+
+    // Robustez e Segurança FTS5: caracteres especiais, operadores e pontuação não devem quebrar sintaxe
+    const termosEspeciais = ['Casmurro*', '(Casmurro', 'NOT Casmurro', 'Machado OR 1=1', 'col:val', '"""', '???***', '\' OR \'1\'=\'1'];
+    for (const t of termosEspeciais) {
+      const resSec = await request(`/api/livros?busca=${encodeURIComponent(t)}`);
+      assert.equal(resSec.status, 200, `Busca por "${t}" deve retornar 200 sem causar syntax error no SQLite FTS5`);
+    }
   });
 
   // Teste 3: Paginação (page/limit/total)

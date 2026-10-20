@@ -36,6 +36,22 @@ app.use('/api/livros/:id', cacheDeBorda);
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
+/**
+ * Sanitiza termos para busca no SQLite FTS5 / D1.
+ * Neutraliza caracteres especiais e operadores (AND, OR, NOT, NEAR, aspas, dois pontos, asteriscos, parênteses)
+ * evitando exceções de sintaxe e ataques de DoS via busca.
+ */
+function sanitizarFts5(termo: string | undefined | null): string | null {
+  if (!termo || typeof termo !== 'string') return null;
+  const tokens = termo
+    .replace(/[^\p{L}\p{N}\s-]/gu, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (tokens.length === 0) return null;
+  return tokens.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
+}
+
 function timingSafeEqualStr(a: string, b: string): boolean {
   if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) {
     return false;
@@ -100,34 +116,39 @@ async function lerContador(db: any, dimensao: string, chave: string): Promise<nu
 // Custa ~10 linhas lidas em vez de ~104.848.
 async function contarNaFts(db: any, termo: string): Promise<number | null> {
   if (!termo) return null;
+  const matchQuery = sanitizarFts5(termo);
+  if (!matchQuery) return null;
   try {
     const row = await db.prepare(
       'SELECT COUNT(*) AS total FROM livros_fts WHERE livros_fts MATCH ?'
-    ).bind(`${termo}*`).first();
+    ).bind(matchQuery).first();
     return row ? Number((row as any).total) : null;
   } catch {
     return null;
   }
 }
 
-// Tabelas existentes na D1 — cacheadas por isolate para não repetir a
-// consulta a sqlite_master em cada pedido.
-let cacheTabelas: { tabelas: Set<string>; timestamp: number } | null = null;
+// Tabelas existentes na D1 — cacheadas por isolate (WeakMap sobre o binding
+// DB) para não repetir a consulta a sqlite_master em cada pedido.
+const cacheTabelas = new WeakMap<object, { tabelas: Set<string>; timestamp: number }>();
 const TABELAS_CACHE_TTL = 10 * 60 * 1000;
 
 async function tabelaExiste(db: any, nome: string): Promise<boolean> {
-  if (!cacheTabelas || Date.now() - cacheTabelas.timestamp > TABELAS_CACHE_TTL) {
+  const chave = db && typeof db === 'object' ? (db as object) : null;
+  let reg = chave ? cacheTabelas.get(chave) : null;
+  if (!reg || Date.now() - reg.timestamp > TABELAS_CACHE_TTL) {
     try {
       const res = await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all();
-      cacheTabelas = {
+      reg = {
         tabelas: new Set(((res.results || []) as any[]).map((r) => String(r.name).toLowerCase())),
         timestamp: Date.now()
       };
+      if (chave) cacheTabelas.set(chave, reg);
     } catch {
       return false;
     }
   }
-  return cacheTabelas.tabelas.has(nome.toLowerCase());
+  return reg!.tabelas.has(nome.toLowerCase());
 }
 
 // Erro de cota da D1 (free tier) — permite degradar em vez de devolver 500.
@@ -368,12 +389,18 @@ app.get('/api/autores', async (c) => {
 
     query += ' ORDER BY a.nome ASC';
 
+    // Limite por omissão: sem ele, a rota devolvia os ~37.919 autores numa
+    // só resposta (dezenas de milhares de linhas lidas). A paginação
+    // (?limit / ?page) continua disponível para quem precisar de mais.
+    const limit = Math.min(Math.max(parseInt(limitParam || '500', 10), 1), 500);
     if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
       const page = Math.max(parseInt(pageParam || '1', 10), 1);
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
+    } else {
+      query += ' LIMIT ?';
+      params.push(limit);
     }
 
     const autores = (await db.prepare(query).bind(...params).all()).results as any[];
@@ -540,13 +567,13 @@ app.get('/api/livros', async (c) => {
     // e deixa o planejador usar os índices compostos de popularidade.
     const filtros: string[] = [];
     const params: any[] = [];
-    const termoBusca = busca && busca.trim() ? busca.trim().replace(/['"*]/g, '') : '';
+    const matchFts = sanitizarFts5(busca);
 
-    if (termoBusca) {
+    if (matchFts) {
       filtros.push(`l.id IN (
         SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
       )`);
-      params.push(`${termoBusca}*`);
+      params.push(matchFts);
     }
 
     if (categoria_id) {
@@ -608,7 +635,7 @@ app.get('/api/livros', async (c) => {
     // Total a partir dos agregados quando o filtro é simples. Só cai no
     // COUNT(*) (varredura de 104k linhas) para combinações de filtros.
     let totalConhecido: number | null = null;
-    const temBusca = !!termoBusca;
+    const temBusca = !!matchFts;
     const temFormato = !!formato;
     const filtrosDiretos = filtros.filter((f) => !f.startsWith('l.id IN'));
     if (filtros.includes('1=0')) {
@@ -616,7 +643,7 @@ app.get('/api/livros', async (c) => {
     } else if (temBusca && !temFormato && filtrosDiretos.length === 0) {
       // Busca pura: a FTS tem uma linha por livro, logo o COUNT do MATCH é
       // o total — lê ~10 linhas em vez de varrer os 104.848 livros.
-      totalConhecido = await contarNaFts(db, termoBusca);
+      totalConhecido = await contarNaFts(db, matchFts!);
     } else if (temFormato && !temBusca && filtrosDiretos.length === 0) {
       // Formato puro: contador pré-computado (cron diário).
       totalConhecido = await lerContador(db, 'formato', String(formato).toLowerCase());

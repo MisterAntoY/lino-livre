@@ -40,6 +40,11 @@ CREATE INDEX IF NOT EXISTS idx_links_formato_livro
 CREATE INDEX IF NOT EXISTS idx_autores_nome
   ON autores(nome);
 
+-- Busca exacta de autor por nome (independente da maiúscula/minúscula):
+-- o índice binário acima não serve para `nome = ? COLLATE NOCASE`.
+CREATE INDEX IF NOT EXISTS idx_autores_nome_nocase
+  ON autores(nome COLLATE NOCASE);
+
 -- Deduplicação idempotente de cursos (INSERT ... WHERE NOT EXISTS url = ?)
 CREATE INDEX IF NOT EXISTS idx_cursos_url
   ON cursos(url);

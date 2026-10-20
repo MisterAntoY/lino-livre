@@ -154,6 +154,32 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       const titulos = data.data.map(l => l.titulo);
       assert.ok(titulos.some(t => t.includes('Dom Casmurro')), 'Fallback deve conter Dom Casmurro');
     });
+
+    test('1.3 - Deve sanitizar caracteres especiais e operadores FTS5 na busca e retornar 200', async () => {
+      let ftsParamPassado = null;
+      const env = {
+        ADMIN_API_KEY: ADMIN_SECRET,
+        DB: createMockD1({
+          firstHandler: async (sql, params) => {
+            if (sql.includes('livros_fts')) {
+              ftsParamPassado = params[0];
+              return { total: 0 };
+            }
+            return { total: 0 };
+          },
+          allHandler: async (sql, params) => {
+            if (sql.includes('livros_fts')) {
+              ftsParamPassado = params[0];
+            }
+            return { results: [] };
+          }
+        })
+      };
+
+      const res = await workerRequest('/api/livros?busca=%28python+AND+test%2A%29', { method: 'GET' }, env);
+      assert.equal(res.status, 200, 'Deveria responder 200 sanitizando o FTS5');
+      assert.ok(ftsParamPassado && ftsParamPassado.includes('"python"*'), 'Termo deve ser sanitizado em tokens encapsulados');
+    });
   });
 
   // =========================================================================
