@@ -148,6 +148,17 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ erro: 'Erro interno do servidor' });
 });
 
+// Páginas Públicas Institucionais & Compliance
+app.get('/creditos', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/creditos.html'));
+});
+app.get('/legal', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/legal.html'));
+});
+app.get('/termos', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/termos.html'));
+});
+
 // Fallback para SPA/Frontend
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

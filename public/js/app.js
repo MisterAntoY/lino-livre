@@ -45,7 +45,7 @@ const app = {
     velocidade: 1.0,
     utterance: null
   },
-  totalLivrosAcervo: 104848,
+  totalLivrosAcervo: 897,
 
   async init() {
     // 1. Internacionalização: carrega pt + idioma preferido e aplica ao DOM
@@ -2153,11 +2153,11 @@ const app = {
       }
     } catch (_) {}
 
-    this.atualizarPlacarMeta(this.totalLivrosAcervo || 104848);
+    this.atualizarPlacarMeta(this.totalLivrosAcervo || 897);
   },
 
   atualizarPlacarMeta(total) {
-    if (!total || total < 1) total = this.totalLivrosAcervo || 104848;
+    if (!total || total < 1) total = this.totalLivrosAcervo || 897;
     this.totalLivrosAcervo = total;
 
     const meta = 10000000;
@@ -2239,7 +2239,7 @@ const app = {
   },
 
   compartilharMeta10M() {
-    const total = this.totalLivrosAcervo || 104848;
+    const total = this.totalLivrosAcervo || 897;
     const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
     const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);

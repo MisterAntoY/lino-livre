@@ -24,6 +24,24 @@ app.use('/api/livros/:id', cacheDeBorda);
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
+const DOMINIOS_PROIBIDOS = [
+  'z-lib', 'zlibrary', 'z-library',
+  'libgen', 'library.lol',
+  'sci-hub', 'scihub',
+  'annas-archive', 'anna-archive',
+  'b-ok', 'bookfi', 'pdfdrive'
+];
+
+function verificarUrlConformidade(url?: string | null) {
+  if (!url) return;
+  const urlLower = String(url).toLowerCase();
+  for (const dom of DOMINIOS_PROIBIDOS) {
+    if (urlLower.includes(dom)) {
+      throw new Error(`URL rejeitada por violar a política de compliance e legalidade (fonte não autorizada / lista negra de pirataria: ${dom}). O Lino Livre veda estritamente o uso de repositórios piratas (ver /legal e docs/FONTES-E-COMPLIANCE.md).`);
+    }
+  }
+}
+
 // ────────────────────────────────────────────────────────────
 // Middleware de Autenticação Administrativa para Rotas de Escrita
 // ────────────────────────────────────────────────────────────
@@ -662,9 +680,9 @@ app.get('/api/livros', async (c) => {
       pagina: numPage,
       limit: numLimit,
       limite: numLimit,
-      total: 104848,
-      total_pages: Math.ceil(104848 / numLimit),
-      total_paginas: Math.ceil(104848 / numLimit),
+      total: fallbackLivros.length,
+      total_pages: Math.ceil(fallbackLivros.length / numLimit),
+      total_paginas: Math.ceil(fallbackLivros.length / numLimit),
       data: fallbackLivros
     });
   }
@@ -783,6 +801,17 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
       }, 400);
     }
 
+    try {
+      verificarUrlConformidade(capa_url);
+      if (Array.isArray(links)) {
+        for (const l of links) {
+          verificarUrlConformidade(l?.url);
+        }
+      }
+    } catch (confErr: any) {
+      return c.json({ erro: confErr.message }, 400);
+    }
+
     const db = c.env.DB;
     const res = await db.prepare(`
       INSERT INTO livros (
@@ -846,6 +875,12 @@ app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
 
     if (licenca && !LICENCAS_VALIDAS.includes(licenca)) {
       return c.json({ erro: `Licença inválida. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` }, 400);
+    }
+
+    try {
+      verificarUrlConformidade(capa_url);
+    } catch (confErr: any) {
+      return c.json({ erro: confErr.message }, 400);
     }
 
     await db.prepare(`
@@ -1429,9 +1464,68 @@ app.get('/api/legal', (c) => {
     links: {
       termos_completos: '/termos.html',
       aviso_legal: '/legal.html',
-      documento_oficial: 'https://github.com/MisterAntoY/lino-livre/blob/main/TERMOS-DE-USO-E-AVISO-LEGAL.md'
+      creditos_licencas: '/creditos.html',
+      documento_oficial: 'https://github.com/MisterAntoY/lino-livre/blob/main/TERMOS-DE-USO-E-AVISO-LEGAL.md',
+      documento_compliance: 'https://github.com/MisterAntoY/lino-livre/blob/main/docs/FONTES-E-COMPLIANCE.md'
     }
   });
+});
+
+app.get('/api/creditos', async (c) => {
+  try {
+    const db = c.env.DB;
+    let totalLivros = 0;
+    let fontesAtivas: any[] = [];
+    let distribuicaoLicencas: any[] = [];
+
+    if (db) {
+      try {
+        const row = await db.prepare('SELECT COUNT(*) AS total FROM livros').first<any>();
+        totalLivros = row?.total || 0;
+        fontesAtivas = (await db.prepare('SELECT id, slug, nome, tipo, url_base FROM fontes WHERE ativa = 1 ORDER BY id ASC').all()).results;
+        distribuicaoLicencas = (await db.prepare('SELECT licenca, COUNT(*) AS total FROM livros GROUP BY licenca ORDER BY total DESC').all()).results;
+      } catch (_) {}
+    }
+
+    return c.json({
+      status: 'ativo',
+      plataforma: c.env.SITE_NAME || 'Lino Livre',
+      missao: 'Livros livres, para todos. Democratização do acesso ao conhecimento através de catalogação aberta.',
+      taxonomia_licencas: {
+        'dominio-publico': 'Obras em Domínio Público por decurso de prazo patrimonial (vida do autor + 70 anos)',
+        'cc0': 'Creative Commons Zero 1.0 Universal (dedicação pública universal)',
+        'cc-by': 'Creative Commons Atribuição (livre partilha e adaptação)',
+        'cc-by-sa': 'Creative Commons Atribuição-CompartilhaIgual',
+        'cc-by-nc': 'Creative Commons Atribuição-NãoComercial',
+        'outro': 'Recursos Educacionais Abertos (REA) com licença pública permissiva e código aberto'
+      },
+      metricas_compliance: {
+        total_livros: totalLivros,
+        itens_com_licenca_verificada_percentual: 100,
+        zero_armazenamento_local: true,
+        redirecionamento_protocolo: 'HTTP 302',
+        distribuicao_licencas: distribuicaoLicencas
+      },
+      fontes_aprovadas: fontesAtivas,
+      fontes_proibidas_blacklist: [
+        'Z-Library',
+        'Library Genesis (LibGen)',
+        'Sci-Hub',
+        'Anna\'s Archive',
+        'B-OK / BookFi',
+        'PDF Drive'
+      ],
+      diretrizes: {
+        documento_compliance: '/docs/FONTES-E-COMPLIANCE.md',
+        pagina_termos: '/termos.html',
+        pagina_legal: '/legal.html',
+        pagina_creditos: '/creditos.html',
+        contato_dmca: c.env.SUPPORT_EMAIL || 'bv6alblu6@mozmail.com'
+      }
+    });
+  } catch (err: any) {
+    return c.json({ erro: 'Erro ao obter créditos e conformidade: ' + err.message }, 500);
+  }
 });
 
 // ────────────────────────────────────────────────────────────

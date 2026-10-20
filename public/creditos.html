@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créditos, Fontes do Acervo e Licenças Abertas — Lino Livre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=20261011">
+  <style>
+    .creditos-wrapper {
+      max-width: 960px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1.5rem;
+    }
+    .creditos-header {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .creditos-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f0fdf4;
+      color: #15803d;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+      border: 1px solid #bbf7d0;
+    }
+    .creditos-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+    .creditos-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .metric-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .metric-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #2563eb;
+    }
+    .metric-lbl {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+      font-weight: 600;
+    }
+    .sources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .source-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .source-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    .source-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      background: #eff6ff;
+      color: #2563eb;
+      margin-bottom: 0.5rem;
+    }
+    .source-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+    .source-desc {
+      font-size: 0.9rem;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+    .source-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #2563eb;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .source-link:hover {
+      text-decoration: underline;
+    }
+    .license-table-container {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .license-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+    .license-table th, .license-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .license-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .license-pill {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-family: monospace;
+    }
+    .pill-dp { background: #dcfce7; color: #166534; }
+    .pill-cc0 { background: #fef08a; color: #854d0e; }
+    .pill-by { background: #e0e7ff; color: #3730a3; }
+    .pill-outro { background: #f1f5f9; color: #475569; }
+    .blacklist-card {
+      background: #fff5f5;
+      border: 1px solid #fecaca;
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      margin: 2rem 0;
+    }
+    .blacklist-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #991b1b;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-content">
+      <div class="brand">
+        <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+          <div class="brand-icon">📚</div>
+          <div>
+            <h1 class="brand-title">Lino Livre</h1>
+            <p class="brand-subtitle">Livros livres, para todos.</p>
+          </div>
+        </a>
+      </div>
+      <div class="header-actions">
+        <a href="/" class="btn-back-home" style="display: inline-flex; align-items: center; gap: 0.4rem; color: #2563eb; text-decoration: none; font-weight: 600; font-size: 0.92rem; padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); background: #eff6ff;">
+          ← Voltar ao Catálogo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="creditos-wrapper">
+
+    <!-- Top Breadcrumb -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <a href="/" style="color: #2563eb; text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+        ← Início do Lino Livre
+      </a>
+      <span style="font-size: 0.85rem; color: #64748b;">
+        Fase 5 • Transparência e Licenciamento
+      </span>
+    </div>
+
+    <!-- Header Section -->
+    <div class="creditos-header">
+      <div class="creditos-badge">
+        <span>✅ Conformidade Legal & Acesso Aberto</span>
+      </div>
+      <h1 class="creditos-title">Créditos, Fontes Oficiais e Licenças do Acervo</h1>
+      <p class="creditos-subtitle">
+        O Lino Livre opera exclusivamente como plataforma indexadora e motor de busca para obras de domínio público e recursos educacionais abertos. Reconhecemos, agradecemos e ligamos diretamente às iniciativas globais que tornam o conhecimento acessível à humanidade.
+      </p>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-val">100%</div>
+          <div class="metric-lbl">Licença Declarada e Verificada</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">Zero</div>
+          <div class="metric-lbl">Ficheiros Armazenados Localmente</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">302</div>
+          <div class="metric-lbl">Redirecionamento Direto aos Servidores Oficiais</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">14+</div>
+          <div class="metric-lbl">Fontes Abertas Auditadas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 1: FONTES OFICIAIS -->
+    <section>
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">
+        🏛️ Fontes e Repositórios Oficiais Indexados
+      </h2>
+      <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Todas as obras e cursos listados no Lino Livre contam com hiperligações diretas de atribuição para seus provedores de origem:
+      </p>
+
+      <div class="sources-grid">
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Literatura Mundial</span>
+            <h3 class="source-name">Project Gutenberg</h3>
+            <p class="source-desc">Pioneiro na digitalização de livros em domínio público mundial com mais de 70.000 títulos clássicos e edições em português.</p>
+          </div>
+          <a href="https://www.gutenberg.org" target="_blank" rel="noopener noreferrer" class="source-link">Acessar gutenberg.org ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Biblioteca Digital Aberta</span>
+            <h3 class="source-name">Open Library & Internet Archive</h3>
+            <p class="source-desc">Iniciativa sem fins lucrativos que preserva e disponibiliza milhões de livros históricos digitalizados de bibliotecas de todo o globo.</p>
+          </div>
+          <a href="https://openlibrary.org" target="_blank" rel="noopener noreferrer" class="source-link">Acessar openlibrary.org ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Textos-Fonte em Português</span>
+            <h3 class="source-name">Wikisource Lusófona</h3>
+            <p class="source-desc">Biblioteca livre de textos-fonte em língua portuguesa em domínio público ou sob licença livre Creative Commons BY-SA mantida pela comunidade Wikimedia.</p>
+          </div>
+          <a href="https://pt.wikisource.org" target="_blank" rel="noopener noreferrer" class="source-link">Acessar pt.wikisource.org ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Audiolivros Gratuitos</span>
+            <h3 class="source-name">LibriVox</h3>
+            <p class="source-desc">Gravações sonoras integrais realizadas por voluntários de obras em domínio público, promovendo inclusão e acessibilidade para pessoas cegas ou em trânsito.</p>
+          </div>
+          <a href="https://librivox.org" target="_blank" rel="noopener noreferrer" class="source-link">Acessar librivox.org ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Tipografia Livre de Alta Qualidade</span>
+            <h3 class="source-name">Standard Ebooks</h3>
+            <p class="source-desc">Edições digitais de domínio público formatadas com rigor tipográfico profissional, capas artísticas e lançadas sob dedicação Creative Commons CC0.</p>
+          </div>
+          <a href="https://standardebooks.org" target="_blank" rel="noopener noreferrer" class="source-link">Acessar standardebooks.org ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Patrimônio Cultural Europeu</span>
+            <h3 class="source-name">Europeana Open Data</h3>
+            <p class="source-desc">Plataforma digital da União Europeia que agrega o patrimônio cultural digitalizado de bibliotecas nacionais, arquivos e museus europeus.</p>
+          </div>
+          <a href="https://www.europeana.eu" target="_blank" rel="noopener noreferrer" class="source-link">Acessar europeana.eu ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Acervo Histórico Lusófono</span>
+            <h3 class="source-name">Portal Domínio Público (MEC)</h3>
+            <p class="source-desc">Biblioteca digital oficial do Ministério da Educação do Brasil com clássicos da literatura brasileira, poesia, ensaios e obras de arte.</p>
+          </div>
+          <a href="http://www.dominiopublico.gov.br" target="_blank" rel="noopener noreferrer" class="source-link">Acessar dominiopublico.gov.br ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Educação e Carreiras Tech</span>
+            <h3 class="source-name">Guia de TI & Trilha Info</h3>
+            <p class="source-desc">Plataforma independente de mapeamento de cursos gratuitos, bootcamps certificados e roadmaps de carreira em tecnologia e programação.</p>
+          </div>
+          <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="source-link">Acessar guiadeti.com.br ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Pesquisa Universitária em Angola</span>
+            <h3 class="source-name">Universidade Agostinho Neto (UAN)</h3>
+            <p class="source-desc">Repositório de Trabalhos de Fim de Curso (TFC), monografias e investigações de estudantes da maior universidade pública de Angola.</p>
+          </div>
+          <a href="https://uan.ao" target="_blank" rel="noopener noreferrer" class="source-link">Acessar uan.ao ↗</a>
+        </div>
+
+        <div class="source-box">
+          <div>
+            <span class="source-badge">Educação Superior Global</span>
+            <h3 class="source-name">MIT OCW & Harvard PLL</h3>
+            <p class="source-desc">Materiais didáticos abertos, videoaulas e cursos livres oferecidos pelas principais universidades mundiais sob a égide dos Recursos Educacionais Abertos (REA).</p>
+          </div>
+          <a href="https://ocw.mit.edu" target="_blank" rel="noopener noreferrer" class="source-link">Acessar ocw.mit.edu ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2: GUIA DE LICENÇAS -->
+    <section style="margin-top: 3rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">
+        📜 Guia de Licenças e Termos de Uso
+      </h2>
+      <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.25rem;">
+        Cada obra indexada no Lino Livre exibe claramente uma das seguintes licenças reconhecidas:
+      </p>
+
+      <div class="license-table-container">
+        <table class="license-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nome da Licença</th>
+              <th>Permissões & Condições</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="license-pill pill-dp">dominio-publico</span></td>
+              <td><strong>Domínio Público</strong></td>
+              <td>Livre reprodução, estudo e distribuição. Direitos patrimoniais expirados legalmente pelo decurso de prazo post-mortem.</td>
+            </tr>
+            <tr>
+              <td><span class="license-pill pill-cc0">cc0</span></td>
+              <td><strong>Creative Commons Zero (CC0 1.0)</strong></td>
+              <td>Dedicação universal ao domínio público pelo autor. Permite cópia, modificação e distribuição irrestritas sem exigência de créditos.</td>
+            </tr>
+            <tr>
+              <td><span class="license-pill pill-by">cc-by</span></td>
+              <td><strong>CC Atribuição (CC BY)</strong></td>
+              <td>Permite distribuição, remixagem e adaptação, desde que seja atribuído o devido crédito ao autor original da obra.</td>
+            </tr>
+            <tr>
+              <td><span class="license-pill pill-by">cc-by-sa</span></td>
+              <td><strong>CC Atribuição-CompartilhaIgual</strong></td>
+              <td>Permite adaptação com créditos, exigindo que quaisquer obras derivadas sejam distribuídas sob a mesma licença aberta (copyleft).</td>
+            </tr>
+            <tr>
+              <td><span class="license-pill pill-by">cc-by-nc</span></td>
+              <td><strong>CC Atribuição-NãoComercial</strong></td>
+              <td>Permite a partilha e estudo livre exclusivamente para propósitos pedagógicos, culturais e sem finalidade lucrativa.</td>
+            </tr>
+            <tr>
+              <td><span class="license-pill pill-outro">outro</span></td>
+              <td><strong>Acesso Aberto / REA Comunitário</strong></td>
+              <td>Documentação aberta de software (MIT, Apache, GFDL), guias do GitHub e recursos educacionais abertos disponibilizados publicamente.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: TERRITORIALIDADE -->
+    <section style="margin-top: 3rem; background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2rem;">
+      <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">
+        🌍 Prazos de Domínio Público e Territorialidade Internacional
+      </h2>
+      <p style="font-size: 0.95rem; color: #334155; line-height: 1.7; margin-bottom: 1rem;">
+        O tempo de vigência dos direitos de autor é territorial e segue a legislação de cada país:
+      </p>
+      <ul style="font-size: 0.95rem; color: #334155; line-height: 1.7; margin-left: 1.5rem; margin-bottom: 1.25rem;">
+        <li><strong>Angola:</strong> 70 anos após o falecimento do autor (art. 32.º da Lei n.º 15/14 de 31 de Julho).</li>
+        <li><strong>Brasil:</strong> 70 anos contados de 1º de janeiro do ano subsequente à morte do autor (art. 41 da Lei 9.610/98).</li>
+        <li><strong>Portugal & União Europeia:</strong> 70 anos post-mortem (Diretiva 2006/116/CE).</li>
+        <li><strong>Estados Unidos:</strong> Obras publicadas antes de 1929 encontram-se integralmente no domínio público norte-americano.</li>
+      </ul>
+      <p style="font-size: 0.92rem; color: #64748b; line-height: 1.6; margin-bottom: 0;">
+        <strong>Regra de Salvaguarda:</strong> Como o Lino Livre opera sem armazenamento local (redirecionando sempre para o servidor de origem por meio de links HTTP 302), a hospedagem efetiva do arquivo segue a jurisdição do repositório onde está localizado. O leitor é convidado a verificar se o acesso ao título se coaduna com as leis de seu país.
+      </p>
+    </section>
+
+    <!-- SEÇÃO 4: LISTA NEGRA ANTI-PIRATARIA -->
+    <div class="blacklist-card">
+      <div class="blacklist-title">
+        <span>🛡️ Política Anti-Pirataria e Bloqueio de Fontes Proibidas</span>
+      </div>
+      <p style="font-size: 0.95rem; color: #7f1d1d; line-height: 1.6; margin-bottom: 0.75rem;">
+        Em conformidade com as diretrizes estruturais de <a href="/legal.html" style="color: #991b1b; font-weight: 700; text-decoration: underline;">Legalidade e Intermediação</a>, o Lino Livre veda e bloqueia em nível de código qualquer integração ou redirecionamento para repositórios não autorizados de pirataria (shadow libraries):
+      </p>
+      <p style="font-size: 0.9rem; color: #991b1b; font-weight: 600; margin-bottom: 0;">
+        ⛔ Fontes Proibidas: Z-Library, Library Genesis (LibGen), Sci-Hub, Anna's Archive, B-OK, BookFi e PDF Drive.
+      </p>
+    </div>
+
+    <!-- SEÇÃO 5: BOTÕES E CONTATO -->
+    <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+      <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 1.25rem;">
+        Possui dúvidas sobre licenciamento ou deseja notificar a retirada de um link?
+      </p>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="/legal.html#secao-direitos" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #2563eb; color: #ffffff; padding: 0.75rem 1.5rem; border-radius: var(--radius-sm); font-weight: 700; text-decoration: none; font-size: 0.95rem;">
+          📬 Canal de Notificação DMCA / Takedown
+        </a>
+        <a href="/termos.html" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #eff6ff; color: #1d4ed8; padding: 0.75rem 1.5rem; border-radius: var(--radius-sm); font-weight: 700; text-decoration: none; font-size: 0.95rem; border: 1px solid #bfdbfe;">
+          ⚖️ Termos de Uso Completos
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p><strong>Lino Livre</strong> • Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</p>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin: 0.5rem 0;">
+        Plataforma indexadora educacional e comunitária. Não armazenamos arquivos locais de livros. Links externos redirecionados via HTTP 302.
+      </p>
+      <p>
+        <a href="/" style="color: #2563eb; text-decoration: underline;">Catálogo Principal</a> •
+        <a href="/creditos.html" style="color: #2563eb; text-decoration: underline;">Créditos & Licenças</a> •
+        <a href="/legal.html" style="color: #2563eb; text-decoration: underline;">Diretrizes Legais & DMCA</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS contadores (
 CREATE INDEX IF NOT EXISTS idx_contadores_dimensao
   ON contadores(dimensao, total DESC);
 
--- Sementes conhecidas. O cron substitui pelos valores exatos.
+-- Sementes calculadas dinamicamente com base no estado real das tabelas.
 INSERT INTO estatisticas (chave, valor) VALUES
-  ('total_livros', 104848),
-  ('total_autores', 37919),
-  ('total_categorias', 29),
-  ('total_cursos', 7501),
-  ('total_fontes', 32),
-  ('total_leituras', 0)
+  ('total_livros', (SELECT COUNT(*) FROM livros)),
+  ('total_autores', (SELECT COUNT(*) FROM autores)),
+  ('total_categorias', (SELECT COUNT(*) FROM categorias)),
+  ('total_cursos', (SELECT COUNT(*) FROM cursos)),
+  ('total_fontes', (SELECT COUNT(*) FROM fontes WHERE ativa = 1)),
+  ('total_leituras', (SELECT COALESCE(SUM(leituras), 0) FROM livros))
 ON CONFLICT(chave) DO NOTHING;

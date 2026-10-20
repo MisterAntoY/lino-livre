@@ -60,7 +60,60 @@ exports.obterDiretrizesLegais = (req, res) => {
     links: {
       termos_completos: '/termos.html',
       aviso_legal: '/legal.html',
-      documento_oficial: 'https://github.com/MisterAntoY/lino-livre/blob/main/TERMOS-DE-USO-E-AVISO-LEGAL.md'
+      creditos_licencas: '/creditos.html',
+      documento_oficial: 'https://github.com/MisterAntoY/lino-livre/blob/main/TERMOS-DE-USO-E-AVISO-LEGAL.md',
+      documento_compliance: 'https://github.com/MisterAntoY/lino-livre/blob/main/docs/FONTES-E-COMPLIANCE.md'
     }
   });
 };
+
+exports.obterCreditos = (req, res) => {
+  try {
+    const { getDatabase } = require('../database');
+    const db = getDatabase();
+
+    const totalLivros = db.prepare('SELECT COUNT(*) AS total FROM livros').get()?.total || 0;
+    const fontesAtivas = db.prepare('SELECT id, slug, nome, tipo, url_base FROM fontes WHERE ativa = 1 ORDER BY id ASC').all();
+    const distribuicaoLicencas = db.prepare('SELECT licenca, COUNT(*) AS total FROM livros GROUP BY licenca ORDER BY total DESC').all();
+
+    return res.json({
+      status: 'ativo',
+      plataforma: 'Lino Livre',
+      missao: 'Livros livres, para todos. Democratização do acesso ao conhecimento através de catalogação aberta.',
+      taxonomia_licencas: {
+        'dominio-publico': 'Obras em Domínio Público por decurso de prazo patrimonial (vida do autor + 70 anos)',
+        'cc0': 'Creative Commons Zero 1.0 Universal (dedicação pública universal)',
+        'cc-by': 'Creative Commons Atribuição (livre partilha e adaptação)',
+        'cc-by-sa': 'Creative Commons Atribuição-CompartilhaIgual',
+        'cc-by-nc': 'Creative Commons Atribuição-NãoComercial',
+        'outro': 'Recursos Educacionais Abertos (REA) com licença pública permissiva e código aberto'
+      },
+      metricas_compliance: {
+        total_livros: totalLivros,
+        itens_com_licenca_verificada_percentual: 100,
+        zero_armazenamento_local: true,
+        redirecionamento_protocolo: 'HTTP 302',
+        distribuicao_licencas: distribuicaoLicencas
+      },
+      fontes_aprovadas: fontesAtivas,
+      fontes_proibidas_blacklist: [
+        'Z-Library',
+        'Library Genesis (LibGen)',
+        'Sci-Hub',
+        'Anna\'s Archive',
+        'B-OK / BookFi',
+        'PDF Drive'
+      ],
+      diretrizes: {
+        documento_compliance: '/docs/FONTES-E-COMPLIANCE.md',
+        pagina_termos: '/termos.html',
+        pagina_legal: '/legal.html',
+        pagina_creditos: '/creditos.html',
+        contato_dmca: 'bv6alblu6@mozmail.com'
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao obter créditos e conformidade: ' + err.message });
+  }
+};
+

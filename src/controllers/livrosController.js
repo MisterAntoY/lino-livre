@@ -2,6 +2,24 @@ const { getDatabase } = require('../database');
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
+const DOMINIOS_PROIBIDOS = [
+  'z-lib', 'zlibrary', 'z-library',
+  'libgen', 'library.lol',
+  'sci-hub', 'scihub',
+  'annas-archive', 'anna-archive',
+  'b-ok', 'bookfi', 'pdfdrive'
+];
+
+function verificarUrlConformidade(url) {
+  if (!url) return;
+  const urlLower = String(url).toLowerCase();
+  for (const dom of DOMINIOS_PROIBIDOS) {
+    if (urlLower.includes(dom)) {
+      throw new Error(`URL rejeitada por violar a política de compliance e legalidade (fonte não autorizada / lista negra de pirataria: ${dom}). O Lino Livre veda estritamente o uso de repositórios piratas (ver /legal e docs/FONTES-E-COMPLIANCE.md).`);
+    }
+  }
+}
+
 // Dimensões pequenas (fontes/categorias) em cache: evita LIKE e JOINs na tabela livros
 let cacheDimensoes = null;
 let cacheDimensoesEm = 0;
@@ -279,6 +297,17 @@ function criar(req, res) {
       });
     }
 
+    try {
+      verificarUrlConformidade(capa_url);
+      if (Array.isArray(links)) {
+        for (const l of links) {
+          verificarUrlConformidade(l.url);
+        }
+      }
+    } catch (confErr) {
+      return res.status(400).json({ erro: confErr.message });
+    }
+
     const db = getDatabase();
     const insertLivro = db.prepare(`
       INSERT INTO livros (
@@ -349,6 +378,12 @@ function atualizar(req, res) {
       return res.status(400).json({ 
         erro: `Licença inválida. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` 
       });
+    }
+
+    try {
+      verificarUrlConformidade(capa_url);
+    } catch (confErr) {
+      return res.status(400).json({ erro: confErr.message });
     }
 
     db.prepare(`
