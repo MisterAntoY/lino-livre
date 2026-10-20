@@ -64,5 +64,6 @@ venv/
 .wrangler/
 seed.sql
 lote_importacao*.sql
+.scratch/
 
 
