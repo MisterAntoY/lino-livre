@@ -163,7 +163,15 @@ create index if not exists idx_cursos_plataforma  on cursos(plataforma);
 create index if not exists idx_cursos_tipo        on cursos(tipo);
 create index if not exists idx_fontes_slug        on fontes(slug);
 create index if not exists idx_autores_nome       on autores(nome);
+create index if not exists idx_autores_nome_lower on autores(lower(nome));
 create index if not exists idx_contadores_dim     on contadores(dimensao, total desc);
+
+-- Contagem de livros por autor, pré-computada (cron diário do Worker):
+-- evita o JOIN/contagem sobre a tabela de livros em /api/autores.
+create table if not exists autor_totais (
+  autor_id bigint primary key,
+  total    integer not null default 0
+);
 
 -- Busca textual: ILIKE '%termo%' usa os índices GIN de trigramas.
 create index if not exists idx_livros_titulo_trgm on livros using gin (titulo gin_trgm_ops);

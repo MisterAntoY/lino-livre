@@ -129,6 +129,15 @@ CREATE INDEX IF NOT EXISTS idx_livros_autor_popularidade ON livros(autor_id, lei
 CREATE INDEX IF NOT EXISTS idx_livros_licenca_popularidade ON livros(licenca, leituras DESC, titulo ASC);
 CREATE INDEX IF NOT EXISTS idx_links_formato_livro ON links_livros(formato, livro_id);
 CREATE INDEX IF NOT EXISTS idx_cursos_url ON cursos(url);
+-- Busca exacta de autor (independente de maiúsculas/minúsculas)
+CREATE INDEX IF NOT EXISTS idx_autores_nome_nocase ON autores(nome COLLATE NOCASE);
+
+-- Contagem de livros por autor, pré-computada (cron diário do Worker).
+-- Evita o LEFT JOIN sobre a tabela de livros em /api/autores.
+CREATE TABLE IF NOT EXISTS autor_totais (
+  autor_id INTEGER PRIMARY KEY,
+  total    INTEGER NOT NULL DEFAULT 0
+);
 
 -- Módulo de Podcasts & Audiolivros (Spotify for Creators)
 CREATE TABLE IF NOT EXISTS podcasts_shows (
