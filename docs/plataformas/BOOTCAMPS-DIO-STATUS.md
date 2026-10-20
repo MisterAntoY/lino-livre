@@ -1,6 +1,6 @@
 # ⚡ Relatório de Monitoramento Semanal de Bootcamps DIO
 
-**Última verificação:** 2026-10-20T09:27:25.642Z
+**Última verificação:** 2026-10-20T09:40:25.576Z
 **Fonte oficial:** [dio.me/bootcamp](https://www.dio.me/bootcamp)
 **Periodicidade:** Semanal (segunda-feira via GitHub Actions)
 
@@ -9,13 +9,7 @@
 - **Total de Bootcamps Catalogados:** 223
 - **Bootcamps com Inscrições Abertas / Ativos:** 6
 - **Bootcamps Históricos Concluídos:** 217
-- **Novos Bootcamps Detectados nesta Ronda:** 1
-
-## 🆕 Novos Bootcamps Adicionados Recentemente
-
-| Bootcamp | Área | Finalização | Link |
-|---|---|---|---|
-| **Bootcamp DIO: Neo4j - Certification** | Inteligência Artificial & Dados | 2026-11-30 | [Acessar na DIO](https://www.dio.me/bootcamp/neo4j-certification) |
+- **Novos Bootcamps Detectados nesta Ronda:** 0
 
 ## 🟢 Bootcamps Ativos (com Data de Finalização)
 

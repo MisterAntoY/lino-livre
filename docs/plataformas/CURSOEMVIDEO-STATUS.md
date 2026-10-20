@@ -1,6 +1,6 @@
 # 📺 Relatório Trimestral de Monitoramento - Curso em Vídeo (Gustavo Guanabara)
 
-**Última verificação:** 2026-10-11T02:36:54.739Z
+**Última verificação:** 2026-10-20T09:40:32.782Z
 **Portal oficial:** [cursoemvideo.com](https://www.cursoemvideo.com/cursos/)
 **Canal oficial:** [YouTube @CursoemVideo](https://www.youtube.com/@CursoemVideo)
 **Periodicidade:** Trimestral (a cada 3 meses via GitHub Actions)

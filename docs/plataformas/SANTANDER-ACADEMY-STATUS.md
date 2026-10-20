@@ -1,6 +1,6 @@
 # 🏛️ Relatório de Monitoramento Semanal - Santander Open Academy
 
-**Última verificação:** 2026-10-20T09:37:27.313Z
+**Última verificação:** 2026-10-20T09:41:01.212Z
 **Portal oficial:** [santanderopenacademy.com](https://www.santanderopenacademy.com/pt_br)
 **Periodicidade:** Semanal e sob demanda via GitHub Actions
 

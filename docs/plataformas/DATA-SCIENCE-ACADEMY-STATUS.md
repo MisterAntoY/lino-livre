@@ -1,6 +1,6 @@
 # 🎓 Data Science Academy (DSA) — Catálogo de Cursos Gratuitos
 
-> **Data de Atualização:** 2026-10-19  
+> **Data de Atualização:** 2026-10-20  
 > **Fonte Oficial:** [datascienceacademy.com.br](https://www.datascienceacademy.com.br)  
 > **Total de Cursos Gratuitos:** 8  
 > **Certificado Oficial:** Todos os cursos incluem certificado gratuito de conclusão.

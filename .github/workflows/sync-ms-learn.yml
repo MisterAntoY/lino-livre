@@ -2,8 +2,8 @@ name: ☁️ Sincronização Semanal - Microsoft Learn
 
 on:
   schedule:
-    # Executa toda segunda-feira às 09:00 UTC (de 1 em 1 semana)
-    - cron: '0 9 * * 1'
+    # Executa toda segunda-feira às 10:00 UTC (de 1 em 1 semana)
+    - cron: '0 10 * * 1'
   workflow_dispatch:
 
 permissions:
