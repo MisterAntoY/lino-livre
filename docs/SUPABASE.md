@@ -153,7 +153,22 @@ necessário apagar nada no Supabase.
 - **Cache**: as mesmas respostas do Worker são cacheadas na edge (1h para
   dimensões, 10min para listagens), independentemente do backend.
 
-## 7. Limitações conhecidas
+## 7. Prisma (opcional, Node/Express)
+
+O ficheiro [`prisma/schema.prisma`](../prisma/schema.prisma) espelha as tabelas
+para quem quiser usar o cliente Prisma no servidor Node. Regras:
+
+- A **fonte de verdade** é `supabase/schema.sql`; não use `prisma db push`
+  para criar/altear a base (pode divergir do SQL e das funções RPC).
+- Defina `DATABASE_URL` e `DIRECT_URL` no `.env` (connection string do
+  Supabase, modo *Session pooler* para `DATABASE_URL`).
+- O Worker **não** usa Prisma: fala diretamente com o PostgREST, o que mantém
+  o bundle pequeno e o arranque rápido.
+- A versão `prisma@8` instalada usa o novo CLI (`prisma contract`/`prisma orm`);
+  consulte `npx prisma --help`. Se preferir o fluxo clássico
+  (`prisma generate`), fixe a versão 6/7.
+
+## 8. Limitações conhecidas
 
 - Escritas e importações continuam a usar a D1. Após escritas administrativas,
   sincronize com `node scripts/migrar_d1_para_supabase.js --reiniciar`

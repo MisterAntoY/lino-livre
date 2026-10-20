@@ -43,6 +43,9 @@ Monitorização contínua de cursos gratuitos, bootcamps e plataformas de capaci
 - [`CATALOGO-RECURSOS-GRATUITOS.md`](./plataformas/CATALOGO-RECURSOS-GRATUITOS.md): Grande catálogo consolidado de recursos abertos e educacionais.
 - [`FONTES-CONTEUDO-GRATUITO.md`](./plataformas/FONTES-CONTEUDO-GRATUITO.md): Mapeamento inicial de fontes de conteúdo aberto.
 
+### 5. ⚙️ `docs/SUPABASE.md` — Backend alternativo de metadados
+- [`SUPABASE.md`](./SUPABASE.md): schema Postgres, RLS, funções RPC, migração D1 → Supabase e ativação via `DB_BACKEND=supabase`.
+
 ---
 
 > ⚖️ **Aviso Legal:** As regras mestras de legalidade e arquitetura de servidor intermediário continuam definidas em [`/AGENTS.md`](../AGENTS.md) e [`/TERMOS-DE-USO-E-AVISO-LEGAL.md`](../TERMOS-DE-USO-E-AVISO-LEGAL.md) na raiz do repositório.

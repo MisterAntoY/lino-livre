@@ -1,3 +1,16 @@
+// ============================================================
+// Lino Livre — Prisma (PostgreSQL / Supabase)
+//
+// ⚠️  FONTE DE VERDADE: supabase/schema.sql.
+//     Este ficheiro existe para gerar o cliente Prisma a partir das
+//     mesmas tabelas. NÃO use `prisma db push` para alterar a base:
+//     aplique `supabase/schema.sql` no SQL Editor e, se necessário,
+//     regenere com `prisma db pull` + `prisma generate`.
+//
+// ⚠️  MODELO DE INTERMEDIAÇÃO: apenas metadados e URLs externas.
+//     Não adicione colunas/buckets para armazenar ficheiros de livros.
+// ============================================================
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -6,4 +19,181 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+}
+
+model Fonte {
+  id       BigInt  @id @default(autoincrement())
+  slug     String  @unique
+  nome     String
+  tipo     String
+  urlBase  String? @map("url_base")
+  ativa    Int     @default(1) @db.SmallInt
+
+  livros    Livro[]
+  importJobs ImportJob[]
+
+  @@map("fontes")
+}
+
+model Categoria {
+  id        BigInt   @id @default(autoincrement())
+  nome      String   @unique
+  descricao String?
+  criadoEm  DateTime @default(now()) @map("criado_em") @db.Timestamptz(6)
+
+  livros Livro[]
+
+  @@map("categorias")
+}
+
+model Autor {
+  id            BigInt   @id @default(autoincrement())
+  nome          String
+  nacionalidade String?
+  biografia     String?
+  criadoEm      DateTime @default(now()) @map("criado_em") @db.Timestamptz(6)
+
+  livros Livro[]
+
+  @@map("autores")
+}
+
+model Livro {
+  id             BigInt   @id @default(autoincrement())
+  titulo         String
+  subtitulo      String?
+  isbn           String?
+  anoPublicacao  Int?     @map("ano_publicacao")
+  idioma         String?  @default("pt")
+  sinopse        String?
+  capaUrl        String?  @map("capa_url")
+  paginas        Int?
+  autorId        BigInt?  @map("autor_id")
+  categoriaId    BigInt?  @map("categoria_id")
+  fonteId        BigInt?  @map("fonte_id")
+  fonteIdExterno String?  @map("fonte_id_externo")
+  licenca        String
+  leituras       Int      @default(0)
+  conteudoTexto  String?  @map("conteudo_texto")
+  criadoEm       DateTime @default(now()) @map("criado_em") @db.Timestamptz(6)
+
+  autor     Autor?     @relation(fields: [autorId], references: [id], onDelete: SetNull)
+  categoria Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  fonte     Fonte?     @relation(fields: [fonteId], references: [id], onDelete: SetNull)
+  links     LinkLivro[]
+
+  @@unique([fonteId, fonteIdExterno])
+  @@index([autorId])
+  @@index([categoriaId])
+  @@index([fonteId])
+  @@index([idioma])
+  @@index([licenca])
+  @@map("livros")
+}
+
+model LinkLivro {
+  id           BigInt  @id @default(autoincrement())
+  livroId      BigInt  @map("livro_id")
+  formato      String
+  url          String
+  tamanhoBytes BigInt? @map("tamanho_bytes")
+  linkExterno  Int     @default(1) @map("link_externo") @db.SmallInt
+
+  livro Livro @relation(fields: [livroId], references: [id], onDelete: Cascade)
+
+  @@unique([livroId, formato])
+  @@index([livroId])
+  @@index([formato])
+  @@map("links_livros")
+}
+
+model Curso {
+  id          BigInt   @id @default(autoincrement())
+  titulo      String
+  tipo        String?  @default("curso")
+  area        String
+  plataforma  String
+  url         String
+  licenca     String?  @default("gratuito")
+  nivel       String?  @default("Iniciante")
+  descricao   String?
+  criadoEm    DateTime @default(now()) @map("criado_em") @db.Timestamptz(6)
+
+  @@index([area])
+  @@index([plataforma])
+  @@index([tipo])
+  @@map("cursos")
+}
+
+model ImportJob {
+  id          BigInt   @id @default(autoincrement())
+  fonteId     BigInt   @map("fonte_id")
+  query       String?
+  status      String   @default("pendente")
+  total       Int?     @default(0)
+  processados Int?     @default(0)
+  erro        String?
+  criadoEm    DateTime @default(now()) @map("criado_em") @db.Timestamptz(6)
+
+  fonte Fonte @relation(fields: [fonteId], references: [id])
+
+  @@map("import_jobs")
+}
+
+model PodcastShow {
+  id          BigInt   @id @default(autoincrement())
+  titulo      String
+  slug        String   @unique
+  descricao   String?
+  capaUrl     String?  @map("capa_url")
+  spotifyUrl  String?  @map("spotify_url")
+  spotifyUri  String?  @map("spotify_uri")
+  categoria   String?  @default("Educação & Literatura")
+  idioma      String?  @default("pt")
+  ativo       Int      @default(1) @db.SmallInt
+  criadoEm    DateTime @default(now()) @map("criado_em") @db.Timestamptz(6)
+
+  episodios PodcastEpisodio[]
+
+  @@map("podcasts_shows")
+}
+
+model PodcastEpisodio {
+  id              BigInt    @id @default(autoincrement())
+  showId          BigInt    @map("show_id")
+  numero          Int?
+  titulo          String
+  slug            String    @unique
+  descricao       String?
+  duracaoMinutos  Int?      @map("duracao_minutos")
+  spotifyUrl      String?   @map("spotify_url")
+  spotifyEmbedUrl String?   @map("spotify_embed_url")
+  audioUrl        String?   @map("audio_url")
+  publicadoEm     DateTime? @map("publicado_em") @db.Date
+  reproducoes     Int       @default(0)
+  criadoEm        DateTime  @default(now()) @map("criado_em") @db.Timestamptz(6)
+
+  show PodcastShow @relation(fields: [showId], references: [id], onDelete: Cascade)
+
+  @@index([showId])
+  @@map("podcasts_episodios")
+}
+
+model Estatistica {
+  chave        String   @id
+  valor        BigInt   @default(0)
+  atualizadoEm DateTime @default(now()) @map("atualizado_em") @db.Timestamptz(6)
+
+  @@map("estatisticas")
+}
+
+model Contador {
+  dimensao String
+  chave    String
+  rotulo   String?
+  total    BigInt   @default(0)
+
+  @@id([dimensao, chave])
+  @@index([dimensao, total])
+  @@map("contadores")
 }

@@ -32,6 +32,12 @@ function limparTermo(termo?: string): string | null {
   return t || null;
 }
 
+/** Valores com vírgulas/parênteses precisam de aspas no filtro do PostgREST. */
+function valorEq(valor: string): string {
+  const s = String(valor);
+  return /[,()]/.test(s) ? `"${s.replace(/"/g, '\\"')}"` : s;
+}
+
 class Rest {
   constructor(private cfg: SupabaseConfig) {}
 
@@ -133,6 +139,9 @@ export class RepoSupabase {
     const mapa: Record<string, number> = {};
     for (const r of stats.data as any[]) mapa[r.chave] = Number(r.valor);
 
+    // Projeto criado mas ainda sem migração: deixar a rota cair para a D1.
+    if (!stats.data.length) throw new Error('Supabase sem agregados (migração não executada)');
+
     const cs = contadores.data as any[];
     const grupo = (dim: string) => cs.filter((r) => r.dimensao === dim);
 
@@ -165,7 +174,7 @@ export class RepoSupabase {
   private async resolverCategoria(valor?: string): Promise<{ id: number | null; inexistente: boolean }> {
     if (!valor) return { id: null, inexistente: false };
     if (/^\d+$/.test(valor)) return { id: Number(valor), inexistente: false };
-    const cat = await this.api.primeira('categorias', { select: 'id', nome: `eq.${valor}` });
+    const cat = await this.api.primeira('categorias', { select: 'id', nome: `eq.${valorEq(valor)}` });
     return cat ? { id: Number(cat.id), inexistente: false } : { id: null, inexistente: true };
   }
 
@@ -173,6 +182,7 @@ export class RepoSupabase {
     if (semFiltros) {
       const row = await this.api.primeira('estatisticas', { select: 'valor', chave: 'eq.total_livros' });
       if (row) return Number(row.valor);
+      throw new Error('Supabase sem agregados (migração não executada)');
     }
     const n = await this.api.rpc<number>('contar_livros', args);
     return Number(n) || 0;
@@ -286,6 +296,7 @@ export class RepoSupabase {
       this.api.getTodos('categorias', { select: 'id,nome,descricao,criado_em', order: 'nome.asc' }),
       this.api.getTodos('contadores', { select: 'chave,total', dimensao: 'eq.categoria' })
     ]);
+    if (!cats.length) throw new Error('Supabase sem categorias (migração não executada)');
     const mapa = new Map((cont as any[]).map((c) => [String(c.chave), Number(c.total)]));
     return (cats as any[]).map((c) => ({ ...c, total_livros: mapa.get(String(c.id)) ?? 0 }));
   }
@@ -295,6 +306,7 @@ export class RepoSupabase {
       this.api.getTodos('fontes', { select: 'id,slug,nome,tipo,url_base,ativa', ativa: 'eq.1', order: 'id.asc' }),
       this.api.getTodos('contadores', { select: 'chave,total', dimensao: 'eq.fonte' })
     ]);
+    if (!fontes.length) throw new Error('Supabase sem fontes (migração não executada)');
     const mapa = new Map((cont as any[]).map((c) => [String(c.chave), Number(c.total)]));
     return (fontes as any[]).map((f) => ({ ...f, total_livros: mapa.get(String(f.id)) ?? 0 }));
   }
@@ -305,10 +317,10 @@ export class RepoSupabase {
     const grupos: string[] = [];
 
     if (somenteRoadmap) params.tipo = 'eq.roadmap';
-    else if (q.tipo) params.tipo = `eq.${q.tipo}`;
+    else if (q.tipo) params.tipo = `eq.${valorEq(q.tipo)}`;
 
-    if (q.area) params.area = `eq.${q.area}`;
-    if (q.nivel) params.nivel = `eq.${q.nivel}`;
+    if (q.area) params.area = `eq.${valorEq(q.area)}`;
+    if (q.nivel) params.nivel = `eq.${valorEq(q.nivel)}`;
 
     const plataforma = q.plataforma?.trim();
     if (plataforma) params.plataforma = `ilike.*${limparTermo(plataforma)}*`;
