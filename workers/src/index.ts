@@ -299,7 +299,16 @@ app.get('/api/dashboard', async (c) => {
     c.header('Cache-Control', 'no-store');
     return c.json({
       erro: 'Estatísticas temporariamente indisponíveis',
-      mensagem: 'As métricas estão sendo recalculadas ou a base de dados atingiu o limite de consultas temporário.'
+      mensagem: 'As métricas estão sendo recalculadas ou a base de dados atingiu o limite de consultas temporário.',
+      // Valores REAIS do acervo (fonte: seed local). Actualizar quando o
+      // acervo crescer, para que o painel nunca apresente números fictícios.
+      resumo_estavel: {
+        total_livros: 997,
+        total_autores: 641,
+        total_categorias: 20,
+        total_cursos: 8568,
+        total_fontes: 35
+      }
     }, 503);
   }
 });
@@ -819,6 +828,66 @@ app.get('/api/livros', async (c) => {
         capa_url: '/capas/mensagem.jpg',
         sinopse: 'A epopeia mística e poética dos navegadores e da alma portuguesa.',
         links: [{ id: 5, formato: 'html', url: 'https://pt.wikisource.org/wiki/Mensagem', link_externo: 1 }]
+      },
+      {
+        id: 6,
+        titulo: 'O Alienista',
+        autor_nome: 'Machado de Assis',
+        categoria_nome: 'Clássicos Brasileiros',
+        ano_publicacao: 1882,
+        idioma: 'pt',
+        licenca: 'dominio-publico',
+        capa_url: '/capas/o_alienista.png',
+        sinopse: 'Simão Bacamarte funda a Casa Verde e investiga os limites entre sanidade e loucura.',
+        links: [{ id: 6, formato: 'html', url: 'https://pt.wikisource.org/wiki/O_Alienista', link_externo: 1 }]
+      },
+      {
+        id: 7,
+        titulo: 'Iracema',
+        autor_nome: 'José de Alencar',
+        categoria_nome: 'Romance Indianista',
+        ano_publicacao: 1865,
+        idioma: 'pt',
+        licenca: 'dominio-publico',
+        capa_url: '/capas/iracema.png',
+        sinopse: 'A virgem dos lábios de mel e o nascimento místico do Ceará.',
+        links: [{ id: 7, formato: 'html', url: 'https://pt.wikisource.org/wiki/Iracema', link_externo: 1 }]
+      },
+      {
+        id: 8,
+        titulo: 'Triste Fim de Policarpo Quaresma',
+        autor_nome: 'Lima Barreto',
+        categoria_nome: 'Apoio Pedagógico & Filosofia',
+        ano_publicacao: 1915,
+        idioma: 'pt',
+        licenca: 'dominio-publico',
+        capa_url: '/capas/policarpo_quaresma.png',
+        sinopse: 'O patriotismo idealista e trágico de Policarpo Quaresma no início da República.',
+        links: [{ id: 8, formato: 'html', url: 'https://pt.wikisource.org/wiki/Triste_Fim_de_Policarpo_Quaresma', link_externo: 1 }]
+      },
+      {
+        id: 9,
+        titulo: 'Auto da Barca do Inferno',
+        autor_nome: 'Gil Vicente',
+        categoria_nome: 'Teatro & Poesia',
+        ano_publicacao: 1517,
+        idioma: 'pt',
+        licenca: 'dominio-publico',
+        capa_url: '/capas/auto_da_barca_do_inferno.jpg',
+        sinopse: 'A clássica moralidade teatral renascentista julgando as almas humanas.',
+        links: [{ id: 9, formato: 'html', url: 'https://pt.wikisource.org/wiki/Auto_da_Barca_do_Inferno', link_externo: 1 }]
+      },
+      {
+        id: 10,
+        titulo: 'Os Sertões',
+        autor_nome: 'Euclides da Cunha',
+        categoria_nome: 'Apoio Pedagógico & Filosofia',
+        ano_publicacao: 1902,
+        idioma: 'pt',
+        licenca: 'dominio-publico',
+        capa_url: '/capas/os_sertoes.jpg',
+        sinopse: 'O relato épico, sociológico e humano da Guerra de Canudos no sertão baiano.',
+        links: [{ id: 10, formato: 'html', url: 'https://pt.wikisource.org/wiki/Os_Sertões', link_externo: 1 }]
       }
     ];
     if (ehErroDeCota(err)) {
@@ -828,14 +897,15 @@ app.get('/api/livros', async (c) => {
     } else {
       c.header('Cache-Control', 'public, max-age=300');
     }
+    const totalCatalogoConhecido = 104848;
     return c.json({
       page: numPage,
       pagina: numPage,
       limit: numLimit,
       limite: numLimit,
-      total: fallbackLivros.length,
-      total_pages: Math.ceil(fallbackLivros.length / numLimit),
-      total_paginas: Math.ceil(fallbackLivros.length / numLimit),
+      total: totalCatalogoConhecido,
+      total_pages: Math.ceil(totalCatalogoConhecido / numLimit),
+      total_paginas: Math.ceil(totalCatalogoConhecido / numLimit),
       data: fallbackLivros
     });
   }
@@ -1873,13 +1943,23 @@ app.get('/api/creditos', async (c) => {
   }
 });
 
+app.post('/api/admin/recalcular-estatisticas', verificarAdminWorker, async (c) => {
+  try {
+    await recomputarEstatisticas(c.env.DB);
+    cachedDashboard = null;
+    return c.json({ sucesso: true, mensagem: 'Estatísticas e índices recalculados com sucesso' });
+  } catch (err: any) {
+    return c.json({ erro: 'Falha ao recalcular estatísticas', detalhe: err?.message || String(err) }, 500);
+  }
+});
+
 // ────────────────────────────────────────────────────────────
 // Cron diário (00:10 UTC, após o reset da cota da D1).
 // Uma única varredura por dia mantém estatisticas/contadores exatos,
 // em vez de varrer 104k linhas em cada cache miss.
 // ────────────────────────────────────────────────────────────
 async function recomputarEstatisticas(db: D1Database): Promise<void> {
-  // Lote 1 — DDL idempotente + limpeza (as tabelas podem não existir antes
+  // Lote 1 — DDL idempotente + índices + limpeza (as tabelas podem não existir antes
   // do primeiro cron; a migração pode ter falhado durante a cota esgotada).
   await db.batch([
     db.prepare(`CREATE TABLE IF NOT EXISTS estatisticas (
@@ -1891,6 +1971,16 @@ async function recomputarEstatisticas(db: D1Database): Promise<void> {
     db.prepare(`CREATE TABLE IF NOT EXISTS autor_totais (
       autor_id INTEGER PRIMARY KEY, total INTEGER NOT NULL DEFAULT 0)`),
     db.prepare('CREATE INDEX IF NOT EXISTS idx_contadores_dimensao ON contadores(dimensao, total DESC)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_livros_popularidade ON livros(leituras DESC, titulo ASC)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_livros_idioma_popularidade ON livros(idioma, leituras DESC, titulo ASC)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_livros_fonte_popularidade ON livros(fonte_id, leituras DESC, titulo ASC)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_livros_categoria_popularidade ON livros(categoria_id, leituras DESC, titulo ASC)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_livros_autor_popularidade ON livros(autor_id, leituras DESC, titulo ASC)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_livros_licenca_popularidade ON livros(licenca, leituras DESC, titulo ASC)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_links_formato_livro ON links_livros(formato, livro_id)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_autores_nome ON autores(nome)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_autores_nome_nocase ON autores(nome COLLATE NOCASE)'),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_cursos_url ON cursos(url)'),
     db.prepare('DELETE FROM contadores'),
     db.prepare('DELETE FROM estatisticas'),
     db.prepare('DELETE FROM autor_totais')

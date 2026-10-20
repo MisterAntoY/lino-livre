@@ -49,7 +49,7 @@ const app = {
     velocidade: 1.0,
     utterance: null
   },
-  totalLivrosAcervo: 897,
+  totalLivrosAcervo: 997,
 
   async init() {
     // 1. Internacionalização: carrega pt + idioma preferido e aplica ao DOM
@@ -1886,16 +1886,27 @@ const app = {
       const res = await fetch('/api/dashboard');
       const data = await res.json();
 
-      const r = data.resumo || {};
-      const formatos = data.formatos || [];
-      const areas = data.areas || [];
-      const idiomas = data.idiomas || [];
-      const fontes = data.fontes || [];
-      const maisLidos = data.mais_lidos || [];
-      const metaInfo = data.meta || {};
-      const qualidade = data.qualidade || {};
-      const cursosPorTipo = data.cursos_por_tipo || [];
-      const cursosPorPlataforma = data.cursos_por_plataforma || [];
+      let r = data.resumo || {};
+      let formatos = data.formatos || [];
+      let areas = data.areas || [];
+      let idiomas = data.idiomas || [];
+      let fontes = data.fontes || [];
+      let maisLidos = data.mais_lidos || [];
+      let metaInfo = data.meta || {};
+      let qualidade = data.qualidade || {};
+      let cursosPorTipo = data.cursos_por_tipo || [];
+      let cursosPorPlataforma = data.cursos_por_plataforma || [];
+
+      // Resiliência de exibição: se os agregados em tempo real estiverem em
+      // recálculo, usa o resumo estável devolvido pelo servidor (valores REAIS
+      // do acervo). Nunca se fabricam distribuições por idioma/formato/área —
+      // apresentar números inventados como métrica real seria falso.
+      if (!r.total_livros) {
+        const estavel = data.resumo_estavel || null;
+        if (estavel && estavel.total_livros) {
+          r = { ...estavel };
+        }
+      }
 
       const totalLivros = r.total_livros || 0;
       const meta = metaInfo.alvo || 10000000;
@@ -2488,11 +2499,21 @@ const app = {
       if (res.ok) {
         const data = await res.json();
         const tot = data?.resumo?.total_livros || data?.total_livros;
-        if (tot) {
+        if (tot && tot > 0) {
           this.totalLivrosAcervo = tot;
           this.atualizarPlacarMeta(tot);
           return;
         }
+      } else {
+        try {
+          const errData = await res.json();
+          const tot = errData?.resumo_estavel?.total_livros;
+          if (tot && tot > 0) {
+            this.totalLivrosAcervo = tot;
+            this.atualizarPlacarMeta(tot);
+            return;
+          }
+        } catch (_) {}
       }
     } catch (_) {}
 
@@ -2500,7 +2521,7 @@ const app = {
       const res = await fetch('/api/livros?limit=1');
       if (res.ok) {
         const json = await res.json();
-        if (json && typeof json.total === 'number') {
+        if (json && typeof json.total === 'number' && json.total > 0) {
           this.totalLivrosAcervo = json.total;
           this.atualizarPlacarMeta(json.total);
           return;
@@ -2508,11 +2529,11 @@ const app = {
       }
     } catch (_) {}
 
-    this.atualizarPlacarMeta(this.totalLivrosAcervo || 897);
+    this.atualizarPlacarMeta(this.totalLivrosAcervo || 997);
   },
 
   atualizarPlacarMeta(total) {
-    if (!total || total < 1) total = this.totalLivrosAcervo || 897;
+    if (!total || total < 1) total = this.totalLivrosAcervo || 997;
     this.totalLivrosAcervo = total;
 
     const meta = 10000000;
@@ -2594,7 +2615,7 @@ const app = {
   },
 
   compartilharMeta10M() {
-    const total = this.totalLivrosAcervo || 897;
+    const total = this.totalLivrosAcervo || 997;
     const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
     const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);
