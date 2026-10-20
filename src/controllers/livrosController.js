@@ -2,6 +2,22 @@ const { getDatabase } = require('../database');
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
+// Dimensões pequenas (fontes/categorias) em cache: evita LIKE e JOINs na tabela livros
+let cacheDimensoes = null;
+let cacheDimensoesEm = 0;
+const DIMENSOES_TTL = 5 * 60 * 1000;
+
+function obterDimensoes(db) {
+  const agora = Date.now();
+  if (cacheDimensoes && agora - cacheDimensoesEm < DIMENSOES_TTL) return cacheDimensoes;
+  cacheDimensoes = {
+    fontes: db.prepare('SELECT id, slug FROM fontes').all(),
+    categorias: db.prepare('SELECT id, nome FROM categorias').all()
+  };
+  cacheDimensoesEm = agora;
+  return cacheDimensoes;
+}
+
 function listar(req, res) {
   try {
     const db = getDatabase();
@@ -16,64 +32,80 @@ function listar(req, res) {
     const numLimit = Math.min(100, Math.max(1, parseInt(rawLimit, 10) || 24));
     const offset = (numPage - 1) * numLimit;
 
-    let baseQuery = `
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      LEFT JOIN fontes f ON f.id = l.fonte_id
-      WHERE 1=1
-    `;
+    // Filtros aplicados exclusivamente sobre livros (sem JOINs e sem LIKE).
+    // Permite COUNT(*) — em vez de COUNT(DISTINCT l.id) — e o uso dos índices
+    // compostos de popularidade (leituras DESC, titulo ASC).
+    const filtros = [];
     const params = [];
 
     // Busca FTS5 se o termo de busca for informado
     if (busca && busca.trim()) {
       const termoLimpo = busca.trim().replace(/['"*]/g, '');
       if (termoLimpo) {
-        baseQuery += ` AND l.id IN (
+        filtros.push(`l.id IN (
           SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
-        )`;
+        )`);
         params.push(`${termoLimpo}*`);
       }
     }
 
     if (categoria_id) {
       if (/^\d+$/.test(categoria_id)) {
-        baseQuery += ` AND l.categoria_id = ?`;
+        filtros.push('l.categoria_id = ?');
         params.push(categoria_id);
       } else {
-        baseQuery += ` AND c.nome = ?`;
-        params.push(categoria_id);
+        const ids = obterDimensoes(db).categorias
+          .filter((cat) => cat.nome === categoria_id)
+          .map((cat) => cat.id);
+        if (ids.length === 0) {
+          filtros.push('1=0');
+        } else {
+          filtros.push(`l.categoria_id IN (${ids.map(() => '?').join(',')})`);
+          params.push(...ids);
+        }
       }
     }
 
     if (autor_id) {
-      baseQuery += ` AND l.autor_id = ?`;
+      filtros.push('l.autor_id = ?');
       params.push(autor_id);
     }
 
     if (idioma) {
-      baseQuery += ` AND l.idioma = ?`;
+      filtros.push('l.idioma = ?');
       params.push(idioma);
     }
 
     if (licenca) {
-      baseQuery += ` AND l.licenca = ?`;
+      filtros.push('l.licenca = ?');
       params.push(licenca);
     }
 
     const fonteFiltro = fonte_slug || fonte;
     if (fonteFiltro) {
-      baseQuery += ` AND (f.slug = ? OR f.slug LIKE ?)`;
-      params.push(fonteFiltro, `%${fonteFiltro}%`);
+      const termo = String(fonteFiltro).toLowerCase();
+      const dim = obterDimensoes(db);
+      let ids = dim.fontes.filter((f) => f.slug.toLowerCase() === termo).map((f) => f.id);
+      if (ids.length === 0) {
+        ids = dim.fontes.filter((f) => f.slug.toLowerCase().includes(termo)).map((f) => f.id);
+      }
+      if (ids.length === 0) {
+        filtros.push('1=0');
+      } else {
+        filtros.push(`l.fonte_id IN (${ids.map(() => '?').join(',')})`);
+        params.push(...ids);
+      }
     }
 
     if (formato) {
-      baseQuery += ` AND l.id IN (SELECT livro_id FROM links_livros WHERE formato = ?)`;
+      filtros.push('l.id IN (SELECT livro_id FROM links_livros WHERE formato = ?)');
       params.push(formato.toLowerCase());
     }
 
-    // Contar total para paginação
-    const totalRow = db.prepare(`SELECT COUNT(DISTINCT l.id) AS total ${baseQuery}`).get(...params);
+    const whereSql = filtros.length ? ` AND ${filtros.join(' AND ')}` : '';
+
+    // Contar total para paginação (sem JOINs)
+    const totalRow = db.prepare(`SELECT COUNT(*) AS total FROM livros l WHERE 1=1${whereSql}`).get(...params);
     const total = totalRow ? totalRow.total : 0;
 
     // Buscar itens paginados
@@ -84,7 +116,11 @@ function listar(req, res) {
         a.id AS autor_id, a.nome AS autor_nome,
         c.id AS categoria_id, c.nome AS categoria_nome,
         f.slug AS fonte_slug, f.nome AS fonte_nome
-      ${baseQuery}
+      FROM livros l
+      LEFT JOIN autores a ON a.id = l.autor_id
+      LEFT JOIN categorias c ON c.id = l.categoria_id
+      LEFT JOIN fontes f ON f.id = l.fonte_id
+      WHERE 1=1${whereSql}
       ORDER BY l.leituras DESC, l.titulo ASC
       LIMIT ? OFFSET ?
     `;

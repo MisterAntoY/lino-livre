@@ -153,6 +153,28 @@ function carregarCursosPadrao() {
     console.warn('Aviso: abeCoursesData não carregado:', e.message);
   }
 
+  // 12. Fontes adicionadas a partir de 2026-10 (roadmaps, YouTube e plataformas)
+  const fontesAdicionais = [
+    ['netacadCoursesData', 'netacadCoursesList'],
+    ['awesomeRoadmapsData', 'awesomeRoadmapsList'],
+    ['fernandaKipperData', 'fernandaKipperList'],
+    ['segInfoBrasilData', 'segInfoBrasilList'],
+    ['glauciaLemosTsData', 'glauciaLemosTsList'],
+    ['langchainSacchiData', 'langchainSacchiList'],
+    ['boraNaTechData', 'boraNaTechList'],
+    ['techGuideData', 'techGuideList'],
+    ['kaSolutionData', 'kaSolutionList'],
+    ['ebacData', 'ebacCoursesList']
+  ];
+  for (const [modulo, exportName] of fontesAdicionais) {
+    try {
+      const lista = require(`../src/database/${modulo}`)[exportName];
+      if (Array.isArray(lista)) cursos.push(...lista);
+    } catch (e) {
+      console.warn(`Aviso: ${modulo} não carregado:`, e.message);
+    }
+  }
+
   return cursos;
 }
 

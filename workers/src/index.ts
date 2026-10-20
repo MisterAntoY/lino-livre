@@ -324,6 +324,50 @@ app.delete('/api/autores/:id', async (c) => {
 });
 
 // 4. Livros Digitais
+
+// Dimensões pequenas (fontes e categorias) em cache por isolate.
+// Evita LIKE e JOINs na tabela livros (104k+ linhas) para resolver filtros.
+let cacheDimensoes: {
+  fontes: { id: number; slug: string }[];
+  categorias: { id: number; nome: string }[];
+  timestamp: number;
+} | null = null;
+const DIMENSOES_CACHE_TTL = 5 * 60 * 1000;
+
+async function obterDimensoes(db: any) {
+  if (cacheDimensoes && Date.now() - cacheDimensoes.timestamp < DIMENSOES_CACHE_TTL) {
+    return cacheDimensoes;
+  }
+  const [fontes, categorias] = await Promise.all([
+    db.prepare('SELECT id, slug FROM fontes').all(),
+    db.prepare('SELECT id, nome FROM categorias').all()
+  ]);
+  cacheDimensoes = {
+    fontes: (fontes.results || []) as { id: number; slug: string }[],
+    categorias: (categorias.results || []) as { id: number; nome: string }[],
+    timestamp: Date.now()
+  };
+  return cacheDimensoes;
+}
+
+// Cache de borda (Cache API) para GETs de leitura do acervo.
+// Dados públicos e atualizados por importações: TTL curto é suficiente e
+// reduz drasticamente o número de leituras na D1 em acessos repetidos.
+async function cacheDeBorda(c: any, next: any) {
+  if (c.req.method !== 'GET') return await next();
+  const cache = (caches as any).default;
+  if (!cache) return await next();
+  const key = new Request(c.req.url, { method: 'GET' });
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  await next();
+  if (c.res.status === 200) {
+    c.executionCtx.waitUntil(cache.put(key, c.res.clone()));
+  }
+}
+app.use('/api/livros', cacheDeBorda);
+app.use('/api/livros/:id', cacheDeBorda);
+
 app.get('/api/livros', async (c) => {
   const queryParams = c.req.query();
   const rawPage = queryParams.pagina || queryParams.page || '1';
@@ -336,62 +380,78 @@ app.get('/api/livros', async (c) => {
     const db = c.env.DB;
     const { busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug } = queryParams;
 
-    let baseQuery = `
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      LEFT JOIN fontes f ON f.id = l.fonte_id
-      WHERE 1=1
-    `;
+    // Filtros aplicados exclusivamente sobre livros (sem JOINs e sem LIKE).
+    // Isso permite COUNT(*) — em vez de COUNT(DISTINCT l.id) sobre 104k linhas —
+    // e deixa o planejador usar os índices compostos de popularidade.
+    const filtros: string[] = [];
     const params: any[] = [];
 
     if (busca && busca.trim()) {
       const termoLimpo = busca.trim().replace(/['"*]/g, '');
       if (termoLimpo) {
-        baseQuery += ` AND l.id IN (
+        filtros.push(`l.id IN (
           SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
-        )`;
+        )`);
         params.push(`${termoLimpo}*`);
       }
     }
 
     if (categoria_id) {
       if (/^\d+$/.test(categoria_id)) {
-        baseQuery += ` AND l.categoria_id = ?`;
+        filtros.push('l.categoria_id = ?');
         params.push(categoria_id);
       } else {
-        baseQuery += ` AND c.nome = ?`;
-        params.push(categoria_id);
+        const dim = await obterDimensoes(db);
+        const ids = dim.categorias.filter((cat) => cat.nome === categoria_id).map((cat) => cat.id);
+        if (ids.length === 0) {
+          filtros.push('1=0');
+        } else {
+          filtros.push(`l.categoria_id IN (${ids.map(() => '?').join(',')})`);
+          params.push(...ids);
+        }
       }
     }
 
     if (autor_id) {
-      baseQuery += ` AND l.autor_id = ?`;
+      filtros.push('l.autor_id = ?');
       params.push(autor_id);
     }
 
     if (idioma) {
-      baseQuery += ` AND l.idioma = ?`;
+      filtros.push('l.idioma = ?');
       params.push(idioma);
     }
 
     if (licenca) {
-      baseQuery += ` AND l.licenca = ?`;
+      filtros.push('l.licenca = ?');
       params.push(licenca);
     }
 
     const fonteFiltro = fonte_slug || fonte;
     if (fonteFiltro) {
-      baseQuery += ` AND (f.slug = ? OR f.slug LIKE ?)`;
-      params.push(fonteFiltro, `%${fonteFiltro}%`);
+      const termo = String(fonteFiltro).toLowerCase();
+      const dim = await obterDimensoes(db);
+      let ids = dim.fontes.filter((f) => f.slug.toLowerCase() === termo).map((f) => f.id);
+      if (ids.length === 0) {
+        ids = dim.fontes.filter((f) => f.slug.toLowerCase().includes(termo)).map((f) => f.id);
+      }
+      if (ids.length === 0) {
+        filtros.push('1=0');
+      } else {
+        filtros.push(`l.fonte_id IN (${ids.map(() => '?').join(',')})`);
+        params.push(...ids);
+      }
     }
 
     if (formato) {
-      baseQuery += ` AND l.id IN (SELECT livro_id FROM links_livros WHERE formato = ?)`;
+      filtros.push('l.id IN (SELECT livro_id FROM links_livros WHERE formato = ?)');
       params.push(formato.toLowerCase());
     }
 
-    const countStmt = db.prepare(`SELECT COUNT(DISTINCT l.id) AS total ${baseQuery}`).bind(...params);
+    const whereSql = filtros.length ? ` AND ${filtros.join(' AND ')}` : '';
+
+    // Contagem sem JOINs: COUNT(*) exato porque livros.id é único
+    const countStmt = db.prepare(`SELECT COUNT(*) AS total FROM livros l WHERE 1=1${whereSql}`).bind(...params);
     const totalRow = await countStmt.first<{ total: number }>();
     const total = totalRow?.total || 0;
 
@@ -402,7 +462,11 @@ app.get('/api/livros', async (c) => {
         a.id AS autor_id, a.nome AS autor_nome,
         c.id AS categoria_id, c.nome AS categoria_nome,
         f.slug AS fonte_slug, f.nome AS fonte_nome
-      ${baseQuery}
+      FROM livros l
+      LEFT JOIN autores a ON a.id = l.autor_id
+      LEFT JOIN categorias c ON c.id = l.categoria_id
+      LEFT JOIN fontes f ON f.id = l.fonte_id
+      WHERE 1=1${whereSql}
       ORDER BY l.leituras DESC, l.titulo ASC
       LIMIT ? OFFSET ?
     `;
@@ -536,6 +600,7 @@ app.get('/api/livros/:id', async (c) => {
     if (!livro) return c.json({ erro: 'Livro não encontrado' }, 404);
 
     livro.links = (await db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').bind(livro.id).all()).results;
+    c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
     return c.json(livro);
   } catch (err: any) {
     return c.json({ erro: 'Erro ao carregar livro: ' + err.message }, 500);

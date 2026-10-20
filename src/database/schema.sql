@@ -119,6 +119,17 @@ CREATE INDEX IF NOT EXISTS idx_cursos_tipo ON cursos(tipo);
 CREATE INDEX IF NOT EXISTS idx_fontes_slug ON fontes(slug);
 CREATE INDEX IF NOT EXISTS idx_autores_nome ON autores(nome);
 
+-- Índices de performance para o acesso ao acervo (listagem, ordenação e filtros)
+-- Cobrem o ORDER BY leituras DESC, titulo ASC usado na API e evitam full scan + sort.
+CREATE INDEX IF NOT EXISTS idx_livros_popularidade ON livros(leituras DESC, titulo ASC);
+CREATE INDEX IF NOT EXISTS idx_livros_idioma_popularidade ON livros(idioma, leituras DESC, titulo ASC);
+CREATE INDEX IF NOT EXISTS idx_livros_fonte_popularidade ON livros(fonte_id, leituras DESC, titulo ASC);
+CREATE INDEX IF NOT EXISTS idx_livros_categoria_popularidade ON livros(categoria_id, leituras DESC, titulo ASC);
+CREATE INDEX IF NOT EXISTS idx_livros_autor_popularidade ON livros(autor_id, leituras DESC, titulo ASC);
+CREATE INDEX IF NOT EXISTS idx_livros_licenca_popularidade ON livros(licenca, leituras DESC, titulo ASC);
+CREATE INDEX IF NOT EXISTS idx_links_formato_livro ON links_livros(formato, livro_id);
+CREATE INDEX IF NOT EXISTS idx_cursos_url ON cursos(url);
+
 -- Módulo de Podcasts & Audiolivros (Spotify for Creators)
 CREATE TABLE IF NOT EXISTS podcasts_shows (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
