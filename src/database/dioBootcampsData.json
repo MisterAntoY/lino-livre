@@ -1,5 +1,25 @@
 [
   {
+    "id": "9a11a0e7-61b0-468b-b76e-267ff91f4e73",
+    "slug": "neo4j-certification",
+    "titulo": "Bootcamp DIO: Neo4j - Certification",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/neo4j-certification",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2026-11-30",
+    "ativo": true,
+    "total_devs": 1242,
+    "skills": [
+      "Neo4J",
+      "Neo4J",
+      "IA Generativa"
+    ],
+    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-11-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Neo4J, Neo4J, IA Generativa. Data de finalização: 2026-11-30. 1.242 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
     "id": "1f94798a-972d-453c-a32b-e88282d33f7e",
     "slug": "dxc-ia-do-zero-ao-primeiro-agente",
     "titulo": "Bootcamp DIO: DXC - IA do Zero ao Primeiro Agente",
@@ -11,11 +31,16 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2026-11-16",
     "ativo": true,
-    "total_devs": 246,
+    "total_devs": 1530,
     "skills": [
-      "AI Agents"
+      "AI Agents",
+      "AI Agents",
+      "Inteligência Artificial (IA)",
+      "Inteligência Artificial (IA)",
+      "Engenharia de Prompt",
+      "LLMs"
     ],
-    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-11-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AI Agents. Data de finalização: 2026-11-16. 246 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-11-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AI Agents, AI Agents, Inteligência Artificial (IA), Inteligência Artificial (IA), Engenharia de Prompt, LLMs. Data de finalização: 2026-11-16. 1.530 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2aaeffe8-84bb-4cd2-98fb-4dd4467374ae",
@@ -29,7 +54,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-10-26",
     "ativo": true,
-    "total_devs": 5809,
+    "total_devs": 6639,
     "skills": [
       "Excel",
       "Excel",
@@ -39,7 +64,7 @@
       "Engenharia de Prompt",
       "AI Agents"
     ],
-    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-10-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Excel, Excel, Inteligência Artificial (IA), Inteligência Artificial (IA), Engenharia de Prompt, Engenharia de Prompt, AI Agents. Data de finalização: 2026-10-26. 5.809 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-10-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Excel, Excel, Inteligência Artificial (IA), Inteligência Artificial (IA), Engenharia de Prompt, Engenharia de Prompt, AI Agents. Data de finalização: 2026-10-26. 6.639 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5a9fcd46-1508-4bc5-8ce7-fecf04e5413b",
@@ -53,7 +78,7 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2026-11-16",
     "ativo": true,
-    "total_devs": 571,
+    "total_devs": 4536,
     "skills": [
       "AI Agents",
       "AI Agents",
@@ -65,7 +90,7 @@
       "Lovable",
       "Lovable"
     ],
-    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-11-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AI Agents, AI Agents, AI Agents, SQL, Python, Python, CrewAI, Lovable, Lovable. Data de finalização: 2026-11-16. 571 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-11-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AI Agents, AI Agents, AI Agents, SQL, Python, Python, CrewAI, Lovable, Lovable. Data de finalização: 2026-11-16. 4.536 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "981247ca-6b8a-44b6-9f45-5d904996306a",
@@ -78,8 +103,8 @@
     "licenca": "gratuito",
     "nivel": "Intermediário",
     "data_finalizacao": "2026-10-12",
-    "ativo": true,
-    "total_devs": 7233,
+    "ativo": false,
+    "total_devs": 7382,
     "skills": [
       "Java",
       "Java",
@@ -89,7 +114,7 @@
       "Spring",
       "API Rest"
     ],
-    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-10-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Engenharia de Prompt, GitHub, GitHub Copilot, Spring, API Rest. Data de finalização: 2026-10-12. 7.233 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-10-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Engenharia de Prompt, GitHub, GitHub Copilot, Spring, API Rest. Data de finalização: 2026-10-12. 7.382 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "0d6c76e7-ab8d-4959-b015-248abde232dc",
@@ -101,9 +126,9 @@
     "url": "https://www.dio.me/bootcamp/itau-java-com-inteligencia-artificial",
     "licenca": "gratuito",
     "nivel": "Intermediário",
-    "data_finalizacao": "2026-10-12",
+    "data_finalizacao": "2026-12-07",
     "ativo": true,
-    "total_devs": 37112,
+    "total_devs": 39937,
     "skills": [
       "Java",
       "Java",
@@ -116,7 +141,7 @@
       "AI Agents",
       "AI Agents"
     ],
-    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-10-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Java, Spring, Spring, Spring, Inteligência Artificial (IA), Inteligência Artificial (IA), AI Agents, AI Agents. Data de finalização: 2026-10-12. 37.112 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-12-07] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Java, Spring, Spring, Spring, Inteligência Artificial (IA), Inteligência Artificial (IA), AI Agents, AI Agents. Data de finalização: 2026-12-07. 39.937 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "47ff92de-2844-4fac-802f-beda055a5a29",
@@ -130,7 +155,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-08-31",
     "ativo": false,
-    "total_devs": 13336,
+    "total_devs": 13326,
     "skills": [
       "AWS",
       "AWS",
@@ -140,7 +165,33 @@
       "AWS Certified Cloud Practitioner",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2026-08-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, AWS, Amazon Bedrock, Amazon Transcribe, AWS WAF, AWS Certified Cloud Practitioner, Inteligência Artificial (IA). Data de finalização: 2026-08-31. 13.336 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-08-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, AWS, Amazon Bedrock, Amazon Transcribe, AWS WAF, AWS Certified Cloud Practitioner, Inteligência Artificial (IA). Data de finalização: 2026-08-31. 13.326 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "455f330e-3f8e-4864-91ac-ee9bccb9cc57",
+    "slug": "ibm-confluent-dados-em-tempo-real-para-agentes-de-ia",
+    "titulo": "Bootcamp DIO: IBM Confluent - Dados em tempo real para agentes de IA",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/ibm-confluent-dados-em-tempo-real-para-agentes-de-ia",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2026-10-19",
+    "ativo": false,
+    "total_devs": 6489,
+    "skills": [
+      "IBM Confluent",
+      "IBM Confluent",
+      "IBM Confluent",
+      "Event Driven",
+      "Event Driven",
+      "Event Driven",
+      "Confluent Cloud",
+      "Confluent Cloud",
+      "Confluent Cloud"
+    ],
+    "descricao": "[Finalizado em 2026-10-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IBM Confluent, IBM Confluent, IBM Confluent, Event Driven, Event Driven, Event Driven, Confluent Cloud, Confluent Cloud, Confluent Cloud. Data de finalização: 2026-10-19. 6.489 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6c94a3da-1f22-45f6-be56-a2bad071ef51",
@@ -154,7 +205,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-09-08",
     "ativo": false,
-    "total_devs": 6359,
+    "total_devs": 6353,
     "skills": [
       "IBM Bob",
       "IBM Bob",
@@ -164,33 +215,7 @@
       "Git",
       "DevOps"
     ],
-    "descricao": "[Finalizado em 2026-09-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IBM Bob, IBM Bob, AI Agents, AI Agents, Git, Git, DevOps. Data de finalização: 2026-09-08. 6.359 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
-    "id": "455f330e-3f8e-4864-91ac-ee9bccb9cc57",
-    "slug": "ibm-confluent-dados-em-tempo-real-para-agentes-de-ia",
-    "titulo": "Bootcamp DIO: IBM Confluent - Dados em tempo real para agentes de IA",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/ibm-confluent-dados-em-tempo-real-para-agentes-de-ia",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2026-10-19",
-    "ativo": true,
-    "total_devs": 5678,
-    "skills": [
-      "IBM Confluent",
-      "IBM Confluent",
-      "IBM Confluent",
-      "Event Driven",
-      "Event Driven",
-      "Event Driven",
-      "Confluent Cloud",
-      "Confluent Cloud",
-      "Confluent Cloud"
-    ],
-    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2026-10-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IBM Confluent, IBM Confluent, IBM Confluent, Event Driven, Event Driven, Event Driven, Confluent Cloud, Confluent Cloud, Confluent Cloud. Data de finalização: 2026-10-19. 5.678 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-09-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IBM Bob, IBM Bob, AI Agents, AI Agents, Git, Git, DevOps. Data de finalização: 2026-09-08. 6.353 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "19ad410e-187f-475d-b082-9e0a6ad18226",
@@ -204,7 +229,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-08-10",
     "ativo": false,
-    "total_devs": 11265,
+    "total_devs": 11276,
     "skills": [
       "AWS",
       "Amazon Bedrock",
@@ -213,7 +238,7 @@
       "AI Agents",
       "AWS Step Functions"
     ],
-    "descricao": "[Finalizado em 2026-08-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Amazon Bedrock, Inteligência Artificial (IA), IA Generativa, AI Agents, AWS Step Functions. Data de finalização: 2026-08-10. 11.265 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-08-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Amazon Bedrock, Inteligência Artificial (IA), IA Generativa, AI Agents, AWS Step Functions. Data de finalização: 2026-08-10. 11.276 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "11a48132-cf0e-4f88-9058-e00655d5cbce",
@@ -227,7 +252,7 @@
     "nivel": "Avançado",
     "data_finalizacao": "2026-08-10",
     "ativo": false,
-    "total_devs": 8812,
+    "total_devs": 8835,
     "skills": [
       "N8N",
       "Lovable",
@@ -236,7 +261,7 @@
       "AI Agents",
       "Workflow Automation"
     ],
-    "descricao": "[Finalizado em 2026-08-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: N8N, Lovable, Inteligência Artificial (IA), IA Generativa, AI Agents, Workflow Automation. Data de finalização: 2026-08-10. 8.812 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-08-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: N8N, Lovable, Inteligência Artificial (IA), IA Generativa, AI Agents, Workflow Automation. Data de finalização: 2026-08-10. 8.835 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "4f133a51-2ab8-4609-b9c7-69c3614df421",
@@ -250,7 +275,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-07-31",
     "ativo": false,
-    "total_devs": 5928,
+    "total_devs": 5934,
     "skills": [
       "AI Agents",
       "ChatGPT",
@@ -259,7 +284,7 @@
       "LLMs",
       "Engenharia de Prompt"
     ],
-    "descricao": "[Finalizado em 2026-07-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AI Agents, ChatGPT, Inteligência Artificial (IA), IA Generativa, LLMs, Engenharia de Prompt. Data de finalização: 2026-07-31. 5.928 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-07-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AI Agents, ChatGPT, Inteligência Artificial (IA), IA Generativa, LLMs, Engenharia de Prompt. Data de finalização: 2026-07-31. 5.934 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "e88c99b2-7f0a-40a6-bd75-92fde1acd0f8",
@@ -273,7 +298,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-06-15",
     "ativo": false,
-    "total_devs": 8225,
+    "total_devs": 8223,
     "skills": [
       "AWS",
       "Cloud",
@@ -283,7 +308,7 @@
       "Amazon Glacier",
       "Amazon CloudFront"
     ],
-    "descricao": "[Finalizado em 2026-06-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Cloud, Amazon RDS, Amazon EC2, DynamoDB, Amazon Glacier, Amazon CloudFront. Data de finalização: 2026-06-15. 8.225 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-06-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Cloud, Amazon RDS, Amazon EC2, DynamoDB, Amazon Glacier, Amazon CloudFront. Data de finalização: 2026-06-15. 8.223 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "35efa278-5dd7-4ea9-a2dd-3afaaa137c52",
@@ -322,7 +347,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-05-11",
     "ativo": false,
-    "total_devs": 7694,
+    "total_devs": 7696,
     "skills": [
       "Java",
       "Spring",
@@ -331,7 +356,7 @@
       "Solid",
       "Clean Code"
     ],
-    "descricao": "[Finalizado em 2026-05-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, Design Patterns, API Rest, Solid, Clean Code. Data de finalização: 2026-05-11. 7.694 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-05-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, Design Patterns, API Rest, Solid, Clean Code. Data de finalização: 2026-05-11. 7.696 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "20e70d50-7b58-4b1b-8e3a-6bd9f6735e02",
@@ -345,12 +370,12 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-06-08",
     "ativo": false,
-    "total_devs": 4285,
+    "total_devs": 4287,
     "skills": [
       "Azure",
       "GitHub Copilot"
     ],
-    "descricao": "[Finalizado em 2026-06-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, GitHub Copilot. Data de finalização: 2026-06-08. 4.285 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-06-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, GitHub Copilot. Data de finalização: 2026-06-08. 4.287 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a9577cf7-7065-48d6-b2ec-35ace6d6882e",
@@ -364,7 +389,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2027-05-11",
     "ativo": true,
-    "total_devs": 11165,
+    "total_devs": 11380,
     "skills": [
       "Python",
       "Python",
@@ -377,7 +402,7 @@
       "SQL",
       "Machine Learning"
     ],
-    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2027-05-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Python, Python, Inteligência Artificial (IA), Git, GitHub, Banco de Dados, Inteligência Artificial (IA), SQL, Machine Learning. Data de finalização: 2027-05-11. 11.165 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[INSCRIÇÕES ABERTAS - Finaliza em 2027-05-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Python, Python, Inteligência Artificial (IA), Git, GitHub, Banco de Dados, Inteligência Artificial (IA), SQL, Machine Learning. Data de finalização: 2027-05-11. 11.380 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "4abc26fc-f1ea-48e2-8fe0-54b2cff75f43",
@@ -391,13 +416,13 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-06-22",
     "ativo": false,
-    "total_devs": 9249,
+    "total_devs": 9332,
     "skills": [
       "Inteligência Artificial (IA)",
       "Engenharia de Prompt",
       "AI Agents"
     ],
-    "descricao": "[Finalizado em 2026-06-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Engenharia de Prompt, AI Agents. Data de finalização: 2026-06-22. 9.249 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-06-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Engenharia de Prompt, AI Agents. Data de finalização: 2026-06-22. 9.332 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "de419874-3c72-4a12-9017-4ccbb112358f",
@@ -411,7 +436,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-04-27",
     "ativo": false,
-    "total_devs": 14409,
+    "total_devs": 14451,
     "skills": [
       "Inteligência Artificial (IA)",
       "Aprendizagem Contínua",
@@ -420,7 +445,7 @@
       "Mentalidade de Crescimento",
       "AI Agents"
     ],
-    "descricao": "[Finalizado em 2026-04-27] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Aprendizagem Contínua, IA Generativa, Engenharia de Prompt, Mentalidade de Crescimento, AI Agents. Data de finalização: 2026-04-27. 14.409 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-04-27] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Aprendizagem Contínua, IA Generativa, Engenharia de Prompt, Mentalidade de Crescimento, AI Agents. Data de finalização: 2026-04-27. 14.451 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "ff31ea81-ef17-475c-8024-b7bb8689a844",
@@ -434,7 +459,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-04-27",
     "ativo": false,
-    "total_devs": 7122,
+    "total_devs": 7120,
     "skills": [
       "Java",
       "QA",
@@ -448,7 +473,7 @@
       "Maven",
       "Gradle"
     ],
-    "descricao": "[Finalizado em 2026-04-27] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, QA, JUnit, Git, GitHub, BDD, API Rest, Spring, SQL, Maven, Gradle. Data de finalização: 2026-04-27. 7.122 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-04-27] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, QA, JUnit, Git, GitHub, BDD, API Rest, Spring, SQL, Maven, Gradle. Data de finalização: 2026-04-27. 7.120 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "82e78339-4095-4794-979d-b3d3f570f121",
@@ -462,7 +487,7 @@
     "nivel": "Avançado",
     "data_finalizacao": "2026-05-04",
     "ativo": false,
-    "total_devs": 7543,
+    "total_devs": 7584,
     "skills": [
       "GitHub Copilot",
       "IA",
@@ -473,7 +498,7 @@
       "Engenharia de Prompt",
       "AI Agents"
     ],
-    "descricao": "[Finalizado em 2026-05-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, IA, AI Agents, IA Generativa, LLMs, Engenharia de Prompt, Engenharia de Prompt, AI Agents. Data de finalização: 2026-05-04. 7.543 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-05-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, IA, AI Agents, IA Generativa, LLMs, Engenharia de Prompt, Engenharia de Prompt, AI Agents. Data de finalização: 2026-05-04. 7.584 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6f521c64-2ae5-45ae-ae7f-45d1aedf79b8",
@@ -487,7 +512,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-04-27",
     "ativo": false,
-    "total_devs": 23187,
+    "total_devs": 23194,
     "skills": [
       "Python",
       "Ciência de Dados",
@@ -500,7 +525,7 @@
       "Excel",
       "AWS"
     ],
-    "descricao": "[Finalizado em 2026-04-27] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Ciência de Dados, ETL, Banco de Dados, Machine Learning, Excel, AWS, Machine Learning, Excel, AWS. Data de finalização: 2026-04-27. 23.187 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-04-27] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Ciência de Dados, ETL, Banco de Dados, Machine Learning, Excel, AWS, Machine Learning, Excel, AWS. Data de finalização: 2026-04-27. 23.194 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d9e5e39b-04d6-41cc-8f87-b8ba279d229f",
@@ -514,7 +539,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-06-09",
     "ativo": false,
-    "total_devs": 8635,
+    "total_devs": 8642,
     "skills": [
       "Clean Code",
       "Solid",
@@ -524,7 +549,7 @@
       "Java",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2026-06-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Clean Code, Solid, Spring, API Rest, Design Patterns, Java, Inteligência Artificial (IA). Data de finalização: 2026-06-09. 8.635 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-06-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Clean Code, Solid, Spring, API Rest, Design Patterns, Java, Inteligência Artificial (IA). Data de finalização: 2026-06-09. 8.642 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "50c2bbc7-7364-4d51-b88a-38f683e90265",
@@ -538,14 +563,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-03-23",
     "ativo": false,
-    "total_devs": 13553,
+    "total_devs": 13639,
     "skills": [
       "Linux",
       "Linux",
       "Segurança da Informação",
       "Segurança da Informação"
     ],
-    "descricao": "[Finalizado em 2026-03-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Segurança da Informação, Segurança da Informação. Data de finalização: 2026-03-23. 13.553 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-03-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Segurança da Informação, Segurança da Informação. Data de finalização: 2026-03-23. 13.639 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "e5ba8d7e-e6a9-4238-a943-af92f86781ec",
@@ -559,7 +584,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-07-06",
     "ativo": false,
-    "total_devs": 3194,
+    "total_devs": 3200,
     "skills": [
       "Node.js",
       "Node.js",
@@ -571,7 +596,7 @@
       "Express",
       "Fastify"
     ],
-    "descricao": "[Finalizado em 2026-07-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node.js, Node.js, TypeScript, TypeScript, API, Node Package Manager (NPM), JavaScript, Express, Fastify. Data de finalização: 2026-07-06. 3.194 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-07-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node.js, Node.js, TypeScript, TypeScript, API, Node Package Manager (NPM), JavaScript, Express, Fastify. Data de finalização: 2026-07-06. 3.200 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2cc3590b-4e66-4ad1-b5f0-11ee95b563e1",
@@ -585,7 +610,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-08-04",
     "ativo": false,
-    "total_devs": 55842,
+    "total_devs": 55851,
     "skills": [
       "Python",
       "Inteligência Artificial (IA)",
@@ -597,7 +622,7 @@
       "SQL",
       "Segurança da Informação"
     ],
-    "descricao": "[Finalizado em 2026-08-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Inteligência Artificial (IA), IA Generativa, Excel, Banco de Dados, SQL, Microsoft Copilot, SQL, Segurança da Informação. Data de finalização: 2026-08-04. 55.842 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-08-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Inteligência Artificial (IA), IA Generativa, Excel, Banco de Dados, SQL, Microsoft Copilot, SQL, Segurança da Informação. Data de finalização: 2026-08-04. 55.851 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "40ef5a08-a141-4157-bfc9-2b5658715ec7",
@@ -611,7 +636,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-03-02",
     "ativo": false,
-    "total_devs": 30185,
+    "total_devs": 30238,
     "skills": [
       "Python",
       "Inteligência Artificial (IA)",
@@ -623,7 +648,7 @@
       "Microsoft Copilot",
       "Power BI"
     ],
-    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Inteligência Artificial (IA), IA Generativa, Excel, Banco de dados relacional, Banco de Dados, SQL, Microsoft Copilot, Power BI. Data de finalização: 2026-03-02. 30.185 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Inteligência Artificial (IA), IA Generativa, Excel, Banco de dados relacional, Banco de Dados, SQL, Microsoft Copilot, Power BI. Data de finalização: 2026-03-02. 30.238 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "10ae74c3-d05a-4569-a6e3-eb6ca9c7c59e",
@@ -637,14 +662,14 @@
     "nivel": "Avançado",
     "data_finalizacao": "2026-01-25",
     "ativo": false,
-    "total_devs": 5946,
+    "total_devs": 5953,
     "skills": [
       "Lógica de Programação",
       "JavaScript",
       "Git",
       "GitHub"
     ],
-    "descricao": "[Finalizado em 2026-01-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, JavaScript, Git, GitHub. Data de finalização: 2026-01-25. 5.946 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-01-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, JavaScript, Git, GitHub. Data de finalização: 2026-01-25. 5.953 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2f7dea8e-8da9-42ad-a276-b0945c65c0ad",
@@ -680,7 +705,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-12-29",
     "ativo": false,
-    "total_devs": 11662,
+    "total_devs": 11666,
     "skills": [
       "Java",
       "Java",
@@ -689,7 +714,7 @@
       "Cloud",
       "AWS"
     ],
-    "descricao": "[Finalizado em 2025-12-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, API Rest, Banco de dados relacional, Cloud, AWS. Data de finalização: 2025-12-29. 11.662 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-12-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, API Rest, Banco de dados relacional, Cloud, AWS. Data de finalização: 2025-12-29. 11.666 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "31b3e5fd-262e-4d2f-8b7c-f614da085c46",
@@ -703,7 +728,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-01-25",
     "ativo": false,
-    "total_devs": 8660,
+    "total_devs": 8666,
     "skills": [
       "AWS",
       "Machine Learning",
@@ -711,7 +736,7 @@
       "Low-code",
       "Amazon SageMaker Canvas"
     ],
-    "descricao": "[Finalizado em 2026-01-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Machine Learning, Amazon SageMaker Canvas, Low-code, Amazon SageMaker Canvas. Data de finalização: 2026-01-25. 8.660 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-01-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Machine Learning, Amazon SageMaker Canvas, Low-code, Amazon SageMaker Canvas. Data de finalização: 2026-01-25. 8.666 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "1bc613d3-f11b-4a46-8628-7551d3987274",
@@ -725,7 +750,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-01-20",
     "ativo": false,
-    "total_devs": 155488,
+    "total_devs": 155502,
     "skills": [
       "Microsoft Copilot Studio",
       "Mentalidade de Crescimento",
@@ -734,7 +759,7 @@
       "Lovable",
       "Engenharia de Prompt"
     ],
-    "descricao": "[Finalizado em 2026-01-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Microsoft Copilot Studio, Mentalidade de Crescimento, Aprendizagem Contínua, IA Generativa, Lovable, Engenharia de Prompt. Data de finalização: 2026-01-20. 155.488 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-01-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Microsoft Copilot Studio, Mentalidade de Crescimento, Aprendizagem Contínua, IA Generativa, Lovable, Engenharia de Prompt. Data de finalização: 2026-01-20. 155.502 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "da435924-213a-4f4a-a63a-30de6bdc5037",
@@ -748,11 +773,11 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-12-15",
     "ativo": false,
-    "total_devs": 2836,
+    "total_devs": 2838,
     "skills": [
       "Azure"
     ],
-    "descricao": "[Finalizado em 2025-12-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure. Data de finalização: 2025-12-15. 2.836 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-12-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure. Data de finalização: 2025-12-15. 2.838 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "fcc32b8e-bfc4-4d88-b6d5-c59079be75d8",
@@ -766,7 +791,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-01-17",
     "ativo": false,
-    "total_devs": 7776,
+    "total_devs": 7779,
     "skills": [
       "Java",
       "AWS",
@@ -777,7 +802,7 @@
       "Cloud",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2026-01-17] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, AWS, Java, Spring, API Rest, Docker, Cloud, Inteligência Artificial (IA). Data de finalização: 2026-01-17. 7.776 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-01-17] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, AWS, Java, Spring, API Rest, Docker, Cloud, Inteligência Artificial (IA). Data de finalização: 2026-01-17. 7.779 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "672a7491-d161-4bb8-b74c-44a2749f78ce",
@@ -791,13 +816,13 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-02-16",
     "ativo": false,
-    "total_devs": 11247,
+    "total_devs": 11267,
     "skills": [
       "Neo4J",
       "Neo4J",
       "Cypher"
     ],
-    "descricao": "[Finalizado em 2026-02-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Neo4J, Neo4J, Cypher. Data de finalização: 2026-02-16. 11.247 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-02-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Neo4J, Neo4J, Cypher. Data de finalização: 2026-02-16. 11.267 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a70da6e9-87cd-4676-b933-a3795ef751b1",
@@ -811,41 +836,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-12-08",
     "ativo": false,
-    "total_devs": 3978,
+    "total_devs": 3993,
     "skills": [
       "Android",
       "Kotlin",
       "Kotlin",
       "Android"
     ],
-    "descricao": "[Finalizado em 2025-12-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Android, Kotlin, Kotlin, Android. Data de finalização: 2025-12-08. 3.978 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
-    "id": "08f3e85e-e5de-44bd-8a33-014ddb279f04",
-    "slug": "luizalabs-back-end-com-python-2",
-    "titulo": "Bootcamp DIO: Luizalabs - Back-end com Python - 2º Edição",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/luizalabs-back-end-com-python-2",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2026-04-19",
-    "ativo": false,
-    "total_devs": 11117,
-    "skills": [
-      "Python",
-      "FastAPI",
-      "API Rest",
-      "Banco de Dados",
-      "GitHub",
-      "Engenharia de Prompt",
-      "GitHub Copilot",
-      "POO",
-      "IA",
-      "LLMs"
-    ],
-    "descricao": "[Finalizado em 2026-04-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, FastAPI, API Rest, Banco de Dados, GitHub, Engenharia de Prompt, GitHub Copilot, POO, IA, LLMs. Data de finalização: 2026-04-19. 11.117 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-12-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Android, Kotlin, Kotlin, Android. Data de finalização: 2025-12-08. 3.993 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5320d393-c573-461a-8eb1-799d6547577d",
@@ -859,7 +857,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-11-17",
     "ativo": false,
-    "total_devs": 14327,
+    "total_devs": 14338,
     "skills": [
       "Python",
       "FastAPI",
@@ -869,7 +867,34 @@
       "Engenharia de Prompt",
       "GitHub Copilot"
     ],
-    "descricao": "[Finalizado em 2025-11-17] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, FastAPI, API Rest, Banco de Dados, GitHub, Engenharia de Prompt, GitHub Copilot. Data de finalização: 2025-11-17. 14.327 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-11-17] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, FastAPI, API Rest, Banco de Dados, GitHub, Engenharia de Prompt, GitHub Copilot. Data de finalização: 2025-11-17. 14.338 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "08f3e85e-e5de-44bd-8a33-014ddb279f04",
+    "slug": "luizalabs-back-end-com-python-2",
+    "titulo": "Bootcamp DIO: Luizalabs - Back-end com Python - 2º Edição",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/luizalabs-back-end-com-python-2",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2026-04-19",
+    "ativo": false,
+    "total_devs": 11119,
+    "skills": [
+      "Python",
+      "FastAPI",
+      "API Rest",
+      "Banco de Dados",
+      "GitHub",
+      "Engenharia de Prompt",
+      "GitHub Copilot",
+      "POO",
+      "IA",
+      "LLMs"
+    ],
+    "descricao": "[Finalizado em 2026-04-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, FastAPI, API Rest, Banco de Dados, GitHub, Engenharia de Prompt, GitHub Copilot, POO, IA, LLMs. Data de finalização: 2026-04-19. 11.119 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "515b6416-077e-45ce-9d7d-f2f72bc0f1f5",
@@ -883,7 +908,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-11-17",
     "ativo": false,
-    "total_devs": 14779,
+    "total_devs": 14780,
     "skills": [
       "Java",
       "QA",
@@ -893,7 +918,7 @@
       "BDD",
       "API Rest"
     ],
-    "descricao": "[Finalizado em 2025-11-17] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, QA, JUnit, Git, GitHub, BDD, API Rest. Data de finalização: 2025-11-17. 14.779 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-11-17] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, QA, JUnit, Git, GitHub, BDD, API Rest. Data de finalização: 2025-11-17. 14.780 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2ce9b573-15a9-44f2-a5fa-e91c08da1f5c",
@@ -907,14 +932,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-01-25",
     "ativo": false,
-    "total_devs": 10209,
+    "total_devs": 10208,
     "skills": [
       "AWS",
       "Amazon Bedrock",
       "Amazon Nova",
       "Amazon AgentCore"
     ],
-    "descricao": "[Finalizado em 2026-01-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Amazon Bedrock, Amazon Nova, Amazon AgentCore. Data de finalização: 2026-01-25. 10.209 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-01-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Amazon Bedrock, Amazon Nova, Amazon AgentCore. Data de finalização: 2026-01-25. 10.208 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d6456a5a-4187-4101-8692-53057e883348",
@@ -928,7 +953,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-11-10",
     "ativo": false,
-    "total_devs": 2047,
+    "total_devs": 2050,
     "skills": [
       "AWS",
       "Engenharia de Prompt",
@@ -939,7 +964,7 @@
       "Amazon EC2",
       "Amazon EBS"
     ],
-    "descricao": "[Finalizado em 2025-11-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Engenharia de Prompt, Clean Code, Java, AWS Lambda, Amazon S3, Amazon EC2, Amazon EBS. Data de finalização: 2025-11-10. 2.047 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-11-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, Engenharia de Prompt, Clean Code, Java, AWS Lambda, Amazon S3, Amazon EC2, Amazon EBS. Data de finalização: 2025-11-10. 2.050 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "ddaf2c19-dc57-4fd5-aac9-c7b4a2ff88bb",
@@ -953,7 +978,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-10-16",
     "ativo": false,
-    "total_devs": 12424,
+    "total_devs": 12427,
     "skills": [
       "C#",
       "C#",
@@ -968,7 +993,7 @@
       "Inteligência Artificial (IA)",
       "Azure OpenAI"
     ],
-    "descricao": "[Finalizado em 2025-10-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, C#, .NET, .NET, Git, GitHub, Docker, Banco de Dados, MongoDB, NoSQL, Inteligência Artificial (IA), Azure OpenAI. Data de finalização: 2025-10-16. 12.424 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-10-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, C#, .NET, .NET, Git, GitHub, Docker, Banco de Dados, MongoDB, NoSQL, Inteligência Artificial (IA), Azure OpenAI. Data de finalização: 2025-10-16. 12.427 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6f6cbb17-df75-43a4-99da-0b6d1cbf9e7c",
@@ -982,7 +1007,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-09-22",
     "ativo": false,
-    "total_devs": 9100,
+    "total_devs": 9142,
     "skills": [
       ".NET",
       ".NET",
@@ -993,7 +1018,7 @@
       "Inteligência Artificial (IA)",
       "GitHub Copilot"
     ],
-    "descricao": "[Finalizado em 2025-09-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, .NET, React, C#, C#, Docker, Inteligência Artificial (IA), GitHub Copilot. Data de finalização: 2025-09-22. 9.100 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-09-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, .NET, React, C#, C#, Docker, Inteligência Artificial (IA), GitHub Copilot. Data de finalização: 2025-09-22. 9.142 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d2c6923e-337b-469d-91ab-38eab12f599f",
@@ -1007,7 +1032,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-09-15",
     "ativo": false,
-    "total_devs": 9878,
+    "total_devs": 9877,
     "skills": [
       "Java",
       "Git",
@@ -1017,7 +1042,7 @@
       "Maven",
       "Gradle"
     ],
-    "descricao": "[Finalizado em 2025-09-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Git, GitHub, SQL, NoSQL, Maven, Gradle. Data de finalização: 2025-09-15. 9.878 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-09-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Git, GitHub, SQL, NoSQL, Maven, Gradle. Data de finalização: 2025-09-15. 9.877 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a5347e04-c2ee-468e-8db9-2ec4abdb4775",
@@ -1031,7 +1056,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-08-25",
     "ativo": false,
-    "total_devs": 7794,
+    "total_devs": 7795,
     "skills": [
       ".NET",
       "C#",
@@ -1041,7 +1066,7 @@
       "Banco de Dados",
       "Azure"
     ],
-    "descricao": "[Finalizado em 2025-08-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, C#, GitHub, Git, POO, Banco de Dados, Azure. Data de finalização: 2025-08-25. 7.794 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-08-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, C#, GitHub, Git, POO, Banco de Dados, Azure. Data de finalização: 2025-08-25. 7.795 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "9c448825-5d65-4620-b6a0-4ea01b0af99a",
@@ -1079,7 +1104,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-08-25",
     "ativo": false,
-    "total_devs": 9565,
+    "total_devs": 9562,
     "skills": [
       "Java",
       "AWS",
@@ -1089,7 +1114,7 @@
       "NoSQL",
       "MongoDB"
     ],
-    "descricao": "[Finalizado em 2025-08-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, AWS, Spring, Lógica de Programação, Banco de Dados, NoSQL, MongoDB. Data de finalização: 2025-08-25. 9.565 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-08-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, AWS, Spring, Lógica de Programação, Banco de Dados, NoSQL, MongoDB. Data de finalização: 2025-08-25. 9.562 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "30164748-f40a-4f29-b869-b70e2bae7257",
@@ -1103,7 +1128,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-08-11",
     "ativo": false,
-    "total_devs": 5737,
+    "total_devs": 5738,
     "skills": [
       ".NET",
       ".NET",
@@ -1114,7 +1139,7 @@
       "Cloud",
       "Azure"
     ],
-    "descricao": "[Finalizado em 2025-08-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, .NET, C#, C#, Inteligência Artificial (IA), Engenharia de Prompt, Cloud, Azure. Data de finalização: 2025-08-11. 5.737 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-08-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, .NET, C#, C#, Inteligência Artificial (IA), Engenharia de Prompt, Cloud, Azure. Data de finalização: 2025-08-11. 5.738 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "46a281be-84f0-4f19-9202-75342b2d355e",
@@ -1128,7 +1153,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-08-11",
     "ativo": false,
-    "total_devs": 18331,
+    "total_devs": 18349,
     "skills": [
       "Inteligência Artificial (IA)",
       "Git",
@@ -1143,7 +1168,7 @@
       "SQL",
       "MySQL"
     ],
-    "descricao": "[Finalizado em 2025-08-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Git, GitHub, Azure OpenAI, Azure Machine Learning, Banco de Dados, Excel, Microsoft Copilot, ETL, Power BI, SQL, MySQL. Data de finalização: 2025-08-11. 18.331 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-08-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Git, GitHub, Azure OpenAI, Azure Machine Learning, Banco de Dados, Excel, Microsoft Copilot, ETL, Power BI, SQL, MySQL. Data de finalização: 2025-08-11. 18.349 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5b95425a-8a5f-4dd5-9198-2f4efa21ff61",
@@ -1157,7 +1182,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-08-04",
     "ativo": false,
-    "total_devs": 10479,
+    "total_devs": 10516,
     "skills": [
       "Python",
       "Inteligência Artificial (IA)",
@@ -1169,7 +1194,7 @@
       "scikit-learn",
       "Keras"
     ],
-    "descricao": "[Finalizado em 2025-08-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Inteligência Artificial (IA), Machine Learning, Machine Learning, Anaconda, Tensorflow, SciPy, scikit-learn, Keras. Data de finalização: 2025-08-04. 10.479 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-08-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Inteligência Artificial (IA), Machine Learning, Machine Learning, Anaconda, Tensorflow, SciPy, scikit-learn, Keras. Data de finalização: 2025-08-04. 10.516 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "bf9f4065-c96b-4be0-96eb-9d0f306932ff",
@@ -1183,7 +1208,7 @@
     "nivel": "Avançado",
     "data_finalizacao": "2025-08-04",
     "ativo": false,
-    "total_devs": 8098,
+    "total_devs": 8102,
     "skills": [
       "Lógica de Programação",
       "Engenharia de Prompt",
@@ -1191,7 +1216,7 @@
       "GitHub",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2025-08-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, Engenharia de Prompt, Git, GitHub, JavaScript. Data de finalização: 2025-08-04. 8.098 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-08-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, Engenharia de Prompt, Git, GitHub, JavaScript. Data de finalização: 2025-08-04. 8.102 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "59a0deed-a8a6-4a7d-8d4e-4c958a772412",
@@ -1205,7 +1230,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-07-28",
     "ativo": false,
-    "total_devs": 6046,
+    "total_devs": 6049,
     "skills": [
       "Node.js",
       "GitHub",
@@ -1216,7 +1241,7 @@
       "Engenharia de Prompt",
       "GitHub Copilot"
     ],
-    "descricao": "[Finalizado em 2025-07-28] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node.js, GitHub, Git, JavaScript, Node Package Manager (NPM), React Native, Engenharia de Prompt, GitHub Copilot. Data de finalização: 2025-07-28. 6.046 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-07-28] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node.js, GitHub, Git, JavaScript, Node Package Manager (NPM), React Native, Engenharia de Prompt, GitHub Copilot. Data de finalização: 2025-07-28. 6.049 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2017d9dd-bcc9-4469-be68-26964028739d",
@@ -1230,7 +1255,7 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2025-07-26",
     "ativo": false,
-    "total_devs": 7528,
+    "total_devs": 7529,
     "skills": [
       "Java",
       "GitHub Copilot",
@@ -1238,7 +1263,7 @@
       "GitHub",
       "Cloud"
     ],
-    "descricao": "[Finalizado em 2025-07-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, GitHub Copilot, Git, GitHub, Cloud. Data de finalização: 2025-07-26. 7.528 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-07-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, GitHub Copilot, Git, GitHub, Cloud. Data de finalização: 2025-07-26. 7.529 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "67966d9a-e33d-4e88-a167-ec7acd68b701",
@@ -1252,7 +1277,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-06-23",
     "ativo": false,
-    "total_devs": 11227,
+    "total_devs": 11226,
     "skills": [
       "Java",
       "Java",
@@ -1261,7 +1286,7 @@
       "Docker",
       "Kubernetes"
     ],
-    "descricao": "[Finalizado em 2025-06-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Inteligência Artificial (IA), API Rest, Docker, Kubernetes. Data de finalização: 2025-06-23. 11.227 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-06-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Inteligência Artificial (IA), API Rest, Docker, Kubernetes. Data de finalização: 2025-06-23. 11.226 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "01e6d0b7-709b-4095-ae38-95a0302b3c94",
@@ -1275,14 +1300,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-06-16",
     "ativo": false,
-    "total_devs": 10367,
+    "total_devs": 10372,
     "skills": [
       "Azure",
       "Azure",
       "Microsoft Entra ID",
       "Microsoft Entra ID"
     ],
-    "descricao": "[Finalizado em 2025-06-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Azure, Microsoft Entra ID, Microsoft Entra ID. Data de finalização: 2025-06-16. 10.367 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-06-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Azure, Microsoft Entra ID, Microsoft Entra ID. Data de finalização: 2025-06-16. 10.372 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2788777f-63a7-4a41-a8eb-28133a20c2f1",
@@ -1296,7 +1321,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-07-01",
     "ativo": false,
-    "total_devs": 11040,
+    "total_devs": 11048,
     "skills": [
       "C#",
       ".NET",
@@ -1313,7 +1338,7 @@
       "C#",
       "SQL Server"
     ],
-    "descricao": "[Finalizado em 2025-07-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, .NET, Git, GitHub, POO, SQL, SQL Server, Kubernetes, Cloud, Docker, MongoDB, Docker, C#, SQL Server. Data de finalização: 2025-07-01. 11.040 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-07-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, .NET, Git, GitHub, POO, SQL, SQL Server, Kubernetes, Cloud, Docker, MongoDB, Docker, C#, SQL Server. Data de finalização: 2025-07-01. 11.048 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "91c7e809-e1c5-4958-99e1-7e08cf531a6a",
@@ -1327,12 +1352,12 @@
     "nivel": "Avançado",
     "data_finalizacao": "2025-06-11",
     "ativo": false,
-    "total_devs": 17953,
+    "total_devs": 17955,
     "skills": [
       "Engenharia de Prompt",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2025-06-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Engenharia de Prompt, Inteligência Artificial (IA). Data de finalização: 2025-06-11. 17.953 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-06-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Engenharia de Prompt, Inteligência Artificial (IA). Data de finalização: 2025-06-11. 17.955 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a3ebf564-bae6-40ad-b95d-04de1378fffc",
@@ -1346,12 +1371,12 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-06-11",
     "ativo": false,
-    "total_devs": 5312,
+    "total_devs": 5313,
     "skills": [
       "GitHub Copilot",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2025-06-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, Inteligência Artificial (IA). Data de finalização: 2025-06-11. 5.312 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-06-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, Inteligência Artificial (IA). Data de finalização: 2025-06-11. 5.313 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a7dc78cd-8cea-4ce5-908c-c287a9259330",
@@ -1365,13 +1390,35 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-06-11",
     "ativo": false,
-    "total_devs": 3160,
+    "total_devs": 3173,
     "skills": [
       "Azure",
       "Cloud",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2025-06-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Cloud, Inteligência Artificial (IA). Data de finalização: 2025-06-11. 3.160 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-06-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Cloud, Inteligência Artificial (IA). Data de finalização: 2025-06-11. 3.173 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "08167ea2-0545-49a4-a4f1-d074f547864e",
+    "slug": "microsoft-azure-cloud-native",
+    "titulo": "Bootcamp DIO: Microsoft Azure Cloud Native",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/microsoft-azure-cloud-native",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2025-05-06",
+    "ativo": false,
+    "total_devs": 6914,
+    "skills": [
+      "Azure",
+      "Azure Functions",
+      "GitHub Copilot",
+      "Inteligência Artificial (IA)",
+      "Cloud"
+    ],
+    "descricao": "[Finalizado em 2025-05-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Azure Functions, GitHub Copilot, Inteligência Artificial (IA), Cloud. Data de finalização: 2025-05-06. 6.914 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d0f253c1-084e-422d-b67d-7cba948d4a7c",
@@ -1396,28 +1443,6 @@
     "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Azure Functions, GitHub Copilot, Inteligência Artificial (IA), Cloud. Data de finalização: 2026-03-02. 2.524 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
-    "id": "08167ea2-0545-49a4-a4f1-d074f547864e",
-    "slug": "microsoft-azure-cloud-native",
-    "titulo": "Bootcamp DIO: Microsoft Azure Cloud Native",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/microsoft-azure-cloud-native",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2025-05-06",
-    "ativo": false,
-    "total_devs": 6912,
-    "skills": [
-      "Azure",
-      "Azure Functions",
-      "GitHub Copilot",
-      "Inteligência Artificial (IA)",
-      "Cloud"
-    ],
-    "descricao": "[Finalizado em 2025-05-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Azure Functions, GitHub Copilot, Inteligência Artificial (IA), Cloud. Data de finalização: 2025-05-06. 6.912 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
     "id": "5c4a2946-6829-42b2-b895-322cc120c210",
     "slug": "xp-inc-cloud-com-inteligencia-artificial",
     "titulo": "Bootcamp DIO: XP Inc. - Cloud com Inteligência Artificial",
@@ -1429,7 +1454,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-05-19",
     "ativo": false,
-    "total_devs": 12180,
+    "total_devs": 12181,
     "skills": [
       "GitHub Copilot",
       "GitHub Copilot",
@@ -1440,7 +1465,7 @@
       "Azure",
       "Azure OpenAI"
     ],
-    "descricao": "[Finalizado em 2025-05-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, GitHub Copilot, Engenharia de Prompt, Engenharia de Prompt, Inteligência Artificial (IA), Inteligência Artificial (IA), Azure, Azure OpenAI. Data de finalização: 2025-05-19. 12.180 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-05-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, GitHub Copilot, Engenharia de Prompt, Engenharia de Prompt, Inteligência Artificial (IA), Inteligência Artificial (IA), Azure, Azure OpenAI. Data de finalização: 2025-05-19. 12.181 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6419740f-ac30-4119-bc93-ef7e293f3767",
@@ -1454,7 +1479,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-05-12",
     "ativo": false,
-    "total_devs": 8318,
+    "total_devs": 8327,
     "skills": [
       "Azure",
       "Azure",
@@ -1463,7 +1488,7 @@
       "Microsoft Fabric",
       "Azure Data Factory"
     ],
-    "descricao": "[Finalizado em 2025-05-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Azure, Azure Databricks, Azure Databricks, Microsoft Fabric, Azure Data Factory. Data de finalização: 2025-05-12. 8.318 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-05-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Azure, Azure Databricks, Azure Databricks, Microsoft Fabric, Azure Data Factory. Data de finalização: 2025-05-12. 8.327 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d504948d-d0cf-464e-ac8a-e7373d91ed15",
@@ -1477,7 +1502,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-03-02",
     "ativo": false,
-    "total_devs": 13786,
+    "total_devs": 13789,
     "skills": [
       "Power BI",
       "Power BI",
@@ -1485,7 +1510,7 @@
       "Microsoft Copilot",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Power BI, Power BI, Excel, Microsoft Copilot, Inteligência Artificial (IA). Data de finalização: 2026-03-02. 13.786 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Power BI, Power BI, Excel, Microsoft Copilot, Inteligência Artificial (IA). Data de finalização: 2026-03-02. 13.789 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "74b0fe3a-ffcf-449b-850d-87963de02c22",
@@ -1499,7 +1524,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-10-20",
     "ativo": false,
-    "total_devs": 28288,
+    "total_devs": 28287,
     "skills": [
       "Power BI",
       "Power BI",
@@ -1507,7 +1532,7 @@
       "Microsoft Copilot",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Power BI, Power BI, Excel, Microsoft Copilot, Inteligência Artificial (IA). Data de finalização: 2025-10-20. 28.288 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Power BI, Power BI, Excel, Microsoft Copilot, Inteligência Artificial (IA). Data de finalização: 2025-10-20. 28.287 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "8e46a961-3411-4001-bec3-3e76001da804",
@@ -1521,14 +1546,35 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-03-02",
     "ativo": false,
-    "total_devs": 3185,
+    "total_devs": 3192,
     "skills": [
       "Azure Machine Learning",
       "Inteligência Artificial (IA)",
       "MLFlow",
       "Azure AI Foundry"
     ],
-    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure Machine Learning, Inteligência Artificial (IA), MLFlow, Azure AI Foundry. Data de finalização: 2026-03-02. 3.185 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure Machine Learning, Inteligência Artificial (IA), MLFlow, Azure AI Foundry. Data de finalização: 2026-03-02. 3.192 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "2518d8d7-662d-44e8-8f55-8fcda09aa25a",
+    "slug": "microsoft-certification-challenge-4-dp-100",
+    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #4 - DP 100",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-4-dp-100",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2025-10-20",
+    "ativo": false,
+    "total_devs": 5979,
+    "skills": [
+      "Azure Machine Learning",
+      "Inteligência Artificial (IA)",
+      "MLFlow",
+      "Azure AI Foundry"
+    ],
+    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure Machine Learning, Inteligência Artificial (IA), MLFlow, Azure AI Foundry. Data de finalização: 2025-10-20. 5.979 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d5adf7bc-330f-4c81-adc1-cac7e65bb151",
@@ -1552,27 +1598,6 @@
     "descricao": "[Finalizado em 2025-04-21] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure Machine Learning, Inteligência Artificial (IA), MLFlow, Azure AI Foundry. Data de finalização: 2025-04-21. 10.244 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
-    "id": "2518d8d7-662d-44e8-8f55-8fcda09aa25a",
-    "slug": "microsoft-certification-challenge-4-dp-100",
-    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #4 - DP 100",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-4-dp-100",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2025-10-20",
-    "ativo": false,
-    "total_devs": 5981,
-    "skills": [
-      "Azure Machine Learning",
-      "Inteligência Artificial (IA)",
-      "MLFlow",
-      "Azure AI Foundry"
-    ],
-    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure Machine Learning, Inteligência Artificial (IA), MLFlow, Azure AI Foundry. Data de finalização: 2025-10-20. 5.981 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
     "id": "a03a5152-f11f-40a9-adec-1875835a6ad2",
     "slug": "decola-tech-2025",
     "titulo": "Bootcamp DIO: Decola Tech 2025",
@@ -1584,7 +1609,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-03-10",
     "ativo": false,
-    "total_devs": 16625,
+    "total_devs": 16630,
     "skills": [
       "Java",
       "Spring",
@@ -1598,7 +1623,7 @@
       "API Rest",
       "Gradle"
     ],
-    "descricao": "[Finalizado em 2025-03-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, SQL, Angular, Inteligência Artificial (IA), Maven, Spring, API Rest, Angular, API Rest, Gradle. Data de finalização: 2025-03-10. 16.625 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-03-10] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, SQL, Angular, Inteligência Artificial (IA), Maven, Spring, API Rest, Angular, API Rest, Gradle. Data de finalização: 2025-03-10. 16.630 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "bbc47c35-aa78-4887-b844-132fcef8f3d4",
@@ -1612,12 +1637,12 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-04-28",
     "ativo": false,
-    "total_devs": 4311,
+    "total_devs": 4316,
     "skills": [
       "Microsoft Copilot Studio",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2025-04-28] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Microsoft Copilot Studio, Inteligência Artificial (IA). Data de finalização: 2025-04-28. 4.311 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-04-28] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Microsoft Copilot Studio, Inteligência Artificial (IA). Data de finalização: 2025-04-28. 4.316 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "823e5de7-79a5-44fe-a472-cfe6bb0fec00",
@@ -1631,7 +1656,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-05-12",
     "ativo": false,
-    "total_devs": 37949,
+    "total_devs": 38007,
     "skills": [
       "Python",
       "Git",
@@ -1642,7 +1667,7 @@
       "POO",
       "Python"
     ],
-    "descricao": "[Finalizado em 2025-05-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Git, GitHub, POO, Inteligência Artificial (IA), Microsoft Copilot Studio, POO, Python. Data de finalização: 2025-05-12. 37.949 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-05-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Git, GitHub, POO, Inteligência Artificial (IA), Microsoft Copilot Studio, POO, Python. Data de finalização: 2025-05-12. 38.007 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "aae2c651-cde7-40b3-bfa8-51b451f50272",
@@ -1656,7 +1681,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-09-08",
     "ativo": false,
-    "total_devs": 16977,
+    "total_devs": 16986,
     "skills": [
       "Python",
       "Git",
@@ -1667,7 +1692,7 @@
       "POO",
       "Python"
     ],
-    "descricao": "[Finalizado em 2025-09-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Git, GitHub, POO, Inteligência Artificial (IA), Microsoft Copilot Studio, POO, Python. Data de finalização: 2025-09-08. 16.977 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-09-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Git, GitHub, POO, Inteligência Artificial (IA), Microsoft Copilot Studio, POO, Python. Data de finalização: 2025-09-08. 16.986 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5edf0557-6c91-4aff-86fe-fcd7cb4c4914",
@@ -1681,7 +1706,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-03-31",
     "ativo": false,
-    "total_devs": 30883,
+    "total_devs": 30882,
     "skills": [
       "Java",
       "Banco de Dados",
@@ -1691,7 +1716,7 @@
       "Azure OpenAI",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2025-03-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Banco de Dados, SQL, MongoDB, Azure, Azure OpenAI, Inteligência Artificial (IA). Data de finalização: 2025-03-31. 30.883 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-03-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Banco de Dados, SQL, MongoDB, Azure, Azure OpenAI, Inteligência Artificial (IA). Data de finalização: 2025-03-31. 30.882 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "f3e1de43-813c-454c-82b6-68c7dff0e0cb",
@@ -1705,14 +1730,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-05-06",
     "ativo": false,
-    "total_devs": 4975,
+    "total_devs": 4976,
     "skills": [
       "Inteligência Artificial (IA)",
       "Azure OpenAI",
       "Azure OpenAI Service",
       "Engenharia de Prompt"
     ],
-    "descricao": "[Finalizado em 2025-05-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure OpenAI, Azure OpenAI Service, Engenharia de Prompt. Data de finalização: 2025-05-06. 4.975 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-05-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure OpenAI, Azure OpenAI Service, Engenharia de Prompt. Data de finalização: 2025-05-06. 4.976 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "502225f7-8b50-41f7-86bf-67e8f3c1ed78",
@@ -1726,7 +1751,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-03-09",
     "ativo": false,
-    "total_devs": 22101,
+    "total_devs": 22129,
     "skills": [
       "Git",
       "GitHub",
@@ -1737,7 +1762,7 @@
       "Microsoft Copilot",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2025-03-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, Banco de dados relacional, SQL, Excel, Banco de Dados, Microsoft Copilot, Inteligência Artificial (IA). Data de finalização: 2025-03-09. 22.101 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-03-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, Banco de dados relacional, SQL, Excel, Banco de Dados, Microsoft Copilot, Inteligência Artificial (IA). Data de finalização: 2025-03-09. 22.129 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "7c1eba19-42e3-4001-94d9-ce3b4d924641",
@@ -1751,7 +1776,7 @@
     "nivel": "Avançado",
     "data_finalizacao": "2025-02-22",
     "ativo": false,
-    "total_devs": 14988,
+    "total_devs": 14990,
     "skills": [
       "Inteligência Artificial (IA)",
       "IA Generativa",
@@ -1759,7 +1784,7 @@
       "Microsoft Copilot",
       "Engenharia de Prompt"
     ],
-    "descricao": "[Finalizado em 2025-02-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), IA Generativa, ChatGPT, Microsoft Copilot, Engenharia de Prompt. Data de finalização: 2025-02-22. 14.988 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-02-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), IA Generativa, ChatGPT, Microsoft Copilot, Engenharia de Prompt. Data de finalização: 2025-02-22. 14.990 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6072eca4-1339-432e-a707-96a5b8f90a15",
@@ -1773,7 +1798,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-02-22",
     "ativo": false,
-    "total_devs": 4553,
+    "total_devs": 4559,
     "skills": [
       "GitHub Copilot",
       "IA Generativa",
@@ -1782,7 +1807,7 @@
       "Inteligência Artificial (IA)",
       "Engenharia de Prompt"
     ],
-    "descricao": "[Finalizado em 2025-02-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, IA Generativa, Git, GitHub, Inteligência Artificial (IA), Engenharia de Prompt. Data de finalização: 2025-02-22. 4.553 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-02-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub Copilot, IA Generativa, Git, GitHub, Inteligência Artificial (IA), Engenharia de Prompt. Data de finalização: 2025-02-22. 4.559 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d92b35c1-5ce2-4362-9729-d2dfd3bb61ad",
@@ -1796,7 +1821,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2026-03-02",
     "ativo": false,
-    "total_devs": 4678,
+    "total_devs": 4677,
     "skills": [
       "Inteligência Artificial (IA)",
       "Azure Functions",
@@ -1804,29 +1829,7 @@
       "CosmoDB",
       "Redis"
     ],
-    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure Functions, Azure, CosmoDB, Redis. Data de finalização: 2026-03-02. 4.678 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
-    "id": "762bdbd4-596e-40ea-b0c1-2f048159de43",
-    "slug": "microsoft-certification-challenge-4-az-204",
-    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #4 - AZ 204",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-4-az-204",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2025-10-20",
-    "ativo": false,
-    "total_devs": 3259,
-    "skills": [
-      "Inteligência Artificial (IA)",
-      "Azure Functions",
-      "Azure",
-      "CosmoDB",
-      "Redis"
-    ],
-    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure Functions, Azure, CosmoDB, Redis. Data de finalização: 2025-10-20. 3.259 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure Functions, Azure, CosmoDB, Redis. Data de finalização: 2026-03-02. 4.677 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "61baec04-fdf9-49ce-b7e9-942070363003",
@@ -1840,7 +1843,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-01-24",
     "ativo": false,
-    "total_devs": 9618,
+    "total_devs": 9617,
     "skills": [
       "Inteligência Artificial (IA)",
       "Azure Functions",
@@ -1848,7 +1851,29 @@
       "CosmoDB",
       "Redis"
     ],
-    "descricao": "[Finalizado em 2025-01-24] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure Functions, Azure, CosmoDB, Redis. Data de finalização: 2025-01-24. 9.618 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-01-24] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure Functions, Azure, CosmoDB, Redis. Data de finalização: 2025-01-24. 9.617 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "762bdbd4-596e-40ea-b0c1-2f048159de43",
+    "slug": "microsoft-certification-challenge-4-az-204",
+    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #4 - AZ 204",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-4-az-204",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2025-10-20",
+    "ativo": false,
+    "total_devs": 3265,
+    "skills": [
+      "Inteligência Artificial (IA)",
+      "Azure Functions",
+      "Azure",
+      "CosmoDB",
+      "Redis"
+    ],
+    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), Azure Functions, Azure, CosmoDB, Redis. Data de finalização: 2025-10-20. 3.265 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "3f5fb4b0-f920-45ec-9a6c-fb4d9e2e849f",
@@ -1862,7 +1887,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-03-31",
     "ativo": false,
-    "total_devs": 10944,
+    "total_devs": 10945,
     "skills": [
       "Amazon Transcribe",
       "Inteligência Artificial (IA)",
@@ -1871,7 +1896,7 @@
       "Amazon SageMaker Canvas",
       "Amazon Rekognition"
     ],
-    "descricao": "[Finalizado em 2025-03-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Amazon Transcribe, Inteligência Artificial (IA), Amazon Textract, AWS, Amazon SageMaker Canvas, Amazon Rekognition. Data de finalização: 2025-03-31. 10.944 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-03-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Amazon Transcribe, Inteligência Artificial (IA), Amazon Textract, AWS, Amazon SageMaker Canvas, Amazon Rekognition. Data de finalização: 2025-03-31. 10.945 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "3cdd91a5-af66-45f0-bf2c-e9caa4bbbb04",
@@ -1885,7 +1910,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-12-23",
     "ativo": false,
-    "total_devs": 14699,
+    "total_devs": 14715,
     "skills": [
       "Machine Learning",
       "R",
@@ -1898,7 +1923,7 @@
       "Machine Learning",
       "Inteligência Artificial (IA)"
     ],
-    "descricao": "[Finalizado em 2024-12-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Machine Learning, R, Tensorflow, Machine Learning, Python, Inteligência Artificial (IA), Anaconda, SciPy, Machine Learning, Inteligência Artificial (IA). Data de finalização: 2024-12-23. 14.699 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-12-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Machine Learning, R, Tensorflow, Machine Learning, Python, Inteligência Artificial (IA), Anaconda, SciPy, Machine Learning, Inteligência Artificial (IA). Data de finalização: 2024-12-23. 14.715 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "abefa877-14d7-429d-bfc7-fc1d17de7658",
@@ -1912,14 +1937,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-02-22",
     "ativo": false,
-    "total_devs": 17559,
+    "total_devs": 17562,
     "skills": [
       "IA Generativa",
       "Inteligência Artificial (IA)",
       "Microsoft Copilot",
       "Azure Machine Learning"
     ],
-    "descricao": "[Finalizado em 2025-02-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IA Generativa, Inteligência Artificial (IA), Microsoft Copilot, Azure Machine Learning. Data de finalização: 2025-02-22. 17.559 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-02-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IA Generativa, Inteligência Artificial (IA), Microsoft Copilot, Azure Machine Learning. Data de finalização: 2025-02-22. 17.562 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "39369682-7247-40d5-a56c-2b380cb7964b",
@@ -1933,53 +1958,13 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-11-25",
     "ativo": false,
-    "total_devs": 19471,
+    "total_devs": 19489,
     "skills": [
       "Power BI",
       "SQL",
       "Banco de Dados"
     ],
-    "descricao": "[Finalizado em 2024-11-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Power BI, SQL, Banco de Dados. Data de finalização: 2024-11-25. 19.471 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
-    "id": "6d43a23b-7524-4a59-b14d-5e895bbc841e",
-    "slug": "microsoft-certification-challenge-5-ai-102",
-    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #5 - AI 102",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-5-ai-102",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2026-03-02",
-    "ativo": false,
-    "total_devs": 10987,
-    "skills": [
-      "Azure OpenAI",
-      "Inteligência Artificial (IA)",
-      "Azure"
-    ],
-    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure OpenAI, Inteligência Artificial (IA), Azure. Data de finalização: 2026-03-02. 10.987 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
-    "id": "5437dc46-3ffb-48f1-a3cd-03bb51968564",
-    "slug": "microsoft-certification-challenge-4-ai-102",
-    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #4 - AI 102",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-4-ai-102",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2025-10-20",
-    "ativo": false,
-    "total_devs": 4954,
-    "skills": [
-      "Azure OpenAI",
-      "Inteligência Artificial (IA)",
-      "Azure"
-    ],
-    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure OpenAI, Inteligência Artificial (IA), Azure. Data de finalização: 2025-10-20. 4.954 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-11-25] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Power BI, SQL, Banco de Dados. Data de finalização: 2024-11-25. 19.489 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "bff9313d-4237-49fc-84e4-c2c858ebf733",
@@ -2000,6 +1985,46 @@
       "Azure"
     ],
     "descricao": "[Finalizado em 2024-11-18] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure OpenAI, Inteligência Artificial (IA), Azure. Data de finalização: 2024-11-18. 7.070 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "5437dc46-3ffb-48f1-a3cd-03bb51968564",
+    "slug": "microsoft-certification-challenge-4-ai-102",
+    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #4 - AI 102",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-4-ai-102",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2025-10-20",
+    "ativo": false,
+    "total_devs": 4959,
+    "skills": [
+      "Azure OpenAI",
+      "Inteligência Artificial (IA)",
+      "Azure"
+    ],
+    "descricao": "[Finalizado em 2025-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure OpenAI, Inteligência Artificial (IA), Azure. Data de finalização: 2025-10-20. 4.959 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "6d43a23b-7524-4a59-b14d-5e895bbc841e",
+    "slug": "microsoft-certification-challenge-5-ai-102",
+    "titulo": "Bootcamp DIO: Microsoft Certification Challenge #5 - AI 102",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/microsoft-certification-challenge-5-ai-102",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2026-03-02",
+    "ativo": false,
+    "total_devs": 10986,
+    "skills": [
+      "Azure OpenAI",
+      "Inteligência Artificial (IA)",
+      "Azure"
+    ],
+    "descricao": "[Finalizado em 2026-03-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure OpenAI, Inteligência Artificial (IA), Azure. Data de finalização: 2026-03-02. 10.986 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "cef92400-613a-4066-ac1f-650f3b29e1b2",
@@ -2036,12 +2061,12 @@
     "nivel": "Avançado",
     "data_finalizacao": "2024-10-14",
     "ativo": false,
-    "total_devs": 14643,
+    "total_devs": 14670,
     "skills": [
       "Lógica de Programação",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2024-10-14] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, JavaScript. Data de finalização: 2024-10-14. 14.643 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-10-14] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, JavaScript. Data de finalização: 2024-10-14. 14.670 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "344ed0bb-de0d-430f-b767-fd3c5a985724",
@@ -2055,7 +2080,7 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2025-09-22",
     "ativo": false,
-    "total_devs": 6625,
+    "total_devs": 6624,
     "skills": [
       "Git",
       "GitHub",
@@ -2063,7 +2088,7 @@
       "CSS",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2025-09-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, HTML, CSS, JavaScript. Data de finalização: 2025-09-22. 6.625 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-09-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, HTML, CSS, JavaScript. Data de finalização: 2025-09-22. 6.624 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "f31d0ec6-b46a-47d6-b5ec-5dcd3766dacb",
@@ -2077,7 +2102,7 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2025-06-16",
     "ativo": false,
-    "total_devs": 27350,
+    "total_devs": 27372,
     "skills": [
       "Git",
       "GitHub",
@@ -2085,7 +2110,7 @@
       "CSS",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2025-06-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, HTML, CSS, JavaScript. Data de finalização: 2025-06-16. 27.350 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-06-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, HTML, CSS, JavaScript. Data de finalização: 2025-06-16. 27.372 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "272e799b-a64d-4048-90a3-adfdceafe244",
@@ -2099,7 +2124,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-10-21",
     "ativo": false,
-    "total_devs": 5343,
+    "total_devs": 5345,
     "skills": [
       "SQL",
       "C#",
@@ -2114,26 +2139,7 @@
       "C#",
       "C#"
     ],
-    "descricao": "[Finalizado em 2024-10-21] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, C#, .NET, POO, API Rest, Azure, Cloud, SQL Server, MongoDB, NoSQL, C#, C#. Data de finalização: 2024-10-21. 5.343 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
-    "id": "dd8e69ff-2c46-45e1-9a94-fef26bb04ccd",
-    "slug": "microsoft-azure-az-900",
-    "titulo": "Bootcamp DIO: Microsoft - Azure AZ-900",
-    "tipo": "bootcamp",
-    "area": "DevOps & Nuvem",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/microsoft-azure-az-900",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2025-09-21",
-    "ativo": false,
-    "total_devs": 4646,
-    "skills": [
-      "Azure",
-      "Cloud"
-    ],
-    "descricao": "[Finalizado em 2025-09-21] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Cloud. Data de finalização: 2025-09-21. 4.646 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-10-21] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, C#, .NET, POO, API Rest, Azure, Cloud, SQL Server, MongoDB, NoSQL, C#, C#. Data de finalização: 2024-10-21. 5.345 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6cee6fa7-1f5a-477a-9fb3-6aef705ea09a",
@@ -2147,14 +2153,33 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-09-19",
     "ativo": false,
-    "total_devs": 13778,
+    "total_devs": 13780,
     "skills": [
       "Azure",
       "Git",
       "GitHub",
       "Cloud"
     ],
-    "descricao": "[Finalizado em 2024-09-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Git, GitHub, Cloud. Data de finalização: 2024-09-19. 13.778 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-09-19] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Git, GitHub, Cloud. Data de finalização: 2024-09-19. 13.780 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "dd8e69ff-2c46-45e1-9a94-fef26bb04ccd",
+    "slug": "microsoft-azure-az-900",
+    "titulo": "Bootcamp DIO: Microsoft - Azure AZ-900",
+    "tipo": "bootcamp",
+    "area": "DevOps & Nuvem",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/microsoft-azure-az-900",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2025-09-21",
+    "ativo": false,
+    "total_devs": 4647,
+    "skills": [
+      "Azure",
+      "Cloud"
+    ],
+    "descricao": "[Finalizado em 2025-09-21] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Azure, Cloud. Data de finalização: 2025-09-21. 4.647 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "953ab0a9-6d55-4e00-ab7f-5ed855d288ca",
@@ -2168,7 +2193,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-09-23",
     "ativo": false,
-    "total_devs": 22825,
+    "total_devs": 22827,
     "skills": [
       "Python",
       "Power BI",
@@ -2179,7 +2204,7 @@
       "POO",
       "ETL"
     ],
-    "descricao": "[Finalizado em 2024-09-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Power BI, PySpark, SQL, Git, GitHub, POO, ETL. Data de finalização: 2024-09-23. 22.825 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-09-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Power BI, PySpark, SQL, Git, GitHub, POO, ETL. Data de finalização: 2024-09-23. 22.827 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "f238e22b-8912-47c3-9d1b-0f05981e7302",
@@ -2193,7 +2218,7 @@
     "nivel": "Avançado",
     "data_finalizacao": "2024-11-09",
     "ativo": false,
-    "total_devs": 11496,
+    "total_devs": 11499,
     "skills": [
       "Amazon Bedrock",
       "Engenharia de Prompt",
@@ -2202,7 +2227,7 @@
       "AWS",
       "Machine Learning"
     ],
-    "descricao": "[Finalizado em 2024-11-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Amazon Bedrock, Engenharia de Prompt, Claude 3, IA Generativa, AWS, Machine Learning. Data de finalização: 2024-11-09. 11.496 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-11-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Amazon Bedrock, Engenharia de Prompt, Claude 3, IA Generativa, AWS, Machine Learning. Data de finalização: 2024-11-09. 11.499 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "3659a7e2-f51b-48b7-84eb-b1669166a8d1",
@@ -2216,7 +2241,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-09-16",
     "ativo": false,
-    "total_devs": 12397,
+    "total_devs": 12444,
     "skills": [
       "Java",
       "Spring",
@@ -2229,7 +2254,7 @@
       "Angular",
       "Spring"
     ],
-    "descricao": "[Finalizado em 2024-09-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, SQL, Solid, Design Patterns, Docker, Docker, Angular, Angular, Spring. Data de finalização: 2024-09-16. 12.397 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-09-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, SQL, Solid, Design Patterns, Docker, Docker, Angular, Angular, Spring. Data de finalização: 2024-09-16. 12.444 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a932e25b-41f5-4132-9cc9-ae47fc10f2cb",
@@ -2243,7 +2268,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-09-09",
     "ativo": false,
-    "total_devs": 17389,
+    "total_devs": 17402,
     "skills": [
       "React",
       "TDD",
@@ -2273,7 +2298,7 @@
       "SQL Server",
       "NoSQL"
     ],
-    "descricao": "[Finalizado em 2024-09-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: React, TDD, NoSQL, Docker, Docker, ASP .NET, ASP .NET, Git, GitHub, TDD, JavaScript, JavaScript, Next.js, TypeScript, TypeScript, React, Azure, Azure, C#, C#, .NET, .NET, SQL, SQL, SQL Server, SQL Server, NoSQL. Data de finalização: 2024-09-09. 17.389 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-09-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: React, TDD, NoSQL, Docker, Docker, ASP .NET, ASP .NET, Git, GitHub, TDD, JavaScript, JavaScript, Next.js, TypeScript, TypeScript, React, Azure, Azure, C#, C#, .NET, .NET, SQL, SQL, SQL Server, SQL Server, NoSQL. Data de finalização: 2024-09-09. 17.402 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "9b898b37-1e4c-4d83-b3b2-996bfada4b80",
@@ -2287,7 +2312,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-09-02",
     "ativo": false,
-    "total_devs": 4133,
+    "total_devs": 4134,
     "skills": [
       "Java",
       "Spring",
@@ -2295,7 +2320,7 @@
       "Git",
       "GitHub"
     ],
-    "descricao": "[Finalizado em 2024-09-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, AWS, Git, GitHub. Data de finalização: 2024-09-02. 4.133 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-09-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, AWS, Git, GitHub. Data de finalização: 2024-09-02. 4.134 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2e52ad2d-0a3b-4ade-a4ae-17830f528834",
@@ -2309,7 +2334,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-10-01",
     "ativo": false,
-    "total_devs": 24321,
+    "total_devs": 24333,
     "skills": [
       "Java",
       "Spring",
@@ -2318,7 +2343,7 @@
       "Spring",
       "NoSQL"
     ],
-    "descricao": "[Finalizado em 2024-10-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, SQL, Java, Spring, NoSQL. Data de finalização: 2024-10-01. 24.321 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-10-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring, SQL, Java, Spring, NoSQL. Data de finalização: 2024-10-01. 24.333 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "e7f4bf72-ac41-4e6e-84bd-3f1377ca57f3",
@@ -2345,30 +2370,6 @@
     "descricao": "[Finalizado em 2024-08-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Machine Learning, Microsoft Copilot, IA Generativa, Inteligência Artificial (IA), Git, GitHub, GitHub Copilot. Data de finalização: 2024-08-12. 14.499 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
-    "id": "0709934a-cb42-47e7-a0d6-452ebd563522",
-    "slug": "coding-the-future-blockchain-developer-with-solidity",
-    "titulo": "Bootcamp DIO: Binance - Blockchain Developer with Solidity",
-    "tipo": "bootcamp",
-    "area": "Inteligência Artificial & Dados",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/coding-the-future-blockchain-developer-with-solidity",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2024-08-08",
-    "ativo": false,
-    "total_devs": 11917,
-    "skills": [
-      "Blockchain",
-      "Blockchain",
-      "Solidity",
-      "Git",
-      "GitHub",
-      "Web3",
-      "Web3"
-    ],
-    "descricao": "[Finalizado em 2024-08-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Blockchain, Blockchain, Solidity, Git, GitHub, Web3, Web3. Data de finalização: 2024-08-08. 11.917 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
     "id": "9d714715-8250-46ef-9498-47ccbb51a94c",
     "slug": "bootcamp-blockchain-developer-with-solidity-2025",
     "titulo": "Bootcamp DIO: Binance - Blockchain Developer with Solidity 2025",
@@ -2380,7 +2381,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2025-12-15",
     "ativo": false,
-    "total_devs": 3369,
+    "total_devs": 3371,
     "skills": [
       "Blockchain",
       "Blockchain",
@@ -2390,7 +2391,31 @@
       "Web3",
       "Web3"
     ],
-    "descricao": "[Finalizado em 2025-12-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Blockchain, Blockchain, Solidity, Git, GitHub, Web3, Web3. Data de finalização: 2025-12-15. 3.369 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2025-12-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Blockchain, Blockchain, Solidity, Git, GitHub, Web3, Web3. Data de finalização: 2025-12-15. 3.371 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "0709934a-cb42-47e7-a0d6-452ebd563522",
+    "slug": "coding-the-future-blockchain-developer-with-solidity",
+    "titulo": "Bootcamp DIO: Binance - Blockchain Developer with Solidity",
+    "tipo": "bootcamp",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/coding-the-future-blockchain-developer-with-solidity",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2024-08-08",
+    "ativo": false,
+    "total_devs": 11919,
+    "skills": [
+      "Blockchain",
+      "Blockchain",
+      "Solidity",
+      "Git",
+      "GitHub",
+      "Web3",
+      "Web3"
+    ],
+    "descricao": "[Finalizado em 2024-08-08] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Blockchain, Blockchain, Solidity, Git, GitHub, Web3, Web3. Data de finalização: 2024-08-08. 11.919 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "098c018b-7c38-49cb-9276-2097dc0b571d",
@@ -2404,7 +2429,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-07-22",
     "ativo": false,
-    "total_devs": 13566,
+    "total_devs": 13572,
     "skills": [
       "SQL",
       "Power BI",
@@ -2413,7 +2438,7 @@
       "GitHub",
       "Power BI"
     ],
-    "descricao": "[Finalizado em 2024-07-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, Power BI, MySQL, Git, GitHub, Power BI. Data de finalização: 2024-07-22. 13.566 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-07-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, Power BI, MySQL, Git, GitHub, Power BI. Data de finalização: 2024-07-22. 13.572 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a8df9d25-2368-4a5c-8259-101ca80404d3",
@@ -2448,7 +2473,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-07-20",
     "ativo": false,
-    "total_devs": 14722,
+    "total_devs": 14726,
     "skills": [
       "Git",
       "GitHub",
@@ -2460,7 +2485,7 @@
       "Spring",
       "SQL"
     ],
-    "descricao": "[Finalizado em 2024-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, Inteligência Artificial (IA), IA Generativa, Java, Java, Spring, Spring, SQL. Data de finalização: 2024-07-20. 14.722 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Git, GitHub, Inteligência Artificial (IA), IA Generativa, Java, Java, Spring, Spring, SQL. Data de finalização: 2024-07-20. 14.726 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "22f4782a-f323-49cb-8ea9-917c5248a301",
@@ -2474,7 +2499,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-06-03",
     "ativo": false,
-    "total_devs": 13185,
+    "total_devs": 13186,
     "skills": [
       "Inteligência Artificial (IA)",
       "IA Generativa",
@@ -2484,7 +2509,7 @@
       "Claude 3",
       "Amazon Q"
     ],
-    "descricao": "[Finalizado em 2024-06-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), IA Generativa, AWS, Python, Amazon Bedrock, Claude 3, Amazon Q. Data de finalização: 2024-06-03. 13.185 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-06-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Inteligência Artificial (IA), IA Generativa, AWS, Python, Amazon Bedrock, Claude 3, Amazon Q. Data de finalização: 2024-06-03. 13.186 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "615caae0-b36e-4e4d-b5ab-a9661ac908be",
@@ -2498,7 +2523,7 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2026-07-20",
     "ativo": false,
-    "total_devs": 5686,
+    "total_devs": 5691,
     "skills": [
       "Node Package Manager (NPM)",
       "API",
@@ -2511,7 +2536,7 @@
       "AI Agents",
       "IA Generativa"
     ],
-    "descricao": "[Finalizado em 2026-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node Package Manager (NPM), API, TypeScript, TypeScript, Node.js, Node.js, Inteligência Artificial (IA), Azure, AI Agents, IA Generativa. Data de finalização: 2026-07-20. 5.686 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2026-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node Package Manager (NPM), API, TypeScript, TypeScript, Node.js, Node.js, Inteligência Artificial (IA), Azure, AI Agents, IA Generativa. Data de finalização: 2026-07-20. 5.691 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "70304c16-a7d8-4066-97de-16345e1653a6",
@@ -2525,7 +2550,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-06-16",
     "ativo": false,
-    "total_devs": 42580,
+    "total_devs": 42588,
     "skills": [
       "GitHub",
       "Python",
@@ -2543,7 +2568,7 @@
       "TDD",
       "Git"
     ],
-    "descricao": "[Finalizado em 2024-06-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub, Python, Python, SQL, NoSQL, FastAPI, FastAPI, FastAPI, Inteligência Artificial (IA), Machine Learning, Processamento de Linguagem Natural (PLN), Visão Computacional, IA Generativa, TDD, Git. Data de finalização: 2024-06-16. 42.580 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-06-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: GitHub, Python, Python, SQL, NoSQL, FastAPI, FastAPI, FastAPI, Inteligência Artificial (IA), Machine Learning, Processamento de Linguagem Natural (PLN), Visão Computacional, IA Generativa, TDD, Git. Data de finalização: 2024-06-16. 42.588 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "3711c9e6-7498-49f5-8be4-46d5fb73c2bf",
@@ -2580,7 +2605,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-05-14",
     "ativo": false,
-    "total_devs": 10104,
+    "total_devs": 10106,
     "skills": [
       "API",
       "API",
@@ -2595,7 +2620,7 @@
       ".NET",
       "TDD"
     ],
-    "descricao": "[Finalizado em 2024-05-14] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: API, API, SQL Server, SQL Server, Docker, Git, GitHub, C#, C#, .NET, .NET, TDD. Data de finalização: 2024-05-14. 10.104 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-05-14] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: API, API, SQL Server, SQL Server, Docker, Git, GitHub, C#, C#, .NET, .NET, TDD. Data de finalização: 2024-05-14. 10.106 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "8b170530-da6f-487f-8774-c0bc58254f6c",
@@ -2609,7 +2634,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-04-16",
     "ativo": false,
-    "total_devs": 24416,
+    "total_devs": 24421,
     "skills": [
       "SQL",
       "Git",
@@ -2622,7 +2647,7 @@
       "Machine Learning",
       "Machine Learning"
     ],
-    "descricao": "[Finalizado em 2024-04-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, Git, GitHub, Python, Python, NoSQL, Power BI, Power BI, Machine Learning, Machine Learning. Data de finalização: 2024-04-16. 24.416 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-04-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, Git, GitHub, Python, Python, NoSQL, Power BI, Power BI, Machine Learning, Machine Learning. Data de finalização: 2024-04-16. 24.421 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "857f1c89-1fa4-43e5-90fb-acb73e091b94",
@@ -2663,7 +2688,7 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2024-03-01",
     "ativo": false,
-    "total_devs": 25402,
+    "total_devs": 25403,
     "skills": [
       "IA Generativa",
       "Inteligência Artificial (IA)",
@@ -2671,7 +2696,7 @@
       "Azure",
       "Azure Machine Learning"
     ],
-    "descricao": "[Finalizado em 2024-03-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IA Generativa, Inteligência Artificial (IA), Azure, Azure, Azure Machine Learning. Data de finalização: 2024-03-01. 25.402 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-03-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: IA Generativa, Inteligência Artificial (IA), Azure, Azure, Azure Machine Learning. Data de finalização: 2024-03-01. 25.403 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "56c501db-246a-4cd3-a53b-e88c2fb6396f",
@@ -2685,7 +2710,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-12-29",
     "ativo": false,
-    "total_devs": 16229,
+    "total_devs": 16252,
     "skills": [
       "C#",
       "C#",
@@ -2696,7 +2721,7 @@
       "GitHub",
       "Git"
     ],
-    "descricao": "[Finalizado em 2023-12-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, C#, .NET, .NET, POO, POO, GitHub, Git. Data de finalização: 2023-12-29. 16.229 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-12-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, C#, .NET, .NET, POO, POO, GitHub, Git. Data de finalização: 2023-12-29. 16.252 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "962455c6-8d3f-492a-b916-f49823abb067",
@@ -2710,7 +2735,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-01-22",
     "ativo": false,
-    "total_devs": 15685,
+    "total_devs": 15684,
     "skills": [
       "Spring",
       "Spring",
@@ -2727,7 +2752,7 @@
       "POO",
       "NoSQL"
     ],
-    "descricao": "[Finalizado em 2024-01-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Spring, Spring, Kotlin, Kotlin, Kotlin, REST, REST, API, API, Git, SQL, GitHub, POO, NoSQL. Data de finalização: 2024-01-22. 15.685 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-01-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Spring, Spring, Kotlin, Kotlin, Kotlin, REST, REST, API, API, Git, SQL, GitHub, POO, NoSQL. Data de finalização: 2024-01-22. 15.684 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "7a55c727-bb2a-42a7-831b-6c38b4e83868",
@@ -2741,7 +2766,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-01-22",
     "ativo": false,
-    "total_devs": 26683,
+    "total_devs": 26684,
     "skills": [
       "JavaScript",
       "JavaScript",
@@ -2752,7 +2777,7 @@
       "Angular",
       "Angular"
     ],
-    "descricao": "[Finalizado em 2024-01-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, JavaScript, HTML, CSS, TypeScript, TypeScript, Angular, Angular. Data de finalização: 2024-01-22. 26.683 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-01-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, JavaScript, HTML, CSS, TypeScript, TypeScript, Angular, Angular. Data de finalização: 2024-01-22. 26.684 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "68e8e4df-754b-4cdb-93ca-6fcd094322a7",
@@ -2766,7 +2791,7 @@
     "nivel": "Avançado",
     "data_finalizacao": "2023-11-22",
     "ativo": false,
-    "total_devs": 5091,
+    "total_devs": 5094,
     "skills": [
       "C#",
       "C#",
@@ -2777,7 +2802,7 @@
       "Dynamics 365 Sales",
       "Dynamics 365 Sales"
     ],
-    "descricao": "[Finalizado em 2023-11-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, C#, Dynamics 365, Dynamics 365, Power Apps, Power Apps, Dynamics 365 Sales, Dynamics 365 Sales. Data de finalização: 2023-11-22. 5.091 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-11-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: C#, C#, Dynamics 365, Dynamics 365, Power Apps, Power Apps, Dynamics 365 Sales, Dynamics 365 Sales. Data de finalização: 2023-11-22. 5.094 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "b19b1586-8a94-4eb7-95af-15d785b6e96e",
@@ -2811,12 +2836,12 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2023-12-03",
     "ativo": false,
-    "total_devs": 50444,
+    "total_devs": 50448,
     "skills": [
       "Lógica de Programação",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2023-12-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, JavaScript. Data de finalização: 2023-12-03. 50.444 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-12-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Lógica de Programação, JavaScript. Data de finalização: 2023-12-03. 50.448 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "824331c4-b300-4f76-b29d-ce6c147932bf",
@@ -2830,7 +2855,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-10-07",
     "ativo": false,
-    "total_devs": 9048,
+    "total_devs": 9070,
     "skills": [
       ".NET",
       "C#",
@@ -2840,7 +2865,7 @@
       "Docker",
       "C#"
     ],
-    "descricao": "[Finalizado em 2023-10-07] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, C#, QA, Banco de Dados, SQL Server, Docker, C#. Data de finalização: 2023-10-07. 9.048 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-10-07] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, C#, QA, Banco de Dados, SQL Server, Docker, C#. Data de finalização: 2023-10-07. 9.070 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "57a616a7-25cb-4ad9-9ee8-f03eb9a33ebc",
@@ -2854,14 +2879,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2024-11-18",
     "ativo": false,
-    "total_devs": 16682,
+    "total_devs": 17148,
     "skills": [
       "Linux",
       "Linux",
       "Segurança da Informação",
       "Segurança da Informação"
     ],
-    "descricao": "[Finalizado em 2024-11-18] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Segurança da Informação, Segurança da Informação. Data de finalização: 2024-11-18. 16.682 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2024-11-18] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Segurança da Informação, Segurança da Informação. Data de finalização: 2024-11-18. 17.148 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "ca4d89f1-ee53-410c-9670-299936198aea",
@@ -2875,7 +2900,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-10-09",
     "ativo": false,
-    "total_devs": 6000,
+    "total_devs": 5999,
     "skills": [
       "Kotlin",
       "Kotlin",
@@ -2884,7 +2909,7 @@
       "SQL",
       "NoSQL"
     ],
-    "descricao": "[Finalizado em 2023-10-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin, Kotlin, Java, Java, SQL, NoSQL. Data de finalização: 2023-10-09. 6.000 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-10-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin, Kotlin, Java, Java, SQL, NoSQL. Data de finalização: 2023-10-09. 5.999 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "e90e3588-99e1-425b-af97-f2abdee4e670",
@@ -2921,13 +2946,13 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-07-23",
     "ativo": false,
-    "total_devs": 18541,
+    "total_devs": 18545,
     "skills": [
       "Python",
       "MySQL",
       "Machine Learning"
     ],
-    "descricao": "[Finalizado em 2023-07-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, MySQL, Machine Learning. Data de finalização: 2023-07-23. 18.541 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-07-23] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, MySQL, Machine Learning. Data de finalização: 2023-07-23. 18.545 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "0c964d6a-7090-43cd-b340-a7833eb0ee31",
@@ -2941,11 +2966,11 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-09-22",
     "ativo": false,
-    "total_devs": 20706,
+    "total_devs": 20707,
     "skills": [
       "AWS"
     ],
-    "descricao": "[Finalizado em 2023-09-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS. Data de finalização: 2023-09-22. 20.706 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-09-22] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS. Data de finalização: 2023-09-22. 20.707 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "0c504008-8c8c-4e24-ae09-fe126fe30383",
@@ -2959,11 +2984,11 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-10-30",
     "ativo": false,
-    "total_devs": 21641,
+    "total_devs": 21643,
     "skills": [
       "AWS"
     ],
-    "descricao": "[Finalizado em 2023-10-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS. Data de finalização: 2023-10-30. 21.641 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-10-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS. Data de finalização: 2023-10-30. 21.643 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "3d839559-5864-4aad-b56c-1c9cc0b34f15",
@@ -2999,7 +3024,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-04-30",
     "ativo": false,
-    "total_devs": 11329,
+    "total_devs": 11332,
     "skills": [
       "Angular",
       "Angular",
@@ -3009,7 +3034,7 @@
       "CSS",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2023-04-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Angular, Angular, TypeScript, TypeScript, HTML, CSS, JavaScript. Data de finalização: 2023-04-30. 11.329 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-04-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Angular, Angular, TypeScript, TypeScript, HTML, CSS, JavaScript. Data de finalização: 2023-04-30. 11.332 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "cf67dde3-0ad4-4fcb-9162-fc6aba72c0cf",
@@ -3023,7 +3048,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-04-30",
     "ativo": false,
-    "total_devs": 6516,
+    "total_devs": 6522,
     "skills": [
       "Dynamics 365",
       "Dynamics 365",
@@ -3031,7 +3056,7 @@
       "C#",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2023-04-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Dynamics 365, Dynamics 365, C#, C#, JavaScript. Data de finalização: 2023-04-30. 6.516 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-04-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Dynamics 365, Dynamics 365, C#, C#, JavaScript. Data de finalização: 2023-04-30. 6.522 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "97dc3e57-d62b-4800-9c8b-9f6c87d06356",
@@ -3045,14 +3070,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-04-30",
     "ativo": false,
-    "total_devs": 12815,
+    "total_devs": 12821,
     "skills": [
       "AWS",
       "AWS",
       "Linux",
       "Linux"
     ],
-    "descricao": "[Finalizado em 2023-04-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, AWS, Linux, Linux. Data de finalização: 2023-04-30. 12.815 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-04-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: AWS, AWS, Linux, Linux. Data de finalização: 2023-04-30. 12.821 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "0a07c7f9-b047-4ad2-9745-f23af2d4fbef",
@@ -3091,13 +3116,13 @@
     "nivel": "Iniciante",
     "data_finalizacao": "2023-02-24",
     "ativo": false,
-    "total_devs": 10694,
+    "total_devs": 10707,
     "skills": [
       "Linux",
       "Linux",
       "Docker"
     ],
-    "descricao": "[Finalizado em 2023-02-24] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Docker. Data de finalização: 2023-02-24. 10.694 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-02-24] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Docker. Data de finalização: 2023-02-24. 10.707 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2aeff5aa-bb23-4141-8109-20fa42b58ff7",
@@ -3111,14 +3136,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2023-01-15",
     "ativo": false,
-    "total_devs": 12427,
+    "total_devs": 12436,
     "skills": [
       "Java",
       "Java",
       "Spring Boot",
       "Spring Boot"
     ],
-    "descricao": "[Finalizado em 2023-01-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring Boot, Spring Boot. Data de finalização: 2023-01-15. 12.427 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2023-01-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring Boot, Spring Boot. Data de finalização: 2023-01-15. 12.436 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "cad0205f-3410-4802-8bc9-cf0f65506c5b",
@@ -3132,11 +3157,11 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-12-18",
     "ativo": false,
-    "total_devs": 4604,
+    "total_devs": 4607,
     "skills": [
       "Kotlin"
     ],
-    "descricao": "[Finalizado em 2022-12-18] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin. Data de finalização: 2022-12-18. 4.604 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-12-18] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin. Data de finalização: 2022-12-18. 4.607 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "099bc20e-e3d8-49ed-8f17-e89225719d31",
@@ -3168,13 +3193,13 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-12-11",
     "ativo": false,
-    "total_devs": 9833,
+    "total_devs": 9848,
     "skills": [
       "Java",
       "Java",
       "Selenium"
     ],
-    "descricao": "[Finalizado em 2022-12-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Selenium. Data de finalização: 2022-12-11. 9.833 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-12-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Selenium. Data de finalização: 2022-12-11. 9.848 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a2726c16-ffe0-4dc8-aa6f-e02af2d582a1",
@@ -3188,7 +3213,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-11-20",
     "ativo": false,
-    "total_devs": 6619,
+    "total_devs": 6624,
     "skills": [
       "Linux",
       "Docker",
@@ -3196,7 +3221,7 @@
       "Kubernetes",
       "AWS"
     ],
-    "descricao": "[Finalizado em 2022-11-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Docker, Kubernetes, Kubernetes, AWS. Data de finalização: 2022-11-20. 6.619 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-11-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Docker, Kubernetes, Kubernetes, AWS. Data de finalização: 2022-11-20. 6.624 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "81278323-8916-401b-8446-03118eaff280",
@@ -3232,7 +3257,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-11-05",
     "ativo": false,
-    "total_devs": 6354,
+    "total_devs": 6355,
     "skills": [
       "Angular",
       "Spring",
@@ -3249,7 +3274,7 @@
       "JavaScript",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-11-05] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Angular, Spring, PostgreSQL, MongoDB, SQL, Java, Java, Java, Spring, AWS, JavaScript, NoSQL, JavaScript, JavaScript. Data de finalização: 2022-11-05. 6.354 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-11-05] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Angular, Spring, PostgreSQL, MongoDB, SQL, Java, Java, Java, Spring, AWS, JavaScript, NoSQL, JavaScript, JavaScript. Data de finalização: 2022-11-05. 6.355 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "38a27e68-67ae-444d-9110-1056e605237d",
@@ -3263,7 +3288,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-10-29",
     "ativo": false,
-    "total_devs": 5942,
+    "total_devs": 5944,
     "skills": [
       "Angular",
       "TypeScript",
@@ -3275,7 +3300,7 @@
       "JavaScript",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-10-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Angular, TypeScript, AWS, HTML, CSS, HTML, CSS, JavaScript, JavaScript. Data de finalização: 2022-10-29. 5.942 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-10-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Angular, TypeScript, AWS, HTML, CSS, HTML, CSS, JavaScript, JavaScript. Data de finalização: 2022-10-29. 5.944 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "20f1afd5-7e98-440b-8680-05b13da63c27",
@@ -3311,7 +3336,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-10-15",
     "ativo": false,
-    "total_devs": 6682,
+    "total_devs": 6683,
     "skills": [
       "Kubernetes",
       "GCP",
@@ -3322,7 +3347,7 @@
       "Docker",
       "Kubernetes"
     ],
-    "descricao": "[Finalizado em 2022-10-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kubernetes, GCP, Linux, Linux, Docker, Banco de Dados, Docker, Kubernetes. Data de finalização: 2022-10-15. 6.682 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-10-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kubernetes, GCP, Linux, Linux, Docker, Banco de Dados, Docker, Kubernetes. Data de finalização: 2022-10-15. 6.683 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d4a8a79e-3f08-402c-a5dd-d7cfec1b0447",
@@ -3390,7 +3415,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-09-04",
     "ativo": false,
-    "total_devs": 18337,
+    "total_devs": 18353,
     "skills": [
       "MySQL",
       "MongoDB",
@@ -3401,7 +3426,7 @@
       "NoSQL",
       "NoSQL"
     ],
-    "descricao": "[Finalizado em 2022-09-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: MySQL, MongoDB, SQL, MySQL, MongoDB, SQL, NoSQL, NoSQL. Data de finalização: 2022-09-04. 18.337 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-09-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: MySQL, MongoDB, SQL, MySQL, MongoDB, SQL, NoSQL, NoSQL. Data de finalização: 2022-09-04. 18.353 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "ee0706bf-2d0a-4c45-8611-c1ee3b5fee2d",
@@ -3415,7 +3440,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-10-07",
     "ativo": false,
-    "total_devs": 10994,
+    "total_devs": 10996,
     "skills": [
       "Python",
       "AWS",
@@ -3430,7 +3455,7 @@
       "Machine Learning",
       "Machine Learning"
     ],
-    "descricao": "[Finalizado em 2022-10-07] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, AWS, SQL, Banco de Dados, MongoDB, Python, Python, SQL, DynamoDB, AWS, Machine Learning, Machine Learning. Data de finalização: 2022-10-07. 10.994 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-10-07] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, AWS, SQL, Banco de Dados, MongoDB, Python, Python, SQL, DynamoDB, AWS, Machine Learning, Machine Learning. Data de finalização: 2022-10-07. 10.996 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5185f031-7dc5-466e-bffb-2db01bf7abb3",
@@ -3444,14 +3469,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-08-13",
     "ativo": false,
-    "total_devs": 12787,
+    "total_devs": 12792,
     "skills": [
       "Linux",
       "Linux",
       "Linux",
       "Docker"
     ],
-    "descricao": "[Finalizado em 2022-08-13] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Linux, Docker. Data de finalização: 2022-08-13. 12.787 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-08-13] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Linux, Linux, Linux, Docker. Data de finalização: 2022-08-13. 12.792 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d7759239-e36f-498a-a265-8f691e07cfa3",
@@ -3465,12 +3490,12 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-07-31",
     "ativo": false,
-    "total_devs": 6754,
+    "total_devs": 6755,
     "skills": [
       "Java",
       "Spring"
     ],
-    "descricao": "[Finalizado em 2022-07-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring. Data de finalização: 2022-07-31. 6.754 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-07-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Spring. Data de finalização: 2022-07-31. 6.755 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "35c0162f-fc54-47c7-bd11-b117d04873a9",
@@ -3484,14 +3509,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-07-13",
     "ativo": false,
-    "total_devs": 996,
+    "total_devs": 997,
     "skills": [
       "Node.js",
       "RabbitMQ",
       "PostgreSQL",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-07-13] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node.js, RabbitMQ, PostgreSQL, JavaScript. Data de finalização: 2022-07-13. 996 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-07-13] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Node.js, RabbitMQ, PostgreSQL, JavaScript. Data de finalização: 2022-07-13. 997 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "21e29fe2-9fa7-4296-b42b-1cd29545c4f9",
@@ -3526,7 +3551,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-07-01",
     "ativo": false,
-    "total_devs": 12153,
+    "total_devs": 12155,
     "skills": [
       "JavaScript",
       "SQL",
@@ -3537,7 +3562,7 @@
       "NoSQL",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-07-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, SQL, PostgreSQL, MongoDB, Node.js, React, NoSQL, JavaScript. Data de finalização: 2022-07-01. 12.153 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-07-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, SQL, PostgreSQL, MongoDB, Node.js, React, NoSQL, JavaScript. Data de finalização: 2022-07-01. 12.155 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "8c4aa38f-7bc5-46ff-b302-baf78430852e",
@@ -3551,7 +3576,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-05-30",
     "ativo": false,
-    "total_devs": 18949,
+    "total_devs": 18951,
     "skills": [
       "JavaScript",
       "HTML",
@@ -3568,7 +3593,7 @@
       "JavaScript",
       "React"
     ],
-    "descricao": "[Finalizado em 2022-05-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, HTML, CSS, CSS, SQL, SQL, MySQL, Java, Java, Spring, QA, JavaScript, React. Data de finalização: 2022-05-30. 18.949 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-05-30] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, HTML, CSS, CSS, SQL, SQL, MySQL, Java, Java, Spring, QA, JavaScript, React. Data de finalização: 2022-05-30. 18.951 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "a3c2cdaa-f36b-4bf1-9527-28caea5f558a",
@@ -3582,7 +3607,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-05-31",
     "ativo": false,
-    "total_devs": 8850,
+    "total_devs": 8851,
     "skills": [
       "JavaScript",
       "HTML",
@@ -3590,7 +3615,7 @@
       "React Native",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-05-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, React Native, JavaScript. Data de finalização: 2022-05-31. 8.850 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-05-31] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, React Native, JavaScript. Data de finalização: 2022-05-31. 8.851 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "7ae15254-7766-491d-a547-8c5060e6dd14",
@@ -3627,14 +3652,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-05-15",
     "ativo": false,
-    "total_devs": 5466,
+    "total_devs": 5467,
     "skills": [
       "Java",
       "Java",
       "Java",
       "Spring"
     ],
-    "descricao": "[Finalizado em 2022-05-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Java, Spring. Data de finalização: 2022-05-15. 5.466 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-05-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Java, Spring. Data de finalização: 2022-05-15. 5.467 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "fda78926-1feb-4076-b5bd-e38d6cfddc5e",
@@ -3668,7 +3693,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-05-06",
     "ativo": false,
-    "total_devs": 10299,
+    "total_devs": 10304,
     "skills": [
       "JavaScript",
       "HTML",
@@ -3679,7 +3704,7 @@
       "MySQL",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-05-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, React Native, Node.js, MySQL, MySQL, JavaScript. Data de finalização: 2022-05-06. 10.299 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-05-06] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, React Native, Node.js, MySQL, MySQL, JavaScript. Data de finalização: 2022-05-06. 10.304 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "c1fb167c-3ee6-4cc8-96b2-bbdacc2e29e8",
@@ -3747,14 +3772,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-04-15",
     "ativo": false,
-    "total_devs": 6888,
+    "total_devs": 6889,
     "skills": [
       "JavaScript",
       "HTML",
       "CSS",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-04-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, JavaScript. Data de finalização: 2022-04-15. 6.888 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-04-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, JavaScript. Data de finalização: 2022-04-15. 6.889 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5c0a81e0-3566-4314-8075-298147b2858d",
@@ -3768,7 +3793,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-04-04",
     "ativo": false,
-    "total_devs": 7645,
+    "total_devs": 7644,
     "skills": [
       "JavaScript",
       "TypeScript",
@@ -3783,7 +3808,7 @@
       "JavaScript",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-04-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, TypeScript, Angular, HTML, HTML, CSS, CSS, Java, Java, Spring, JavaScript, JavaScript. Data de finalização: 2022-04-04. 7.645 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-04-04] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, TypeScript, Angular, HTML, HTML, CSS, CSS, Java, Java, Spring, JavaScript, JavaScript. Data de finalização: 2022-04-04. 7.644 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "0de91bfb-3656-4ea2-ae81-6eeb0582f738",
@@ -3797,7 +3822,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-03-29",
     "ativo": false,
-    "total_devs": 5039,
+    "total_devs": 5038,
     "skills": [
       "JavaScript",
       ".NET",
@@ -3809,7 +3834,7 @@
       "JavaScript",
       "React"
     ],
-    "descricao": "[Finalizado em 2022-03-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, .NET, .NET, C#, C#, HTML, CSS, JavaScript, React. Data de finalização: 2022-03-29. 5.039 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-03-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, .NET, .NET, C#, C#, HTML, CSS, JavaScript, React. Data de finalização: 2022-03-29. 5.038 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2b24a5b2-535e-4e98-9b10-1177a116dcdc",
@@ -3851,14 +3876,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-03-29",
     "ativo": false,
-    "total_devs": 7260,
+    "total_devs": 7274,
     "skills": [
       "QA",
       "Java",
       "Java",
       "JUnit"
     ],
-    "descricao": "[Finalizado em 2022-03-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: QA, Java, Java, JUnit. Data de finalização: 2022-03-29. 7.260 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-03-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: QA, Java, Java, JUnit. Data de finalização: 2022-03-29. 7.274 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "89cb659d-f11b-4447-affa-ea2a0218608c",
@@ -3896,12 +3921,12 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-02-20",
     "ativo": false,
-    "total_devs": 6995,
+    "total_devs": 6996,
     "skills": [
       "Java",
       "Java"
     ],
-    "descricao": "[Finalizado em 2022-02-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java. Data de finalização: 2022-02-20. 6.995 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-02-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java. Data de finalização: 2022-02-20. 6.996 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5da5a18d-a447-45fe-8f89-d14e24fb4748",
@@ -3937,7 +3962,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-03-09",
     "ativo": false,
-    "total_devs": 5821,
+    "total_devs": 5823,
     "skills": [
       "JavaScript",
       "HTML",
@@ -3947,7 +3972,7 @@
       "TypeScript",
       "React"
     ],
-    "descricao": "[Finalizado em 2022-03-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, Node.js, AWS, TypeScript, React. Data de finalização: 2022-03-09. 5.821 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-03-09] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, Node.js, AWS, TypeScript, React. Data de finalização: 2022-03-09. 5.823 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "aa2f0e8d-21ed-4430-9e6c-75e4cd003e7d",
@@ -4002,7 +4027,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-02-26",
     "ativo": false,
-    "total_devs": 3163,
+    "total_devs": 3164,
     "skills": [
       "Kotlin",
       "Kotlin",
@@ -4014,7 +4039,7 @@
       "UX/UI",
       "UX/UI"
     ],
-    "descricao": "[Finalizado em 2022-02-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin, Kotlin, Java, Java, SQL Server, SQL Server, SQLite, UX/UI, UX/UI. Data de finalização: 2022-02-26. 3.163 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-02-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin, Kotlin, Java, Java, SQL Server, SQL Server, SQLite, UX/UI, UX/UI. Data de finalização: 2022-02-26. 3.164 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "becdeaec-8c9c-4a4d-941f-a6b1686c4b09",
@@ -4028,7 +4053,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-02-11",
     "ativo": false,
-    "total_devs": 12368,
+    "total_devs": 12369,
     "skills": [
       "JavaScript",
       "MySQL",
@@ -4036,7 +4061,7 @@
       "JavaScript",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2022-02-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, MySQL, MySQL, JavaScript, JavaScript. Data de finalização: 2022-02-11. 12.368 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-02-11] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, MySQL, MySQL, JavaScript, JavaScript. Data de finalização: 2022-02-11. 12.369 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "d7ae0811-081c-4731-a386-c43c7729d4dc",
@@ -4071,7 +4096,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-12-26",
     "ativo": false,
-    "total_devs": 5191,
+    "total_devs": 5192,
     "skills": [
       "JavaScript",
       "Node.js",
@@ -4083,7 +4108,7 @@
       "JavaScript",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2021-12-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, Node.js, React, MongoDB, SQL, AWS, MySQL, JavaScript, JavaScript. Data de finalização: 2021-12-26. 5.191 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-12-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, Node.js, React, MongoDB, SQL, AWS, MySQL, JavaScript, JavaScript. Data de finalização: 2021-12-26. 5.192 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5539dc71-8d2e-4c0b-8a0e-425fc063563d",
@@ -4097,7 +4122,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-01-03",
     "ativo": false,
-    "total_devs": 12137,
+    "total_devs": 12138,
     "skills": [
       "JavaScript",
       "SQL Server",
@@ -4111,7 +4136,7 @@
       "JavaScript",
       "React"
     ],
-    "descricao": "[Finalizado em 2022-01-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, SQL Server, HTML, HTML, CSS, CSS, Node.js, SQL Server, JavaScript, JavaScript, React. Data de finalização: 2022-01-03. 12.137 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-01-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, SQL Server, HTML, HTML, CSS, CSS, Node.js, SQL Server, JavaScript, JavaScript, React. Data de finalização: 2022-01-03. 12.138 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "7d1fa276-4430-4311-9dad-021c6a0b5958",
@@ -4221,14 +4246,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2022-01-07",
     "ativo": false,
-    "total_devs": 4801,
+    "total_devs": 4802,
     "skills": [
       "Java",
       "Java",
       "Spring Boot",
       "Linux"
     ],
-    "descricao": "[Finalizado em 2022-01-07] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring Boot, Linux. Data de finalização: 2022-01-07. 4.801 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2022-01-07] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring Boot, Linux. Data de finalização: 2022-01-07. 4.802 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "0d640c7f-85b7-4c47-a55b-ee71c7bb6755",
@@ -4335,7 +4360,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-11-15",
     "ativo": false,
-    "total_devs": 5977,
+    "total_devs": 5979,
     "skills": [
       "SQL",
       "NoSQL",
@@ -4345,7 +4370,7 @@
       "React",
       "React"
     ],
-    "descricao": "[Finalizado em 2021-11-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, NoSQL, JavaScript, Node.js, JavaScript, React, React. Data de finalização: 2021-11-15. 5.977 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-11-15] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: SQL, NoSQL, JavaScript, Node.js, JavaScript, React, React. Data de finalização: 2021-11-15. 5.979 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "1a19c891-4488-4305-bf72-939e7b365718",
@@ -4469,7 +4494,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-09-01",
     "ativo": false,
-    "total_devs": 6715,
+    "total_devs": 6716,
     "skills": [
       "Java",
       "Java",
@@ -4479,7 +4504,7 @@
       "JavaScript",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2021-09-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Angular, Angular, Spring, JavaScript, JavaScript. Data de finalização: 2021-09-01. 6.715 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-09-01] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Angular, Angular, Spring, JavaScript, JavaScript. Data de finalização: 2021-09-01. 6.716 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "53d7d620-5632-4c1c-a256-b46903f86279",
@@ -4493,35 +4518,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-09-13",
     "ativo": false,
-    "total_devs": 1954,
+    "total_devs": 1955,
     "skills": [
       "Java",
       "Java",
       "Spring",
       "Docker"
     ],
-    "descricao": "[Finalizado em 2021-09-13] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring, Docker. Data de finalização: 2021-09-13. 1.954 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
-  },
-  {
-    "id": "c8eb10c2-9b95-4e79-982e-daff8603153c",
-    "slug": "everis-quality-assurance-beginner-2",
-    "titulo": "Bootcamp DIO: everis Quality Assurance Beginner #2",
-    "tipo": "bootcamp",
-    "area": "Desenvolvimento Web & Mobile",
-    "plataforma": "DIO (Digital Innovation One)",
-    "url": "https://www.dio.me/bootcamp/everis-quality-assurance-beginner-2",
-    "licenca": "gratuito",
-    "nivel": "Intermediário",
-    "data_finalizacao": "2021-08-02",
-    "ativo": false,
-    "total_devs": 2800,
-    "skills": [
-      "QA",
-      "Selenium",
-      "Java",
-      "Java"
-    ],
-    "descricao": "[Finalizado em 2021-08-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: QA, Selenium, Java, Java. Data de finalização: 2021-08-02. 2.800 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-09-13] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring, Docker. Data de finalização: 2021-09-13. 1.955 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "3e8c2fd1-f920-4df6-a09a-5e6ea050ec9b",
@@ -4544,6 +4548,27 @@
       "JUnit"
     ],
     "descricao": "[Finalizado em 2021-10-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Selenium, Selenium, JUnit. Data de finalização: 2021-10-20. 2.727 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+  },
+  {
+    "id": "c8eb10c2-9b95-4e79-982e-daff8603153c",
+    "slug": "everis-quality-assurance-beginner-2",
+    "titulo": "Bootcamp DIO: everis Quality Assurance Beginner #2",
+    "tipo": "bootcamp",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "DIO (Digital Innovation One)",
+    "url": "https://www.dio.me/bootcamp/everis-quality-assurance-beginner-2",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "data_finalizacao": "2021-08-02",
+    "ativo": false,
+    "total_devs": 2801,
+    "skills": [
+      "QA",
+      "Selenium",
+      "Java",
+      "Java"
+    ],
+    "descricao": "[Finalizado em 2021-08-02] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: QA, Selenium, Java, Java. Data de finalização: 2021-08-02. 2.801 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6432341a-b9d3-42e2-b5d6-bd656c3eca0f",
@@ -4627,7 +4652,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-07-29",
     "ativo": false,
-    "total_devs": 5233,
+    "total_devs": 5235,
     "skills": [
       "HTML",
       "CSS",
@@ -4638,7 +4663,7 @@
       "React",
       "React"
     ],
-    "descricao": "[Finalizado em 2021-07-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: HTML, CSS, React, TypeScript, JavaScript, JavaScript, React, React. Data de finalização: 2021-07-29. 5.233 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-07-29] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: HTML, CSS, React, TypeScript, JavaScript, JavaScript, React, React. Data de finalização: 2021-07-29. 5.235 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "6ef57b4d-a6ce-44b2-aa3b-7d34f50cd1f6",
@@ -4673,7 +4698,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-07-14",
     "ativo": false,
-    "total_devs": 7226,
+    "total_devs": 7228,
     "skills": [
       "JavaScript",
       "HTML",
@@ -4682,7 +4707,7 @@
       "React",
       "React"
     ],
-    "descricao": "[Finalizado em 2021-07-14] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, JavaScript, React, React. Data de finalização: 2021-07-14. 7.226 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-07-14] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, HTML, CSS, JavaScript, React, React. Data de finalização: 2021-07-14. 7.228 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "4a5ed1db-5b45-4b0d-914e-7ba1f36ba2b9",
@@ -4696,7 +4721,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-09-26",
     "ativo": false,
-    "total_devs": 15199,
+    "total_devs": 15222,
     "skills": [
       "Python",
       "Python",
@@ -4705,7 +4730,7 @@
       "PostgreSQL",
       "NoSQL"
     ],
-    "descricao": "[Finalizado em 2021-09-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Python, Big Data, MongoDB, PostgreSQL, NoSQL. Data de finalização: 2021-09-26. 15.199 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-09-26] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Python, Python, Big Data, MongoDB, PostgreSQL, NoSQL. Data de finalização: 2021-09-26. 15.222 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "fc44e054-d386-475d-98ff-fd4fcd4b0b59",
@@ -4816,14 +4841,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-07-20",
     "ativo": false,
-    "total_devs": 6888,
+    "total_devs": 6891,
     "skills": [
       "Kotlin",
       "Kotlin",
       "Android",
       "Android"
     ],
-    "descricao": "[Finalizado em 2021-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin, Kotlin, Android, Android. Data de finalização: 2021-07-20. 6.888 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Kotlin, Kotlin, Android, Android. Data de finalização: 2021-07-20. 6.891 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "8cb85681-63be-4cfe-894c-c812861e52d3",
@@ -4837,7 +4862,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-07-20",
     "ativo": false,
-    "total_devs": 16867,
+    "total_devs": 16870,
     "skills": [
       "JavaScript",
       "Java",
@@ -4847,7 +4872,7 @@
       "CSS",
       "Angular"
     ],
-    "descricao": "[Finalizado em 2021-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, Java, Angular, Java, HTML, CSS, Angular. Data de finalização: 2021-07-20. 16.867 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-07-20] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: JavaScript, Java, Angular, Java, HTML, CSS, Angular. Data de finalização: 2021-07-20. 16.870 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "5391349f-2112-4162-9091-eb665361d3a2",
@@ -4882,7 +4907,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-06-03",
     "ativo": false,
-    "total_devs": 12371,
+    "total_devs": 12372,
     "skills": [
       ".NET",
       ".NET",
@@ -4891,7 +4916,7 @@
       "MongoDB",
       ".NET Core"
     ],
-    "descricao": "[Finalizado em 2021-06-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, .NET, C#, C#, MongoDB, .NET Core. Data de finalização: 2021-06-03. 12.371 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-06-03] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: .NET, .NET, C#, C#, MongoDB, .NET Core. Data de finalização: 2021-06-03. 12.372 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "2aa1519c-08ce-4f37-873f-368794f735d2",
@@ -4998,14 +5023,14 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-04-16",
     "ativo": false,
-    "total_devs": 26839,
+    "total_devs": 26838,
     "skills": [
       "Java",
       "Java",
       "Spring",
       "Spring"
     ],
-    "descricao": "[Finalizado em 2021-04-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring, Spring. Data de finalização: 2021-04-16. 26.839 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-04-16] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring, Spring. Data de finalização: 2021-04-16. 26.838 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "4783a045-fcd6-4074-b5b7-4e85cab84888",
@@ -5072,13 +5097,13 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-05-12",
     "ativo": false,
-    "total_devs": 7433,
+    "total_devs": 7434,
     "skills": [
       "QA",
       "Java",
       "Java"
     ],
-    "descricao": "[Finalizado em 2021-05-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: QA, Java, Java. Data de finalização: 2021-05-12. 7.433 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-05-12] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: QA, Java, Java. Data de finalização: 2021-05-12. 7.434 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   },
   {
     "id": "003a02cc-dbfd-4b5b-afb2-ffdc8e7c2ba4",
@@ -5188,7 +5213,7 @@
     "nivel": "Intermediário",
     "data_finalizacao": "2021-06-05",
     "ativo": false,
-    "total_devs": 35689,
+    "total_devs": 35688,
     "skills": [
       "Java",
       "Java",
@@ -5198,6 +5223,6 @@
       "JavaScript",
       "JavaScript"
     ],
-    "descricao": "[Finalizado em 2021-06-05] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring, PostgreSQL, Node.js, JavaScript, JavaScript. Data de finalização: 2021-06-05. 35.689 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
+    "descricao": "[Finalizado em 2021-06-05] Bootcamp gratuito oficial da DIO em parceria com empresas inovadoras. Habilidades: Java, Java, Spring, PostgreSQL, Node.js, JavaScript, JavaScript. Data de finalização: 2021-06-05. 35.688 devs inscritos. Certificação gratuita oficial e oportunidade de contratação."
   }
 ]
