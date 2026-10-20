@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "seed": "node src/database/seed.js",
-    "test": "node --test test/**/*.test.js",
+    "test": "node --test --test-concurrency=1 test/**/*.test.js",
     "test:worker": "node --test test/worker.test.js",
     "livros": "node scripts/gerenciar_livros.js",
     "livros:csv": "node scripts/gerenciar_livros.js --exportar-csv",

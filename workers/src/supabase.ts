@@ -265,6 +265,11 @@ export class RepoSupabase {
     });
   }
 
+  /** Recalcula estatisticas/contadores no Postgres (service_role). */
+  async recalcularEstatisticas() {
+    await this.api.rpc('recalcular_estatisticas');
+  }
+
   /** Incremento atómico no Postgres (sem read-modify-write). */
   async registrarLeitura(id: string | number) {
     await this.api.rpc('incrementar_leitura', { p_id: Number(id) });

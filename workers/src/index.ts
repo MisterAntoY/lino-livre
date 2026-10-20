@@ -1502,6 +1502,19 @@ export default {
   fetch: app.fetch,
   async scheduled(_event: any, env: Bindings, ctx: ExecutionContext) {
     ctx.waitUntil(recomputarEstatisticas(env.DB));
+
+    // Mantém os agregados do Supabase frescos sem depender de pg_cron.
+    if (backendSupabase(env)) {
+      const cfg = obterConfigSupabase(env);
+      if (cfg) {
+        const repo = new RepoSupabase(cfg);
+        ctx.waitUntil(
+          repo.recalcularEstatisticas().catch((err) => {
+            console.error('Falha ao recalcular agregados no Supabase:', err);
+          })
+        );
+      }
+    }
   }
 };
 

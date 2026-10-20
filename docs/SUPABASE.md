@@ -131,7 +131,10 @@ necessário apagar nada no Supabase.
 
 - **Agregados**: `estatisticas` e `contadores` evitam varrer 104k linhas. São
   recalculados pela função `recalcular_estatisticas()` (chamada no fim da
-  migração). Para atualização periódica, agende via `pg_cron`:
+  migração). O cron do Worker (`10 0 * * *`) também a invoca quando
+  `DB_BACKEND=supabase`, pelo que não é necessário `pg_cron`.
+
+  Alternativa com `pg_cron` (planos pagos):
 
   ```sql
   select cron.schedule(
@@ -140,8 +143,6 @@ necessário apagar nada no Supabase.
     $$select public.recalcular_estatisticas()$$
   );
   ```
-
-  (Requer a extensão `pg_cron`, disponível em planos pagos do Supabase.)
 
 - **Busca**: `ILIKE '%termo%'` usa índices GIN de trigramas em
   `livros.titulo`, `livros.sinopse`, `autores.nome`.
