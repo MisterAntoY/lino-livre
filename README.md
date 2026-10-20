@@ -24,6 +24,8 @@ Plataforma aberta, ultrassimples e direta para distribuição de **livros digita
    Todos os itens exigem licença legal obrigatória (`dominio-publico`, `cc0`, `cc-by`, `cc-by-sa`, `cc-by-nc`, `outro`). Fontes piratas são terminantemente proibidas.
 8. **Arquitetura de Intermediário Sem Armazenamento**:
    O servidor e o banco de dados **não armazenam nenhum arquivo ou conteúdo de livro**. A plataforma atua estritamente como intermediária de links, indexando recursos armazenados em servidores e fontes externas.
+9. **Acervo de 100 Repositórios GitHub de Livros (Fase 5)**:
+   Pipeline próprio de descoberta (`scripts/github_livros_harvester.mjs` → `recolha2` → `verificar` → `curar`) que recolhe, verifica por leitura do README e desduplica repositórios GitHub com livros em domínio público, textbooks, listas canónicas, corpora literários e ferramentas de publicação. Resultado: **100 repositórios** indexados como metadados + link externo, com sinopses traduzidas em **7 idiomas** e **100 capas** geradas. Fontes: `harvard-edge/cs249r_book`, `nndl/nndl`, `openmlsys/openmlsys`, `chinese-poetry/chinese-poetry`, `vEnhance/napkin`, `saga-soft/novelWriter`, `crowdagger/crowbook`, `standardebooks/*`, `EbookFoundation/free-science-books`, entre outros.
 
 ---
 

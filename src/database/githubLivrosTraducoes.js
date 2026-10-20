@@ -341,7 +341,7 @@ module.exports = {
     fr: 'Un ensemble de projets concrets de Growth Engineering : une idée de croissance menée jusqu’à la production.'
   },
   'phodal/fe': {
-    'pt-br': '《我的职业是前端工程师》— um livro sobre a carreira de engenheiro frontend: competências,inating e crescimento no ecossistema web.',
+    'pt-br': '《我的职业是前端工程师》— um livro sobre a carreira de engenheiro frontend: competências, atitude e crescimento no ecossistema web.',
     en: '《我的职业是前端工程师》— a book on the frontend engineer career: skills, attitudes and growth in the web ecosystem.',
     es: '《我的职业是前端工程师》— un libro sobre la carrera de ingeniero frontend: competencias, actitudes y crecimiento en el ecosistema web.',
     de: '《我的职业是前端工程师》— ein Buch zur Karriere des Frontend-Engineers: Fähigkeiten, Haltung und Wachstum im Web-Ökosystem.',
