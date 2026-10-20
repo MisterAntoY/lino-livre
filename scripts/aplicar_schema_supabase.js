@@ -28,7 +28,8 @@ const SO_VERIFICAR = process.argv.includes('--verificar');
 
 const TABELAS = [
   'fontes', 'categorias', 'autores', 'livros', 'links_livros', 'cursos',
-  'import_jobs', 'podcasts_shows', 'podcasts_episodios', 'estatisticas', 'contadores'
+  'import_jobs', 'podcasts_shows', 'podcasts_episodios',
+  'estatisticas', 'contadores', 'autor_totais'
 ];
 const VIEWS = ['livros_api', 'cursos_api', 'podcasts_api'];
 const FUNCOES = [

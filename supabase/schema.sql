@@ -10,12 +10,41 @@
 -- Executar no SQL Editor do Supabase (uma vez).
 -- ============================================================
 
-create schema if not exists extensions;
-create extension if not exists pg_trgm with schema extensions;
-grant usage on schema extensions to postgres, anon, authenticated, service_role;
+-- pg_trgm é OPCIONAL: se o role não puder criar a extensão, o schema
+-- continua e a busca funciona sem índice (sequential scan em ~104k linhas).
+do $$
+declare esquema text;
+begin
+  begin
+    create schema if not exists extensions;
+  exception when others then
+    raise notice 'Schema extensions indisponível: %', sqlerrm;
+  end;
 
--- Resolve gin_trgm_ops quer a extensão esteja em "extensions" quer em "public".
-set search_path = public, extensions;
+  begin
+    execute 'create extension if not exists pg_trgm with schema extensions';
+  exception when others then
+    begin
+      execute 'create extension if not exists pg_trgm';
+    exception when others then
+      raise notice 'pg_trgm indisponível (%); a busca usará sequential scan.', sqlerrm;
+    end;
+  end;
+
+  select n.nspname into esquema
+  from pg_extension e
+  join pg_namespace n on n.oid = e.extnamespace
+  where e.extname = 'pg_trgm';
+
+  if esquema is not null then
+    begin
+      execute format('grant usage on schema %I to postgres, anon, authenticated, service_role', esquema);
+    exception when others then
+      raise notice 'Sem permissão de grant no schema %: %', esquema, sqlerrm;
+    end;
+    perform set_config('search_path', 'public, ' || quote_ident(esquema), false);
+  end if;
+end $$;
 
 -- ── Tabelas ─────────────────────────────────────────────────
 
@@ -174,11 +203,26 @@ create table if not exists autor_totais (
 );
 
 -- Busca textual: ILIKE '%termo%' usa os índices GIN de trigramas.
-create index if not exists idx_livros_titulo_trgm on livros using gin (titulo gin_trgm_ops);
-create index if not exists idx_livros_sinopse_trgm on livros using gin (sinopse gin_trgm_ops);
-create index if not exists idx_autores_nome_trgm on autores using gin (nome gin_trgm_ops);
-create index if not exists idx_cursos_titulo_trgm on cursos using gin (titulo gin_trgm_ops);
-create index if not exists idx_cursos_plataforma_trgm on cursos using gin (plataforma gin_trgm_ops);
+-- Índices de trigrama: só se a extensão existir (schema pode ser public ou extensions).
+do $$
+declare esquema text;
+begin
+  select n.nspname into esquema
+  from pg_extension e
+  join pg_namespace n on n.oid = e.extnamespace
+  where e.extname = 'pg_trgm';
+
+  if esquema is null then
+    raise notice 'pg_trgm ausente: índices de trigrama não criados (busca continua a funcionar).';
+    return;
+  end if;
+
+  execute format('create index if not exists idx_livros_titulo_trgm on livros using gin (titulo %I.gin_trgm_ops)', esquema);
+  execute format('create index if not exists idx_livros_sinopse_trgm on livros using gin (sinopse %I.gin_trgm_ops)', esquema);
+  execute format('create index if not exists idx_autores_nome_trgm on autores using gin (nome %I.gin_trgm_ops)', esquema);
+  execute format('create index if not exists idx_cursos_titulo_trgm on cursos using gin (titulo %I.gin_trgm_ops)', esquema);
+  execute format('create index if not exists idx_cursos_plataforma_trgm on cursos using gin (plataforma %I.gin_trgm_ops)', esquema);
+end $$;
 
 -- ── Views para a API (nomes já achatados) ───────────────────
 
@@ -340,6 +384,12 @@ begin
   insert into contadores (dimensao, chave, rotulo, total)
     select 'curso_tipo', coalesce(tipo,'outro'), coalesce(tipo,'outro'), count(*)
     from cursos group by coalesce(tipo,'outro');
+
+  -- Contagem por autor (mesma tabela agregada usada pela D1).
+  truncate table autor_totais;
+  insert into autor_totais (autor_id, total)
+    select autor_id, count(*)::int from livros
+    where autor_id is not null group by autor_id;
 
   truncate table estatisticas;
   insert into estatisticas (chave, valor) values

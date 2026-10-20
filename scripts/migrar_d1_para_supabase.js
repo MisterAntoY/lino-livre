@@ -208,8 +208,8 @@ async function contarNoSupabase(tabela) {
 async function mostrarStatus() {
   console.log('Estado do catálogo no Supabase:\n');
   const linhas = [];
-  // estatisticas/contadores não são migradas: são recalculadas no fim.
-  const nomes = [...TABELAS.map((t) => t.nome), 'estatisticas', 'contadores'];
+  // estatisticas/contadores/autor_totais não são migradas: são recalculadas.
+  const nomes = [...TABELAS.map((t) => t.nome), 'estatisticas', 'contadores', 'autor_totais'];
   for (const nome of nomes) {
     const e = await estadoTabela(nome);
     const estado = !e.existe ? 'AUSENTE' : e.erro ? e.erro : String(e.total ?? '?');
