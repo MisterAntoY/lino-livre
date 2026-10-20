@@ -300,14 +300,14 @@ app.get('/api/dashboard', async (c) => {
     return c.json({
       erro: 'Estatísticas temporariamente indisponíveis',
       mensagem: 'As métricas estão sendo recalculadas ou a base de dados atingiu o limite de consultas temporário.',
-      // Valores REAIS do acervo (fonte: seed local). Actualizar quando o
-      // acervo crescer, para que o painel nunca apresente números fictícios.
+                        // Totais REAIS do acervo de PRODUÇÃO (fonte: D1 lino-livre-db).
+      // Actualizar quando o acervo crescer — nunca números fictícios.
       resumo_estavel: {
-        total_livros: 997,
-        total_autores: 641,
-        total_categorias: 20,
-        total_cursos: 8568,
-        total_fontes: 35
+        total_livros: 104848,
+        total_autores: 37919,
+        total_categorias: 29,
+        total_cursos: 7501,
+        total_fontes: 32
       }
     }, 503);
   }
@@ -898,7 +898,7 @@ app.get('/api/livros', async (c) => {
       c.header('Cache-Control', 'public, max-age=300');
     }
     // Total REAL do acervo (fonte: seed local) — nunca números fictícios.
-    const totalCatalogoConhecido = 997;
+    const totalCatalogoConhecido = 104848;
     return c.json({
       page: numPage,
       pagina: numPage,
