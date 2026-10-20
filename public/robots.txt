@@ -1,0 +1,11 @@
+# Lino Livre — https://lino-livre.linolivre.workers.dev
+# Biblioteca digital gratuita de livros de África e da lusofonia.
+
+User-agent: *
+Allow: /
+
+# A API é apenas a fonte de dados do SPA; não precisa de ser rastreada.
+# (Reduz consumo de cota da D1 por crawlers.)
+Disallow: /api/
+
+Sitemap: https://lino-livre.linolivre.workers.dev/sitemap.xml

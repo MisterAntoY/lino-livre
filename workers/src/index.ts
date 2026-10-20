@@ -10,108 +10,129 @@ const app = new Hono<{ Bindings: Bindings }>();
 // Enable CORS
 app.use('/api/*', cors());
 
+// Cache de borda para leituras públicas. Registado antes das rotas para
+// envolver os handlers (o Cache API evita invocações e leituras na D1).
+app.use('/api/dashboard', cacheDeBorda);
+app.use('/api/categorias', cacheDeBorda);
+app.use('/api/autores', cacheDeBorda);
+app.use('/api/fontes', cacheDeBorda);
+app.use('/api/cursos', cacheDeBorda);
+app.use('/api/roadmaps', cacheDeBorda);
+app.use('/api/livros', cacheDeBorda);
+app.use('/api/livros/:id', cacheDeBorda);
+
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
 // Cache em memória para estatísticas de dashboard para economizar cotas de leitura da D1
 let cachedDashboard: { data: any; timestamp: number } | null = null;
 const DASHBOARD_CACHE_TTL = 10 * 60 * 1000; // 10 minutos
 
+// ────────────────────────────────────────────────────────────
+// Agregados pré-calculados (estatisticas/contadores)
+// Recalculados 1x/dia pelo cron. Evitam COUNT(*)/GROUP BY sobre
+// 104k linhas a cada cache miss (limite free tier da D1: 5M/dia).
+// ────────────────────────────────────────────────────────────
+async function lerEstatistica(db: any, chave: string): Promise<number | null> {
+  try {
+    const row = await db.prepare('SELECT valor FROM estatisticas WHERE chave = ?').bind(chave).first();
+    return row ? Number(row.valor) : null;
+  } catch {
+    return null;
+  }
+}
+
+async function lerContador(db: any, dimensao: string, chave: string): Promise<number | null> {
+  try {
+    const row = await db.prepare('SELECT total FROM contadores WHERE dimensao = ? AND chave = ?')
+      .bind(dimensao, String(chave)).first();
+    return row ? Number(row.total) : null;
+  } catch {
+    return null;
+  }
+}
+
+// Erro de cota da D1 (free tier) — permite degradar em vez de devolver 500.
+function ehErroDeCota(err: any): boolean {
+  // Cota esgotada OU tabelas de agregados ainda não criadas (antes do 1º cron).
+  return /exceeded D1|free tier daily row read|no such table: (estatisticas|contadores)/i
+    .test(String(err?.message || ''));
+}
+
+function respostaDegradada(c: any, vazio: any = []) {
+  c.header('Cache-Control', 'public, max-age=60');
+  c.header('X-Data-Status', 'degraded');
+  return c.json(vazio);
+}
+
+async function contadoresDe(db: any, dimensao: string): Promise<any[]> {
+  try {
+    const res = await db.prepare('SELECT chave, rotulo, total FROM contadores WHERE dimensao = ? ORDER BY total DESC')
+      .bind(dimensao).all();
+    return (res.results || []) as any[];
+  } catch {
+    return [];
+  }
+}
+
 // 1. Dashboard de Acervo e Leituras
 app.get('/api/dashboard', async (c) => {
   const now = Date.now();
   if (cachedDashboard && (now - cachedDashboard.timestamp < DASHBOARD_CACHE_TTL)) {
-    c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=86400');
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(cachedDashboard.data);
   }
 
   try {
     const db = c.env.DB;
 
-    const totaisLivros = await db.prepare(`
-      SELECT 
-        COUNT(*) AS total_livros,
-        COALESCE(SUM(leituras), 0) AS total_leituras
-      FROM livros
-    `).first<{ total_livros: number; total_leituras: number }>();
+    // Leitura dos agregados: ~330 linhas no total (era ~700k por cache miss).
+    const [statsRes, contadoresRes, maisLidosRes, fontesRes] = await Promise.all([
+      db.prepare('SELECT chave, valor FROM estatisticas').all(),
+      db.prepare('SELECT dimensao, chave, rotulo, total FROM contadores ORDER BY total DESC').all(),
+      db.prepare(`
+        SELECT l.id, l.titulo, l.leituras, l.licenca, l.capa_url,
+               a.nome AS autor_nome, c.nome AS categoria_nome
+        FROM livros l
+        LEFT JOIN autores a ON a.id = l.autor_id
+        LEFT JOIN categorias c ON c.id = l.categoria_id
+        ORDER BY l.leituras DESC, l.titulo ASC
+        LIMIT 5
+      `).all(),
+      db.prepare('SELECT id, slug, nome, url_base FROM fontes WHERE ativa = 1').all()
+    ]);
 
-    const totalAutores = (await db.prepare('SELECT COUNT(*) AS total FROM autores').first<{ total: number }>())?.total || 0;
-    const totalCategorias = (await db.prepare('SELECT COUNT(*) AS total FROM categorias').first<{ total: number }>())?.total || 0;
-    const totalCursos = (await db.prepare('SELECT COUNT(*) AS total FROM cursos').first<{ total: number }>())?.total || 0;
-    const totalFontes = (await db.prepare('SELECT COUNT(*) AS total FROM fontes WHERE ativa = 1').first<{ total: number }>())?.total || 0;
+    const stats: Record<string, number> = {};
+    for (const row of (statsRes.results || []) as any[]) stats[row.chave] = Number(row.valor);
 
-    const formatos = (await db.prepare(`
-      SELECT formato, COUNT(DISTINCT livro_id) AS total
-      FROM links_livros
-      GROUP BY formato
-      ORDER BY total DESC
-    `).all()).results;
+    const contadores = (contadoresRes.results || []) as any[];
+    // Sem agregados (primeiro deploy, antes do cron): usa o fallback estático.
+    if (contadores.length === 0) throw new Error('agregados ainda não calculados');
 
-    const licencas = (await db.prepare(`
-      SELECT licenca, COUNT(*) AS total
-      FROM livros
-      GROUP BY licenca
-      ORDER BY total DESC
-    `).all()).results;
-
-    const idiomas = (await db.prepare(`
-      SELECT idioma, COUNT(*) AS total
-      FROM livros
-      GROUP BY idioma
-      ORDER BY total DESC
-    `).all()).results;
-
-    const areas = (await db.prepare(`
-      SELECT 
-        COALESCE(c.nome, 'Sem categoria') AS area,
-        COUNT(l.id) AS total
-      FROM categorias c
-      LEFT JOIN livros l ON l.categoria_id = c.id
-      GROUP BY c.id
-      ORDER BY total DESC, c.nome ASC
-    `).all()).results;
-
-    const fontes = (await db.prepare(`
-      SELECT 
-        f.id, f.slug, f.nome, f.url_base,
-        COUNT(l.id) AS total_livros
-      FROM fontes f
-      LEFT JOIN livros l ON l.fonte_id = f.id
-      WHERE f.ativa = 1
-      GROUP BY f.id
-      ORDER BY total_livros DESC, f.nome ASC
-    `).all()).results;
-
-    const maisLidos = (await db.prepare(`
-      SELECT 
-        l.id, l.titulo, l.leituras, l.licenca, l.capa_url,
-        a.nome AS autor_nome,
-        c.nome AS categoria_nome
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      ORDER BY l.leituras DESC, l.titulo ASC
-      LIMIT 5
-    `).all()).results;
+    const doGrupo = (dim: string) => contadores.filter((r) => r.dimensao === dim);
+    const fontes = ((fontesRes.results || []) as any[]).map((f) => {
+      const c = contadores.find((r) => r.dimensao === 'fonte' && r.chave === String(f.id));
+      return { ...f, total_livros: c ? c.total : 0 };
+    }).sort((a, b) => b.total_livros - a.total_livros || String(a.nome).localeCompare(String(b.nome)));
 
     const payload = {
       resumo: {
-        total_livros: totaisLivros?.total_livros || 104848,
-        total_leituras: totaisLivros?.total_leituras || 0,
-        total_autores: totalAutores || 37919,
-        total_categorias: totalCategorias || 29,
-        total_cursos: totalCursos || 7501,
-        total_fontes: totalFontes || 32
+        total_livros: stats.total_livros ?? 104848,
+        total_leituras: stats.total_leituras ?? 0,
+        total_autores: stats.total_autores ?? 37919,
+        total_categorias: stats.total_categorias ?? 29,
+        total_cursos: stats.total_cursos ?? 7501,
+        total_fontes: stats.total_fontes ?? 32
       },
-      formatos,
-      licencas,
-      idiomas,
-      areas,
+      formatos: doGrupo('formato').map((r) => ({ formato: r.chave, total: r.total })),
+      licencas: doGrupo('licenca').map((r) => ({ licenca: r.chave, total: r.total })),
+      idiomas: doGrupo('idioma').map((r) => ({ idioma: r.chave, total: r.total })),
+      areas: doGrupo('categoria').map((r) => ({ area: r.rotulo || r.chave, total: r.total })),
       fontes,
-      mais_lidos: maisLidos
+      mais_lidos: maisLidosRes.results || []
     };
 
     cachedDashboard = { data: payload, timestamp: now };
-    c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=86400');
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(payload);
   } catch (err: any) {
     if (cachedDashboard) {
@@ -170,15 +191,17 @@ app.get('/api/dashboard', async (c) => {
 app.get('/api/categorias', async (c) => {
   try {
     const db = c.env.DB;
+    // Contadores pré-calculados: 29 linhas em vez de varrer 104k livros.
     const categorias = (await db.prepare(`
-      SELECT c.*, COUNT(l.id) AS total_livros
+      SELECT c.*, COALESCE(k.total, 0) AS total_livros
       FROM categorias c
-      LEFT JOIN livros l ON l.categoria_id = c.id
-      GROUP BY c.id
+      LEFT JOIN contadores k ON k.dimensao = 'categoria' AND k.chave = CAST(c.id AS TEXT)
       ORDER BY c.nome ASC
     `).all()).results;
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(categorias);
   } catch (err: any) {
+    if (ehErroDeCota(err)) return respostaDegradada(c);
     return c.json({ erro: 'Erro ao buscar categorias: ' + err.message }, 500);
   }
 });
@@ -255,6 +278,7 @@ app.get('/api/autores', async (c) => {
       GROUP BY a.id
       ORDER BY a.nome ASC
     `).all()).results;
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(autores);
   } catch (err: any) {
     return c.json({ erro: 'Erro ao buscar autores: ' + err.message }, 500);
@@ -365,9 +389,6 @@ async function cacheDeBorda(c: any, next: any) {
     c.executionCtx.waitUntil(cache.put(key, c.res.clone()));
   }
 }
-app.use('/api/livros', cacheDeBorda);
-app.use('/api/livros/:id', cacheDeBorda);
-
 app.get('/api/livros', async (c) => {
   const queryParams = c.req.query();
   const rawPage = queryParams.pagina || queryParams.page || '1';
@@ -428,6 +449,7 @@ app.get('/api/livros', async (c) => {
     }
 
     const fonteFiltro = fonte_slug || fonte;
+    let fonteIds: number[] = [];
     if (fonteFiltro) {
       const termo = String(fonteFiltro).toLowerCase();
       const dim = await obterDimensoes(db);
@@ -435,6 +457,7 @@ app.get('/api/livros', async (c) => {
       if (ids.length === 0) {
         ids = dim.fontes.filter((f) => f.slug.toLowerCase().includes(termo)).map((f) => f.id);
       }
+      fonteIds = ids;
       if (ids.length === 0) {
         filtros.push('1=0');
       } else {
@@ -450,10 +473,25 @@ app.get('/api/livros', async (c) => {
 
     const whereSql = filtros.length ? ` AND ${filtros.join(' AND ')}` : '';
 
-    // Contagem sem JOINs: COUNT(*) exato porque livros.id é único
-    const countStmt = db.prepare(`SELECT COUNT(*) AS total FROM livros l WHERE 1=1${whereSql}`).bind(...params);
-    const totalRow = await countStmt.first<{ total: number }>();
-    const total = totalRow?.total || 0;
+    // Total a partir dos agregados quando o filtro é simples. Só cai no
+    // COUNT(*) (varredura de 104k linhas) para busca/formato/autor/combinações.
+    let totalConhecido: number | null = null;
+    const temBusca = !!(busca && busca.trim());
+    const temFormato = !!formato;
+    const filtrosDiretos = filtros.filter((f) => !f.startsWith('l.id IN'));
+    if (filtros.includes('1=0')) {
+      totalConhecido = 0;
+    } else if (temBusca || temFormato) {
+      // Busca/formato têm contagem própria; não usar totais do acervo.
+      totalConhecido = null;
+    } else if (filtrosDiretos.length === 0) {
+      totalConhecido = await lerEstatistica(db, 'total_livros');
+    } else if (filtrosDiretos.length === 1) {
+      if (idioma) totalConhecido = await lerContador(db, 'idioma', idioma);
+      else if (licenca) totalConhecido = await lerContador(db, 'licenca', licenca);
+      else if (categoria_id && /^\d+$/.test(categoria_id)) totalConhecido = await lerContador(db, 'categoria', categoria_id);
+      else if (fonteFiltro && fonteIds.length === 1) totalConhecido = await lerContador(db, 'fonte', String(fonteIds[0]));
+    }
 
     const selectQuery = `
       SELECT 
@@ -492,7 +530,20 @@ app.get('/api/livros', async (c) => {
       }
     }
 
-    c.header('Cache-Control', 'public, max-age=180, stale-while-revalidate=600');
+    let total: number;
+    if (totalConhecido !== null) {
+      total = totalConhecido;
+    } else {
+      try {
+        const countStmt = db.prepare(`SELECT COUNT(*) AS total FROM livros l WHERE 1=1${whereSql}`).bind(...params);
+        total = Number((await countStmt.first<{ total: number }>())?.total || 0);
+      } catch {
+        // Cota da D1 esgotada em filtros complexos: estima para não quebrar a UI.
+        total = offset + livros.length + (livros.length === numLimit ? 1 : 0);
+      }
+    }
+
+    c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
     return c.json({
       page: numPage,
       pagina: numPage,
@@ -566,7 +617,13 @@ app.get('/api/livros', async (c) => {
         links: [{ id: 5, formato: 'html', url: 'https://pt.wikisource.org/wiki/Mensagem', link_externo: 1 }]
       }
     ];
-    c.header('Cache-Control', 'public, max-age=300');
+    if (ehErroDeCota(err)) {
+      // Recupera assim que a cota reiniciar (00:00 UTC), sem ficar preso em cache.
+      c.header('Cache-Control', 'public, max-age=60');
+      c.header('X-Data-Status', 'degraded');
+    } else {
+      c.header('Cache-Control', 'public, max-age=300');
+    }
     return c.json({
       page: numPage,
       pagina: numPage,
@@ -769,9 +826,19 @@ app.delete('/api/livros/:id', async (c) => {
 app.get('/api/fontes', async (c) => {
   try {
     const db = c.env.DB;
-    const fontes = (await db.prepare('SELECT id, slug, nome, tipo, url_base, ativa FROM fontes WHERE ativa = 1 ORDER BY id ASC').all()).results;
+    // LEFT JOIN em tabela de contadores (32 linhas) em vez de GROUP BY em 104k.
+    const fontes = (await db.prepare(`
+      SELECT f.id, f.slug, f.nome, f.tipo, f.url_base, f.ativa,
+             COALESCE(k.total, 0) AS total_livros
+      FROM fontes f
+      LEFT JOIN contadores k ON k.dimensao = 'fonte' AND k.chave = CAST(f.id AS TEXT)
+      WHERE f.ativa = 1
+      ORDER BY f.id ASC
+    `).all()).results;
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(fontes);
   } catch (err: any) {
+    if (ehErroDeCota(err)) return respostaDegradada(c);
     return c.json({ erro: 'Erro ao listar fontes: ' + err.message }, 500);
   }
 });
@@ -879,8 +946,10 @@ app.get('/api/cursos', async (c) => {
 
     query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, area ASC, titulo ASC";
     const cursos = (await db.prepare(query).bind(...params).all()).results;
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(cursos);
   } catch (err: any) {
+    if (ehErroDeCota(err)) return respostaDegradada(c);
     return c.json({ erro: 'Erro ao buscar cursos: ' + err.message }, 500);
   }
 });
@@ -908,8 +977,10 @@ app.get('/api/roadmaps', async (c) => {
 
     query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
     const roadmaps = (await db.prepare(query).bind(...params).all()).results;
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(roadmaps);
   } catch (err: any) {
+    if (ehErroDeCota(err)) return respostaDegradada(c);
     return c.json({ erro: 'Erro ao buscar roadmaps: ' + err.message }, 500);
   }
 });
@@ -1200,6 +1271,69 @@ app.get('/api/legal', (c) => {
   });
 });
 
-export default app;
+// ────────────────────────────────────────────────────────────
+// Cron diário (00:10 UTC, após o reset da cota da D1).
+// Uma única varredura por dia mantém estatisticas/contadores exatos,
+// em vez de varrer 104k linhas em cada cache miss.
+// ────────────────────────────────────────────────────────────
+async function recomputarEstatisticas(db: D1Database): Promise<void> {
+  // Lote 1 — DDL idempotente + limpeza (as tabelas podem não existir antes
+  // do primeiro cron; a migração pode ter falhado durante a cota esgotada).
+  await db.batch([
+    db.prepare(`CREATE TABLE IF NOT EXISTS estatisticas (
+      chave TEXT PRIMARY KEY, valor INTEGER NOT NULL DEFAULT 0,
+      atualizado_em TEXT NOT NULL DEFAULT (datetime('now')))`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS contadores (
+      dimensao TEXT NOT NULL, chave TEXT NOT NULL, rotulo TEXT,
+      total INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (dimensao, chave))`),
+    db.prepare('CREATE INDEX IF NOT EXISTS idx_contadores_dimensao ON contadores(dimensao, total DESC)'),
+    db.prepare('DELETE FROM contadores'),
+    db.prepare('DELETE FROM estatisticas')
+  ]);
+
+  // Lote 2 — contadores por dimensão (uma varredura por grupo, ~765k linhas
+  // no total; dividido para não aproximar o limite de duração da D1).
+  await db.batch([
+    db.prepare(`INSERT INTO contadores (dimensao, chave, rotulo, total)
+      SELECT 'idioma', idioma, idioma, COUNT(*) FROM livros
+      WHERE idioma IS NOT NULL GROUP BY idioma`),
+    db.prepare(`INSERT INTO contadores (dimensao, chave, rotulo, total)
+      SELECT 'licenca', licenca, licenca, COUNT(*) FROM livros
+      WHERE licenca IS NOT NULL GROUP BY licenca`),
+    db.prepare(`INSERT INTO contadores (dimensao, chave, rotulo, total)
+      SELECT 'categoria', CAST(c.id AS TEXT), c.nome, COUNT(l.id)
+      FROM categorias c LEFT JOIN livros l ON l.categoria_id = c.id
+      GROUP BY c.id`),
+    db.prepare(`INSERT INTO contadores (dimensao, chave, rotulo, total)
+      SELECT 'fonte', CAST(f.id AS TEXT), f.nome, COUNT(l.id)
+      FROM fontes f LEFT JOIN livros l ON l.fonte_id = f.id
+      WHERE f.ativa = 1 GROUP BY f.id`),
+    db.prepare(`INSERT INTO contadores (dimensao, chave, rotulo, total)
+      SELECT 'formato', formato, formato, COUNT(DISTINCT livro_id)
+      FROM links_livros GROUP BY formato`),
+    db.prepare(`INSERT INTO contadores (dimensao, chave, rotulo, total)
+      SELECT 'curso_tipo', COALESCE(tipo, 'outro'), COALESCE(tipo, 'outro'), COUNT(*)
+      FROM cursos GROUP BY COALESCE(tipo, 'outro')`)
+  ]);
+
+  // Lote 3 — totais gerais.
+  await db.batch([
+    db.prepare(`INSERT INTO estatisticas (chave, valor) VALUES
+      ('total_livros', (SELECT COUNT(*) FROM livros)),
+      ('total_leituras', (SELECT COALESCE(SUM(leituras), 0) FROM livros)),
+      ('total_autores', (SELECT COUNT(*) FROM autores)),
+      ('total_categorias', (SELECT COUNT(*) FROM categorias)),
+      ('total_cursos', (SELECT COUNT(*) FROM cursos)),
+      ('total_fontes', (SELECT COUNT(*) FROM fontes WHERE ativa = 1)),
+      ('atualizado_em_epoch', CAST(strftime('%s','now') AS INTEGER))`)
+  ]);
+}
+
+export default {
+  fetch: app.fetch,
+  async scheduled(_event: any, env: Bindings, ctx: ExecutionContext) {
+    ctx.waitUntil(recomputarEstatisticas(env.DB));
+  }
+};
 
 

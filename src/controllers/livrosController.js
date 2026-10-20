@@ -82,6 +82,7 @@ function listar(req, res) {
     }
 
     const fonteFiltro = fonte_slug || fonte;
+    let fonteIds = [];
     if (fonteFiltro) {
       const termo = String(fonteFiltro).toLowerCase();
       const dim = obterDimensoes(db);
@@ -89,6 +90,7 @@ function listar(req, res) {
       if (ids.length === 0) {
         ids = dim.fontes.filter((f) => f.slug.toLowerCase().includes(termo)).map((f) => f.id);
       }
+      fonteIds = ids;
       if (ids.length === 0) {
         filtros.push('1=0');
       } else {
@@ -104,9 +106,38 @@ function listar(req, res) {
 
     const whereSql = filtros.length ? ` AND ${filtros.join(' AND ')}` : '';
 
-    // Contar total para paginação (sem JOINs)
-    const totalRow = db.prepare(`SELECT COUNT(*) AS total FROM livros l WHERE 1=1${whereSql}`).get(...params);
-    const total = totalRow ? totalRow.total : 0;
+    // Total para paginação: usa agregados pré-calculados quando o filtro é
+    // simples (evita varrer 104k linhas). Fallback seguro se as tabelas
+    // estatisticas/contadores ainda não existirem.
+    let total = null;
+    try {
+      const semSubquery = filtros.filter((f) => !f.startsWith('l.id IN'));
+      const simples = !busca && !formato;
+      if (filtros.includes('1=0')) {
+        total = 0;
+      } else if (simples && semSubquery.length === 0) {
+        const r = db.prepare("SELECT valor FROM estatisticas WHERE chave = 'total_livros'").get();
+        if (r) total = Number(r.valor);
+      } else if (simples && semSubquery.length === 1 && idioma) {
+        const r = db.prepare("SELECT total FROM contadores WHERE dimensao = 'idioma' AND chave = ?").get(idioma);
+        if (r) total = Number(r.total);
+      } else if (simples && semSubquery.length === 1 && licenca) {
+        const r = db.prepare("SELECT total FROM contadores WHERE dimensao = 'licenca' AND chave = ?").get(licenca);
+        if (r) total = Number(r.total);
+      } else if (simples && semSubquery.length === 1 && categoria_id && /^\d+$/.test(categoria_id)) {
+        const r = db.prepare("SELECT total FROM contadores WHERE dimensao = 'categoria' AND chave = ?").get(String(categoria_id));
+        if (r) total = Number(r.total);
+      } else if (simples && semSubquery.length === 1 && fonteFiltro && fonteIds.length === 1) {
+        const r = db.prepare("SELECT total FROM contadores WHERE dimensao = 'fonte' AND chave = ?").get(String(fonteIds[0]));
+        if (r) total = Number(r.total);
+      }
+    } catch (_) {
+      // Agregados indisponíveis: segue para a contagem exata.
+    }
+    if (total === null) {
+      const totalRow = db.prepare(`SELECT COUNT(*) AS total FROM livros l WHERE 1=1${whereSql}`).get(...params);
+      total = totalRow ? totalRow.total : 0;
+    }
 
     // Buscar itens paginados
     const selectQuery = `

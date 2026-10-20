@@ -16,6 +16,12 @@
     "binding": "ASSETS"
   },
 
+  // Cron diário: recalcula estatisticas/contadores às 00:10 UTC,
+  // logo após o reset da cota diária de linhas lidas da D1.
+  "triggers": {
+    "crons": ["10 0 * * *"]
+  },
+
   // Observability — structured logging and traces
   "observability": {
     "enabled": true,

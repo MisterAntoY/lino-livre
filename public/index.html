@@ -3,9 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Lino Livre — Livros livres, para todos. Maior acervo digital de livros de África, obras-primas da literatura africana, contos da tradição oral, história e filosofia em 5 idiomas. Leitura online gratuita sem download.">
+
+  <!-- ═══════════ SEO ═══════════ -->
+  <title>Lino Livre — Biblioteca digital gratuita de livros de África e da lusofonia</title>
+  <meta name="description" content="Mais de 100 mil livros gratuitos e legais: literatura africana e da lusofonia, clássicos de domínio público, contos da tradição oral, história, filosofia e cursos gratuitos. Leitura online, sem download.">
+  <meta name="keywords" content="livros grátis, livros livres, biblioteca digital, livros de domínio público, literatura africana, escritores africanos, contos tradicionais africanos, livros em português, Angola, Moçambique, Cabo Verde, Guiné-Bissau, São Tomé e Príncipe, Timor-Leste, Brasil, Portugal, Machado de Assis, Fernando Pessoa, Camões, leitura online, ebooks gratuitos, Creative Commons, cursos gratuitos, programação, roadmaps, formação TI">
+  <meta name="author" content="Lino Livre">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://lino-livre.linolivre.workers.dev/">
   <meta name="theme-color" content="#334155">
-  <title>Lino Livre — Livros livres, para todos.</title>
+
+  <!-- ═══════════ Open Graph (WhatsApp, Facebook, LinkedIn) ═══════════ -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Lino Livre">
+  <meta property="og:title" content="Lino Livre — Biblioteca digital gratuita de livros de África e da lusofonia">
+  <meta property="og:description" content="Mais de 100 mil livros gratuitos e legais: literatura africana, clássicos de domínio público, contos tradicionais e cursos gratuitos. Leitura online, sem download.">
+  <meta property="og:url" content="https://lino-livre.linolivre.workers.dev/">
+  <meta property="og:image" content="https://lino-livre.linolivre.workers.dev/img/lino-avatar.jpg">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta property="og:image:alt" content="Lino Livre — Livros livres, para todos">
+  <meta property="og:locale" content="pt_AO">
+  <meta property="og:locale:alternate" content="pt_BR">
+  <meta property="og:locale:alternate" content="pt_PT">
+
+  <!-- ═══════════ Twitter/X ═══════════ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lino Livre — Biblioteca digital gratuita de livros de África e da lusofonia">
+  <meta name="twitter:description" content="Mais de 100 mil livros gratuitos e legais, literatura africana e da lusofonia, clássicos de domínio público e cursos gratuitos.">
+  <meta name="twitter:image" content="https://lino-livre.linolivre.workers.dev/img/lino-avatar.jpg">
+
+  <!-- ═══════════ Dados estruturados (Schema.org) ═══════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://lino-livre.linolivre.workers.dev/#website",
+        "url": "https://lino-livre.linolivre.workers.dev/",
+        "name": "Lino Livre",
+        "description": "Biblioteca digital gratuita e legal de livros de África e da lusofonia, com obras de domínio público, Creative Commons e cursos gratuitos.",
+        "inLanguage": ["pt-AO", "pt-BR", "pt-PT", "en", "es", "fr", "de", "zh"],
+        "publisher": { "@id": "https://lino-livre.linolivre.workers.dev/#organization" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://lino-livre.linolivre.workers.dev/#organization",
+        "name": "Lino Livre",
+        "url": "https://lino-livre.linolivre.workers.dev/",
+        "logo": "https://lino-livre.linolivre.workers.dev/img/lino-avatar.jpg",
+        "description": "Plataforma intermediária e motor de busca de livros livres e legais: apenas metadados e ligações externas, sem armazenamento de ficheiros.",
+        "sameAs": ["https://github.com/MisterAntoY/lino-livre"]
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": "https://lino-livre.linolivre.workers.dev/#catalogo",
+        "name": "Catálogo de livros livres e cursos gratuitos",
+        "isPartOf": { "@id": "https://lino-livre.linolivre.workers.dev/#website" },
+        "about": ["Literatura africana", "Domínio público", "Educação", "Cursos gratuitos"],
+        "inLanguage": "pt-AO"
+      }
+    ]
+  }
+  </script>
   
   <!-- Preload critical fonts with font-display: swap -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -101,9 +162,16 @@
     }
   </script>
   
-  <title>Lino Livre — Livros livres, para todos.</title>
 </head>
 <body>
+
+  <!-- Conteúdo de contexto para motores de busca e utilizadores sem JavaScript -->
+  <noscript>
+    <div class="container" style="padding:1.5rem 0">
+      <h2>Biblioteca digital gratuita de livros de África e da lusofonia</h2>
+      <p>O Lino Livre indexa mais de 100 mil livros de domínio público e licenças Creative Commons — literatura africana, clássicos da língua portuguesa, contos da tradição oral, história e filosofia — além de cursos gratuitos de tecnologia. O acesso é feito por redirecionamento para o provedor original; não armazenamos ficheiros.</p>
+    </div>
+  </noscript>
 
   <!-- Ícone do WhatsApp reutilizável -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" aria-hidden="true">

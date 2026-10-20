@@ -3,7 +3,7 @@
  * Caches static assets for offline access and faster subsequent loads
  */
 
-const CACHE_NAME = 'linolivre-v20261020';
+const CACHE_NAME = 'linolivre-v20261020b';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

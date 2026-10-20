@@ -164,3 +164,24 @@ CREATE TABLE IF NOT EXISTS podcasts_episodios (
 CREATE INDEX IF NOT EXISTS idx_podcasts_episodios_show ON podcasts_episodios(show_id);
 CREATE INDEX IF NOT EXISTS idx_podcasts_shows_slug ON podcasts_shows(slug);
 
+
+-- ============================================================
+-- Agregados pré-calculados (ver migrations/0003_estatisticas.sql)
+-- Recalculados 1x/dia pelo cron do Worker; evitam varreduras de
+-- 104k linhas em cada cache miss das rotas de leitura.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS estatisticas (
+  chave         TEXT PRIMARY KEY,
+  valor         INTEGER NOT NULL DEFAULT 0,
+  atualizado_em TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS contadores (
+  dimensao TEXT NOT NULL,
+  chave    TEXT NOT NULL,
+  rotulo   TEXT,
+  total    INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (dimensao, chave)
+);
+
+CREATE INDEX IF NOT EXISTS idx_contadores_dimensao ON contadores(dimensao, total DESC);
