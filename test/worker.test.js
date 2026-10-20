@@ -864,4 +864,162 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.ok(Array.isArray(data));
     });
   });
+
+  // =========================================================================
+  // CENÁRIO 8: Eficiência da D1 — nenhuma rota deve varrer a tabela de livros
+  // =========================================================================
+  // Sem estes cuidados, cada cache miss lia ~104.848 linhas (o JOIN de
+  // /api/autores, o ORDER BY sem índice e os COUNT/GROUP BY diretos) e
+  // esgotava a cota diária de 5 M de linhas lidas do plano gratuito.
+  describe('Cenário 8: Eficiência da D1 (sem varreduras completas)', () => {
+    const mockComTabelas = (tabelas, allHandler) => {
+      const queries = [];
+      const db = createMockD1({
+        allHandler: async (sql, params) => {
+          queries.push({ sql, params });
+          if (sql.includes('sqlite_master')) {
+            return { results: tabelas.map((name) => ({ name })) };
+          }
+          return allHandler ? allHandler(sql, params) : { results: [] };
+        }
+      });
+      return { db, queries };
+    };
+
+    test('8.1 - GET /api/autores usa a tabela de contagens e não junta a tabela de livros', async () => {
+      const { db, queries } = mockComTabelas(
+        ['autores', 'livros', 'autor_totais'],
+        (sql) => (sql.includes('FROM autores')
+          ? { results: [{ id: 1, nome: 'Machado de Assis', total_livros: 3 }] }
+          : { results: [] })
+      );
+
+      const res = await workerRequest('/api/autores', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+
+      const sqlAutores = queries.find((q) => q.sql.includes('FROM autores'));
+      assert.ok(sqlAutores, 'a consulta de autores deve ter sido executada');
+      assert.ok(
+        !sqlAutores.sql.includes('LEFT JOIN livros'),
+        'não deve juntar a tabela de livros (104.848 linhas)'
+      );
+      assert.ok(
+        sqlAutores.sql.includes('autor_totais'),
+        'deve ler a contagem de autor_totais (índice)'
+      );
+      assert.ok(
+        sqlAutores.sql.includes('LIMIT'),
+        'deve aplicar limite por omissão (evita devolver ~38 mil autores)'
+      );
+    });
+
+    test('8.2 - GET /api/autores?nome= faz correspondência exacta (usa o índice)', async () => {
+      const { db, queries } = mockComTabelas(
+        ['autores', 'livros', 'autor_totais'],
+        (sql) => (sql.includes('FROM autores')
+          ? { results: [{ id: 7, nome: 'Machado de Assis', total_livros: 3 }] }
+          : { results: [] })
+      );
+
+      const res = await workerRequest('/api/autores?nome=Machado%20de%20Assis', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(Array.isArray(data));
+
+      const sqlAutores = queries.find((q) => q.sql.includes('FROM autores'));
+      assert.ok(sqlAutores.sql.includes('COLLATE NOCASE'), 'a busca exacta deve ignorar maiúsculas');
+      assert.ok(!sqlAutores.sql.includes('LIKE'), 'a busca exacta não deve usar LIKE');
+      assert.deepEqual(sqlAutores.params[0], 'Machado de Assis');
+    });
+
+    test('8.3 - GET /api/livros?busca= conta na FTS e não na tabela de livros', async () => {
+      const { db, queries } = mockComTabelas(
+        ['livros', 'livros_fts', 'estatisticas', 'contadores'],
+        (sql) => {
+          if (sql.includes('FROM livros_fts') && sql.includes('COUNT')) return { results: [] };
+          if (sql.includes('FROM livros l')) return { results: [] };
+          return { results: [] };
+        }
+      );
+      const db2 = createMockD1({
+        allHandler: async (sql) => {
+          queries.push({ sql, params: [] });
+          return { results: [] };
+        },
+        firstHandler: async (sql) => {
+          queries.push({ sql, params: [] });
+          if (sql.includes('FROM livros_fts')) return { total: 7 };
+          return null;
+        }
+      });
+
+      const res = await workerRequest('/api/livros?busca=dom', { method: 'GET' }, { DB: db2 });
+      assert.equal(res.status, 200);
+      const json = await res.json();
+      assert.equal(json.total, 7, 'o total deve vir da contagem na FTS');
+
+      const contamTodos = queries.filter((q) =>
+        /COUNT\(\*\)/.test(q.sql) && /FROM\s+livros\s+l?\b/i.test(q.sql)
+      );
+      assert.equal(
+        contamTodos.length,
+        0,
+        'não deve fazer COUNT sobre a tabela de livros: ' + JSON.stringify(contamTodos.map((q) => q.sql))
+      );
+    });
+
+    test('8.4 - GET /api/creditos usa os agregados e não varre a tabela de livros', async () => {
+      const { db, queries } = mockComTabelas(
+        ['livros', 'estatisticas', 'contadores', 'fontes'],
+        (sql) => {
+          if (sql.includes('FROM estatisticas')) {
+            return { results: [{ chave: 'total_livros', valor: 104848 }] };
+          }
+          if (sql.includes('FROM contadores')) {
+            return { results: [{ licenca: 'dominio-publico', total: 1000 }] };
+          }
+          if (sql.includes('FROM fontes')) {
+            return { results: [{ id: 1, slug: 'x', nome: 'X', tipo: 'manual', url_base: 'https://x' }] };
+          }
+          return { results: [] };
+        }
+      );
+
+      const res = await workerRequest('/api/creditos', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      const json = await res.json();
+      assert.equal(json.metricas_compliance.total_livros, 104848);
+
+      const varreduras = queries.filter((q) =>
+        /COUNT\(\*\)/.test(q.sql) && /FROM\s+livros\b/i.test(q.sql)
+      );
+      assert.equal(
+        varreduras.length,
+        0,
+        'não deve fazer COUNT/GROUP BY sobre a tabela de livros: ' + JSON.stringify(varreduras.map((q) => q.sql))
+      );
+    });
+
+    test('8.5 - A migração 0005 declara os índices de performance do acervo', () => {
+      const fs = require('node:fs');
+      const caminho = require('node:path').join(__dirname, '..', 'migrations', '0005_indices_performance.sql');
+      assert.ok(fs.existsSync(caminho), 'a migração 0005 deve existir');
+      const sql = fs.readFileSync(caminho, 'utf8');
+      const exigidos = [
+        'idx_livros_popularidade',
+        'idx_livros_idioma_popularidade',
+        'idx_livros_fonte_popularidade',
+        'idx_livros_categoria_popularidade',
+        'idx_livros_autor_popularidade',
+        'idx_livros_licenca_popularidade',
+        'idx_links_formato_livro',
+        'idx_autores_nome',
+        'idx_autores_nome_nocase',
+        'autor_totais'
+      ];
+      for (const nome of exigidos) {
+        assert.ok(sql.includes(nome), `a migração 0005 deve declarar ${nome}`);
+      }
+    });
+  });
 });
