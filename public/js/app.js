@@ -1230,47 +1230,27 @@ const app = {
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;"> Alura Aberta</span>`;
       }
 
-      const cardClass = isMsLearn
-        ? 'card-featured-mslearn'
-        : (isOcean
-          ? 'card-featured-ocean'
-          : (isSantander
-          ? 'card-featured-santander'
-          : (isDio
-            ? 'card-featured-dio'
-            : (isCursoEmVideo
-              ? 'card-featured-cursoemvideo'
-              : (isDsa
-                ? 'card-featured-dsa'
-                : (isCursa
-                  ? 'card-featured-cursa'
-                  : (isHarvard
-                    ? 'card-featured-harvard'
-                    : (isEvg
-                      ? 'card-featured-evg'
-                      : (isLumina
-                        ? 'card-featured-lumina'
-                        : (isIfrs
-                          ? 'card-featured-ifrs'
-                          : (isGoogleAtelie
-                            ? 'card-featured-google'
-                            : (isOpenBootcamp
-                              ? 'card-featured-openbootcamp'
-                              : (isBradesco
-                                ? 'card-featured-bradesco'
-                                : (isFiap
-                                  ? 'card-featured-fiap'
-                                  : (isIbm
-                                    ? 'card-featured-ibm'
-                                    : (isCisco
-                                      ? 'card-featured-cisco'
-                                      : (isWmc
-                                        ? 'card-featured-wmc'
-                                        : (isYouTube
-                                          ? 'card-featured-youtube'
-                                          : (isGuiaDeTI
-                                            ? 'card-featured-guiadeti'
-                                            : (isUsp || isAlura ? 'card-featured-guiadeti' : ''))))))))))))))))));
+      let cardClass = '';
+      if (isMsLearn) cardClass = 'card-featured-mslearn';
+      else if (isOcean) cardClass = 'card-featured-ocean';
+      else if (isSantander) cardClass = 'card-featured-santander';
+      else if (isDio) cardClass = 'card-featured-dio';
+      else if (isCursoEmVideo) cardClass = 'card-featured-cursoemvideo';
+      else if (isDsa) cardClass = 'card-featured-dsa';
+      else if (isCursa) cardClass = 'card-featured-cursa';
+      else if (isHarvard) cardClass = 'card-featured-harvard';
+      else if (isEvg) cardClass = 'card-featured-evg';
+      else if (isLumina) cardClass = 'card-featured-lumina';
+      else if (isIfrs) cardClass = 'card-featured-ifrs';
+      else if (isGoogleAtelie) cardClass = 'card-featured-google';
+      else if (isOpenBootcamp) cardClass = 'card-featured-openbootcamp';
+      else if (isBradesco) cardClass = 'card-featured-bradesco';
+      else if (isFiap) cardClass = 'card-featured-fiap';
+      else if (isIbm) cardClass = 'card-featured-ibm';
+      else if (isCisco) cardClass = 'card-featured-cisco';
+      else if (isWmc) cardClass = 'card-featured-wmc';
+      else if (isYouTube) cardClass = 'card-featured-youtube';
+      else if (isGuiaDeTI || isUsp || isAlura) cardClass = 'card-featured-guiadeti';
 
       const isBtnPrimary = isOcean || isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isEvg || isLumina || isIfrs || isGoogleAtelie || isOpenBootcamp || isKipper || isSegInfo || isGlaucia || isSacchi || isBnt || isKaSolution || isEbac || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isBradesco;
 
@@ -2204,6 +2184,8 @@ const app = {
       .replace(/"/g, '&amp;quot;');
   }
 };
+
+window.app = app;
 
 window.addEventListener('DOMContentLoaded', () => {
   app.init();

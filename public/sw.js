@@ -3,13 +3,13 @@
  * Caches static assets for offline access and faster subsequent loads
  */
 
-const CACHE_NAME = 'linolivre-v20261009';
+const CACHE_NAME = 'linolivre-v20261020';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/css/style.css?v=20261009',
-  '/js/i18n.js?v=20261009',
-  '/js/app.js?v=20261009',
+  '/css/style.css?v=20261020',
+  '/js/i18n.js?v=20261020',
+  '/js/app.js?v=20261020',
 ];
 
 const FONT_CACHE = 'linolivre-fonts-v1';
