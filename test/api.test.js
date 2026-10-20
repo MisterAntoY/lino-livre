@@ -687,6 +687,23 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resEbac.data.some(c => c.titulo.includes('UX/UI na Era da IA')), 'Deve conter webinar de UX/UI na Era da IA');
     assert.ok(resEbac.data.some(c => c.url.includes('ebaconline.com.br/webinars/product-webinar-2026-10-22')), 'Deve apontar para a URL do webinar product-webinar-2026-10-22');
     assert.ok(resEbac.data.some(c => c.titulo.includes('Introdução à Programação')), 'Deve conter curso gratuito de Introdução à Programação');
+
+    // 14.20 - Samsung Ocean Brasil (Cursos, Trilhas e Workshops em Parceria com USP & UEA)
+    const resOcean = await request('/api/cursos?plataforma=Samsung+Ocean');
+    assert.equal(resOcean.status, 200);
+    assert.ok(Array.isArray(resOcean.data));
+    assert.ok(resOcean.data.length >= 50, 'Deve conter acervo expressivo da Samsung Ocean Brasil (>= 50)');
+    assert.ok(resOcean.data.some(c => c.titulo.includes('Android') || c.titulo.includes('Programação')), 'Deve conter cursos de Android ou Programação');
+    assert.ok(resOcean.data.some(c => c.tipo === 'roadmap'), 'Deve conter trilhas formativas registradas como roadmaps');
+    assert.ok(resOcean.data.every(c => c.url.includes('oceanbrasil.com')), 'Todos os links devem apontar para oceanbrasil.com');
+    assert.ok(resOcean.data.every(c => c.descricao.toLowerCase().includes('certifica')), 'Todos os cursos Ocean devem mencionar certificado oficial');
+    assert.ok(resOcean.data.some(c => c.descricao.includes('USP') && c.descricao.includes('UEA')), 'Deve mencionar parcerias acadêmicas com USP e UEA');
+
+    // Validação de redirecionamento 302 direto (AGENTS.md)
+    const primeiroOcean = resOcean.data[0];
+    const resRedirectOcean = await request(`/api/cursos/${primeiroOcean.id}/acessar`);
+    assert.equal(resRedirectOcean.status, 302);
+    assert.equal(resRedirectOcean.headers.get('location'), primeiroOcean.url);
   });
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)
@@ -977,7 +994,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Validação de links cursa.app e menções a certificado gratuito
     assert.ok(resCursa.data.every(c => c.url.startsWith('https://cursa.app/')), 'Todos os links Cursa devem apontar para https://cursa.app/');
     assert.ok(resCursa.data.every(c => c.descricao && (
-      c.descricao.toLowerCase().includes('certificad') ||
+      c.descricao.toLowerCase().includes('certifica') ||
       c.descricao.toLowerCase().includes('certificat') ||
       c.descricao.toLowerCase().includes('certificate') ||
       c.descricao.includes('प्रमाणपत्र')
@@ -1016,6 +1033,17 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resRedirect = await request(`/api/cursos/${primeiroCursa.id}/acessar`);
     assert.equal(resRedirect.status, 302, 'Acesso ao curso deve responder com HTTP 302');
     assert.equal(resRedirect.headers.get('location'), primeiroCursa.url, 'Location deve coincidir com URL oficial do curso');
+
+    // 24.6 - Cursa: Banco de Exercícios e Simulados Práticos (cursa.app/pt/exercicios)
+    const resExercicios = await request('/api/cursos?tipo=exercicios');
+    assert.equal(resExercicios.status, 200);
+    assert.ok(Array.isArray(resExercicios.data));
+    assert.ok(resExercicios.data.length >= 200, 'Deve conter pelo menos 200 exercícios da Cursa catalogados');
+    assert.ok(resExercicios.data.some(e => e.url === 'https://cursa.app/pt/exercicios'), 'Deve conter o portal principal cursa.app/pt/exercicios');
+    const exPortal = resExercicios.data.find(e => e.url === 'https://cursa.app/pt/exercicios');
+    const resRedirectEx = await request(`/api/cursos/${exPortal.id}/acessar`);
+    assert.equal(resRedirectEx.status, 302, 'Redirecionamento para o portal de exercícios Cursa deve ser 302');
+    assert.equal(resRedirectEx.headers.get('location'), 'https://cursa.app/pt/exercicios');
   });
 
   // Teste 25: Plataformas Nacionais com Certificado Grátis (Fundação Bradesco, EV.G/ENAP, Lumina, IFRS) e Globais (Google Ateliê, OpenBootcamp) + Automação

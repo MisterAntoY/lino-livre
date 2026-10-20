@@ -31,6 +31,7 @@ const { uanTrabalhosData } = require('./uanTrabalhosSeedData');
 const { programacaoWebCursos } = require('./programacaoWebSeedData');
 const { jornadaDoDevList } = require('./jornadaDoDevData');
 const { cursaCoursesList } = require('./cursaCoursesData');
+const { cursaExerciciosList } = require('./cursaExerciciosData');
 const { harvardCoursesList } = require('./harvardCoursesData');
 const { evgCoursesList } = require('./evgCoursesData');
 const { luminaCoursesList } = require('./luminaCoursesData');
@@ -51,6 +52,7 @@ const { boraNaTechList } = require('./boraNaTechData');
 const { techGuideList } = require('./techGuideData');
 const { kaSolutionList } = require('./kaSolutionData');
 const { ebacCoursesList } = require('./ebacData');
+const { oceanBrasilList } = require('./oceanBrasilData');
 const {
 
   domCasmurroTexto,
@@ -1574,6 +1576,11 @@ function seed(dbInstance = null) {
     insertCurso.run(cur.titulo, cur.tipo || 'curso', cur.area, cur.plataforma, cur.url, cur.licenca, cur.nivel, cur.descricao);
   }
 
+  // Exercícios e Questionários Práticos da Plataforma Cursa (cursa.app/pt/exercicios)
+  for (const ex of cursaExerciciosList) {
+    insertCurso.run(ex.titulo, ex.tipo || 'exercicios', ex.area, ex.plataforma, ex.url, ex.licenca, ex.nivel, ex.descricao);
+  }
+
   // Cursos Gratuitos de Harvard Online (Harvard PLL Free) e Grandes Plataformas Acadêmicas (MIT OCW, Stanford)
   for (const hvd of harvardCoursesList) {
     insertCurso.run(hvd.titulo, hvd.tipo || 'curso', hvd.area, hvd.plataforma, hvd.url, hvd.licenca, hvd.nivel, hvd.descricao);
@@ -1677,6 +1684,11 @@ function seed(dbInstance = null) {
   // EBAC Online (Cursos Gratuitos, Webinars & Workshops com Certificado)
   for (const eb of ebacCoursesList) {
     insertCurso.run(eb.titulo, eb.tipo || 'curso', eb.area, eb.plataforma, eb.url, eb.licenca, eb.nivel, eb.descricao);
+  }
+
+  // Samsung Ocean Brasil (Cursos, Trilhas e Workshops em parceria com USP & UEA)
+  for (const oc of oceanBrasilList) {
+    insertCurso.run(oc.titulo, oc.tipo || 'curso', oc.area, oc.plataforma, oc.url, oc.licenca, oc.nivel, oc.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

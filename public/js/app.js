@@ -963,8 +963,21 @@ const app = {
     this.fonteCursoAtiva = '';
     this.plataformaCursoAtiva = '';
     this.youtubeCursoAtivo = false;
+    this.tipoCursoAtivo = '';
     document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-filtro') === area);
+    });
+    this.carregarCursos();
+  },
+
+  filtrarCursosPorTipo(tipo) {
+    this.tipoCursoAtivo = tipo;
+    this.areaCursoAtiva = '';
+    this.fonteCursoAtiva = '';
+    this.plataformaCursoAtiva = '';
+    this.youtubeCursoAtivo = false;
+    document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-filtro') === tipo);
     });
     this.carregarCursos();
   },
@@ -974,6 +987,7 @@ const app = {
     this.areaCursoAtiva = '';
     this.plataformaCursoAtiva = '';
     this.youtubeCursoAtivo = false;
+    this.tipoCursoAtivo = '';
     const filtroAlvo = (fonte || '').toLowerCase().includes('trilha') ? 'trilhainfo' : 'guiadeti';
     document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-filtro') === filtroAlvo);
@@ -986,6 +1000,7 @@ const app = {
     this.areaCursoAtiva = '';
     this.fonteCursoAtiva = '';
     this.plataformaCursoAtiva = '';
+    this.tipoCursoAtivo = '';
     document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-filtro') === 'youtube');
     });
@@ -997,6 +1012,7 @@ const app = {
     this.areaCursoAtiva = '';
     this.fonteCursoAtiva = '';
     this.youtubeCursoAtivo = false;
+    this.tipoCursoAtivo = '';
     document.querySelectorAll('#pills-cursos-areas .pill').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-filtro') === plataforma);
     });
@@ -1010,6 +1026,7 @@ const app = {
     try {
       const params = new URLSearchParams();
       params.append('excluir_roadmaps', 'true');
+      if (this.tipoCursoAtivo) params.append('tipo', this.tipoCursoAtivo);
       if (this.youtubeCursoAtivo) params.append('youtube', 'true');
       if (this.areaCursoAtiva) params.append('area', this.areaCursoAtiva);
       if (this.fonteCursoAtiva) params.append('fonte', this.fonteCursoAtiva);
@@ -1089,6 +1106,7 @@ const app = {
       const isBnt = (c.plataforma || '').includes('Bora na Tech');
       const isKaSolution = (c.plataforma || '').includes('KA Solution') || (c.url || '').includes('kasolution.');
       const isEbac = (c.plataforma || '').includes('EBAC') || (c.url || '').includes('ebaconline.com.br');
+      const isOcean = (c.plataforma || '').includes('Samsung Ocean') || (c.url || '').includes('oceanbrasil.com');
 
       if (isSantander) {
         btnTexto = ' Acessar Santander';
@@ -1103,8 +1121,11 @@ const app = {
         btnTexto = '🔬 Acessar DSA';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">🔬 Data Science Academy</span>`;
       } else if (isCursa) {
-        btnTexto = '🎓 Estudar no Cursa';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">🎓 Cursa • Certificado Grátis</span>`;
+        const isEx = (c.tipo === 'exercicios') || (c.url || '').includes('/exercicios');
+        btnTexto = isEx ? '📝 Resolver Exercícios no Cursa' : '🎓 Estudar no Cursa';
+        extraBadge = isEx
+          ? `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">📝 Cursa • Exercícios & Quizzes</span>`
+          : `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">🎓 Cursa • Certificado Grátis</span>`;
       } else if (isHarvard) {
         btnTexto = '🏛️ Acessar Harvard PLL';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5; font-weight:600;">🏛️ Harvard Online</span>`;
@@ -1198,6 +1219,9 @@ const app = {
       } else if (isEbac) {
         btnTexto = (c.url || '').includes('webinars') ? '🎟️ Inscrever-se no Evento EBAC' : '🎓 Acessar Curso na EBAC';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8; font-weight:600;">🎨 EBAC Online • Gratuito</span>`;
+      } else if (isOcean) {
+        btnTexto = c.tipo === 'roadmap' ? '🗺️ Explorar Trilha no Ocean' : '🎓 Inscrever-se no Samsung Ocean';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">🌊 Samsung Ocean • USP & UEA</span>`;
       } else if (isUsp) {
         btnTexto = ' Aulas USP';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;"> Cursos USP</span>`;
@@ -1206,49 +1230,53 @@ const app = {
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;"> Alura Aberta</span>`;
       }
 
-      const cardClass = isSantander
-        ? 'card-featured-santander'
-        : (isDio
-          ? 'card-featured-dio'
-          : (isCursoEmVideo
-            ? 'card-featured-cursoemvideo'
-            : (isDsa
-              ? 'card-featured-dsa'
-              : (isCursa
-                ? 'card-featured-cursa'
-                : (isHarvard
-                  ? 'card-featured-harvard'
-                  : (isEvg
-                    ? 'card-featured-evg'
-                    : (isLumina
-                      ? 'card-featured-lumina'
-                      : (isIfrs
-                        ? 'card-featured-ifrs'
-                        : (isGoogleAtelie
-                          ? 'card-featured-google'
-                          : (isOpenBootcamp
-                            ? 'card-featured-openbootcamp'
-                            : (isBradesco
-                              ? 'card-featured-bradesco'
-                              : (isFiap
-                                ? 'card-featured-fiap'
-                                : (isIbm
-                                  ? 'card-featured-ibm'
-                                  : (isCisco
-                                    ? 'card-featured-cisco'
-                                    : (isWmc
-                                      ? 'card-featured-wmc'
-                                      : (isYouTube
-                                        ? 'card-featured-youtube'
-                                        : (isGuiaDeTI
-                                          ? 'card-featured-guiadeti'
-                                          : (isUsp || isAlura ? 'card-featured-guiadeti' : '')))))))))))))))));
+      const cardClass = isOcean
+        ? 'card-featured-ocean'
+        : (isSantander
+          ? 'card-featured-santander'
+          : (isDio
+            ? 'card-featured-dio'
+            : (isCursoEmVideo
+              ? 'card-featured-cursoemvideo'
+              : (isDsa
+                ? 'card-featured-dsa'
+                : (isCursa
+                  ? 'card-featured-cursa'
+                  : (isHarvard
+                    ? 'card-featured-harvard'
+                    : (isEvg
+                      ? 'card-featured-evg'
+                      : (isLumina
+                        ? 'card-featured-lumina'
+                        : (isIfrs
+                          ? 'card-featured-ifrs'
+                          : (isGoogleAtelie
+                            ? 'card-featured-google'
+                            : (isOpenBootcamp
+                              ? 'card-featured-openbootcamp'
+                              : (isBradesco
+                                ? 'card-featured-bradesco'
+                                : (isFiap
+                                  ? 'card-featured-fiap'
+                                  : (isIbm
+                                    ? 'card-featured-ibm'
+                                    : (isCisco
+                                      ? 'card-featured-cisco'
+                                      : (isWmc
+                                        ? 'card-featured-wmc'
+                                        : (isYouTube
+                                          ? 'card-featured-youtube'
+                                          : (isGuiaDeTI
+                                            ? 'card-featured-guiadeti'
+                                            : (isUsp || isAlura ? 'card-featured-guiadeti' : ''))))))))))))))))));
 
-      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isEvg || isLumina || isIfrs || isGoogleAtelie || isOpenBootcamp || isKipper || isSegInfo || isGlaucia || isSacchi || isBnt || isKaSolution || isEbac || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isBradesco;
+      const isBtnPrimary = isOcean || isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isEvg || isLumina || isIfrs || isGoogleAtelie || isOpenBootcamp || isKipper || isSegInfo || isGlaucia || isSacchi || isBnt || isKaSolution || isEbac || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isBradesco;
 
 
       let logoHtml = '';
-      if (isDio) {
+      if (isOcean) {
+        logoHtml = `<img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="course-platform-logo">`;
+      } else if (isDio) {
         logoHtml = `<img src="/img/logos/dio.png" alt="DIO" class="course-platform-logo">`;
       } else if (isKipper || isSegInfo || isGlaucia || isSacchi) {
         logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo">`;

@@ -164,7 +164,8 @@ function carregarCursosPadrao() {
     ['boraNaTechData', 'boraNaTechList'],
     ['techGuideData', 'techGuideList'],
     ['kaSolutionData', 'kaSolutionList'],
-    ['ebacData', 'ebacCoursesList']
+    ['ebacData', 'ebacCoursesList'],
+    ['oceanBrasilData', 'oceanBrasilList']
   ];
   for (const [modulo, exportName] of fontesAdicionais) {
     try {

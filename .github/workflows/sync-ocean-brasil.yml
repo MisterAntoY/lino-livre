@@ -1,0 +1,48 @@
+name: 🌊 Sincronização Semanal - Samsung Ocean Brasil
+
+on:
+  schedule:
+    # Executa toda segunda-feira às 08:00 UTC (de 1 em 1 semana)
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-ocean:
+    name: 🌊 Atualizar Cursos e Trilhas Samsung Ocean Brasil
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Instalar dependências
+        run: npm install
+
+      - name: 🔄 Executar sincronizador Samsung Ocean Brasil
+        run: node scripts/sync_ocean_brasil.js
+
+      - name: 🧪 Validar integridade dos testes
+        run: npm test
+
+      - name: 💾 Commit e Push das atualizações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/database/oceanBrasilData.json src/database/oceanBrasilData.js docs/plataformas/SAMSUNG-OCEAN-STATUS.md biblioteca.db
+          if git diff --staged --quiet; then
+            echo "Nenhum curso novo identificado nesta ronda semanal da Samsung Ocean Brasil."
+          else
+            git commit -m "chore(sync): atualizar cursos e trilhas da Samsung Ocean Brasil [skip ci]"
+            git push origin main
+          fi
