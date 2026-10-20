@@ -1,9 +1,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { cursaCoursesList } = require('../src/database/cursaCoursesData');
+const { cursaExerciciosList } = require('../src/database/cursaExerciciosData');
 const { harvardCoursesList } = require('../src/database/harvardCoursesData');
 
-const allCourses = [...cursaCoursesList, ...harvardCoursesList];
+const allCourses = [...cursaCoursesList, ...cursaExerciciosList, ...harvardCoursesList];
 
 function escapeSql(str) {
   if (str === null || str === undefined) return 'NULL';

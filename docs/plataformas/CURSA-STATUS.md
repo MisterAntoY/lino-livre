@@ -11,9 +11,15 @@
 A plataforma **Cursa** (`cursa.app`) oferece centenas de cursos abertos com emissão de certificados digitais gratuitos em 5 idiomas (Português, Inglês, Espanhol, Francês e Hindi), além de uma plataforma interativa de **exercícios e questionários de múltipla escolha com gabarito comentado** para fixação de aprendizado.
 
 ### 📊 Métricas no Lino Livre
-- **Total de Itens Cadastrados:** 310 recursos oficiais da Cursa.
-- **Cursos com Certificado:** 52 cursos completos em 5 idiomas.
+- **Total de Itens Cadastrados da Cursa:** 4.627 recursos oficiais.
+- **Cursos Completos com Certificado:** 4.369 cursos nos 5 idiomas:
+  - 🇧🇷 **Português (`cursa.app/pt`):** 1.492 cursos
+  - 🇺🇸/🇬🇧 **Inglês (`cursa.app/en`):** 1.525 cursos
+  - 🇪🇸 **Espanhol (`cursa.app/es`):** 766 cursos
+  - 🇫🇷 **Francês (`cursa.app/fr`):** 378 cursos
+  - 🇮🇳 **Hindi (`cursa.app/hi`):** 208 cursos
 - **Exercícios & Simulados Práticos:** 258 módulos interativos com gabarito comentado.
+- **Total Geral de Cursos no Lino Livre:** 7.535 cursos.
 - **Áreas Cobertas:**
   - Inteligência Artificial, Machine Learning & Ciência de Dados
   - Programação Front-End, Back-End, Mobile e Games (Python, JavaScript, Java, etc.)

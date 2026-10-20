@@ -22,7 +22,11 @@ function initDatabase(dbPath = null, setAsInstance = true) {
 
   // Ativar verificação de chaves estrangeiras e resiliência a concorrência
   db.exec('PRAGMA foreign_keys = ON;');
-  db.exec('PRAGMA busy_timeout = 5000;');
+  db.exec('PRAGMA busy_timeout = 10000;');
+  try {
+    db.exec('PRAGMA journal_mode = WAL;');
+    db.exec('PRAGMA synchronous = NORMAL;');
+  } catch (_) {}
 
   // Migração defensiva: se houver tabela 'livros' antiga sem a coluna 'licenca', resetar
   try {

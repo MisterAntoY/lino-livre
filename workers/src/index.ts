@@ -95,11 +95,11 @@ app.get('/api/dashboard', async (c) => {
 
     const payload = {
       resumo: {
-        total_livros: totaisLivros?.total_livros || 104518,
+        total_livros: totaisLivros?.total_livros || 104848,
         total_leituras: totaisLivros?.total_leituras || 0,
-        total_autores: totalAutores || 35600,
-        total_categorias: totalCategorias || 28,
-        total_cursos: totalCursos || 1681,
+        total_autores: totalAutores || 37919,
+        total_categorias: totalCategorias || 29,
+        total_cursos: totalCursos || 7501,
         total_fontes: totalFontes || 32
       },
       formatos,
@@ -122,11 +122,11 @@ app.get('/api/dashboard', async (c) => {
     c.header('Cache-Control', 'public, max-age=300');
     return c.json({
       resumo: {
-        total_livros: 104518,
+        total_livros: 104848,
         total_leituras: 0,
-        total_autores: 35600,
-        total_categorias: 28,
-        total_cursos: 1681,
+        total_autores: 37919,
+        total_categorias: 29,
+        total_cursos: 7501,
         total_fontes: 32
       },
       formatos: [
@@ -572,9 +572,9 @@ app.get('/api/livros', async (c) => {
       pagina: numPage,
       limit: numLimit,
       limite: numLimit,
-      total: 104518,
-      total_pages: Math.ceil(104518 / numLimit),
-      total_paginas: Math.ceil(104518 / numLimit),
+      total: 104848,
+      total_pages: Math.ceil(104848 / numLimit),
+      total_paginas: Math.ceil(104848 / numLimit),
       data: fallbackLivros
     });
   }
