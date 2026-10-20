@@ -80,6 +80,55 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
 - **Fase 10 (Documentação e Arranque Final):**
   - Consolidação de marcas, `.env.example`, `README.md` e checklist final em `PLANO-RESOLUCAO.md`.
 
+### 2.4. Integração Spotify / Audiolivros & Plano de Gravação de Podcast
+- **Contexto & Diretriz do Usuário:** O usuário solicitou planejamento para gravação e disponibilização de episódios no Spotify, advertindo explicitamente contra alucinações sobre episódios já gravados (*"Não alucine, eu ainda não gravei nada na spotify"*).
+- **Decisão e Entrega:**
+  - Foi criado o artefato [`PLANO-GRAVACAO-E-SUGESTOES-PODCAST.md`](file:///Users/mendes/.gemini/antigravity/brain/792a8f78-d098-4ad1-8b64-c766376b98c5/PLANO-GRAVACAO-E-SUGESTOES-PODCAST.md) contendo o plano operacional de gravação, roteiros, sugestões de episódios (Clássicos de Angola, Literatura Lusófona, Hábitos Atômicos, Carreiras em TI e IA) e arquitetura de integração.
+  - **Zero Armazenamento de Áudio:** O servidor Lino Livre **NÃO** hospeda arquivos de áudio (MP3/WAV). A hospedagem é feita externamente no **Spotify for Podcasters** (antigo Anchor) com distribuição via feed RSS público e reprodução através do widget oficial do Spotify (`open.spotify.com/embed/show/...`).
+
+### 2.5. Resolução de Políticas RLS no Supabase (Categorias, Cursos, Fontes)
+- **Problema Relatado:** O Supabase Database Linter apontou alertas de segurança críticos:
+  ```text
+  RLS Enabled No Policy (public.categorias, public.cursos, public.fontes)
+  ```
+- **Causa Raiz:** O Row Level Security (RLS) estava ativo nas tabelas, porém sem políticas explícitas declaradas, o que impedia qualquer leitura pública via API cliente anônima (PostgREST).
+- **Decisão e Resolução:**
+  - Declaração de políticas de leitura pública permissiva para catálogos abertos:
+    ```sql
+    CREATE POLICY "leitura_publica" ON public.categorias FOR SELECT USING (true);
+    CREATE POLICY "leitura_publica" ON public.cursos FOR SELECT USING (true);
+    CREATE POLICY "leitura_publica" ON public.fontes FOR SELECT USING (true);
+    ```
+  - Bloqueio estrito de inserções, alterações e deleções para a role `anon` (código de erro PostgreSQL `42501` em tentativas de mutação não autenticadas).
+
+### 2.6. Auditoria de Portas, APIs, URLs, IDORs e Entradas via TDD Estrito
+- **Diretriz do Usuário:** *"Verifique todas as portas, API, url, idors, todo o tipo de entrada de dados, de forma detalhista, e APLIQUE A TEORIA DO TDD"*
+- **Metodologia Aplicada:** Ciclo rigoroso de TDD (Red -> Green -> Refactor) na suíte [`test/security_idor_tdd.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/security_idor_tdd.test.js) com 22 testes de regressão de segurança:
+  1. **Correção de Coluna Fantasma em Autores:** Em [`src/controllers/autoresController.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/controllers/autoresController.js), a consulta tentava selecionar a coluna inexistente `quantidade_disponivel`, causando erro 500. Removida e substituída por contagem segura.
+  2. **Blindagem Anti-SSRF em URLs de Imagens e Redirecionamentos:** Atualização em [`src/utils/urlValidator.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/utils/urlValidator.js) e [`workers/src/utils/urlValidator.ts`](file:///Users/mendes/Desktop/I%20am%20Abc/workers/src/utils/urlValidator.ts) bloqueando loopbacks IPv4 (`127.0.0.0/8`), `0.0.0.0/8`, IPv6 loopbacks (`::1`, `::`), link-local (`fe80::/10`), redes privadas e metadados cloud (`169.254.169.254`). Validação estrita aplicada também a links de capas (`capa_url`).
+  3. **Mitigação de IDOR Cross-Resource:** Na rota `GET /api/livros/:id/ler/:linkId`, validação estrita assegura que o `linkId` pertença obrigatoriamente ao `livroId` requisitado (`SELECT * FROM links_livros WHERE id = ? AND livro_id = ?`), impedindo referências cruzadas arbitrárias.
+  4. **Fila de Moderação `/api/sugestoes`:** Inclusão da tabela `sugestoes` em [`src/database/schema.sql`](file:///Users/mendes/Desktop/I%20am%20Abc/src/database/schema.sql) com sanitização de título, URL externa, proteção contra listas de pirataria e restrição de visualização restrita à chave administrativa.
+
+### 2.7. Sincronização do Contador e Eliminação de Números Fictícios (997 Obras Reais)
+- **Diretriz do Usuário:** *"atualize o contador"*
+- **Problema Detectado:** Existência de números de exemplo/fictícios residuais (`104.848`) em placeholders do frontend e fallbacks de degradação quando o servidor atingia limites de cota da D1.
+- **Valores REAIS Consolidados da Base de Dados:**
+  - **Total de Livros Abertos:** **997** (897 clássicos/acadêmicos + 100 livros de programação/GitHub da Fase 5).
+  - **Meta Coletiva Global:** **10.000.000** de livros livres.
+  - **Faltam Indexar:** **9.999.003**.
+  - **Porcentagem Atual:** **0.0100%** da meta.
+  - **Próximo Marco:** **1.000 Obras** (faltam apenas 3 obras para atingir o Marco 1).
+  - **Cursos Gratuitos:** **8.568**.
+  - **Autores:** **641**.
+  - **Categorias:** **20**.
+  - **Fontes Aprovadas:** **34** ativas.
+- **Ajustes Realizados:**
+  1. [`public/index.html`](file:///Users/mendes/Desktop/I%20am%20Abc/public/index.html): hodômetro `#placar-total-livros` inicializado em `997`, marco 1.000 com classe `active` e tag *"Próximo"*, pílulas de estatísticas atualizadas.
+  2. [`public/js/app.js`](file:///Users/mendes/Desktop/I%20am%20Abc/public/js/app.js): `totalLivrosAcervo: 997`, remoção de limiares artificiais e distribuições falsas em recálculos de agregados.
+  3. [`workers/src/index.ts`](file:///Users/mendes/Desktop/I%20am%20Abc/workers/src/index.ts): objeto `resumo_estavel` atualizado com as métricas reais em caso de degradação 503 da D1.
+  4. Script de auditoria automatizado [`scripts/corrigirMetricasDashboard.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/corrigirMetricasDashboard.js) com 100% de verificações verdes.
+  5. Deploy realizado no Cloudflare Workers (`https://lino-livre.linolivre.workers.dev`, Version ID: `9dfd75e7-75de-4081-b01f-10b93206030c`).
+
 ---
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
@@ -118,6 +167,11 @@ Ambos os backends aplicam:
 - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
 - `Origin-Agent-Cluster: ?1`
 - `Strict-Transport-Security (HSTS)` em ambiente de produção
+
+### 3.6. Proteção contra IDOR Cross-Resource e Integridade Referencial
+- **Validação de Propriedade do Recurso:** Na rota de leitura `GET /api/livros/:id/ler/:linkId`, o sistema garante que o `linkId` pertence de fato ao `livro_id` especificado na URL (`SELECT * FROM links_livros WHERE id = ? AND livro_id = ?`). Se um atacante tentar associar o ID de um livro público com o linkId de outra obra, o servidor responde com **HTTP 404 Not Found**, impedindo enumerações cruzadas (IDOR cross-resource).
+- **Validação Estrita de Identificadores Numéricos:** Parâmetros de rota (`:id`, `:linkId`) são convertidos e validados estritamente como números inteiros positivos (`/^\d+$/`). Entradas não numéricas ou payloads maliciosos são sumariamente rejeitados.
+- **Fila de Moderação Sanitizada:** O endpoint de submissão de sugestões (`POST /api/sugestoes`) valida tamanho máximo, caracteres de controle e protocolo do link externo antes de enfileirar no banco de dados.
 
 ---
 
