@@ -5,6 +5,7 @@
   // ╚══════════════════════════════════════════════════════════════╝
 
   "name": "lino-livre",
+  "account_id": "915a4372ce0d298d94b75276b8beda2f",
   "compatibility_date": "2026-10-10",
   "compatibility_flags": ["nodejs_compat"],
   "main": "workers/src/index.ts",
