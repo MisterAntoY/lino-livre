@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { getDatabase } = require('../database');
 
+const USER_AGENT_OFICIAL = 'LinoLivre/2.0 (+https://lino-livre.linolivre.workers.dev; contato@linolivre.workers.dev; biblioteca digital aberta educacional)';
 const CACHE_DIR = path.resolve(__dirname, '../../cache');
 
 function lerCache(fonteSlug, query) {
