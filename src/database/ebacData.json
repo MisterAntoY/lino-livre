@@ -1,0 +1,123 @@
+[
+  {
+    "idExterno": "ebac-webinar-uxui-ia-2026-10-22",
+    "titulo": "UX/UI na Era da IA: o que muda na profissão e como se preparar para o mercado (Webinar)",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/product-webinar-2026-10-22",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Webinar oficial gratuito da EBAC Online com certificação de participação. Ministrado por Léo Formigon (especialista em RHtech e carreiras digitais), explorando o impacto da Inteligência Artificial em UX/UI, competências mais valorizadas, posicionamento profissional e preparação para processos seletivos."
+  },
+  {
+    "idExterno": "ebac-curso-introducao-a-programacao",
+    "titulo": "Introdução à Programação (Curso Gratuito)",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/introducao-a-programacao",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Curso introdutório gratuito e 100% online da EBAC Online com certificado de estudo. Fundamentos de desenvolvimento de software, lógica de programação, variáveis, estruturas condicionais e funções para ingressar no mercado de tecnologia."
+  },
+  {
+    "idExterno": "ebac-curso-introducao-ao-marketing-digital",
+    "titulo": "Introdução ao Marketing Digital (Curso Gratuito)",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/introducao-ao-marketing-digital",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Curso gratuito e aberto da EBAC Online com certificação de conclusão. Conceitos essenciais de marketing digital, presença de marca nas redes sociais, estratégias de conteúdo, métricas e análise de campanhas."
+  },
+  {
+    "idExterno": "ebac-curso-comunicacao-inclusiva",
+    "titulo": "Comunicação Inclusiva para Sociedade e Negócios (Curso Gratuito)",
+    "tipo": "curso",
+    "area": "Metodologias Ágeis & Carreira Tech",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/comunicacao-inclusiva",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Curso aberto e gratuito da EBAC Online com certificado de horas de estudo. Diretrizes de comunicação acessível, diversidade, inclusão e impacto social no ambiente corporativo e nos negócios."
+  },
+  {
+    "idExterno": "ebac-workshop-qa-era-ia",
+    "titulo": "O Futuro do QA na Era da IA: Como Testar Software na Prática (Workshop)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/tech-workshop-10-27-28",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Workshop intensivo e gratuito da EBAC Online com certificação de estudo. Princípios de garantia de qualidade de software (Quality Assurance), testes automatizados, uso de ferramentas de IA para acelerar testes e melhores práticas de QA."
+  },
+  {
+    "idExterno": "ebac-workshop-prototipo-ia",
+    "titulo": "Da Ideia ao Protótipo: Crie uma Solução Funcional com IA (Workshop)",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/iaprot-workshop-2026-10-29-30",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Workshop prático e aberto da EBAC Online com certificação de estudo. Prototipação rápida, desenvolvimento assistido por Inteligência Artificial generativa, validação de produto e criação de MVPs funcionais."
+  },
+  {
+    "idExterno": "ebac-workshop-dados-ia",
+    "titulo": "Dados na Prática: Analise um Negócio com IA (Workshop)",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/tech-workshop-2026-10-14-15",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Workshop aberto e gratuito da EBAC Online com certificação de estudo prático. Fundamentos de análise de dados aplicada a negócios, identificação de insights estratégicos e aplicação de modelos de IA para tomada de decisão."
+  },
+  {
+    "idExterno": "ebac-workshop-product-manager",
+    "titulo": "Product Manager na Prática: da ideia à decisão de produto (Workshop)",
+    "tipo": "curso",
+    "area": "Metodologias Ágeis & Carreira Tech",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/product-workshop-2026-10-14-15",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Workshop intensivo gratuito da EBAC Online com certificado de estudo. Metodologias de gestão de produtos digitais, descoberta de produto (Discovery), roadmap, métricas de produto (KPIs e OKRs) e priorização com base em dados."
+  },
+  {
+    "idExterno": "ebac-workshop-design-grafico",
+    "titulo": "Design Gráfico: como transformar seu portfólio em renda (Workshop)",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/design-workshop-2026-10-20-22",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Workshop gratuito de design gráfico da EBAC Online com certificação de horas. Construção de portfólio profissional de impacto, precificação de projetos criativos, captação de clientes e atuação no mercado nacional e internacional."
+  },
+  {
+    "idExterno": "ebac-webinar-copywriting",
+    "titulo": "Copy na Prática: Como Transformar Conteúdo em Ação (Webinar)",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/marketing-webinar-2026-10-21",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Webinar aberto e gratuito da EBAC Online com certificado de participação. Técnicas de copywriting, gatilhos de engajamento, escrita persuasiva para canais digitais e conversão de audiência em resultados reais."
+  },
+  {
+    "idExterno": "ebac-workshop-meta-ads",
+    "titulo": "Meta Ads na Prática: o que você precisa saber de tráfego pago (Workshop)",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "EBAC Online",
+    "url": "https://ebaconline.com.br/webinars/marketing-workshop-2026-10-27-28",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Workshop gratuito da EBAC Online com certificação de estudo. Configuração de campanhas no Gerenciador de Anúncios da Meta (Facebook e Instagram), segmentação de público, otimização de orçamento e mensuração de ROAS."
+  }
+]

@@ -1,0 +1,167 @@
+[
+  {
+    "idExterno": "boranatech-plataforma-geral",
+    "titulo": "Bora na Tech? • Plataforma Completa de Carreira e Formação em TI",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Bússola e plataforma aberta de carreiras em tecnologia para iniciantes. Áreas, roadmaps passo a passo, cursos, projetos para portfólio, guia de IA e simuladores de entrevistas estruturados para acelerar a entrada no mercado de TI."
+  },
+  {
+    "idExterno": "boranatech-roadmaps",
+    "titulo": "Bora na Tech: Roadmaps e Planos de Estudo por Área",
+    "tipo": "roadmap",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/roadmaps",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Trilhas e cronogramas estruturados de estudo por área técnica (Front-End, Back-End, Full Stack, Dados, Cibersegurança, Cloud e Mobile), com ordem didática recomendada e priorização de fundamentos."
+  },
+  {
+    "idExterno": "boranatech-projetos",
+    "titulo": "Bora na Tech: Ideias e Desafios Práticos de Projetos para Portfólio",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/projetos",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Avançado",
+    "descricao": "Catálogo com especificações detalhadas de projetos reais para portfólio (APIs RESTful, Dashboards em Power BI, Pipelines ETL, Testes Automatizados com Cypress e Aplicações Full Stack)."
+  },
+  {
+    "idExterno": "boranatech-dicionario",
+    "titulo": "Bora na Tech: Dicionário Técnico de Termos de TI Descomplicados",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/dicionario",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Glossário técnico completo e didático explicando conceitos de programação, bancos de dados, infraestrutura, cloud, inteligência artificial e metodologias ágeis de forma acessível."
+  },
+  {
+    "idExterno": "boranatech-tecnologias-ranking",
+    "titulo": "Bora na Tech: Ranking e Mapa das Tecnologias Mais Demandadas",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/tecnologias/ranking",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Mapeamento analítico e comparativo das linguagens de programação, frameworks e ferramentas com maior volume de vagas e adesão no mercado de tecnologia brasileiro e global."
+  },
+  {
+    "idExterno": "boranatech-ingles",
+    "titulo": "Bora na Tech: Guia Prático de Inglês para o Mercado de TI",
+    "tipo": "curso",
+    "area": "Idiomas",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/ingles",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Guia de estudos com vocabulário essencial em inglês para desenvolvedores, termos corporativos em reuniões técnicas, elaboração de e-mails, documentação e preparação para entrevistas em inglês."
+  },
+  {
+    "idExterno": "boranatech-ia",
+    "titulo": "Bora na Tech: Guia de Inteligência Artificial e Ferramentas",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/ia",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Manual prático sobre quais ferramentas e copilotos de Inteligência Artificial utilizar para acelerar estudos, automação de código, revisão de arquiteturas e produtividade profissional."
+  },
+  {
+    "idExterno": "boranatech-entrevistas",
+    "titulo": "Bora na Tech: Treino e Preparação para Entrevistas de Emprego em TI",
+    "tipo": "curso",
+    "area": "Metodologias Ágeis & Carreira Tech",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/entrevistas",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Estratégias de preparação comportamental e técnica para processos seletivos em tecnologia, perguntas mais frequentes de recrutadores e simulação de entrevistas com IA."
+  },
+  {
+    "idExterno": "boranatech-areas-frontend",
+    "titulo": "Bora na Tech: Guia de Carreira em Front-End",
+    "tipo": "roadmap",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/areas/frontend",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Trilha completa e perfil da carreira Front-End: tecnologias essenciais (HTML, CSS, JavaScript, React/Vue/Angular), expectativas de mercado, salários médios e competências requeridas."
+  },
+  {
+    "idExterno": "boranatech-areas-backend",
+    "titulo": "Bora na Tech: Guia de Carreira em Back-End",
+    "tipo": "roadmap",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/areas/backend",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Trilha completa e perfil da carreira Back-End: arquitetura de APIs, bancos de dados relacionais e NoSQL, linguagens (Node.js, Java, Python, C#, Go), autenticação e segurança de servidores."
+  },
+  {
+    "idExterno": "boranatech-areas-dados",
+    "titulo": "Bora na Tech: Guia de Carreira em Ciência, Engenharia e Análise de Dados",
+    "tipo": "roadmap",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/areas/dados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Mapeamento das profissões de dados: Analista de Dados, Analista de BI, Engenheiro de Dados, Cientista de Dados e DBA. Ferramentas, linguagens (SQL, Python, R) e stacks em nuvem."
+  },
+  {
+    "idExterno": "boranatech-areas-ciberseguranca",
+    "titulo": "Bora na Tech: Guia de Carreira em Cibersegurança & Segurança da Informação",
+    "tipo": "roadmap",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/areas/ciberseguranca",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Caminhos profissionais na segurança digital: Blue Team (defesa), Red Team (pentest), AppSec (segurança de aplicações), GRC (Governança, Risco e Conformidade) e Forense Digital."
+  },
+  {
+    "idExterno": "boranatech-areas-cloud-devops",
+    "titulo": "Bora na Tech: Guia de Carreira em Cloud Computing & DevOps",
+    "tipo": "roadmap",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/areas/cloud",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Estrutura formativa em nuvem e operações: provedores AWS/Azure/GCP, containers Docker, orquestração com Kubernetes, automação CI/CD, FinOps e arquiteturas escaláveis."
+  },
+  {
+    "idExterno": "boranatech-areas-mobile",
+    "titulo": "Bora na Tech: Guia de Carreira em Desenvolvimento Mobile",
+    "tipo": "roadmap",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/areas/mobile",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Panorama das carreiras em mobile: desenvolvimento nativo iOS (Swift), Android nativo (Kotlin) e frameworks multiplataforma Flutter e React Native."
+  },
+  {
+    "idExterno": "boranatech-areas-uxui",
+    "titulo": "Bora na Tech: Guia de Carreira em UX/UI & Product Design",
+    "tipo": "roadmap",
+    "area": "Comunicação & Artes",
+    "plataforma": "Bora na Tech?",
+    "url": "https://boranatech.com.br/areas/uxui",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Caminhos profissionais em design de produtos digitais: UX Research, UI Design, Design Systems, usabilidade, heurísticas e prototipagem no Figma."
+  }
+]

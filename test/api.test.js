@@ -381,6 +381,18 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resRoadmapSh.data.some(r => r.url === 'https://roadmap.sh/devops'), 'Deve conter roadmap de DevOps');
     assert.ok(resRoadmapSh.data.some(r => r.url === 'https://roadmap.sh/frontend'), 'Deve conter roadmap de Frontend');
     assert.ok(resRoadmapSh.data.some(r => r.url === 'https://roadmap.sh/rust'), 'Deve conter roadmap de Rust');
+
+    // 10.5 - Awesome Roadmaps (github.com/liuchong/awesome-roadmaps)
+    const resAwesome = await request('/api/roadmaps?plataforma=Awesome+Roadmaps+(GitHub)');
+    assert.equal(resAwesome.status, 200);
+    assert.ok(resAwesome.data.length >= 70, 'Deve conter os roadmaps curados de Awesome Roadmaps (>= 70)');
+    assert.ok(resAwesome.data.some(r => r.url.includes('liuchong/awesome-roadmaps')), 'Deve conter repositório principal no GitHub');
+
+    // 10.6 - TechGuide.sh (Alura & Comunidade)
+    const resTechGuide = await request('/api/roadmaps?plataforma=TechGuide.sh+(Alura)');
+    assert.equal(resTechGuide.status, 200);
+    assert.ok(resTechGuide.data.length >= 40, 'Deve conter os guias T-Shaped de TechGuide.sh (>= 40)');
+    assert.ok(resTechGuide.data.some(r => r.url.includes('techguide.sh/pt-BR/path/')), 'URLs devem apontar para os paths de techguide.sh');
   });
 
   // Teste 11: Livros técnicos e manuais via GitHub (BibliotecaDev, italocamil0, Trilha Info)
@@ -493,9 +505,10 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resSantander = await request('/api/cursos?plataforma=Santander');
     assert.equal(resSantander.status, 200);
     assert.ok(Array.isArray(resSantander.data));
-    assert.ok(resSantander.data.length >= 30, 'Deve conter acervo expressivo do Santander Open Academy');
+    assert.ok(resSantander.data.length >= 100, 'Deve conter acervo expressivo do Santander Open Academy');
     assert.ok(resSantander.data.some(s => s.descricao.includes('Finaliza em') || s.descricao.includes('INSCRIÇÕES ABERTAS')), 'Santander deve conter prazos e datas de finalização');
     assert.ok(resSantander.data.some(s => s.descricao.includes('Banco Santander')), 'Deve conter certificação oficial do Banco Santander');
+    assert.ok(resSantander.data.some(s => s.url.includes('british-council-english-online-2026-3rd-call')), 'Deve conter a convocatória British Council English Online 2026 - 3rd Call');
 
     // 14.3 - Curso em Vídeo (Prof. Gustavo Guanabara)
     const resGuanabara = await request('/api/cursos?plataforma=Curso+em+V%C3%ADdeo');
@@ -527,7 +540,11 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
 
     const resCisco = await request('/api/cursos?plataforma=Cisco+Networking+Academy');
     assert.equal(resCisco.status, 200);
-    assert.ok(resCisco.data.length >= 5, 'Deve conter cursos da Cisco NetAcad');
+    assert.ok(resCisco.data.length >= 70, 'Deve conter catálogo completo da Cisco NetAcad (pelo menos 70 cursos)');
+    assert.ok(resCisco.data.some(c => c.titulo.includes('Cybersecurity') || c.titulo.includes('Cibersegurança')), 'Deve conter cursos de cibersegurança');
+    assert.ok(resCisco.data.some(c => c.titulo.includes('CCNA')), 'Deve conter certificações CCNA');
+    assert.ok(resCisco.data.some(c => c.titulo.includes('Python')), 'Deve conter cursos Python');
+    assert.ok(resCisco.data.some(c => c.url.includes('netacad.com')), 'Deve apontar para netacad.com');
 
     const resIbm = await request('/api/cursos?plataforma=IBM+SkillsBuild');
     assert.equal(resIbm.status, 200);
@@ -613,6 +630,63 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resAbe.data.some(c => c.titulo.includes('HTML') || c.titulo.includes('Web') || c.titulo.includes('Java')), 'Deve conter cursos de Desenvolvimento/HTML');
     assert.ok(resAbe.data.some(c => c.url.includes('abe.aliancapelaeducacao.com.br')), 'URLs devem apontar para o portal da ABE');
     assert.ok(resAbe.data.every(c => c.licenca === 'gratuito'), 'Todos os cursos da ABE devem ser gratuitos');
+
+    // 14.13 - Fernanda Kipper (Docker & Docker Compose no YouTube)
+    const resKipper = await request('/api/cursos?plataforma=YouTube+(Fernanda+Kipper)');
+    assert.equal(resKipper.status, 200);
+    assert.ok(Array.isArray(resKipper.data));
+    assert.ok(resKipper.data.length >= 7, 'Deve conter a formação e aulas de Docker da Fernanda Kipper (>= 7)');
+    assert.ok(resKipper.data.some(c => c.titulo.includes('Docker') && c.titulo.includes('Compose')), 'Deve conter Docker e Docker Compose');
+    assert.ok(resKipper.data.some(c => c.url.includes('PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf')), 'Deve apontar para a playlist oficial no YouTube');
+
+    // 14.14 - SegInfoBrasil (Segurança em Redes no YouTube)
+    const resSegInfo = await request('/api/cursos?plataforma=YouTube+(SegInfoBrasil)');
+    assert.equal(resSegInfo.status, 200);
+    assert.ok(Array.isArray(resSegInfo.data));
+    assert.ok(resSegInfo.data.length >= 10, 'Deve conter os módulos de Segurança em Redes de SegInfoBrasil (>= 10)');
+    assert.ok(resSegInfo.data.some(c => c.titulo.includes('Segurança em Redes')), 'Deve conter módulos de Segurança em Redes');
+    assert.ok(resSegInfo.data.some(c => c.url.includes('PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD')), 'Deve apontar para a playlist de SegInfoBrasil');
+
+    // 14.15 - Glaucia Lemos (TypeScript & Azure SQL / Prisma no YouTube)
+    const resGlaucia = await request('/api/cursos?plataforma=YouTube+(Glaucia+Lemos)');
+    assert.equal(resGlaucia.status, 200);
+    assert.ok(Array.isArray(resGlaucia.data));
+    assert.ok(resGlaucia.data.length >= 10, 'Deve conter as formações de TypeScript e Azure SQL de Glaucia Lemos (>= 10)');
+    assert.ok(resGlaucia.data.some(c => c.titulo.includes('TypeScript')), 'Deve conter TypeScript Zero to Hero');
+    assert.ok(resGlaucia.data.some(c => c.url.includes('PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H')), 'Deve apontar para a playlist de TypeScript');
+    assert.ok(resGlaucia.data.some(c => c.url.includes('PLb2HQ45KP0WuiiSRWrN44YNkmwiUbla8T')), 'Deve apontar para a playlist de Azure SQL & Prisma');
+
+    // 14.16 - Gustavo Sacchi (LangChain no YouTube)
+    const resSacchi = await request('/api/cursos?plataforma=YouTube+(Gustavo+Sacchi)');
+    assert.equal(resSacchi.status, 200);
+    assert.ok(Array.isArray(resSacchi.data));
+    assert.ok(resSacchi.data.length >= 4, 'Deve conter os módulos de LangChain de Gustavo Sacchi (>= 4)');
+    assert.ok(resSacchi.data.some(c => c.titulo.includes('LangChain')), 'Deve conter módulos de LangChain');
+    assert.ok(resSacchi.data.some(c => c.url.includes('PLZibr6lRx3W9KD-hTt2LyQOSLgsj5xWT1')), 'Deve apontar para a playlist de LangChain');
+
+    // 14.17 - Bora na Tech? (boranatech.com.br)
+    const resBnt = await request('/api/cursos?plataforma=Bora+na+Tech%3F');
+    assert.equal(resBnt.status, 200);
+    assert.ok(Array.isArray(resBnt.data));
+    assert.ok(resBnt.data.length >= 10, 'Deve conter os cursos e trilhas de Bora na Tech (>= 10)');
+    assert.ok(resBnt.data.some(c => c.url.includes('boranatech.com.br')), 'Deve apontar para boranatech.com.br');
+
+    // 14.18 - KA Solution (Webinars Oficiais no Zoom & Cursos KAtrocinados)
+    const resKa = await request('/api/cursos?plataforma=KA+Solution');
+    assert.equal(resKa.status, 200);
+    assert.ok(Array.isArray(resKa.data));
+    assert.ok(resKa.data.length >= 8, 'Deve conter os cursos e webinars da KA Solution (>= 8)');
+    assert.ok(resKa.data.some(c => c.titulo.includes('DPO & LGPD na prática!')), 'Deve conter o webinar oficial de DPO & LGPD na prática');
+    assert.ok(resKa.data.some(c => c.url.includes('kasolution.zoom.us/webinar/register/1417907858239/WN_MRsQS4yXRqeHfUcodlbfrQ')), 'Deve apontar para o link de registro oficial no Zoom');
+
+    // 14.19 - EBAC Online (Cursos Gratuitos e Webinars de Tecnologia & Design)
+    const resEbac = await request('/api/cursos?plataforma=EBAC+Online');
+    assert.equal(resEbac.status, 200);
+    assert.ok(Array.isArray(resEbac.data));
+    assert.ok(resEbac.data.length >= 10, 'Deve conter cursos gratuitos e webinars da EBAC Online (>= 10)');
+    assert.ok(resEbac.data.some(c => c.titulo.includes('UX/UI na Era da IA')), 'Deve conter webinar de UX/UI na Era da IA');
+    assert.ok(resEbac.data.some(c => c.url.includes('ebaconline.com.br/webinars/product-webinar-2026-10-22')), 'Deve apontar para a URL do webinar product-webinar-2026-10-22');
+    assert.ok(resEbac.data.some(c => c.titulo.includes('Introdução à Programação')), 'Deve conter curso gratuito de Introdução à Programação');
   });
 
   // Teste 15: Recursos Técnicos e Cursos em Alemão (DE)

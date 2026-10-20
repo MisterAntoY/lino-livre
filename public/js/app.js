@@ -45,7 +45,7 @@ const app = {
     velocidade: 1.0,
     utterance: null
   },
-  totalLivrosAcervo: 695,
+  totalLivrosAcervo: 104518,
 
   async init() {
     // 1. Internacionalização: carrega pt + idioma preferido e aplica ao DOM
@@ -1082,6 +1082,13 @@ const app = {
       const isLumina = (c.plataforma || '').includes('Lumina') || (c.url || '').includes('lumina.ufrgs.br');
       const isGoogleAtelie = (c.plataforma || '').includes('Google Ateliê') || (c.url || '').includes('learndigital.withgoogle.com') || (c.url || '').includes('skillshop.exceedlms.com');
       const isOpenBootcamp = (c.plataforma || '').includes('OpenBootcamp') || (c.plataforma || '').includes('Kogno') || (c.url || '').includes('open-bootcamp.com');
+      const isKipper = (c.plataforma || '').includes('Fernanda Kipper');
+      const isSegInfo = (c.plataforma || '').includes('SegInfoBrasil');
+      const isGlaucia = (c.plataforma || '').includes('Glaucia Lemos');
+      const isSacchi = (c.plataforma || '').includes('Gustavo Sacchi');
+      const isBnt = (c.plataforma || '').includes('Bora na Tech');
+      const isKaSolution = (c.plataforma || '').includes('KA Solution') || (c.url || '').includes('kasolution.');
+      const isEbac = (c.plataforma || '').includes('EBAC') || (c.url || '').includes('ebaconline.com.br');
 
       if (isSantander) {
         btnTexto = ' Acessar Santander';
@@ -1170,6 +1177,27 @@ const app = {
       } else if (isOpenBootcamp) {
         btnTexto = '🚀 Acessar OpenBootcamp';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#f5f3ff; color:#6d28d9; border-color:#ddd6fe; font-weight:600;">💻 OpenBootcamp • 100% Gratuito</span>`;
+      } else if (isKipper) {
+        btnTexto = '▶ Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5; font-weight:600;">📺 Fernanda Kipper • Docker</span>`;
+      } else if (isSegInfo) {
+        btnTexto = '▶ Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5; font-weight:600;">📺 SegInfoBrasil • Redes</span>`;
+      } else if (isGlaucia) {
+        btnTexto = '▶ Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">📺 Glaucia Lemos • TS</span>`;
+      } else if (isSacchi) {
+        btnTexto = '▶ Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#b45309; border-color:#fde68a; font-weight:600;">📺 Gustavo Sacchi • LangChain</span>`;
+      } else if (isBnt) {
+        btnTexto = '🧭 Acessar Bora na Tech';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef9c3; color:#854d0e; border-color:#fde047; font-weight:600;">🚀 Bora na Tech?</span>`;
+      } else if (isKaSolution) {
+        btnTexto = (c.url || '').includes('zoom.us') ? '🎟️ Inscrever-se no Webinar (Zoom)' : '🎓 Acessar KA Solution';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">🛡️ KA Solution • Treinamento Oficial</span>`;
+      } else if (isEbac) {
+        btnTexto = (c.url || '').includes('webinars') ? '🎟️ Inscrever-se no Evento EBAC' : '🎓 Acessar Curso na EBAC';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8; font-weight:600;">🎨 EBAC Online • Gratuito</span>`;
       } else if (isUsp) {
         btnTexto = ' Aulas USP';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;"> Cursos USP</span>`;
@@ -1216,12 +1244,20 @@ const app = {
                                           ? 'card-featured-guiadeti'
                                           : (isUsp || isAlura ? 'card-featured-guiadeti' : '')))))))))))))))));
 
-      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isEvg || isLumina || isIfrs || isGoogleAtelie || isOpenBootcamp || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isBradesco;
+      const isBtnPrimary = isSantander || isDio || isCursoEmVideo || isDsa || isCursa || isHarvard || isMit || isStanford || isEvg || isLumina || isIfrs || isGoogleAtelie || isOpenBootcamp || isKipper || isSegInfo || isGlaucia || isSacchi || isBnt || isKaSolution || isEbac || isFiap || isEuCapacito || isIbm || isCisco || isEscolaTrab || isAws || isMsLearn || isFcc || isKultivi || isSenai || isOracleOne || isGeneration || isWmc || isYouTube || isGuiaDeTI || isUsp || isAlura || isBradesco;
 
 
       let logoHtml = '';
       if (isDio) {
         logoHtml = `<img src="/img/logos/dio.png" alt="DIO" class="course-platform-logo">`;
+      } else if (isKipper || isSegInfo || isGlaucia || isSacchi) {
+        logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo">`;
+      } else if (isBnt) {
+        logoHtml = `<span style="font-size:1.3rem;">🚀</span>`;
+      } else if (isKaSolution) {
+        logoHtml = `<img src="/img/logos/kasolution.png" alt="KA Solution" class="course-platform-logo">`;
+      } else if (isEbac) {
+        logoHtml = `<img src="/img/logos/ebac.svg" alt="EBAC Online" class="course-platform-logo">`;
       } else if (isSantander) {
         logoHtml = `<img src="/img/logos/santander.png" alt="Santander" class="course-platform-logo">`;
       } else if (isCursoEmVideo) {
@@ -1372,6 +1408,9 @@ const app = {
       const isRoadmapSh = (r.plataforma || '').includes('Roadmap.sh');
       const isTrilha = (r.plataforma || '').includes('Trilha Info');
       const isGuiaTI = (r.plataforma || '').includes('Guia de TI');
+      const isAwesome = (r.plataforma || '').includes('Awesome Roadmaps');
+      const isTechGuide = (r.plataforma || '').includes('TechGuide');
+      const isBoraNaTech = (r.plataforma || '').includes('Bora na Tech');
       let badgeOrigem = ' Roadmap Aberto';
       let logoRoadmap = '';
       if (isRoadmapSh) {
@@ -1383,6 +1422,15 @@ const app = {
       } else if (isGuiaTI) {
         badgeOrigem = ' Guia de TI';
         logoRoadmap = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo">`;
+      } else if (isAwesome) {
+        badgeOrigem = '⭐ Awesome Roadmaps';
+        logoRoadmap = `<img src="/img/logos/github.svg" alt="GitHub" class="course-platform-logo">`;
+      } else if (isTechGuide) {
+        badgeOrigem = '🧭 TechGuide.sh (Alura)';
+        logoRoadmap = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo">`;
+      } else if (isBoraNaTech) {
+        badgeOrigem = '🚀 Bora na Tech?';
+        logoRoadmap = `<span style="font-size:1.3rem;">🚀</span>`;
       }
 
       return `
@@ -1989,11 +2037,11 @@ const app = {
       }
     } catch (_) {}
 
-    this.atualizarPlacarMeta(this.totalLivrosAcervo || 695);
+    this.atualizarPlacarMeta(this.totalLivrosAcervo || 104518);
   },
 
   atualizarPlacarMeta(total) {
-    if (!total || total < 1) total = this.totalLivrosAcervo || 695;
+    if (!total || total < 1) total = this.totalLivrosAcervo || 104518;
     this.totalLivrosAcervo = total;
 
     const meta = 10000000;
@@ -2031,19 +2079,31 @@ const app = {
     if (total >= 1000000) proximoMarco = 10000000;
     if (elNextTarget) elNextTarget.textContent = fmt.format(proximoMarco);
 
-    const m1k = document.getElementById('milestone-1k');
-    const m10k = document.getElementById('milestone-10k');
-    if (m1k) {
-      if (total >= 1000) {
-        m1k.classList.remove('active');
-        m1k.classList.add('reached');
-        const tag = m1k.querySelector('.milestone-tag');
+    const milestones = [
+      { id: 'milestone-1k', val: 1000 },
+      { id: 'milestone-10k', val: 10000 },
+      { id: 'milestone-100k', val: 100000 },
+      { id: 'milestone-1m', val: 1000000 }
+    ];
+    let nextActiveSet = false;
+    for (const m of milestones) {
+      const el = document.getElementById(m.id);
+      if (!el) continue;
+      const tag = el.querySelector('.milestone-tag');
+      if (total >= m.val) {
+        el.classList.remove('active');
+        el.classList.add('reached');
         if (tag) tag.textContent = '';
-      }
-    }
-    if (m10k) {
-      if (total >= 1000 && total < 10000) {
-        m10k.classList.add('active');
+      } else if (!nextActiveSet) {
+        el.classList.remove('reached');
+        el.classList.add('active');
+        if (tag) {
+          tag.textContent = (typeof t === 'function' ? t('ui.goal.nextMilestone') : '') || 'Próximo';
+        }
+        nextActiveSet = true;
+      } else {
+        el.classList.remove('active', 'reached');
+        if (tag) tag.textContent = '';
       }
     }
 
@@ -2057,13 +2117,13 @@ const app = {
     }
 
     if (elBarra) {
-      const visualWidth = Math.max(1.5, Math.min(100, (total / meta) * 100));
+      const visualWidth = Math.max(1.0, Math.min(100, (total / meta) * 100));
       elBarra.style.width = `${visualWidth}%`;
     }
   },
 
   compartilharMeta10M() {
-    const total = this.totalLivrosAcervo || 695;
+    const total = this.totalLivrosAcervo || 104518;
     const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
     const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);

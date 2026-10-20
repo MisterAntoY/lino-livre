@@ -1,0 +1,57 @@
+[
+  {
+    "idExterno": "sacchi-langchain-master",
+    "titulo": "Curso Completo de LangChain para Iniciantes (20 Aulas) - Gustavo Sacchi",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "YouTube (Gustavo Sacchi)",
+    "url": "https://www.youtube.com/playlist?list=PLZibr6lRx3W9KD-hTt2LyQOSLgsj5xWT1",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Formação completa em LangChain com 20 aulas práticas ministrada por Gustavo Sacchi no YouTube (curso aberto com certificação de estudo). Construção de chatbots inteligentes, fluxos conversacionais estruturados com LCEL, histórico de mensagens, agentes autônomos e arquiteturas RAG (Retrieval-Augmented Generation) com bancos vetoriais."
+  },
+  {
+    "idExterno": "sacchi-langchain-01-intro",
+    "titulo": "LangChain para Iniciantes • Aula 1: O que é LangChain e Primeiro Chatbot",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "YouTube (Gustavo Sacchi)",
+    "url": "https://www.youtube.com/watch?v=F3a37yC0hS4&list=PLZibr6lRx3W9KD-hTt2LyQOSLgsj5xWT1",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Conceitos fundamentais do framework LangChain no YouTube (estudo aberto com certificado de aprendizado). Instalação das bibliotecas, configuração de chaves de API e conexão com modelos de linguagem (LLMs)."
+  },
+  {
+    "idExterno": "sacchi-langchain-02-prompts-parsers",
+    "titulo": "LangChain para Iniciantes • Aula 2: Prompt Templates e Output Parsers com LCEL",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "YouTube (Gustavo Sacchi)",
+    "url": "https://www.youtube.com/playlist?list=PLZibr6lRx3W9KD-hTt2LyQOSLgsj5xWT1",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Criação de prompts dinâmicos e estruturação de respostas com parsers JSON e Pydantic no YouTube (formação prática e certificação de conclusão). Uso de LangChain Expression Language (LCEL) com operador pipe."
+  },
+  {
+    "idExterno": "sacchi-langchain-03-rag-vectors",
+    "titulo": "LangChain para Iniciantes • Aula 3: RAG na Prática (Document Loaders, Embeddings e Vetores)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "YouTube (Gustavo Sacchi)",
+    "url": "https://www.youtube.com/playlist?list=PLZibr6lRx3W9KD-hTt2LyQOSLgsj5xWT1",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Implementação completa de Retrieval-Augmented Generation (RAG) no YouTube (formação técnica com certificado de estudo). Divisão de documentos com TextSplitters, geração de embeddings e armazenamento em bancos vetoriais como ChromaDB e FAISS."
+  },
+  {
+    "idExterno": "sacchi-langchain-04-agents-tools",
+    "titulo": "LangChain para Iniciantes • Aula 4: Agentes de IA e Chamada de Ferramentas (Tools & Agents)",
+    "tipo": "curso",
+    "area": "Inteligência Artificial & Dados",
+    "plataforma": "YouTube (Gustavo Sacchi)",
+    "url": "https://www.youtube.com/playlist?list=PLZibr6lRx3W9KD-hTt2LyQOSLgsj5xWT1",
+    "licenca": "gratuito",
+    "nivel": "Intermediário a Avançado",
+    "descricao": "Criação de agentes autônomos capazes de tomar decisões e executar ferramentas externas no YouTube (conteúdo prático com certificação de conclusão). Integração com busca web, calculadoras e APIs corporativas."
+  }
+]

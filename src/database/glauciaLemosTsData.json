@@ -1,0 +1,123 @@
+[
+  {
+    "idExterno": "glaucia-ts-zero-to-hero-master",
+    "titulo": "Curso Completo: TypeScript - Zero to Hero (93 Aulas) - Glaucia Lemos",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/playlist?list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Avançado",
+    "descricao": "Formação completa e prática em TypeScript com 93 aulas ministrada por Glaucia Lemos no YouTube (curso aberto com certificação de estudo). Do zero absoluto ao nível avançado: tsconfig, tipagem estática, Tuplas, Enums, Funções, Classes, Interfaces, Type Guards, Conditional Types, Mapped Types, Generics e projeto com Express.js."
+  },
+  {
+    "idExterno": "glaucia-ts-mod01-fundamentos",
+    "titulo": "TypeScript Zero to Hero • Módulo 1: Introdução, Ambiente e tsconfig.json",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=u7K1sdnCv5Y&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Introdução ao ecossistema TypeScript no YouTube (formação prática e certificado de conclusão de módulo). O que é TypeScript, vantagens sobre JavaScript puro, playground oficial, preparação do ambiente no VS Code e configuração do arquivo tsconfig.json."
+  },
+  {
+    "idExterno": "glaucia-ts-mod02-tipos-basicos",
+    "titulo": "TypeScript Zero to Hero • Módulo 2: Sistema de Tipos, Tuplas, Enums e Type Annotation",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=ocjS96i27zk&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Domínio dos tipos de dados no YouTube (aprendizado com certificado de estudo). Type annotation em tipos primitivos (boolean, number, string, bigint), arrays tipados, tuplas heterogêneas, enums numéricos e de texto, e os tipos especiais any, unknown, void, never e null/undefined."
+  },
+  {
+    "idExterno": "glaucia-ts-mod03-funcoes",
+    "titulo": "TypeScript Zero to Hero • Módulo 3: Funções, Parâmetros Opcionais e Rest Parameters",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=AU7-s7Ucock&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Declaração e tipagem rigorosa de funções em TypeScript no YouTube (formação técnica com certificado de estudo). Parâmetros obrigatórios e opcionais (optional parameters), valores padrão (default parameters) e listas variáveis de argumentos com rest parameters."
+  },
+  {
+    "idExterno": "glaucia-ts-mod04-poo-classes",
+    "titulo": "TypeScript Zero to Hero • Módulo 4: Programação Orientada a Objetos, Classes e Herança",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=7W3PNpoCB40&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "POO aplicada com TypeScript no YouTube (formação aberta com certificado prático). Definição de classes, modificadores de acesso (public, private, protected e readonly), encapsulamento com getters e setters, herança com super, membros estáticos e classes abstratas."
+  },
+  {
+    "idExterno": "glaucia-ts-mod05-interfaces",
+    "titulo": "TypeScript Zero to Hero • Módulo 5: Interfaces, Contratos de Código e Extensão",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=kr-7yJxMfuU&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Contratos de código e arquitetura de software no YouTube (estudo com certificação de conclusão). Como declarar interfaces, propriedades opcionais e de leitura, métodos, extensão de interfaces com extends e composição limpa."
+  },
+  {
+    "idExterno": "glaucia-ts-mod06-tipos-avancados",
+    "titulo": "TypeScript Zero to Hero • Módulo 6: Tipos Avançados, Type Guards, Casting e Assertion",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=2hE57wR86YY&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Manipulação avançada do sistema de tipos no YouTube (formação especializada com certificado de estudo). Intersection types, estreitamento de tipos com Type Guards (typeof, instanceof, predicates), Type Casting seguro e Type Assertions com as."
+  },
+  {
+    "idExterno": "glaucia-ts-mod07-condicional-satisfies",
+    "titulo": "TypeScript Zero to Hero • Módulo 7: Conditional Types, Mapped Types e Satisfies Operator",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=nBhTRUHMgng&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Recursos modernos do compilador TypeScript no YouTube (conteúdo técnico com certificado prático). Tipos condicionais com inferência ternária, tipos mapeados (MappedTypes), utilitários built-in e validação de estruturas sem perda de inferência com o operador satisfies."
+  },
+  {
+    "idExterno": "glaucia-ts-mod08-generics",
+    "titulo": "TypeScript Zero to Hero • Módulo 8: Generics, Restrições e Classes Genéricas",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=YES6DVWDrP8&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Programação genérica e reutilização de código no YouTube (formação com certificação de estudo). Criação de funções genéricas com <T>, generics constraints com extends, generic classes e generic interfaces para bibliotecas e aplicações robustas."
+  },
+  {
+    "idExterno": "glaucia-ts-mod09-hands-on-express",
+    "titulo": "TypeScript Zero to Hero • Módulo 9: Módulos e Projeto Hands-on com Express.js",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/watch?v=bz2PeVJUgyM&list=PLb2HQ45KP0Wsk-p_0c6ImqBAEFEY-LU9H",
+    "licenca": "gratuito",
+    "nivel": "Intermediário a Avançado",
+    "descricao": "Módulos, namespaces e construção de uma API REST completa com Node.js, Express e TypeScript no YouTube por Glaucia Lemos (curso aberto com certificação de estudo). Boas práticas de arquitetura e deploy."
+  },
+  {
+    "idExterno": "glaucia-fullstack-azure-prisma",
+    "titulo": "Curso Completo: Aplicação Full Stack com Azure SQL & Prisma - Glaucia Lemos",
+    "tipo": "curso",
+    "area": "Desenvolvimento Web & Mobile",
+    "plataforma": "YouTube (Glaucia Lemos)",
+    "url": "https://www.youtube.com/playlist?list=PLb2HQ45KP0WuiiSRWrN44YNkmwiUbla8T",
+    "licenca": "gratuito",
+    "nivel": "Intermediário a Avançado",
+    "descricao": "Formação prática e completa construindo uma aplicação Full Stack de ponta a ponta por Glaucia Lemos no YouTube (curso aberto com certificação de estudo). Node.js, Express, TypeScript, ORM Prisma e banco de dados relacional na nuvem com Microsoft Azure SQL Database."
+  }
+]

@@ -41,6 +41,16 @@ const { fluenciaAiList } = require('./fluenciaAiData');
 const { recodeCoursesList } = require('./recodeData');
 const { codeIotCoursesList } = require('./codeIotData');
 const { abeCoursesList } = require('./abeCoursesData');
+const { netacadCoursesList } = require('./netacadCoursesData');
+const { awesomeRoadmapsList } = require('./awesomeRoadmapsData');
+const { fernandaKipperList } = require('./fernandaKipperData');
+const { segInfoBrasilList } = require('./segInfoBrasilData');
+const { glauciaLemosTsList } = require('./glauciaLemosTsData');
+const { langchainSacchiList } = require('./langchainSacchiData');
+const { boraNaTechList } = require('./boraNaTechData');
+const { techGuideList } = require('./techGuideData');
+const { kaSolutionList } = require('./kaSolutionData');
+const { ebacCoursesList } = require('./ebacData');
 const {
 
   domCasmurroTexto,
@@ -1617,6 +1627,56 @@ function seed(dbInstance = null) {
   // Cursos Gratuitos da Aliança pela Educação (ABE / Instituto Somos - abe.aliancapelaeducacao.com.br - IA, Dados, Cloud, ESG, Gestão)
   for (const abe of abeCoursesList) {
     insertCurso.run(abe.titulo, abe.tipo || 'curso', abe.area, abe.plataforma, abe.url, abe.licenca, abe.nivel, abe.descricao);
+  }
+
+  // Cursos Oficiais da Cisco Networking Academy & Skills for All (netacad.com - Redes, Cibersegurança, Programação, IA, Suporte)
+  for (const cisco of netacadCoursesList) {
+    insertCurso.run(cisco.titulo, cisco.tipo || 'curso', cisco.area, cisco.plataforma, cisco.url, cisco.licenca, cisco.nivel, cisco.descricao);
+  }
+
+  // Awesome Roadmaps (github.com/liuchong/awesome-roadmaps - Roteiros Curados de Carreira e Estudo em TI)
+  for (const r of awesomeRoadmapsList) {
+    insertCurso.run(r.titulo, 'roadmap', r.area, r.plataforma, r.url, r.licenca, r.nivel, r.descricao);
+  }
+
+  // Curso DOCKER + DOCKER COMPOSE por Fernanda Kipper | Dev (YouTube)
+  for (const fk of fernandaKipperList) {
+    insertCurso.run(fk.titulo, fk.tipo || 'curso', fk.area, fk.plataforma, fk.url, fk.licenca, fk.nivel, fk.descricao);
+  }
+
+  // Curso COMPLETO Segurança em Redes de Computadores por SegInfoBrasil (YouTube)
+  for (const sib of segInfoBrasilList) {
+    insertCurso.run(sib.titulo, sib.tipo || 'curso', sib.area, sib.plataforma, sib.url, sib.licenca, sib.nivel, sib.descricao);
+  }
+
+  // Cursos de TypeScript e Full Stack Azure por Glaucia Lemos (YouTube)
+  for (const gl of glauciaLemosTsList) {
+    insertCurso.run(gl.titulo, gl.tipo || 'curso', gl.area, gl.plataforma, gl.url, gl.licenca, gl.nivel, gl.descricao);
+  }
+
+  // Curso Completo de LangChain para Iniciantes por Gustavo Sacchi (YouTube)
+  for (const gs of langchainSacchiList) {
+    insertCurso.run(gs.titulo, gs.tipo || 'curso', gs.area, gs.plataforma, gs.url, gs.licenca, gs.nivel, gs.descricao);
+  }
+
+  // Bora na Tech? (boranatech.com.br - Plataforma de Carreira, Roadmaps e Projetos)
+  for (const bnt of boraNaTechList) {
+    insertCurso.run(bnt.titulo, bnt.tipo || 'curso', bnt.area, bnt.plataforma, bnt.url, bnt.licenca, bnt.nivel, bnt.descricao);
+  }
+
+  // TechGuide.sh (techguide.sh - Alura & Comunidade - Guias do Profissional em T)
+  for (const tg of techGuideList) {
+    insertCurso.run(tg.titulo, tg.tipo || 'roadmap', tg.area, tg.plataforma, tg.url, tg.licenca, tg.nivel, tg.descricao);
+  }
+
+  // KA Solution (Webinars Oficiais no Zoom & Cursos KAtrocinados)
+  for (const ka of kaSolutionList) {
+    insertCurso.run(ka.titulo, ka.tipo || 'curso', ka.area, ka.plataforma, ka.url, ka.licenca, ka.nivel, ka.descricao);
+  }
+
+  // EBAC Online (Cursos Gratuitos, Webinars & Workshops com Certificado)
+  for (const eb of ebacCoursesList) {
+    insertCurso.run(eb.titulo, eb.tipo || 'curso', eb.area, eb.plataforma, eb.url, eb.licenca, eb.nivel, eb.descricao);
   }
 
   // Inserir Catálogo de Podcasts & Audiolivros (Integração Spotify)

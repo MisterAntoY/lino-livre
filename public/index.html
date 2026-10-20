@@ -178,19 +178,19 @@
             <div class="goal-counter-box">
               <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
               <div class="counter-number-row">
-                <span class="counter-odometer" id="placar-total-livros">695</span>
+                <span class="counter-odometer" id="placar-total-livros">104.518</span>
                 <span class="counter-divider">/</span>
                 <span class="counter-target">10.000.000</span>
               </div>
-              <span class="counter-pct" id="placar-porcentagem">0.0069% da meta</span>
+              <span class="counter-pct" id="placar-porcentagem">1.0452% da meta</span>
             </div>
           </div>
         </div>
 
         <!-- Barra de Progresso Visual e Marcos Históricos -->
         <div class="goal-progress-wrapper">
-          <div class="goal-progress-bar-bg" role="progressbar" aria-valuenow="695" aria-valuemin="0" aria-valuemax="10000000" id="placar-progressbar-container">
-            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 1.5%;"></div>
+          <div class="goal-progress-bar-bg" role="progressbar" aria-valuenow="104518" aria-valuemin="0" aria-valuemax="10000000" id="placar-progressbar-container">
+            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 1.05%;"></div>
           </div>
           
           <!-- Marcos da Jornada / Milestones -->
@@ -199,22 +199,22 @@
               <span class="milestone-dot"></span>
               <span class="milestone-text">0</span>
             </div>
-            <div class="milestone-step active" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
+            <div class="milestone-step reached" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
               <span class="milestone-dot"></span>
               <span class="milestone-text">1.000</span>
-              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>
             </div>
-            <div class="milestone-step" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
+            <div class="milestone-step reached" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
               <span class="milestone-dot"></span>
               <span class="milestone-text">10.000</span>
             </div>
-            <div class="milestone-step" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
+            <div class="milestone-step reached" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
               <span class="milestone-dot"></span>
               <span class="milestone-text">100.000</span>
             </div>
-            <div class="milestone-step" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
+            <div class="milestone-step active" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
               <span class="milestone-dot"></span>
               <span class="milestone-text">1.000.000</span>
+              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>
             </div>
             <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
               <span class="milestone-dot gold"></span>
@@ -229,7 +229,7 @@
             <div class="goal-stat-pill">
 
               <div>
-                <span class="stat-val" id="placar-stat-atual">695</span>
+                <span class="stat-val" id="placar-stat-atual">104.518</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
               </div>
             </div>
@@ -243,14 +243,14 @@
             <div class="goal-stat-pill">
 
               <div>
-                <span class="stat-val" id="placar-stat-faltam">9.999.305</span>
+                <span class="stat-val" id="placar-stat-faltam">9.895.482</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
               </div>
             </div>
             <div class="goal-stat-pill">
 
               <div>
-                <span class="stat-val" id="placar-stat-next-target">1.000</span>
+                <span class="stat-val" id="placar-stat-next-target">1.000.000</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
               </div>
             </div>
@@ -410,11 +410,18 @@
           <button class="pill" data-filtro="Santander" onclick="app.filtrarCursosPorPlataforma('Santander')"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo"> Santander Academy</button>
           <button class="pill pill-youtube" data-filtro="Curso em Vídeo" onclick="app.filtrarCursosPorPlataforma('Curso em Vídeo')"><img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="pill-logo pill-logo-round"> Curso em Vídeo (Guanabara)</button>
           <button class="pill pill-youtube" data-filtro="Programação Web" onclick="app.filtrarCursosPorPlataforma('Programação Web')"><img src="/img/logos/youtube.svg" alt="Programação Web" class="pill-logo"> Programação Web</button>
+          <button class="pill pill-youtube" data-filtro="Fernanda Kipper" onclick="app.filtrarCursosPorPlataforma('Fernanda Kipper')"><img src="/img/logos/youtube.svg" alt="Fernanda Kipper" class="pill-logo"> Fernanda Kipper (Docker)</button>
+          <button class="pill pill-youtube" data-filtro="SegInfoBrasil" onclick="app.filtrarCursosPorPlataforma('SegInfoBrasil')"><img src="/img/logos/youtube.svg" alt="SegInfoBrasil" class="pill-logo"> SegInfoBrasil (Redes)</button>
+          <button class="pill pill-youtube" data-filtro="Glaucia Lemos" onclick="app.filtrarCursosPorPlataforma('Glaucia Lemos')"><img src="/img/logos/youtube.svg" alt="Glaucia Lemos" class="pill-logo"> Glaucia Lemos (TS)</button>
+          <button class="pill pill-youtube" data-filtro="Gustavo Sacchi" onclick="app.filtrarCursosPorPlataforma('Gustavo Sacchi')"><img src="/img/logos/youtube.svg" alt="Gustavo Sacchi" class="pill-logo"> Gustavo Sacchi (LangChain)</button>
+          <button class="pill" data-filtro="Bora na Tech" onclick="app.filtrarCursosPorPlataforma('Bora na Tech')">🚀 Bora na Tech?</button>
           <button class="pill" data-filtro="Jornada do Dev" onclick="app.filtrarCursosPorPlataforma('Jornada do Dev')">🚀 Jornada do Dev</button>
           <button class="pill" data-filtro="Fluência AI" onclick="app.filtrarCursosPorPlataforma('Fluência AI')">🧠 Fluência AI</button>
           <button class="pill" data-filtro="Recode" onclick="app.filtrarCursosPorPlataforma('Recode')">🌐 Recode</button>
           <button class="pill" data-filtro="Code IoT" onclick="app.filtrarCursosPorPlataforma('Code IoT')">🤖 Code IoT (Samsung & USP)</button>
           <button class="pill" data-filtro="Aliança pela Educação (ABE)" onclick="app.filtrarCursosPorPlataforma('Aliança pela Educação (ABE)')">🎓 Aliança pela Educação (ABE)</button>
+          <button class="pill" data-filtro="KA Solution" onclick="app.filtrarCursosPorPlataforma('KA Solution')"><img src="/img/logos/kasolution.png" alt="KA Solution" class="pill-logo"> KA Solution (Webinars & KAtrocinados)</button>
+          <button class="pill" data-filtro="EBAC Online" onclick="app.filtrarCursosPorPlataforma('EBAC Online')"><img src="/img/logos/ebac.svg" alt="EBAC Online" class="pill-logo"> EBAC Online (Cursos & Webinars)</button>
           <button class="pill" data-filtro="Data Science Academy" onclick="app.filtrarCursosPorPlataforma('Data Science Academy')"><img src="/img/logos/dsa.png" alt="Data Science Academy" class="pill-logo"> Data Science Academy (DSA)</button>
           <button class="pill" data-filtro="FIAP ON" onclick="app.filtrarCursosPorPlataforma('FIAP ON')"><img src="/img/logos/fiap.png" alt="FIAP" class="pill-logo"> FIAP ON</button>
           <button class="pill" data-filtro="Eu Capacito" onclick="app.filtrarCursosPorPlataforma('Eu Capacito')"><img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="pill-logo"> Eu Capacito</button>
@@ -479,7 +486,10 @@
           <button class="pill active" data-filtro="" onclick="app.filtrarRoadmapsPorOrigem('')" data-i18n="ui.roadmaps.all">Todos os Roadmaps</button>
           <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo"> Trilha Info (BR)</button>
           <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo"> Roadmap.sh (95 roadmaps)</button>
+          <button class="pill" data-filtro="Awesome Roadmaps" onclick="app.filtrarRoadmapsPorOrigem('Awesome Roadmaps')">⭐ Awesome Roadmaps (GitHub)</button>
           <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo"> Guia de TI</button>
+          <button class="pill" data-filtro="TechGuide.sh" onclick="app.filtrarRoadmapsPorOrigem('TechGuide.sh')">🧭 TechGuide.sh (Alura)</button>
+          <button class="pill" data-filtro="Bora na Tech" onclick="app.filtrarRoadmapsPorOrigem('Bora na Tech')">🚀 Bora na Tech?</button>
           <button class="pill" data-filtro="frontend" onclick="app.filtrarRoadmapsPorTermo('Frontend')"> Frontend</button>
           <button class="pill" data-filtro="backend" onclick="app.filtrarRoadmapsPorTermo('Backend')"> Backend</button>
           <button class="pill" data-filtro="devops" onclick="app.filtrarRoadmapsPorTermo('DevOps')"> DevOps & Cloud</button>

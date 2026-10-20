@@ -1,0 +1,79 @@
+[
+  {
+    "idExterno": "kipper-docker-curso-completo",
+    "titulo": "Curso Completo Docker + Docker Compose: Do Zero ao Deploy - Fernanda Kipper",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (Fernanda Kipper)",
+    "url": "https://www.youtube.com/playlist?list=PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Curso completo e prático de Docker e Docker Compose ministrado por Fernanda Kipper no YouTube (formação prática aberta e certificação de conclusão de estudos). Cobre fundamentos de containers, imagens, volumes, networks, Dockerfile, Compose, containers para Frontend (Angular + Nginx), Proxy Reverso e deploy em produção."
+  },
+  {
+    "idExterno": "kipper-docker-01-do-zero",
+    "titulo": "Docker do Zero: Tutorial Completo com Deploy de Aplicações",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (Fernanda Kipper)",
+    "url": "https://www.youtube.com/watch?v=DdoncfOdru8&list=PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Entenda os fundamentos do Docker no YouTube (formação aberta com certificado de aprendizado prático). Conceitos de imagens vs containers, volumes, redes e como utilizar esses conceitos para criar ambientes de desenvolvimento portáveis e prontos para deploy."
+  },
+  {
+    "idExterno": "kipper-docker-02-intensivao",
+    "titulo": "Intensivão Docker em 2 Horas: Docker Push, Pull, Compose e Dockerfile",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (Fernanda Kipper)",
+    "url": "https://www.youtube.com/watch?v=DQjZyHwci-0&list=PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Imersão de 2 horas no YouTube (formação aberta com certificação de estudo). Prática com os principais comandos do Docker: docker build, docker push, docker pull, criação de Dockerfile otimizado e orquestração prática com Docker Compose."
+  },
+  {
+    "idExterno": "kipper-docker-03-vs-vms",
+    "titulo": "A Real Diferença entre Docker e Máquinas Virtuais (Containers vs VMs)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (Fernanda Kipper)",
+    "url": "https://www.youtube.com/watch?v=ZWor5luY_Q4&list=PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Explicação conceitual e arquitetural detalhada no YouTube (conteúdo aberto com certificado de aprendizado). Isolamento de kernel, consumo de memória, overhead de hypervisors vs namespaces/cgroups do Linux e quando usar containers ou VMs."
+  },
+  {
+    "idExterno": "kipper-docker-04-frontend-nginx",
+    "titulo": "Como Configurar o Docker para Frontend: Angular + Nginx",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (Fernanda Kipper)",
+    "url": "https://www.youtube.com/watch?v=F2au3FXq9Y4&list=PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Passo a passo no YouTube (formação técnica aberta e certificado de estudo prático). Empacotamento de aplicação frontend em Angular utilizando build multi-stage e servindo os estáticos em produção com o servidor web Nginx em container ultraleve."
+  },
+  {
+    "idExterno": "kipper-docker-05-docker-compose",
+    "titulo": "Aprenda Docker Compose em 15 Minutos: Orquestração Simples de Containers",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (Fernanda Kipper)",
+    "url": "https://www.youtube.com/watch?v=D_ha0g9yS2E&list=PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Como subir múltiplos serviços conectados com um único arquivo docker-compose.yml e docker compose up no YouTube (estudo aberto e certificado prático). Aplicação backend, frontend e banco de dados integrados."
+  },
+  {
+    "idExterno": "kipper-docker-06-proxy-reverso",
+    "titulo": "Docker + Proxy Reverso (Nginx) para Hospedar Múltiplos Projetos",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (Fernanda Kipper)",
+    "url": "https://www.youtube.com/watch?v=qtMxOE4vIho&list=PLNCSWIsR6ADKRq-XBvAcRd4XtqLj3f_mf",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Arquitetura profissional no YouTube (formação aberta com certificado de conclusão prática). Container de Proxy Reverso (Nginx) direcionando requisições com base em subdomínios e portas para múltiplos projetos rodando no mesmo host."
+  }
+]

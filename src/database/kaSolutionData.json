@@ -1,0 +1,90 @@
+[
+  {
+    "idExterno": "kasolution-webinar-dpo-lgpd",
+    "titulo": "DPO & LGPD na prática! - KA Solution (Webinar Oficial)",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "KA Solution",
+    "url": "https://kasolution.zoom.us/webinar/register/1417907858239/WN_MRsQS4yXRqeHfUcodlbfrQ#/registration",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Treinamento e webinar oficial gratuito ministrado pela KA Solution no Zoom. Abrange as principais diretrizes da Lei Geral de Proteção de Dados (LGPD), boas práticas corporativas, atuação e fiscalização da ANPD, o papel estratégico do Encarregado de Dados (DPO) segundo a CBO, trilogia de certificação oficial EXIN para DPO, classificação entre controlador e operador, e os 3 passos fundamentais do Programa de Adequação (Assessment, Documentation and Operation) com certificado de participação gratuito."
+  },
+  {
+    "idExterno": "kasolution-scrum-foundation",
+    "titulo": "Scrum Foundation & Metodologias Ágeis na Prática (Cursos KAtrocinados)",
+    "tipo": "curso",
+    "area": "Metodologias Ágeis & Carreira Tech",
+    "plataforma": "KA Solution",
+    "url": "https://www.kasolution.com.br/cursos-katrocinados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Treinamento aberto e gratuito do projeto KAtrocinados da KA Solution. Imersão em fundamentos ágeis, framework Scrum (papéis, eventos e artefatos), dinâmicas de sprint planning e certificado de conclusão gratuito com acessibilidade em Libras."
+  },
+  {
+    "idExterno": "kasolution-itil-fundamentals",
+    "titulo": "ITIL 4 Fundamentals & Gestão de Serviços de TI (Cursos KAtrocinados)",
+    "tipo": "curso",
+    "area": "Metodologias Ágeis & Carreira Tech",
+    "plataforma": "KA Solution",
+    "url": "https://www.kasolution.com.br/cursos-katrocinados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Formação aberta do programa KAtrocinados com foco nas melhores práticas mundiais de gerenciamento de serviços de TI (ITSM). Abrange Sistema de Valor de Serviço (SVS), 4 dimensões do gerenciamento de serviço, princípios orientadores e certificado de participação gratuito."
+  },
+  {
+    "idExterno": "kasolution-azure-fundamentals",
+    "titulo": "Microsoft Azure Fundamentals (AZ-900): Nuvem na Prática (Cursos KAtrocinados)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "KA Solution",
+    "url": "https://www.kasolution.com.br/cursos-katrocinados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Treinamento oficial de fundamentos de computação em nuvem Microsoft Azure pelo projeto KAtrocinados da KA Solution. Conceitos de IaaS, PaaS, SaaS, segurança, privacidade, governança e conformidade em nuvem com certificado de conclusão de horas de estudo."
+  },
+  {
+    "idExterno": "kasolution-ia-copilot",
+    "titulo": "Fundamentos de Inteligência Artificial & Microsoft Copilot (Cursos KAtrocinados)",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "KA Solution",
+    "url": "https://www.kasolution.com.br/cursos-katrocinados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Capacitação prática do programa KAtrocinados em conceitos fundamentais de Inteligência Artificial generativa, engenharia de prompt, Microsoft Copilot no ambiente corporativo e ética em IA com certificado oficial de participação gratuito."
+  },
+  {
+    "idExterno": "kasolution-sap-cloud",
+    "titulo": "SAP S/4HANA Cloud & Indústria 4.0: Carreiras e Ecossistema (Workshops KA Solution)",
+    "tipo": "curso",
+    "area": "Tecnologia & Guias Digitais",
+    "plataforma": "KA Solution",
+    "url": "https://www.kasolution.com.br/cursos-katrocinados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Intermediário",
+    "descricao": "Workshop aberto e gratuito da KA Solution em parceria com o ecossistema SAP. Visão geral de SAP S/4HANA Cloud, transformação digital na Indústria 4.0, trilhas de certificação e orientações de carreira com certificado de participação gratuito."
+  },
+  {
+    "idExterno": "kasolution-seguranca-iso27001",
+    "titulo": "Segurança da Informação & ISO/IEC 27001 (Cursos KAtrocinados)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "KA Solution",
+    "url": "https://www.kasolution.com.br/cursos-katrocinados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Curso introdutório do projeto KAtrocinados cobrindo os pilares de confidencialidade, integridade e disponibilidade (CID), controles da norma ISO/IEC 27001, gestão de riscos cibernéticos e certificação de participação de estudo aberta."
+  },
+  {
+    "idExterno": "kasolution-power-bi",
+    "titulo": "Power BI para Análise e Visualização de Dados (Cursos KAtrocinados)",
+    "tipo": "curso",
+    "area": "Ciência de Dados & Inteligência Artificial",
+    "plataforma": "KA Solution",
+    "url": "https://www.kasolution.com.br/cursos-katrocinados",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Formação prática do programa KAtrocinados da KA Solution em Business Intelligence. Extração, transformação e carregamento de dados (Power Query), modelagem relacional, fórmulas DAX básicas e criação de dashboards interativos com certificado de estudo gratuito."
+  }
+]

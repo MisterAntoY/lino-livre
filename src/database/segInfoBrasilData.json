@@ -1,0 +1,156 @@
+[
+  {
+    "idExterno": "seginfobrasil-curso-completo-master",
+    "titulo": "Curso Completo: Segurança em Redes de Computadores (165 Aulas) - SegInfoBrasil",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/playlist?list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Iniciante a Avançado",
+    "descricao": "Formação completa e aberta com 165 aulas em 14 módulos ministrada pela SegInfoBrasil no YouTube (formação prática e certificação de estudo). Abrange arquitetura OSI/TCP-IP, defesa de perímetro, ataques DoS/DDoS, segurança em Layer 2, NAT, ACL, Firewalls NGFW, IDS/IPS, VPN, Proxy e Controle de Acesso NAC."
+  },
+  {
+    "idExterno": "seginfobrasil-mod01-intro",
+    "titulo": "Segurança em Redes • Módulo 1: Introdução à Segurança de Redes de Computadores",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=4Viqe-6f-wM&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Visão geral do curso de segurança em redes pela SegInfoBrasil no YouTube (conteúdo aberto com certificado de aprendizado prático). Apresentação da metodologia, relevância do profissional de cibersegurança e estrutura de proteção corporativa."
+  },
+  {
+    "idExterno": "seginfobrasil-mod02-fundamentos",
+    "titulo": "Segurança em Redes • Módulo 2: Fundamentos de Cibersegurança, Tríade CIA e Riscos",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=uhy2Ow15w-o&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Conceitos fundamentais de segurança da informação no YouTube (formação aberta com certificado de estudo). A tríade CIA (Confidencialidade, Integridade e Disponibilidade), autenticação, não-repúdio, análise e gestão de riscos, classificação de ativos e criptografia."
+  },
+  {
+    "idExterno": "seginfobrasil-mod03-redes",
+    "titulo": "Segurança em Redes • Módulo 3: Fundamentos de Redes, Modelos OSI e TCP/IP",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=U4sXWsdAmwg&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Iniciante",
+    "descricao": "Arquitetura e comunicação de redes no YouTube (formação com certificação de estudo). Camadas dos modelos OSI e TCP/IP, endereçamento MAC e IP, portas, protocolos de transporte (TCP/UDP), switches, VLANs e roteadores."
+  },
+  {
+    "idExterno": "seginfobrasil-mod04-perimetro",
+    "titulo": "Segurança em Redes • Módulo 4: Arquitetura de Defesa de Perímetro, Zonas e DMZ",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=R86ZoJB53Y4&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Estratégias de proteção de perímetro no YouTube (estudo de segurança com certificado prático). Segurança em camadas (Defense-in-Depth), segmentação de zonas, redes LAN, WAN, DMZ, segurança em redes sem fio (WLAN), data center, nuvem e VPN de acesso remoto."
+  },
+  {
+    "idExterno": "seginfobrasil-mod05-ataques",
+    "titulo": "Segurança em Redes • Módulo 5: Análise e Mitigação de Ataques Cibernéticos (DoS, Spoofing, Malware)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=RBNq4xAaEKY&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Estudo detalhado de vetores de ameaça cibernética no YouTube (formação prática e certificação de estudo). Negação de serviço (DoS/DDoS, TCP/ICMP/SYN Flood, Ping of Death, LAND, SMURF), Spoofing, Sniffing, Man-in-the-Middle (MITM), Phishing, SQL Injection e Ransomware."
+  },
+  {
+    "idExterno": "seginfobrasil-mod06-layer2",
+    "titulo": "Segurança em Redes • Módulo 6: Segurança e Hardening em Camada 2 (Layer 2)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=plX-Ej_TGRc&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Técnicas essenciais de hardening de switches no YouTube (formação aberta com certificado prático). Port Security, prevenção contra VLAN Hopping, proteção de Spanning Tree (STP), DHCP Snooping, Dynamic ARP Inspection (DAI) e IP Source Guard."
+  },
+  {
+    "idExterno": "seginfobrasil-mod07-nat-acl",
+    "titulo": "Segurança em Redes • Módulo 7: Tradução de Endereços (NAT) e Listas de Controle de Acesso (ACL)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=4bg3vr23Ze8&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Implementação prática de NAT (Estático, Dinâmico e PAT) e Listas de Controle de Acesso (ACLs padrão e estendidas) no YouTube (conteúdo prático e certificação de estudo). Filtragem de pacotes e restrição de tráfego de rede."
+  },
+  {
+    "idExterno": "seginfobrasil-mod08-firewalls",
+    "titulo": "Segurança em Redes • Módulo 8: Firewalls de Próxima Geração (NGFW) e Filtragem de Pacotes",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=NCqWo9SuDfw&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Arquitetura e implementação de firewalls corporativos no YouTube (formação especializada com certificado de estudo). Diferenças entre Stateless, Stateful, Proxy de Aplicação e Next-Generation Firewalls (NGFW), políticas de segurança e melhores práticas de design."
+  },
+  {
+    "idExterno": "seginfobrasil-mod09-ids-ips",
+    "titulo": "Segurança em Redes • Módulo 9: Sistemas de Detecção e Prevenção de Intrusão (IDS / IPS)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=Iu4zo_yZVFY&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Funcionamento prático de sistemas IDS (Intrusion Detection System) e IPS (Intrusion Prevention System) no YouTube (formação técnica e certificação de estudo). Análise baseada em assinaturas, detecção de anomalias, respostas automatizadas a intrusões e comparativos de mercado."
+  },
+  {
+    "idExterno": "seginfobrasil-mod10-vpn",
+    "titulo": "Segurança em Redes • Módulo 10: Redes Privadas Virtuais (VPNs IPsec e SSL/TLS)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=96Yww1D4R7o&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Conceitos e implementação de túneis de comunicação segura no YouTube (formação com certificado prático de estudo). Arquiteturas Site-to-Site e Remote Access VPN (RAVPN), protocolos IPsec (AH e ESP), IKE, SSL/TLS e criptografia de tráfego de dados."
+  },
+  {
+    "idExterno": "seginfobrasil-mod11-proxy",
+    "titulo": "Segurança em Redes • Módulo 11: Proteção Web e Servidores Proxy Corporativos",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=zvciS0L8ILw&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Servidores Proxy diretos e reversos no YouTube (formação aberta com certificado de aprendizado). Filtragem de conteúdo web, inspeção de tráfego HTTP/HTTPS, cache de requisições, balanceamento de carga e prevenção de vazamento de dados."
+  },
+  {
+    "idExterno": "seginfobrasil-mod12-email-siem",
+    "titulo": "Segurança em Redes • Módulo 12: Proteção de E-mail, Monitoramento Contínuo e SIEM",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=FbHr-lA4Mvs&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Intermediário",
+    "descricao": "Mecanismos de autenticação e proteção de correio eletrônico no YouTube (estudo com certificação de conclusão). SPF, DKIM, DMARC, gateways antispam, centralização de logs e integração com ferramentas de SIEM para auditoria e detecção de incidentes."
+  },
+  {
+    "idExterno": "seginfobrasil-mod14-nac-aaa",
+    "titulo": "Segurança em Redes • Módulo 14: Controle de Acesso à Rede (AAA, 802.1X e NAC)",
+    "tipo": "curso",
+    "area": "DevOps, Cloud & Infraestrutura",
+    "plataforma": "YouTube (SegInfoBrasil)",
+    "url": "https://www.youtube.com/watch?v=82gcRvZ9jEI&list=PLuk2EqaEM-lZFgodturu8VhHRaNaNvgiD",
+    "licenca": "gratuito",
+    "nivel": "Avançado",
+    "descricao": "Gerenciamento de identidades e controle de acesso corporativo no YouTube (formação com certificado de conclusão). Arquitetura AAA (Authentication, Authorization, Accounting), protocolos RADIUS e TACACS+, autenticação de portas 802.1X e Network Access Control (NAC)."
+  }
+]
