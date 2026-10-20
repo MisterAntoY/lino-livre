@@ -1755,6 +1755,68 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     });
     assert.equal(resSsrf.status, 400, 'URL SSRF/metadados deve ser rejeitada com 400');
   });
+
+  // Teste 31: WAF e Defesa de Borda (Scanners Maliciosos e Sondas)
+  test('31. WAF de Borda: bloqueia scanners ofensivos (HTTP 403) e sondas de caminhos sensíveis (HTTP 404)', async () => {
+    // 31.1 - Scanners automatizados com User-Agent ofensivo devem ser rejeitados com 403
+    const scanners = ['sqlmap/1.6#stable', 'nikto/2.1.6', 'dirbuster/1.0', 'gobuster/3.1'];
+    for (const ua of scanners) {
+      const resScan = await request('/api/livros', {
+        headers: { 'User-Agent': ua }
+      });
+      assert.equal(resScan.status, 403, `User-Agent ${ua} deve ser bloqueado com 403 pelo WAF`);
+      assert.ok(resScan.data.erro.includes('WAF'));
+    }
+
+    // 31.2 - Sondas de caminhos sensíveis devem retornar 404 estrito
+    const probes = ['/.env', '/.git/config', '/wp-admin', '/phpmyadmin'];
+    for (const p of probes) {
+      const resProbe = await request(p);
+      assert.equal(resProbe.status, 404, `Caminho de sonda ${p} deve retornar 404`);
+    }
+  });
+
+  // Teste 32: Comunidade e Canal WhatsApp (Fase 8)
+  test('32. Comunidade e Canal WhatsApp (Fase 8): Cartaz Escolar (/comunidade), QR Codes SVG dinâmicos e Materiais', async () => {
+    // 32.1 - Página do Cartaz Escolar (/comunidade)
+    const resCartaz = await request('/comunidade');
+    assert.equal(resCartaz.status, 200, '/comunidade deve responder com HTTP 200');
+    const htmlCartaz = String(resCartaz.data);
+    assert.ok(htmlCartaz.includes('Cartaz Escolar'), 'Deve conter identificação de Cartaz Escolar');
+    assert.ok(htmlCartaz.includes('cartaz-qr-comunidade'), 'Deve conter QR Code da comunidade');
+    assert.ok(htmlCartaz.includes('cartaz-qr-canal'), 'Deve conter QR Code do canal');
+    assert.ok(htmlCartaz.includes('window.print()'), 'Deve conter ação de impressão para folha A4');
+    assert.ok(htmlCartaz.includes('Livros livres, para todos.'), 'Deve exibir o slogan oficial');
+
+    // 32.2 - Link para o cartaz na seção WhatsApp da página inicial
+    const resHome = await request('/');
+    assert.equal(resHome.status, 200);
+    assert.ok(String(resHome.data).includes('href="/comunidade"'), 'Página inicial deve conter link para /comunidade');
+
+    // 32.3 - Endpoints dinâmicos da Comunidade e Canal WhatsApp
+    const resComunidade = await request('/api/comunidade');
+    assert.equal(resComunidade.status, 200);
+    assert.equal(resComunidade.data.url, 'https://chat.whatsapp.com/TESTE_LINO_LIVRE');
+
+    const resQrComunidade = await request('/api/comunidade/qrcode.svg');
+    assert.equal(resQrComunidade.status, 200);
+    assert.ok(resQrComunidade.headers.get('content-type').includes('image/svg+xml'));
+    assert.ok(resQrComunidade.data.includes('<svg'));
+
+    const resCanal = await request('/api/canal');
+    assert.equal(resCanal.status, 200);
+    assert.equal(resCanal.data.url, 'https://whatsapp.com/channel/TESTE_CANAL_LINO');
+
+    const resQrCanal = await request('/api/canal/qrcode.svg');
+    assert.equal(resQrCanal.status, 200);
+    assert.ok(resQrCanal.headers.get('content-type').includes('image/svg+xml'));
+    assert.ok(resQrCanal.data.includes('<svg'));
+
+    // 32.4 - Materiais estáticos de alta resolução para impressão física existem em materiais/
+    const fs = await import('node:fs');
+    assert.ok(fs.existsSync('materiais/lino-livre-qrcode.svg'), 'Arquivo de cartaz materiais/lino-livre-qrcode.svg deve existir');
+    assert.ok(fs.existsSync('materiais/lino-livre-canal-qrcode.svg'), 'Arquivo de cartaz materiais/lino-livre-canal-qrcode.svg deve existir');
+  });
 });
 
 

@@ -181,34 +181,23 @@ Requisitos de cada importador:
 
 ## Fase 8 — Link e QR code da comunidade WhatsApp (P1, simples)
 
-**Decisão do responsável:** só um **link** e um **QR code** que levam à comunidade do WhatsApp. Sem bot, sem Cloud API da Meta, sem webhook e sem guardar dados no servidor. As recomendações de livros acontecem dentro do grupo da comunidade, entre pessoas.
+**Decisão do responsável:** apenas **links** e **QR codes** dinâmicos que levam à comunidade e canal do WhatsApp. Sem bot, sem Cloud API da Meta, sem webhook e sem guardar números ou dados pessoais no servidor (privacidade estrita). As recomendações de livros acontecem dentro do grupo da comunidade, entre pessoas.
 
-**Passos manuais (administrador, no telemóvel):**
-1. No WhatsApp: separador **Comunidades** → criar a comunidade **"Lino Livre"** (descrição: *"Livros livres, para todos. Livros digitais e cursos gratuitos."*) e adicionar os grupos:
-   - 📢 **Avisos Lino Livre**: o grupo de avisos que o WhatsApp cria sozinho (só administradores escrevem), para divulgar livros e cursos novos
-   - 💡 **Lino, quero ler!**: recomendações e pedidos de livros pelos membros
-   - 🎓 **Cursos Livres**: partilha de cursos gratuitos
-2. Comunidade → **Convidar membros** → **Convidar por link** → copiar o link (`https://chat.whatsapp.com/XXXXXXXX`)
-3. Guardar o link em `.env` como `WHATSAPP_COMMUNITY_URL=`
+**Estrutura de Canais:**
+- 📢 **Canal Oficial ("Livros e Cursos — Lino Livre")**: sentido único (`WHATSAPP_CHANNEL_URL`), apenas avisos de novas obras e cursos com certificados gratuitos.
+- 💬 **Grupo de Leitores ("Lino, quero ler!")**: grupo aberto da comunidade (`WHATSAPP_COMMUNITY_URL`) para pedidos, resenhas e troca entre leitores.
 
-**Canal do WhatsApp (já criado):** "Livros e Cursos-Lino Livre", em `WHATSAPP_CHANNEL_URL`. O canal é de sentido único: só o administrador publica, e os seguidores não veem o número uns dos outros. Usar o **canal** para divulgar livros e cursos novos e o **grupo** para conversar e pedir livros ("Lino, quero ler!").
+- [x] Endpoint `GET /api/comunidade` → `{ url }` (404 seguro quando desconfigurado)
+- [x] Endpoint `GET /api/comunidade/qrcode.svg` → QR Code SVG gerado dinamicamente com cache em memória
+- [x] Endpoint `GET /api/canal` → `{ url }` (404 seguro quando desconfigurado)
+- [x] Endpoint `GET /api/canal/qrcode.svg` → QR Code SVG gerado dinamicamente com cache em memória
+- [x] Arquivos estáticos de alta resolução em `materiais/` (`lino-livre-qrcode.svg`, `lino-livre-canal-qrcode.svg`, PNGs 1024px)
+- [x] Variáveis documentadas em `.env.example` (`WHATSAPP_COMMUNITY_URL`, `WHATSAPP_CHANNEL_URL`, `ADMIN_API_KEY`)
+- [x] Frontend (`public/index.html` e `public/js/app.js`): bloco `#secao-whatsapp` com cartões, botões de ação e rodapé em todas as páginas
+- [x] Cartaz Escolar para Impressão (`public/comunidade.html` e rota `/comunidade`): layout A4 responsivo com `@media print`, instruções passo a passo para alunos/professores e botão `window.print()`
+- [x] Suíte de testes automatizados completa (Teste 8 e Teste 32 em `test/api.test.js`)
 
-**Implementação (pequena):**
-- O canal segue o mesmo padrão: `GET /api/canal` → `{ url }` e `GET /api/canal/qrcode.svg`, com o botão **"Seguir o canal Lino Livre"** ao lado do botão do grupo. Se a variável não estiver definida, o botão não aparece.
-- `.env.example` (já criado): `WHATSAPP_COMMUNITY_URL` e `WHATSAPP_CHANNEL_URL`; os valores reais estão em `.env`
-- QR codes estáticos já gerados em `materiais/` (grupo e canal, PNG 1024 px e SVG) para cartazes
-- `GET /api/comunidade` → `{ url }`; devolve 404 se a variável não estiver definida (o frontend esconde o bloco)
-- `GET /api/comunidade/qrcode.svg` → QR gerado no servidor com o pacote npm `qrcode` (`QRCode.toString(url, { type: 'svg' })`), com cache em memória
-  - **Porquê gerar no servidor:** se o administrador **redefinir o link** no WhatsApp (o link antigo deixa de funcionar), basta mudar o `.env`; o QR atualiza-se sozinho. Um PNG estático exportado do app ficaria inválido.
-  - Alternativa sem dependências: exportar o QR do próprio WhatsApp (Convidar por link → QR code) para `public/img/comunidade-qr.png`, aceitando o risco acima
-- Frontend: botão verde **"Entrar na comunidade Lino Livre"** (`<a href="{url}" target="_blank" rel="noopener noreferrer">`) + `<img src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp">` (QR útil para quem está no computador; em telemóvel o botão basta)
-- Opcional: página `/comunidade` para imprimir (cartaz para a escola, com o QR em tamanho grande)
-
-**Cuidados:**
-- O link permite que **qualquer pessoa** com acesso entre; ativar em **Configurações da comunidade** a aprovação de novos membros pelo administrador, se a comunidade for só para a escola
-- Não pôr o link em repositórios públicos (usar `.env`; confirmado que `.env` já está no `.gitignore`)
-
-**Critério de aceite:** com `WHATSAPP_COMMUNITY_URL` definido, o botão abre a comunidade e o QR, lido com a câmara do telemóvel, abre o mesmo convite; sem a variável, o bloco não aparece e não há erros.
+**Critério de aceite atingido:** com `WHATSAPP_COMMUNITY_URL` e `WHATSAPP_CHANNEL_URL` definidos, os botões abrem os respetivos destinos e os QR codes SVG abrem os convites; sem as variáveis, a interface degrada graciosamente e a API responde 404 sem erros.
 
 ---
 

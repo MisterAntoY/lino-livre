@@ -74,6 +74,7 @@
   }
 
   // Secrets (set via: wrangler secret put <NAME>):
+  // - ADMIN_API_KEY                   (chave administrativa mestre para mutações POST/PUT/DELETE em produção)
   // - WHATSAPP_COMMUNITY_URL
   // - WHATSAPP_CHANNEL_URL
   // - GOOGLE_BOOKS_API_KEY (optional, for cover enrichment)

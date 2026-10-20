@@ -41,6 +41,21 @@ app.use('*', async (c, next) => {
   );
 });
 
+// WAF de Borda: bloqueio de scanners automatizados conhecidos e sondas de caminhos sensíveis
+const SCANNERS_RE = /\b(sqlmap|nikto|dirbuster|gobuster|acunetix|nuclei|masscan|wpscan|zgrab)\b/i;
+const PROBE_PATHS_RE = /\/(\.env|\.git|wp-admin|phpmyadmin|cgi-bin|\.aws|\.docker)\b/i;
+
+app.use('*', async (c, next) => {
+  const ua = c.req.header('user-agent') || '';
+  if (SCANNERS_RE.test(ua)) {
+    return c.json({ erro: 'Acesso bloqueado por política de segurança (WAF).' }, 403);
+  }
+  if (PROBE_PATHS_RE.test(c.req.path)) {
+    return c.text('Not Found', 404);
+  }
+  await next();
+});
+
 // Cache de borda para leituras públicas. Registado antes das rotas para
 // envolver os handlers (o Cache API evita invocações e leituras na D1).
 app.use('/api/dashboard', cacheDeBorda);

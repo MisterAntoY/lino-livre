@@ -61,6 +61,21 @@ app.use((req, res, next) => {
   next();
 });
 
+// ==================== WAF DEFENSE (BAD BOTS / PROBES) ====================
+const SCANNERS_RE = /\b(sqlmap|nikto|dirbuster|gobuster|acunetix|nuclei|masscan|wpscan|zgrab)\b/i;
+const PROBE_PATHS_RE = /\/(\.env|\.git|wp-admin|phpmyadmin|cgi-bin|\.aws|\.docker)\b/i;
+
+app.use((req, res, next) => {
+  const ua = req.headers['user-agent'] || '';
+  if (SCANNERS_RE.test(ua)) {
+    return res.status(403).json({ erro: 'Acesso bloqueado por política de segurança (WAF).' });
+  }
+  if (PROBE_PATHS_RE.test(req.path)) {
+    return res.status(404).send('Not Found');
+  }
+  next();
+});
+
 // ==================== RATE LIMITING (in-memory) ====================
 const rateLimitStore = new Map();
 // Nos testes de integração não limitamos pedidos: o suite faz dezenas de
@@ -157,6 +172,9 @@ app.get('/legal', (req, res) => {
 });
 app.get('/termos', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/termos.html'));
+});
+app.get('/comunidade', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/comunidade.html'));
 });
 
 // Fallback para SPA/Frontend

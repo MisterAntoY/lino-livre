@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunidade WhatsApp & Cartaz Escolar — Lino Livre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=20261020">
+  <style>
+    :root {
+      --wa-green: #25d366;
+      --wa-dark-green: #128c7e;
+      --wa-light: #f0fdf4;
+      --poster-border: #cbd5e1;
+    }
+
+    body {
+      background: #f8fafc;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Barra Superior para visualização em tela */
+    .screen-header-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo-icon {
+      font-size: 1.5rem;
+    }
+
+    .brand-name {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tagline {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .actions-group {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.15rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-back {
+      background: #ffffff;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-back:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .btn-print {
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    .btn-print:hover {
+      background: #15803d;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+    }
+
+    /* Container do Cartaz Imprimível */
+    .poster-container-wrap {
+      max-width: 900px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .cartaz-sheet {
+      background: #ffffff;
+      border: 2px solid var(--poster-border);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+
+    /* Cabeçalho do Cartaz */
+    .cartaz-header {
+      text-align: center;
+      border-bottom: 2px dashed #e2e8f0;
+      padding-bottom: 2rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .cartaz-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .cartaz-main-title {
+      font-size: 2.35rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .cartaz-slogan {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      color: #16a34a;
+      margin: 0 0 1rem 0;
+    }
+
+    .cartaz-desc {
+      font-size: 1.05rem;
+      color: #475569;
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Grid dos Dois Cartões de Acesso (Grupo e Canal) */
+    .cartaz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .qr-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #ffffff;
+      transition: border-color 0.2s ease;
+    }
+
+    .qr-card-comunidade {
+      border-top: 6px solid #16a34a;
+      background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 25%);
+    }
+
+    .qr-card-canal {
+      border-top: 6px solid #0284c7;
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 25%);
+    }
+
+    .qr-frame {
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 1.25rem;
+      width: 190px;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .qr-card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .qr-card-role {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #16a34a;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .qr-card-canal .qr-card-role {
+      color: #0284c7;
+    }
+
+    .qr-card-text {
+      font-size: 0.92rem;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+    }
+
+    .qr-link-pill {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1e293b;
+      background: #f1f5f9;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      word-break: break-all;
+    }
+
+    /* Secção de Instruções */
+    .cartaz-instructions {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .instructions-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .instructions-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: #16a34a;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #0f172a;
+    }
+
+    .step-desc {
+      font-size: 0.84rem;
+      color: #64748b;
+      line-height: 1.45;
+    }
+
+    /* Rodapé do Cartaz */
+    .cartaz-footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1.5rem;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .cartaz-footer-left {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .cartaz-footer-right {
+      color: #059669;
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       REGRAS DE IMPRESSÃO (A4)
+       ══════════════════════════════════════════════════════════════ */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm 12mm;
+      }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .screen-header-bar,
+      .no-print {
+        display: none !important;
+      }
+
+      .poster-container-wrap {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .cartaz-sheet {
+        border: 2px solid #0f172a !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 1.5rem 1.5rem !important;
+      }
+
+      .cartaz-header {
+        margin-bottom: 1.5rem !important;
+        padding-bottom: 1.25rem !important;
+      }
+
+      .cartaz-main-title {
+        font-size: 1.95rem !important;
+      }
+
+      .cartaz-slogan {
+        font-size: 1.1rem !important;
+        color: #15803d !important;
+      }
+
+      .cartaz-grid {
+        gap: 1.25rem !important;
+        margin-bottom: 1.5rem !important;
+      }
+
+      .qr-card {
+        padding: 1.25rem 1rem !important;
+      }
+
+      .qr-frame {
+        width: 160px !important;
+        height: 160px !important;
+        margin-bottom: 0.75rem !important;
+      }
+
+      .cartaz-instructions {
+        padding: 1rem 1.25rem !important;
+        margin-bottom: 1.25rem !important;
+      }
+    }
+
+    /* Responsividade em Ecrã */
+    @media (max-width: 768px) {
+      .cartaz-grid {
+        grid-template-columns: 1fr;
+      }
+      .instructions-steps {
+        grid-template-columns: 1fr;
+      }
+      .screen-header-bar {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+      }
+      .actions-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .cartaz-sheet {
+        padding: 1.75rem 1.25rem;
+      }
+      .cartaz-main-title {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior Interativa (Oculta na Impressão) -->
+  <header class="screen-header-bar no-print">
+    <div class="brand-group">
+      <span class="brand-logo-icon">📖</span>
+      <div>
+        <div class="brand-name">Lino Livre</div>
+        <div class="brand-tagline">Livros livres, para todos.</div>
+      </div>
+    </div>
+    <div class="actions-group">
+      <a href="/" class="btn-action btn-back">
+        <span>← Voltar ao Acervo</span>
+      </a>
+      <button onclick="window.print()" class="btn-action btn-print">
+        <span>🖨️ Imprimir Cartaz Escolar</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Folha Principal do Cartaz Imprimível -->
+  <main class="poster-container-wrap">
+    <article class="cartaz-sheet">
+
+      <!-- Cabeçalho Institucional -->
+      <header class="cartaz-header">
+        <div class="cartaz-badge">🏫 Cartaz Escolar & Comunitário Oficial</div>
+        <h1 class="cartaz-main-title">Biblioteca Digital Escolar & Formação Aberta</h1>
+        <div class="cartaz-slogan">"Livros livres, para todos."</div>
+        <p class="cartaz-desc">
+          Acesso universal e sem custos a milhares de obras literárias em Domínio Público, cursos com certificados gratuitos e guias práticos de tecnologia para estudantes, professores e leitores.
+        </p>
+      </header>
+
+      <!-- Grade dos 2 Pontos de Acesso WhatsApp -->
+      <section class="cartaz-grid" aria-label="Pontos de Acesso WhatsApp">
+
+        <!-- Cartão 1: Comunidade & Grupo de Leitura -->
+        <div class="qr-card qr-card-comunidade">
+          <div class="qr-frame">
+            <img id="cartaz-qr-comunidade" src="/api/comunidade/qrcode.svg" alt="QR Code da Comunidade WhatsApp Lino Livre" onerror="this.src='/materiais/lino-livre-qrcode.svg'">
+          </div>
+          <h2 class="qr-card-title">💬 Comunidade de Leitores</h2>
+          <div class="qr-card-role">Grupo "Lino, quero ler!"</div>
+          <p class="qr-card-text">
+            Converse com outros leitores da sua escola, peça livros que gostaria de ver catalogados no acervo e partilhe resenhas e dicas pedagógicas.
+          </p>
+          <span class="qr-link-pill" id="cartaz-link-comunidade">https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU</span>
+        </div>
+
+        <!-- Cartão 2: Canal Oficial de Notificações -->
+        <div class="qr-card qr-card-canal">
+          <div class="qr-frame">
+            <img id="cartaz-qr-canal" src="/api/canal/qrcode.svg" alt="QR Code do Canal WhatsApp Lino Livre" onerror="this.src='/materiais/lino-livre-canal-qrcode.svg'">
+          </div>
+          <h2 class="qr-card-title">📢 Canal Oficial de Avisos</h2>
+          <div class="qr-card-role">Livros & Cursos Gratuitos</div>
+          <p class="qr-card-text">
+            Receba notificações em primeira mão de novos títulos, trilhas de formação com certificado e bootcamps. Canal seguro de sentido único com 100% de privacidade.
+          </p>
+          <span class="qr-link-pill" id="cartaz-link-canal">https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X</span>
+        </div>
+
+      </section>
+
+      <!-- Instruções de Uso Simples para a Escola -->
+      <section class="cartaz-instructions">
+        <h3 class="instructions-title">
+          <span>📲 Como Aceder com o seu Telemóvel:</span>
+        </h3>
+        <div class="instructions-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-title">Abra a Câmara</div>
+            <div class="step-desc">Aponte a lente do smartphone para o QR Code do Grupo ou do Canal.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-title">Toque no Convite</div>
+            <div class="step-desc">Clique no link oficial do WhatsApp exibido diretamente no ecrã.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-title">Leia e Aprenda</div>
+            <div class="step-desc">Acesso 100% aberto, sem necessidade de cadastro ou mensalidades.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rodapé do Cartaz -->
+      <footer class="cartaz-footer">
+        <div class="cartaz-footer-left">
+          Lino Livre • Plataforma de Intermediação Educacional
+        </div>
+        <div class="cartaz-footer-right">
+          🔒 Zero Armazenamento Local • 100% Domínio Público & REA
+        </div>
+      </footer>
+
+    </article>
+  </main>
+
+  <script>
+    // Carregar URLs dinâmicas dos endpoints da API
+    async function carregarUrlsCartaz() {
+      try {
+        const resCom = await fetch('/api/comunidade');
+        if (resCom.ok) {
+          const data = await resCom.json();
+          if (data.url) {
+            const el = document.getElementById('cartaz-link-comunidade');
+            if (el) el.textContent = data.url;
+          }
+        }
+      } catch (_) {}
+
+      try {
+        const resCan = await fetch('/api/canal');
+        if (resCan.ok) {
+          const data = await resCan.json();
+          if (data.url) {
+            const el = document.getElementById('cartaz-link-canal');
+            if (el) el.textContent = data.url;
+          }
+        }
+      } catch (_) {}
+    }
+    carregarUrlsCartaz();
+  </script>
+</body>
+</html>

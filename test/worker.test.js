@@ -1103,4 +1103,30 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       );
     });
   });
+
+  // =========================================================================
+  // CENÁRIO 9: WAF de Borda (Bloqueio de Scanners e Sondas no Worker)
+  // =========================================================================
+  describe('Cenário 9: WAF de Borda (Scanners e Sondas)', () => {
+    test('9.1 - Rejeita requisições com User-Agent de scanners ofensivos com HTTP 403', async () => {
+      const scanners = ['sqlmap/1.7', 'nikto/2.1', 'dirbuster/1.0', 'gobuster/3.1'];
+      for (const ua of scanners) {
+        const res = await workerRequest('/api/livros', {
+          method: 'GET',
+          headers: { 'user-agent': ua }
+        });
+        assert.equal(res.status, 403, `Worker WAF deve rejeitar ${ua} com 403`);
+        const data = await res.json();
+        assert.ok(data.erro.includes('WAF'));
+      }
+    });
+
+    test('9.2 - Sondas de ficheiros e directórios sensíveis retornam 404 estrito', async () => {
+      const probes = ['/.env', '/.git', '/wp-admin', '/phpmyadmin'];
+      for (const p of probes) {
+        const res = await workerRequest(p, { method: 'GET' });
+        assert.equal(res.status, 404, `Worker WAF deve retornar 404 para sonda ${p}`);
+      }
+    });
+  });
 });

@@ -164,4 +164,20 @@ jobs:
             exit 1
           fi
 
+          # 6. Autenticação Administrativa (POST /api/livros sem auth deve retornar 401)
+          HTTP_AUTH=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$WORKER_URL/api/livros" -H "Content-Type: application/json" -d '{}')
+          echo "POST /api/livros sem auth -> HTTP $HTTP_AUTH"
+          if [ "$HTTP_AUTH" -ne 401 ]; then
+            echo "::error::POST /api/livros sem autenticação não respondeu 401 (obteve $HTTP_AUTH)"
+            exit 1
+          fi
+
+          # 7. WAF de Borda (User-Agent ofensivo sqlmap deve retornar 403)
+          HTTP_WAF=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/api/livros" -H "User-Agent: sqlmap/1.7")
+          echo "GET /api/livros com UA sqlmap -> HTTP $HTTP_WAF"
+          if [ "$HTTP_WAF" -ne 403 ]; then
+            echo "::error::WAF de borda não bloqueou User-Agent ofensivo (esperado 403, obteve $HTTP_WAF)"
+            exit 1
+          fi
+
           echo "✅ Todos os smoke tests de produção passaram com sucesso!"
