@@ -1,13 +1,20 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { getDatabase } = require('../database');
+const { verificarUrlConformidade } = require('../utils/urlValidator');
 
 const USER_AGENT_OFICIAL = 'LinoLivre/2.0 (+https://lino-livre.linolivre.workers.dev; contato@linolivre.workers.dev; biblioteca digital aberta educacional)';
 const CACHE_DIR = path.resolve(__dirname, '../../cache');
 
+function sanitizarNomeArquivoCache(fonteSlug, query) {
+  const slugSeguro = String(fonteSlug || 'fonte').replace(/[^a-zA-Z0-9_-]/g, '');
+  const querySeguro = encodeURIComponent(query || 'default').replace(/[^a-zA-Z0-9_.-]/g, '_').slice(0, 80);
+  return `${slugSeguro}_${querySeguro}.json`;
+}
+
 function lerCache(fonteSlug, query) {
   try {
-    const chave = `${fonteSlug}_${encodeURIComponent(query || 'default').slice(0, 80)}.json`;
+    const chave = sanitizarNomeArquivoCache(fonteSlug, query);
     const arq = path.join(CACHE_DIR, chave);
     if (fs.existsSync(arq)) {
       const raw = JSON.parse(fs.readFileSync(arq, 'utf-8'));
@@ -24,7 +31,7 @@ function gravarCache(fonteSlug, query, dados) {
     if (!fs.existsSync(CACHE_DIR)) {
       fs.mkdirSync(CACHE_DIR, { recursive: true });
     }
-    const chave = `${fonteSlug}_${encodeURIComponent(query || 'default').slice(0, 80)}.json`;
+    const chave = sanitizarNomeArquivoCache(fonteSlug, query);
     const arq = path.join(CACHE_DIR, chave);
     fs.writeFileSync(arq, JSON.stringify({ timestamp: Date.now(), dados }), 'utf-8');
   } catch (_) {}
@@ -171,7 +178,10 @@ async function executarImportacao(jobId, fonteSlug, query) {
 
         for (const link of item.links) {
           if (['epub', 'pdf', 'txt', 'html', 'audiobook'].includes(link.formato) && link.url) {
-            insertLink.run(livroId, link.formato, link.url, link.tamanho_bytes || 0);
+            try {
+              verificarUrlConformidade(link.url);
+              insertLink.run(livroId, link.formato, link.url, link.tamanho_bytes || 0);
+            } catch (_) {}
           }
         }
       }

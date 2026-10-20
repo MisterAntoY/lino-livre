@@ -446,6 +446,14 @@ export class MotorFederado {
     }
 
     const resultados = [...porTitulo.values()]
+      .filter(r => {
+        if (!r.url || !/^https?:\/\//i.test(r.url)) return false;
+        const lower = r.url.toLowerCase();
+        for (const dom of DOMINIOS_PROIBIDOS) {
+          if (lower.includes(dom)) return false;
+        }
+        return true;
+      })
       .sort((a, b) => b.score - a.score)
       .slice(0, limiteFinal)
       .map(r => ({ ...r, score: Number(r.score.toFixed(6)) }));

@@ -43,6 +43,7 @@ const LOCAL = args.includes('--local');
 const COM_CONTEUDO = args.includes('--com-conteudo');
 const REINICIAR = args.includes('--reiniciar');
 const DRY_RUN = args.includes('--dry-run');
+const STATUS = args.includes('--status');
 const APENAS_TABELA = args.find((a) => a.startsWith('--tabela='))?.split('=')[1];
 const LOTE = Number(args.find((a) => a.startsWith('--lote='))?.split('=')[1] || 500);
 
@@ -97,12 +98,24 @@ const TABELAS = [
 // ── Leitura da origem ────────────────────────────────────────
 function lerD1Remota(sql) {
   const cmd = ['wrangler', 'd1', 'execute', DB_D1, '--remote', '--json', '--command', sql];
-  const saida = execFileSync('npx', cmd, {
-    cwd: RAIZ,
-    encoding: 'utf8',
-    maxBuffer: 256 * 1024 * 1024,
-    stdio: ['ignore', 'pipe', 'inherit']
-  });
+  let saida;
+  try {
+    saida = execFileSync('npx', cmd, {
+      cwd: RAIZ,
+      encoding: 'utf8',
+      maxBuffer: 256 * 1024 * 1024,
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+  } catch (err) {
+    const detalhe = `${err.stdout || ''}\n${err.stderr || ''}`;
+    if (/7500|exceeded D1's free tier daily row read limit/i.test(detalhe)) {
+      throw new Error(
+        'Cota diária de leitura da D1 esgotada (5M linhas). ' +
+          'O checkpoint foi guardado; volte a correr após 00:00 UTC ou use Workers Paid.'
+      );
+    }
+    throw new Error('Falha ao ler da D1: ' + (detalhe.trim() || err.message).slice(0, 400));
+  }
   const inicio = saida.indexOf('[');
   if (inicio < 0) throw new Error('Resposta inesperada do wrangler: ' + saida.slice(0, 200));
   const json = JSON.parse(saida.slice(inicio));
@@ -169,18 +182,45 @@ async function upsert(tabela, linhas) {
   }
 }
 
-async function contarNoSupabase(tabela) {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${tabela}?select=id&limit=1`, {
+async function estadoTabela(nome) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${nome}?select=id&limit=1`, {
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${SUPABASE_KEY}`,
       Prefer: 'count=exact'
     }
   });
-  if (!r.ok) return null;
-  const cr = r.headers.get('content-range') || '';
-  const total = cr.split('/')[1];
-  return total && total !== '*' ? Number(total) : null;
+  if (r.ok) {
+    const cr = r.headers.get('content-range') || '';
+    const total = cr.split('/')[1];
+    return { existe: true, total: total && total !== '*' ? Number(total) : null };
+  }
+  const corpo = await r.text();
+  if (r.status === 404 || /PGRST205/.test(corpo)) return { existe: false, total: null };
+  return { existe: true, erro: `HTTP ${r.status}: ${corpo.slice(0, 120)}` };
+}
+
+async function contarNoSupabase(tabela) {
+  const estado = await estadoTabela(tabela);
+  return estado.existe && !estado.erro ? estado.total : null;
+}
+
+async function mostrarStatus() {
+  console.log('Estado do catálogo no Supabase:\n');
+  const linhas = [];
+  for (const t of TABELAS) {
+    const e = await estadoTabela(t.nome);
+    const estado = !e.existe ? 'AUSENTE' : e.erro ? e.erro : String(e.total ?? '?');
+    linhas.push({ tabela: t.nome, estado });
+  }
+  const largura = Math.max(...linhas.map((l) => l.tabela.length));
+  for (const l of linhas) console.log('  ' + l.tabela.padEnd(largura) + '  ' + l.estado);
+
+  const ausentes = linhas.filter((l) => l.estado === 'AUSENTE').map((l) => l.tabela);
+  if (ausentes.length) {
+    console.log('\n⚠ Tabelas ausentes: ' + ausentes.join(', '));
+    console.log('  Aplique supabase/schema.sql no SQL Editor do Supabase (ou npm run supabase:schema).');
+  }
 }
 
 async function rpc(nome, corpo = {}) {
@@ -259,13 +299,35 @@ async function principal() {
   console.log('  destino:', SUPABASE_URL);
   console.log('  conteúdo textual:', COM_CONTEUDO ? 'incluído' : 'omitido (apenas metadados)');
 
-  const checkpoint = DRY_RUN ? {} : lerCheckpoint();
+  if (STATUS) {
+    await mostrarStatus();
+    return;
+  }
+
   const alvo = APENAS_TABELA ? TABELAS.filter((t) => t.nome === APENAS_TABELA) : TABELAS;
 
   if (!alvo.length) {
     console.error('✗ Tabela desconhecida:', APENAS_TABELA);
     process.exit(1);
   }
+
+  // Pré-verificação: evita uma migração parcial silenciosa por tabelas ausentes.
+  if (!DRY_RUN) {
+    const ausentes = [];
+    for (const tabela of alvo) {
+      const estado = await estadoTabela(tabela.nome);
+      if (!estado.existe) ausentes.push(tabela.nome);
+    }
+    if (ausentes.length) {
+      console.error('\n✗ Tabelas ausentes no Supabase: ' + ausentes.join(', '));
+      console.error('  Aplique o schema antes de migrar:');
+      console.error('    • SQL Editor do Supabase → colar supabase/schema.sql');
+      console.error('    • ou: npm run supabase:schema (requer DIRECT_URL válido no .env)');
+      process.exit(1);
+    }
+  }
+
+  const checkpoint = DRY_RUN ? {} : lerCheckpoint();
 
   for (const tabela of alvo) {
     await migrarTabela(tabela, checkpoint);
