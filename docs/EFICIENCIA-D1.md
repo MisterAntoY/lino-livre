@@ -31,15 +31,24 @@ Principais ofensores (por cache miss):
    - `estatisticas` — totais gerais (livros, autores, cursos, leituras…).
    - `contadores` — totais por dimensão (idioma, licença, categoria, fonte,
      formato, tipo de curso).
+   - `autor_totais` (`migrations/0005_indices_performance.sql`) — livros por
+     autor, para que `/api/autores` não junte a tabela de livros.
 2. **Cron diário às 00:10 UTC** (`triggers.crons` no `wrangler.jsonc`):
    recalcula tudo logo após o reset da cota, em 3 lotes para respeitar o
    tempo máximo por invocação.
 3. **Cache de borda** (Cache API) em todas as rotas públicas de leitura, com
    TTL de 1 hora (`stale-while-revalidate=86400`).
 4. **Contagem sem varredura**: `/api/livros` lê o total de `estatisticas` ou
-   `contadores` quando o filtro é simples; só faz `COUNT(*)` em filtros
-   complexos, com estimativa de recurso se a cota falhar.
-5. **Degradação elegante**: em erro de cota, as rotas devolvem `[]` com
+   `contadores` quando o filtro é simples; a busca conta na FTS (uma linha
+   por livro); só faz `COUNT(*)` em filtros complexos, com estimativa de
+   recurso se a cota falhar.
+5. **Índices de performance** (`migrations/0005_indices_performance.sql`):
+   os índices compostos de popularidade (`leituras DESC, titulo ASC`) e por
+   dimensão existiam no banco local de desenvolvimento mas **nunca foram
+   levados às migrações do D1** — a base remota ordenava 104.848 linhas por
+   pedido. Também `links_livros(formato, livro_id)`, `autores(nome)` e
+   `autores(nome COLLATE NOCASE)`.
+6. **Degradação elegante**: em erro de cota, as rotas devolvem `[]` com
    `X-Data-Status: degraded` (HTTP 200) em vez de 500; o dashboard usa um
    fallback estático. Recupera automaticamente após o reset.
 
@@ -55,6 +64,47 @@ Principais ofensores (por cache miss):
 
 Estimativa de consumo diário após a correção: **< 1,2 M linhas lidas**
 (cron ~765k + cache misses), dentro do limite de 5 M.
+
+## Ciclo seguinte (20/10/2026, medição em base sintética de 104.848 livros)
+
+A medição do ciclo anterior cobriu o dashboard e as rotas de contagem, mas
+não as **consultas de listagem** — que, sem índice de ordenação, faziam
+`SCAN` + `TEMP B-TREE FOR ORDER BY` sobre a tabela inteira. Medição em base
+sintética com a dimensão real da D1 (104.848 livros, 37.919 autores,
+210.000 ligações):
+
+| Operação | Antes | Depois | Plano depois |
+|---|---:|---:|---|
+| Listagem (`ORDER BY leituras DESC, titulo ASC LIMIT 12`) | 284,26 ms | **0,12 ms** | `SCAN l USING INDEX idx_livros_popularidade` |
+| `/api/autores` (contagem por autor) | 435,05 ms | **0,89 ms** | `SCAN a USING INDEX idx_autores_nome` |
+| `/api/autores?nome=` (correspondência exacta) | 6,89 ms | **0,10 ms** | `SEARCH a USING INDEX idx_autores_nome_nocase` |
+| `/api/creditos` (distribuição de licenças) | 120,56 ms | **0,05 ms** | `SEARCH contadores USING INDEX …` |
+| Listagem com filtro de idioma + ordenação | — | **0,05 ms** | `SEARCH l USING INDEX idx_livros_idioma_popularidade` |
+
+O "antes" da listagem lia as 104.848 linhas da tabela **só para ordenar**;
+com o índice lê as 12 linhas da página.
+
+### Alterações de comportamento
+
+- `/api/autores` deixou de fazer `LEFT JOIN livros … GROUP BY` (uma varredura
+  de 104.848 linhas por pedido) e passa a ler `autor_totais` (índice).
+  Sem a tabela de agregados, conta apenas os autores da página devolvida.
+- `/api/autores` passou a ter **limite por omissão de 500** (antes devolvia
+  os ~37.919 autores numa só resposta). A paginação (`?limit`/`?page`)
+  mantém-se; `?nome=` faz correspondência exacta indexada.
+- `/api/livros?busca=` conta o total na FTS; `/api/livros?formato=` usa o
+  contador pré-computado.
+- `/api/creditos` lê `estatisticas`/`contadores` em vez de `COUNT(*)` +
+  `GROUP BY` sobre a tabela de livros.
+- O formulário de administração deixa de trazer todos os autores para
+  procurar um nome: usa `/api/autores?nome=`.
+
+### Cobertura de regressão
+
+`test/worker.test.js`, cenário 8, assegura que nenhuma rota volta a
+executar `COUNT(*)`/`GROUP BY` sobre a tabela `livros` nem a juntar
+`livros` em `/api/autores`, e que a migração 0005 mantém os índices
+declarados.
 
 ## Operação
 
