@@ -271,12 +271,20 @@ async function principal() {
     await migrarTabela(tabela, checkpoint);
   }
 
-  console.log('\n▶ A recalcular agregados (estatisticas/contadores)…');
-  if (DRY_RUN) {
-    console.log('  (dry-run: RPC ignorado)');
+  if (APENAS_TABELA && APENAS_TABELA !== 'livros') {
+    console.log(`\n✓ Migração parcial da tabela "${APENAS_TABELA}" concluída com sucesso.`);
   } else {
-    await rpc('recalcular_estatisticas');
-    console.log('✓ Agregados recalculados');
+    console.log('\n▶ A recalcular agregados (estatisticas/contadores)…');
+    if (DRY_RUN) {
+      console.log('  (dry-run: RPC ignorado)');
+    } else {
+      try {
+        await rpc('recalcular_estatisticas');
+        console.log('✓ Agregados recalculados');
+      } catch (_) {
+        console.log('  ℹ️  RPC recalcular_estatisticas ignorado (tabelas de estatísticas não criadas ou migração parcial).');
+      }
+    }
   }
 
   console.log('\nConcluído. Para ativar no Worker:');
