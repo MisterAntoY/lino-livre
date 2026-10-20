@@ -56,13 +56,14 @@ CREATE INDEX IF NOT EXISTS idx_cursos_url
 -- livros de cada autor: uma varredura dos 104.848 livros por pedido
 -- (o maior ofensor depois do dashboard). A tabela abaixo é recalculada
 -- 1x/dia pelo cron do Worker (00:10 UTC) e consultada por índice.
+--
+-- A tabela é criada aqui mas deixada vazia de propósito: semear 37.919
+-- linhas numa migração gastaria quase 40% da cota diária de escritas
+-- (100.000/dia no plano gratuito). Quem a popula é o cron, que já faz
+-- uma única varredura agrupada por dia. Até o primeiro cron, /api/autores
+-- conta apenas os autores devolvidos (índice por autor_id), o que
+-- também é barato.
 CREATE TABLE IF NOT EXISTS autor_totais (
   autor_id INTEGER PRIMARY KEY,
   total    INTEGER NOT NULL DEFAULT 0
 );
-
--- Semente: contagem atual (o cron mantém-na atualizada).
-INSERT INTO autor_totais (autor_id, total)
-  SELECT autor_id, COUNT(*) FROM livros
-  WHERE autor_id IS NOT NULL GROUP BY autor_id
-ON CONFLICT(autor_id) DO UPDATE SET total = excluded.total;
