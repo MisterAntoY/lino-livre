@@ -1,4 +1,5 @@
 // Importer service for Cloudflare Workers (D1 SQLite + Web Fetch)
+import { verificarUrlConformidade } from '../utils/urlValidator';
 
 const USER_AGENT_OFICIAL = 'LinoLivre/2.0 (+https://lino-livre.linolivre.workers.dev; contato@linolivre.workers.dev; biblioteca digital aberta educacional)';
 
@@ -82,7 +83,10 @@ export async function executarImportacaoD1(db: D1Database, jobId: number, fonteS
 
         for (const link of item.links) {
           if (['epub', 'pdf', 'txt', 'html', 'audiobook'].includes(link.formato) && link.url) {
-            await insertLink.bind(livroId, link.formato, link.url, link.tamanho_bytes || 0).run();
+            try {
+              verificarUrlConformidade(link.url);
+              await insertLink.bind(livroId, link.formato, link.url, link.tamanho_bytes || 0).run();
+            } catch (_) {}
           }
         }
       }

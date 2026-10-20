@@ -208,10 +208,12 @@ async function contarNoSupabase(tabela) {
 async function mostrarStatus() {
   console.log('Estado do catálogo no Supabase:\n');
   const linhas = [];
-  for (const t of TABELAS) {
-    const e = await estadoTabela(t.nome);
+  // estatisticas/contadores não são migradas: são recalculadas no fim.
+  const nomes = [...TABELAS.map((t) => t.nome), 'estatisticas', 'contadores'];
+  for (const nome of nomes) {
+    const e = await estadoTabela(nome);
     const estado = !e.existe ? 'AUSENTE' : e.erro ? e.erro : String(e.total ?? '?');
-    linhas.push({ tabela: t.nome, estado });
+    linhas.push({ tabela: nome, estado });
   }
   const largura = Math.max(...linhas.map((l) => l.tabela.length));
   for (const l of linhas) console.log('  ' + l.tabela.padEnd(largura) + '  ' + l.estado);
