@@ -6,6 +6,9 @@ Este diretório consolida e organiza toda a documentação técnica, auditorias,
 
 ## 📁 Estrutura de Documentos
 
+### 0. ⚖️ `docs/LEGAL.md` — Marco Legal e Diretrizes Jurídicas de Angola e WIPO
+- [`LEGAL.md`](./LEGAL.md): Marco legal detalhado sob a **Lei n.º 15/14, de 31 de Julho de Angola (Direitos de Autor e Conexos)**, tratados da OMPI (WIPO), papel de intermediário educativo, zero monetização e política de Remoção / Takedown (48h).
+
 ### 1. 🇦🇴 `docs/insutec/` — Catálogo e Fontes da Biblioteca INSUTEC
 Pesquisa aprofundada sobre o acervo de 2.829 títulos da Biblioteca Virtual do INSUTEC (Angola) e o mapeamento de fontes alternativas abertas:
 - [`INSUTEC-CATALOGO-COMPLETO.md`](./insutec/INSUTEC-CATALOGO-COMPLETO.md): Lista completa das 2.829 obras, autores e metadados extraídos.
@@ -16,6 +19,7 @@ Pesquisa aprofundada sobre o acervo de 2.829 títulos da Biblioteca Virtual do I
 Relatórios de conformidade legal, auditoria de produção e diretrizes invioláveis:
 - [`AUDITORIA-PRODUCAO-11-10.md`](./auditorias/AUDITORIA-PRODUCAO-11-10.md): Auditoria técnica e de segurança da aplicação em produção.
 - [`DECISAO-RESPONSAVEL-11-10.md`](./auditorias/DECISAO-RESPONSAVEL-11-10.md): Decisões estratégicas de conformidade legal e remoção de riscos.
+- [`DOMINIO-PUBLICO-VERIFICACAO.md`](./auditorias/DOMINIO-PUBLICO-VERIFICACAO.md): Auditoria e comprovação jurídica de domínio público universal de 100% dos textos integrais (Lei 15/14 Angola e WIPO).
 - [`AUDITORIA-CURSOS.md`](./auditorias/AUDITORIA-CURSOS.md): Auditoria e validação de qualidade das fontes de cursos livres.
 
 ### 3. 🗺️ `docs/planos/` — Arquitetura, Roadmaps e Integrações
@@ -30,6 +34,7 @@ Planeamento de expansão, especificações técnicas e projetos temáticos:
 
 ### 4. 🎓 `docs/plataformas/` — Plataformas Parceiras e Catálogo de Recursos
 Monitorização contínua de cursos gratuitos, bootcamps e plataformas de capacitação:
+- [`DIRETRIZES-LEGAIS.md`](./plataformas/DIRETRIZES-LEGAIS.md): Diretrizes legais para plataformas parceiras, cursos gratuitos e ingestão de recursos sob a Lei 15/14 de Angola e OMPI (WIPO).
 - [`BOOTCAMPS-DIO-STATUS.md`](./plataformas/BOOTCAMPS-DIO-STATUS.md): Status e prazos de bootcamps abertos da Digital Innovation One (DIO).
 - [`SANTANDER-ACADEMY-STATUS.md`](./plataformas/SANTANDER-ACADEMY-STATUS.md): Convocatórias, bolsas e cursos do Santander Open Academy.
 - [`CURSOEMVIDEO-STATUS.md`](./plataformas/CURSOEMVIDEO-STATUS.md): Cursos gratuitos e certificações do Curso em Vídeo (Prof. Gustavo Guanabara).

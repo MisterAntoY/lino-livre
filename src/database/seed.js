@@ -103,7 +103,9 @@ function seed(dbInstance = null) {
   const fItalo = insertFonte.run('github-italocamilo', 'Repositório Books Tech (GitHub)', 'manual', 'https://github.com/italocamil0/books', 1).lastInsertRowid;
   const fTrilha = insertFonte.run('trilhainfo', 'Trilha Info (Flávio Mendes / GitHub)', 'manual', 'https://trilha.info', 1).lastInsertRowid;
   const fGutenberg = insertFonte.run('gutenberg', 'Project Gutenberg', 'api', 'https://gutendex.com', 1).lastInsertRowid;
-  const fOpenLib = insertFonte.run('openlibrary', 'Open Library', 'api', 'https://openlibrary.org', 1).lastInsertRowid;
+  // Open Library: fonte técnica de consulta (API). Desativada por padrão porque
+  // não é um repositório de leitura directa — as obras são indexadas via outras fontes.
+  const fOpenLib = insertFonte.run('openlibrary', 'Open Library', 'api', 'https://openlibrary.org', 0).lastInsertRowid;
   const fDomPub = insertFonte.run('dominiopublico', 'Portal Domínio Público (MEC)', 'manual', 'https://www.dominiopublico.gov.br', 1).lastInsertRowid;
   const fWikisource = insertFonte.run('wikisource', 'Wikisource', 'api', 'https://pt.wikisource.org', 1).lastInsertRowid;
   const fManual = insertFonte.run('manual', 'Curadoria Lino Livre', 'manual', null, 1).lastInsertRowid;
@@ -311,6 +313,8 @@ function seed(dbInstance = null) {
     0,
     espumasFlutuantesTexto
   ).lastInsertRowid;
+  insertLink.run(l6, 'html', 'https://pt.wikisource.org/wiki/Espumas_Fluctuantes', 0, 1);
+  insertLink.run(l6, 'pdf', 'https://www.dominiopublico.gov.br/download/texto/bv000067.pdf', 0, 1);
 
   // Livro 7: Iracema
   const l7 = insertLivro.run(

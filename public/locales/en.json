@@ -158,7 +158,20 @@
       "mostRead": "Most Read Works",
       "works": "works",
       "readsShort": "reads",
-      "error": "Failed to load metrics: {msg}"
+      "error": "Failed to load metrics: {msg}",
+      "links": "External Links",
+      "languages": "Languages",
+      "avgPages": "Average Pages",
+      "quality": "Collection Integrity",
+      "withCover": "With cover",
+      "withSynopsis": "With synopsis",
+      "withLink": "With reading link",
+      "withAuthor": "With author",
+      "withCategory": "With category",
+      "completeness": "Metadata completeness",
+      "courseTypes": "Course Types",
+      "withCertificate": "With certificate",
+      "topPlatforms": "Top Platforms"
     },
     "whatsapp": {
       "title": "Join Lino Livre on WhatsApp",
@@ -197,7 +210,6 @@
       "readFull": "📑 Read Full Legal Document in New Tab ↗",
       "close": "Close"
     },
-
     "reader": {
       "backTitle": "Back to Catalogue",
       "back": "Back",
@@ -264,7 +276,12 @@
       "save": "Save to Collection",
       "savedOk": "\"{t}\" was successfully added to the collection!",
       "error": "Error registering book: {msg}",
-      "errorSave": "Registration failed"
+      "errorSave": "Registration failed",
+      "moderationNotice": "Note: Only administrators with an authorized key can publish directly. Public link contributions must provide proof of open license or public domain and undergo prior audit.",
+      "labelAdminKey": "Administrative Key (x-admin-key)",
+      "adminKeyHint": "Required for direct publishing",
+      "phAdminKey": "Enter the authorized key or leave blank for moderation",
+      "adminKeyRequired": "Note: Only administrators with an authorized key can publish directly. Public link contributions must provide proof of open license or public domain and undergo prior audit."
     },
     "general": {
       "connection": "⚡ Mobile connection detected: online reading prioritized to save your data plan."
@@ -275,7 +292,7 @@
       "cc-by": "CC BY (Attribution)",
       "cc-by-sa": "CC BY-SA (ShareAlike)",
       "cc-by-nc": "CC BY-NC (NonCommercial)",
-      "outro": "Other (Open Access)"
+      "outro": "Open External Access"
     },
     "categories": {
       "Clássicos Brasileiros": "Brazilian Classics",

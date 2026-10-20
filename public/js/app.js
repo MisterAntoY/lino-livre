@@ -1710,11 +1710,15 @@ const app = {
       const idiomas = data.idiomas || [];
       const fontes = data.fontes || [];
       const maisLidos = data.mais_lidos || [];
+      const metaInfo = data.meta || {};
+      const qualidade = data.qualidade || {};
+      const cursosPorTipo = data.cursos_por_tipo || [];
+      const cursosPorPlataforma = data.cursos_por_plataforma || [];
 
       const totalLivros = r.total_livros || 0;
-      const meta = 10000000;
-      const pct = ((totalLivros / meta) * 100);
-      const pctStr = (pct < 0.01) ? pct.toFixed(4) : pct.toFixed(2);
+      const meta = metaInfo.alvo || 10000000;
+      const pct = metaInfo.percentual || ((totalLivros / meta) * 100);
+      const pctStr = metaInfo.percentual_formatado || (pct < 0.01 ? pct.toFixed(4) : pct.toFixed(2));
       const visualWidth = Math.max(1.5, Math.min(100, pct));
 
       container.innerHTML = `
@@ -1755,6 +1759,22 @@ const app = {
             <div class="stat-val">${r.total_autores || 0}</div>
             <div class="stat-label">${t('dashboard.authors')}</div>
           </div>
+          <div class="stat-card">
+            <div class="stat-val">${r.total_links || 0}</div>
+            <div class="stat-label">${t('dashboard.links')}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">${r.total_idiomas || 0}</div>
+            <div class="stat-label">${t('dashboard.languages')}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">${r.total_fontes || 0}</div>
+            <div class="stat-label">${t('dashboard.sources')}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">${r.media_paginas || 0}</div>
+            <div class="stat-label">${t('dashboard.avgPages')}</div>
+          </div>
         </div>
 
         <div class="dash-sections-row">
@@ -1768,7 +1788,16 @@ const app = {
                   es: 'Español',
                   fr: 'Français',
                   de: 'Deutsch',
-                  zh: '中文'
+                  zh: '中文',
+                  ru: 'Русский',
+                  ja: '日本語',
+                  it: 'Italiano',
+                  ar: 'العربية',
+                  nl: 'Nederlands',
+                  sv: 'Svenska',
+                  no: 'Norsk',
+                  cs: 'Čeština',
+                  he: 'עברית'
                 };
                 const label = labels[i.idioma] || (i.idioma ? i.idioma.toUpperCase() : 'Outro');
                 return `
@@ -1812,6 +1841,64 @@ const app = {
                 <div class="dash-list-item">
                   <span> ${this.escape(f.nome)}</span>
                   <span class="dash-list-badge">${f.total_livros} ${t('dashboard.works')}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="dash-box">
+            <h3>${t('dashboard.quality')}</h3>
+            <div class="dash-list">
+              <div class="dash-list-item">
+                <span>📕 ${t('dashboard.withCover')}</span>
+                <span class="dash-list-badge">${qualidade.com_capa || 0}</span>
+              </div>
+              <div class="dash-list-item">
+                <span>📘 ${t('dashboard.withSynopsis')}</span>
+                <span class="dash-list-badge">${qualidade.com_sinopse || 0}</span>
+              </div>
+              <div class="dash-list-item">
+                <span>🔗 ${t('dashboard.withLink')}</span>
+                <span class="dash-list-badge">${qualidade.com_link || 0}</span>
+              </div>
+              <div class="dash-list-item">
+                <span>✍️ ${t('dashboard.withAuthor')}</span>
+                <span class="dash-list-badge">${qualidade.com_autor || 0}</span>
+              </div>
+              <div class="dash-list-item">
+                <span>🏷️ ${t('dashboard.withCategory')}</span>
+                <span class="dash-list-badge">${qualidade.com_categoria || 0}</span>
+              </div>
+              <div class="dash-list-item">
+                <span>✅ ${t('dashboard.completeness')}</span>
+                <span class="dash-list-badge">${qualidade.percentual_completo || 0}%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-box">
+            <h3>${t('dashboard.courseTypes')}</h3>
+            <div class="dash-list">
+              ${cursosPorTipo.map(c => `
+                <div class="dash-list-item">
+                  <span> ${this.escape(c.tipo)}</span>
+                  <span class="dash-list-badge">${c.total}</span>
+                </div>
+              `).join('')}
+              <div class="dash-list-item">
+                <span>🎓 ${t('dashboard.withCertificate')}</span>
+                <span class="dash-list-badge">${r.cursos_com_certificado || 0}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-box">
+            <h3>${t('dashboard.topPlatforms')}</h3>
+            <div class="dash-list">
+              ${cursosPorPlataforma.map(c => `
+                <div class="dash-list-item">
+                  <span> ${this.escape(c.plataforma)}</span>
+                  <span class="dash-list-badge">${c.total}</span>
                 </div>
               `).join('')}
             </div>
@@ -1963,6 +2050,18 @@ const app = {
     const capaUrl = document.getElementById('novo-capa-url').value;
     const sinopse = document.getElementById('novo-sinopse').value;
     const conteudo = document.getElementById('novo-conteudo').value;
+    const adminKey = (document.getElementById('novo-admin-key')?.value || '').trim();
+
+    // Se o usuário não fornecer a chave administrativa no envio, informar de forma amigável
+    if (!adminKey) {
+      this.mostrarToast(
+        t('form.adminKeyRequired') ||
+        'Nota: Apenas administradores com chave autorizada podem publicar diretamente. Contribuições públicas de links devem possuir comprovação de licença aberta ou domínio público e passam por auditoria prévia.'
+      );
+      this.fecharModais();
+      e.target.reset();
+      return;
+    }
 
     const links = [];
     if (formato && urlLink) {
@@ -1970,6 +2069,11 @@ const app = {
     }
 
     try {
+      const headers = {
+        'Content-Type': 'application/json',
+        'x-admin-key': adminKey
+      };
+
       // 1. Cadastrar autor se necessário
       let autorId = null;
       if (autorNome) {
@@ -1981,18 +2085,20 @@ const app = {
         } else {
           const resNovoAut = await fetch('/api/autores', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify({ nome: autorNome.trim(), nacionalidade: 'Brasileiro' })
           });
-          const novoAut = await resNovoAut.json();
-          autorId = novoAut.id;
+          if (resNovoAut.ok) {
+            const novoAut = await resNovoAut.json();
+            autorId = novoAut.id;
+          }
         }
       }
 
       // 2. Cadastrar livro com licença obrigatória
       const resLivro = await fetch('/api/livros', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           titulo,
           autor_id: autorId,

@@ -150,7 +150,20 @@
       "mostRead": "Meistgelesene Werke",
       "works": "Werke",
       "readsShort": "Lesungen",
-      "error": "Kennzahlen konnten nicht geladen werden: {msg}"
+      "error": "Kennzahlen konnten nicht geladen werden: {msg}",
+      "links": "Externe Links",
+      "languages": "Sprachen",
+      "avgPages": "Ø Seiten",
+      "quality": "Integrität der Sammlung",
+      "withCover": "Mit Cover",
+      "withSynopsis": "Mit Synopsis",
+      "withLink": "Mit Lese-Link",
+      "withAuthor": "Mit Autor",
+      "withCategory": "Mit Kategorie",
+      "completeness": "Metadaten-Vollständigkeit",
+      "courseTypes": "Kurstypen",
+      "withCertificate": "Mit Zertifikat",
+      "topPlatforms": "Top-Plattformen"
     },
     "whatsapp": {
       "title": "Lino Livre bei WhatsApp beitreten",
@@ -189,7 +202,6 @@
       "readFull": "📑 Vollständiges Rechtsdokument in neuem Tab lesen ↗",
       "close": "Schließen"
     },
-
     "reader": {
       "backTitle": "Zurück zum Katalog",
       "back": "Zurück",
@@ -256,7 +268,12 @@
       "save": "In der Sammlung speichern",
       "savedOk": "\"{t}\" wurde erfolgreich zur Sammlung hinzugefügt!",
       "error": "Fehler beim Registrieren des Buches: {msg}",
-      "errorSave": "Speichern fehlgeschlagen"
+      "errorSave": "Speichern fehlgeschlagen",
+      "moderationNotice": "Hinweis: Nur Administratoren mit einem autorisierten Schlüssel können direkt veröffentlichen. Öffentliche Link-Beiträge müssen einen Nachweis über eine offene Lizenz oder Gemeinfreiheit erbringen und werden vorab geprüft.",
+      "labelAdminKey": "Administrativer Schlüssel (x-admin-key)",
+      "adminKeyHint": "Erforderlich für direkte Veröffentlichung",
+      "phAdminKey": "Geben Sie den autorisierten Schlüssel ein oder lassen Sie das Feld für Moderation leer",
+      "adminKeyRequired": "Hinweis: Nur Administratoren mit einem autorisierten Schlüssel können direkt veröffentlichen. Ihr Beitrag wurde zur vorherigen Prüfung und Audit eingereicht."
     },
     "general": {
       "connection": "⚡ Mobilfunkverbindung erkannt: Online-Lektüre wird priorisiert, um Ihr Datenvolumen zu sparen."
@@ -267,7 +284,7 @@
       "cc-by": "CC BY (Namensnennung)",
       "cc-by-sa": "CC BY-SA (Weitergabe unter gleichen Bedingungen)",
       "cc-by-nc": "CC BY-NC (Nicht kommerziell)",
-      "outro": "Sonstig (Offener Zugang)"
+      "outro": "Offener externer Zugang"
     },
     "categories": {
       "Clássicos Brasileiros": "Brasilianische Klassiker",

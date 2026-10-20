@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { verificarAdmin } = require('../middlewares/auth');
+
 const dashboardController = require('../controllers/dashboardController');
 const categoriasController = require('../controllers/categoriasController');
 const autoresController = require('../controllers/autoresController');
@@ -15,36 +17,36 @@ router.get('/dashboard', dashboardController.metricas);
 // 2. Categorias / Áreas do Conhecimento
 router.get('/categorias', categoriasController.listar);
 router.get('/categorias/:id', categoriasController.obterPorId);
-router.post('/categorias', categoriasController.criar);
-router.put('/categorias/:id', categoriasController.atualizar);
-router.delete('/categorias/:id', categoriasController.remover);
+router.post('/categorias', verificarAdmin, categoriasController.criar);
+router.put('/categorias/:id', verificarAdmin, categoriasController.atualizar);
+router.delete('/categorias/:id', verificarAdmin, categoriasController.remover);
 
 // 3. Autores
 router.get('/autores', autoresController.listar);
 router.get('/autores/:id', autoresController.obterPorId);
-router.post('/autores', autoresController.criar);
-router.put('/autores/:id', autoresController.atualizar);
-router.delete('/autores/:id', autoresController.remover);
+router.post('/autores', verificarAdmin, autoresController.criar);
+router.put('/autores/:id', verificarAdmin, autoresController.atualizar);
+router.delete('/autores/:id', verificarAdmin, autoresController.remover);
 
 // 4. Livros Digitais (Catálogo, FTS5, Leitura com Redirect 302, CRUD)
 router.get('/livros', livrosController.listar);
 router.get('/livros/:id', livrosController.obterPorId);
 router.get('/livros/:id/ler/:linkId', livrosController.lerRedirect);
-router.post('/livros', livrosController.criar);
-router.put('/livros/:id', livrosController.atualizar);
-router.delete('/livros/:id', livrosController.remover);
+router.post('/livros', verificarAdmin, livrosController.criar);
+router.put('/livros/:id', verificarAdmin, livrosController.atualizar);
+router.delete('/livros/:id', verificarAdmin, livrosController.remover);
 
 // 5. Fontes Abertas & Importações Assíncronas
 router.get('/fontes', fontesController.listar);
-router.post('/import', fontesController.iniciarImportacao);
+router.post('/import', verificarAdmin, fontesController.iniciarImportacao);
 router.get('/import/:id', fontesController.obterStatusImportacao);
 
 // 6. Cursos Livres e Gratuitos
 router.get('/cursos', cursosController.listar);
 router.get('/cursos/:id', cursosController.obterPorId);
 router.get('/cursos/:id/acessar', cursosController.acessarRedirect);
-router.post('/cursos', cursosController.criar);
-router.delete('/cursos/:id', cursosController.remover);
+router.post('/cursos', verificarAdmin, cursosController.criar);
+router.delete('/cursos/:id', verificarAdmin, cursosController.remover);
 
 // 6.1 Roadmaps & Trilhas de Carreira
 router.get('/roadmaps', cursosController.listarRoadmaps);

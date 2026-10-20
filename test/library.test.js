@@ -8,18 +8,23 @@ describe('Testes de Domínio e Banco de Dados - Lino Livre', () => {
   const testDbPath = path.join(__dirname, 'test_lino_livre.db');
   let db;
 
-  before(() => {
-    if (fs.existsSync(testDbPath)) {
-      try { fs.unlinkSync(testDbPath); } catch (_) {}
+  const limparBdTeste = () => {
+    for (const sufixo of ['', '-wal', '-shm']) {
+      const f = testDbPath + sufixo;
+      if (fs.existsSync(f)) {
+        try { fs.unlinkSync(f); } catch (_) {}
+      }
     }
+  };
+
+  before(() => {
+    limparBdTeste();
     db = initDatabase(testDbPath, false);
   });
 
   after(() => {
     try { db.close(); } catch (_) {}
-    if (fs.existsSync(testDbPath)) {
-      try { fs.unlinkSync(testDbPath); } catch (_) {}
-    }
+    limparBdTeste();
   });
 
   test('Deve cadastrar categorias e impedir duplicações com o mesmo nome', () => {

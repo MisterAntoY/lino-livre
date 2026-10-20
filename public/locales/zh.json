@@ -150,7 +150,20 @@
       "mostRead": "最受欢迎作品",
       "works": "部作品",
       "readsShort": "次阅读",
-      "error": "加载统计数据失败：{msg}"
+      "error": "加载统计数据失败：{msg}",
+      "links": "外部链接",
+      "languages": "语言",
+      "avgPages": "平均页数",
+      "quality": "书库完整性",
+      "withCover": "有封面",
+      "withSynopsis": "有简介",
+      "withLink": "有阅读链接",
+      "withAuthor": "有作者",
+      "withCategory": "有分类",
+      "completeness": "元数据完整度",
+      "courseTypes": "课程类型",
+      "withCertificate": "有证书",
+      "topPlatforms": "热门平台"
     },
     "whatsapp": {
       "title": "加入 Lino Livre 的 WhatsApp 社区",
@@ -189,7 +202,6 @@
       "readFull": "📑 在新标签页阅读完整法律文件 ↗",
       "close": "关闭"
     },
-
     "reader": {
       "backTitle": "返回目录",
       "back": "返回",
@@ -256,7 +268,12 @@
       "save": "保存到书库",
       "savedOk": "“{t}”已成功添加到书库！",
       "error": "登记书籍时出错：{msg}",
-      "errorSave": "保存失败"
+      "errorSave": "保存失败",
+      "moderationNotice": "注意：只有持有授权密钥的管理员才能直接发布。公众提交的链接必须具备开放许可或公有领域证明，并经过事先审核。",
+      "labelAdminKey": "管理密钥 (x-admin-key)",
+      "adminKeyHint": "直接发布必需",
+      "phAdminKey": "输入授权密钥，或留空提交审核",
+      "adminKeyRequired": "注意：只有持有授权密钥的管理员才能直接发布。公众提交的链接必须具备开放许可或公有领域证明，并经过事先审核。"
     },
     "general": {
       "connection": "⚡ 检测到移动网络：优先使用在线阅读以节省流量。"
@@ -267,7 +284,7 @@
       "cc-by": "CC BY（署名）",
       "cc-by-sa": "CC BY-SA（相同方式共享）",
       "cc-by-nc": "CC BY-NC（非商业性使用）",
-      "outro": "其他（开放获取）"
+      "outro": "外部开放访问"
     },
     "categories": {
       "Clássicos Brasileiros": "巴西经典",

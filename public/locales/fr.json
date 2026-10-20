@@ -150,7 +150,20 @@
       "mostRead": "Œuvres les plus lues",
       "works": "œuvres",
       "readsShort": "lectures",
-      "error": "Échec du chargement des statistiques : {msg}"
+      "error": "Échec du chargement des statistiques : {msg}",
+      "links": "Liens Externes",
+      "languages": "Langues",
+      "avgPages": "Pages Moyennes",
+      "quality": "Intégrité de la Collection",
+      "withCover": "Avec couverture",
+      "withSynopsis": "Avec synopsis",
+      "withLink": "Avec lien de lecture",
+      "withAuthor": "Avec auteur",
+      "withCategory": "Avec catégorie",
+      "completeness": "Complétude des métadonnées",
+      "courseTypes": "Types de Cours",
+      "withCertificate": "Avec certificat",
+      "topPlatforms": "Top Plateformes"
     },
     "whatsapp": {
       "title": "Rejoignez Lino Livre sur WhatsApp",
@@ -189,7 +202,6 @@
       "readFull": "📑 Lire le Document Légal Complet ↗",
       "close": "Fermer"
     },
-
     "reader": {
       "backTitle": "Retour au catalogue",
       "back": "Retour",
@@ -256,7 +268,12 @@
       "save": "Enregistrer dans la collection",
       "savedOk": "« {t} » a bien été ajouté à la collection !",
       "error": "Erreur lors de l'enregistrement du livre : {msg}",
-      "errorSave": "Échec de l'enregistrement"
+      "errorSave": "Échec de l'enregistrement",
+      "moderationNotice": "Remarque : Seuls les administrateurs disposant d'une clé autorisée peuvent publier directement. Les contributions publiques de liens doivent justifier d'une licence libre ou du domaine public et font l'objet d'un audit préalable.",
+      "labelAdminKey": "Clé Administrative (x-admin-key)",
+      "adminKeyHint": "Requise pour la publication directe",
+      "phAdminKey": "Entrez la clé autorisée ou laissez vide pour modération",
+      "adminKeyRequired": "Remarque : Seuls les administrateurs disposant d'une clé autorisée peuvent publier directement. Les contributions publiques de liens doivent justifier d'une licence libre ou du domaine public et font l'objet d'un audit préalable."
     },
     "general": {
       "connection": "⚡ Connexion mobile détectée : la lecture en ligne est priorisée pour économiser votre forfait de données."
@@ -267,7 +284,7 @@
       "cc-by": "CC BY (Attribution)",
       "cc-by-sa": "CC BY-SA (Partage à l'identique)",
       "cc-by-nc": "CC BY-NC (Pas d'utilisation commerciale)",
-      "outro": "Autre (Accès libre)"
+      "outro": "Accès Externe Ouvert"
     },
     "categories": {
       "Clássicos Brasileiros": "Classiques brésiliens",

@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { Bindings } from './types';
+import { RepoSupabase, obterConfigSupabase, backendSupabase } from './supabase';
 import { generateQrCodeSvg } from './utils/qrcode';
 import { dicasData } from '../../src/database/dicasData';
 import { executarImportacaoD1 } from './services/importer';
@@ -22,6 +23,26 @@ app.use('/api/livros', cacheDeBorda);
 app.use('/api/livros/:id', cacheDeBorda);
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
+
+// ────────────────────────────────────────────────────────────
+// Middleware de Autenticação Administrativa para Rotas de Escrita
+// ────────────────────────────────────────────────────────────
+async function verificarAdminWorker(c: any, next: any) {
+  const adminKey = c.env.ADMIN_API_KEY || (c.env.ENVIRONMENT === 'production' ? null : 'lino-admin-dev-key');
+  const headerKey = c.req.header('x-admin-key');
+  const authHeader = c.req.header('authorization');
+  let bearerToken: string | undefined;
+  if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
+    bearerToken = authHeader.slice(7).trim();
+  }
+  const providedKey = headerKey || bearerToken;
+
+  if (!adminKey || !providedKey || providedKey !== adminKey) {
+    return c.json({ erro: 'Acesso não autorizado: chave administrativa necessária' }, 401);
+  }
+
+  await next();
+}
 
 // Cache em memória para estatísticas de dashboard para economizar cotas de leitura da D1
 let cachedDashboard: { data: any; timestamp: number } | null = null;
@@ -64,6 +85,14 @@ function respostaDegradada(c: any, vazio: any = []) {
   return c.json(vazio);
 }
 
+// Devolve o repositório Supabase quando DB_BACKEND=supabase e as credenciais
+// existem. As rotas tentam o Supabase e, em caso de erro, seguem para a D1.
+function repoSupabase(c: any): RepoSupabase | null {
+  if (!backendSupabase(c.env)) return null;
+  const cfg = obterConfigSupabase(c.env);
+  return cfg ? new RepoSupabase(cfg) : null;
+}
+
 async function contadoresDe(db: any, dimensao: string): Promise<any[]> {
   try {
     const res = await db.prepare('SELECT chave, rotulo, total FROM contadores WHERE dimensao = ? ORDER BY total DESC')
@@ -76,13 +105,26 @@ async function contadoresDe(db: any, dimensao: string): Promise<any[]> {
 
 // 1. Dashboard de Acervo e Leituras
 app.get('/api/dashboard', async (c) => {
+  const noCache = c.req.header('cache-control')?.includes('no-cache') || c.req.header('pragma')?.includes('no-cache');
   const now = Date.now();
-  if (cachedDashboard && (now - cachedDashboard.timestamp < DASHBOARD_CACHE_TTL)) {
+  if (!noCache && cachedDashboard && (now - cachedDashboard.timestamp < DASHBOARD_CACHE_TTL)) {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(cachedDashboard.data);
   }
 
   try {
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const payload = await repo.dashboard();
+        cachedDashboard = { data: payload, timestamp: now };
+        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        return c.json(payload);
+      } catch (err) {
+        console.error('Supabase dashboard falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
 
     // Leitura dos agregados: ~330 linhas no total (era ~700k por cache miss).
@@ -116,12 +158,12 @@ app.get('/api/dashboard', async (c) => {
 
     const payload = {
       resumo: {
-        total_livros: stats.total_livros ?? 104848,
+        total_livros: stats.total_livros ?? 0,
         total_leituras: stats.total_leituras ?? 0,
-        total_autores: stats.total_autores ?? 37919,
-        total_categorias: stats.total_categorias ?? 29,
-        total_cursos: stats.total_cursos ?? 7501,
-        total_fontes: stats.total_fontes ?? 32
+        total_autores: stats.total_autores ?? 0,
+        total_categorias: stats.total_categorias ?? 0,
+        total_cursos: stats.total_cursos ?? 0,
+        total_fontes: stats.total_fontes ?? 0
       },
       formatos: doGrupo('formato').map((r) => ({ formato: r.chave, total: r.total })),
       licencas: doGrupo('licenca').map((r) => ({ licenca: r.chave, total: r.total })),
@@ -135,61 +177,31 @@ app.get('/api/dashboard', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(payload);
   } catch (err: any) {
-    if (cachedDashboard) {
+    if (!noCache && cachedDashboard) {
       c.header('Cache-Control', 'public, max-age=300');
       return c.json(cachedDashboard.data);
     }
-    // Fallback gracioso com acervo consolidado quando limites da cota da D1 são atingidos
-    c.header('Cache-Control', 'public, max-age=300');
+    c.header('Cache-Control', 'no-store');
     return c.json({
-      resumo: {
-        total_livros: 104848,
-        total_leituras: 0,
-        total_autores: 37919,
-        total_categorias: 29,
-        total_cursos: 7501,
-        total_fontes: 32
-      },
-      formatos: [
-        { formato: 'html', total: 80000 },
-        { formato: 'pdf', total: 19000 },
-        { formato: 'epub', total: 1807 }
-      ],
-      licencas: [
-        { licenca: 'dominio-publico', total: 79500 },
-        { licenca: 'cc-by', total: 19585 },
-        { licenca: 'outro', total: 1722 }
-      ],
-      idiomas: [
-        { idioma: 'en', total: 64120 },
-        { idioma: 'pt', total: 15200 },
-        { idioma: 'fr', total: 5400 },
-        { idioma: 'de', total: 4300 },
-        { idioma: 'es', total: 2800 },
-        { idioma: 'zh', total: 1487 }
-      ],
-      areas: [
-        { area: '📚 Project Gutenberg (Domínio Público)', total: 79177 },
-        { area: '🌍 Contos Infantis de África', total: 12085 },
-        { area: '📚 Clássicos Mundiais', total: 1218 },
-        { area: 'Tecnologia & Guias Digitais', total: 151 },
-        { area: '🔬 Ciências & Matemática', total: 138 },
-        { area: '🎓 Manuais Universitários Abertos', total: 129 },
-        { area: 'Romance & Crônicas', total: 120 }
-      ],
-      fontes: [
-        { id: 5, slug: 'gutenberg', nome: 'Project Gutenberg', url_base: 'https://gutendex.com', total_livros: 79177 },
-        { id: 30, slug: 'african-storybook', nome: 'African Storybook Project', url_base: 'https://africanstorybook.org', total_livros: 12085 },
-        { id: 24, slug: 'standardebooks', nome: 'Standard Ebooks (domínio público)', url_base: 'https://www.standardebooks.org', total_livros: 1220 }
-      ],
-      mais_lidos: []
-    });
+      erro: 'Estatísticas temporariamente indisponíveis',
+      mensagem: 'As métricas estão sendo recalculadas ou a base de dados atingiu o limite de consultas temporário.'
+    }, 503);
   }
 });
 
 // 2. Categorias / Áreas do Conhecimento
 app.get('/api/categorias', async (c) => {
   try {
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const categorias = await repo.categorias();
+        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        return c.json(categorias);
+      } catch (err) {
+        console.error('Supabase categorias falhou; a usar D1:', err);
+      }
+    }
     const db = c.env.DB;
     // Contadores pré-calculados: 29 linhas em vez de varrer 104k livros.
     const categorias = (await db.prepare(`
@@ -218,7 +230,7 @@ app.get('/api/categorias/:id', async (c) => {
   }
 });
 
-app.post('/api/categorias', async (c) => {
+app.post('/api/categorias', verificarAdminWorker, async (c) => {
   try {
     const { nome, descricao } = await c.req.json<{ nome?: string; descricao?: string }>();
     if (!nome || !nome.trim()) return c.json({ erro: 'O nome da categoria é obrigatório' }, 400);
@@ -235,7 +247,7 @@ app.post('/api/categorias', async (c) => {
   }
 });
 
-app.put('/api/categorias/:id', async (c) => {
+app.put('/api/categorias/:id', verificarAdminWorker, async (c) => {
   try {
     const id = c.req.param('id');
     const { nome, descricao } = await c.req.json<{ nome?: string; descricao?: string }>();
@@ -255,7 +267,7 @@ app.put('/api/categorias/:id', async (c) => {
   }
 });
 
-app.delete('/api/categorias/:id', async (c) => {
+app.delete('/api/categorias/:id', verificarAdminWorker, async (c) => {
   try {
     const id = c.req.param('id');
     const db = c.env.DB;
@@ -299,7 +311,7 @@ app.get('/api/autores/:id', async (c) => {
   }
 });
 
-app.post('/api/autores', async (c) => {
+app.post('/api/autores', verificarAdminWorker, async (c) => {
   try {
     const { nome, nacionalidade, biografia } = await c.req.json<{ nome?: string; nacionalidade?: string; biografia?: string }>();
     if (!nome || !nome.trim()) return c.json({ erro: 'O nome do autor é obrigatório' }, 400);
@@ -316,7 +328,7 @@ app.post('/api/autores', async (c) => {
   }
 });
 
-app.put('/api/autores/:id', async (c) => {
+app.put('/api/autores/:id', verificarAdminWorker, async (c) => {
   try {
     const id = c.req.param('id');
     const { nome, nacionalidade, biografia } = await c.req.json<{ nome?: string; nacionalidade?: string; biografia?: string }>();
@@ -335,7 +347,7 @@ app.put('/api/autores/:id', async (c) => {
   }
 });
 
-app.delete('/api/autores/:id', async (c) => {
+app.delete('/api/autores/:id', verificarAdminWorker, async (c) => {
   try {
     const id = c.req.param('id');
     const db = c.env.DB;
@@ -379,7 +391,7 @@ async function obterDimensoes(db: any) {
 // reduz drasticamente o número de leituras na D1 em acessos repetidos.
 async function cacheDeBorda(c: any, next: any) {
   if (c.req.method !== 'GET') return await next();
-  const cache = (caches as any).default;
+  const cache = typeof caches !== 'undefined' ? (caches as any).default : null;
   if (!cache) return await next();
   const key = new Request(c.req.url, { method: 'GET' });
   const hit = await cache.match(key);
@@ -396,10 +408,31 @@ app.get('/api/livros', async (c) => {
   const numPage = Math.max(1, parseInt(rawPage, 10) || 1);
   const numLimit = Math.min(100, Math.max(1, parseInt(rawLimit, 10) || 24));
   const offset = (numPage - 1) * numLimit;
+  const { busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug } = queryParams;
 
   try {
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const payload = await repo.livros({
+          page: numPage,
+          limit: numLimit,
+          busca,
+          categoria: categoria_id,
+          autor: autor_id,
+          idioma,
+          licenca,
+          fonte: fonte_slug || fonte,
+          formato
+        });
+        c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
+        return c.json(payload);
+      } catch (err) {
+        console.error('Supabase livros falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
-    const { busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug } = queryParams;
 
     // Filtros aplicados exclusivamente sobre livros (sem JOINs e sem LIKE).
     // Isso permite COUNT(*) — em vez de COUNT(DISTINCT l.id) sobre 104k linhas —
@@ -640,6 +673,18 @@ app.get('/api/livros', async (c) => {
 app.get('/api/livros/:id', async (c) => {
   try {
     const id = c.req.param('id');
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const livro = await repo.livro(id);
+        if (!livro) return c.json({ erro: 'Livro não encontrado' }, 404);
+        c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+        return c.json(livro);
+      } catch (err) {
+        console.error('Supabase livro falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
     const livro = await db.prepare(`
       SELECT 
@@ -668,6 +713,28 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
   try {
     const id = c.req.param('id');
     const linkId = c.req.param('linkId');
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const link = await repo.link(id, linkId);
+        if (!link) return c.json({ erro: 'Link de leitura não encontrado' }, 404);
+
+        c.executionCtx.waitUntil(repo.registrarLeitura(id));
+
+        if (link.url && String(link.url).startsWith('http')) {
+          return c.redirect(String(link.url), 302);
+        }
+        const conteudo = await repo.conteudoTexto(id);
+        return c.json({
+          mensagem: 'Leitura iniciada',
+          url: link.url,
+          conteudo_texto: conteudo
+        });
+      } catch (err) {
+        console.error('Supabase leitura falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
 
     const link = await db.prepare(`
@@ -697,7 +764,7 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
   }
 });
 
-app.post('/api/livros', async (c) => {
+app.post('/api/livros', verificarAdminWorker, async (c) => {
   try {
     const body = await c.req.json<any>();
     const { 
@@ -762,7 +829,7 @@ app.post('/api/livros', async (c) => {
   }
 });
 
-app.put('/api/livros/:id', async (c) => {
+app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
   try {
     const id = c.req.param('id');
     const body = await c.req.json<any>();
@@ -810,7 +877,7 @@ app.put('/api/livros/:id', async (c) => {
   }
 });
 
-app.delete('/api/livros/:id', async (c) => {
+app.delete('/api/livros/:id', verificarAdminWorker, async (c) => {
   try {
     const id = c.req.param('id');
     const db = c.env.DB;
@@ -825,6 +892,16 @@ app.delete('/api/livros/:id', async (c) => {
 // 5. Fontes e Importação
 app.get('/api/fontes', async (c) => {
   try {
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const fontes = await repo.fontes();
+        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        return c.json(fontes);
+      } catch (err) {
+        console.error('Supabase fontes falhou; a usar D1:', err);
+      }
+    }
     const db = c.env.DB;
     // LEFT JOIN em tabela de contadores (32 linhas) em vez de GROUP BY em 104k.
     const fontes = (await db.prepare(`
@@ -843,7 +920,7 @@ app.get('/api/fontes', async (c) => {
   }
 });
 
-app.post('/api/import', async (c) => {
+app.post('/api/import', verificarAdminWorker, async (c) => {
   try {
     const db = c.env.DB;
     const body = await c.req.json<{ fonte_id?: number; fonte?: string; query?: string }>();
@@ -902,8 +979,20 @@ app.get('/api/import/:id', async (c) => {
 // 6. Cursos
 app.get('/api/cursos', async (c) => {
   try {
+    const filtros = c.req.query();
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const cursos = await repo.cursos(filtros);
+        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        return c.json(cursos);
+      } catch (err) {
+        console.error('Supabase cursos falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
-    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps } = c.req.query();
+    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps } = filtros;
 
     let query = 'SELECT * FROM cursos WHERE 1=1';
     const params: any[] = [];
@@ -956,8 +1045,20 @@ app.get('/api/cursos', async (c) => {
 
 app.get('/api/roadmaps', async (c) => {
   try {
+    const filtros = c.req.query();
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const roadmaps = await repo.roadmaps(filtros);
+        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        return c.json(roadmaps);
+      } catch (err) {
+        console.error('Supabase roadmaps falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
-    const { busca, plataforma, area } = c.req.query();
+    const { busca, plataforma, area } = filtros;
     let query = "SELECT * FROM cursos WHERE tipo = 'roadmap'";
     const params: any[] = [];
 
@@ -988,6 +1089,17 @@ app.get('/api/roadmaps', async (c) => {
 app.get('/api/cursos/:id', async (c) => {
   try {
     const id = c.req.param('id');
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const curso = await repo.curso(id);
+        if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
+        return c.json(curso);
+      } catch (err) {
+        console.error('Supabase curso falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
     const curso = await db.prepare('SELECT * FROM cursos WHERE id = ?').bind(id).first();
     if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
@@ -1000,6 +1112,17 @@ app.get('/api/cursos/:id', async (c) => {
 app.get('/api/cursos/:id/acessar', async (c) => {
   try {
     const id = c.req.param('id');
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const curso = await repo.curso(id);
+        if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
+        return c.redirect(String((curso as any).url), 302);
+      } catch (err) {
+        console.error('Supabase acessar curso falhou; a usar D1:', err);
+      }
+    }
+
     const db = c.env.DB;
     const curso = await db.prepare('SELECT id, titulo, url FROM cursos WHERE id = ?').bind(id).first<{ url: string }>();
     if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
@@ -1009,7 +1132,7 @@ app.get('/api/cursos/:id/acessar', async (c) => {
   }
 });
 
-app.post('/api/cursos', async (c) => {
+app.post('/api/cursos', verificarAdminWorker, async (c) => {
   try {
     const { titulo, area, plataforma, url, licenca, nivel, descricao } = await c.req.json<any>();
     if (!titulo || !area || !plataforma || !url) {
@@ -1032,7 +1155,7 @@ app.post('/api/cursos', async (c) => {
   }
 });
 
-app.delete('/api/cursos/:id', async (c) => {
+app.delete('/api/cursos/:id', verificarAdminWorker, async (c) => {
   try {
     const id = c.req.param('id');
     const db = c.env.DB;
@@ -1131,7 +1254,17 @@ app.get('/api/canal/qrcode.svg', async (c) => {
 // 9. Podcasts & Audiolivros (Spotify for Creators)
 app.get('/api/podcasts', async (c) => {
   try {
-    const { busca, categoria } = c.req.query();
+    const filtros = c.req.query();
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        return c.json(await repo.podcasts(filtros));
+      } catch (err) {
+        console.error('Supabase podcasts falhou; a usar D1:', err);
+      }
+    }
+
+    const { busca, categoria } = filtros;
     let query = `
       SELECT s.*, 
         COUNT(e.id) as total_episodios
@@ -1163,6 +1296,15 @@ app.get('/api/podcasts', async (c) => {
 
 app.get('/api/podcasts/episodios/recentes', async (c) => {
   try {
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        return c.json(await repo.episodiosRecentes());
+      } catch (err) {
+        console.error('Supabase episódios falhou; a usar D1:', err);
+      }
+    }
+
     const query = `
       SELECT e.*, 
         s.titulo as show_titulo, 
@@ -1184,6 +1326,17 @@ app.get('/api/podcasts/episodios/recentes', async (c) => {
 app.get('/api/podcasts/:slugOuId', async (c) => {
   try {
     const { slugOuId } = c.req.param();
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        const show = await repo.podcast(slugOuId);
+        if (!show) return c.json({ erro: 'Podcast não encontrado' }, 404);
+        return c.json(show);
+      } catch (err) {
+        console.error('Supabase podcast falhou; a usar D1:', err);
+      }
+    }
+
     let show: any = null;
 
     if (/^\d+$/.test(slugOuId)) {
@@ -1216,6 +1369,16 @@ app.get('/api/podcasts/:slugOuId', async (c) => {
 app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
   try {
     const id = parseInt(c.req.param('id'), 10);
+    const repo = repoSupabase(c);
+    if (repo) {
+      try {
+        await repo.registrarReproducao(id);
+        return c.json({ sucesso: true, id });
+      } catch (err) {
+        console.error('Supabase reprodução falhou; a usar D1:', err);
+      }
+    }
+
     await c.env.DB.prepare(
       `UPDATE podcasts_episodios SET reproducoes = reproducoes + 1 WHERE id = ?`
     ).bind(id).run();
@@ -1328,6 +1491,12 @@ async function recomputarEstatisticas(db: D1Database): Promise<void> {
       ('atualizado_em_epoch', CAST(strftime('%s','now') AS INTEGER))`)
   ]);
 }
+
+export function _limparCacheDashboard() {
+  cachedDashboard = null;
+}
+
+export { app };
 
 export default {
   fetch: app.fetch,

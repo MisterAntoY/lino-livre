@@ -1006,6 +1006,14 @@
         <button class="btn-close" onclick="app.fecharModais()">&times;</button>
       </div>
       <form onsubmit="app.salvarNovoLivro(event)" class="modal-card-body">
+        <!-- Aviso de Moderação & Conformidade Legal -->
+        <div class="admin-notice-box" style="background: rgba(37, 99, 235, 0.08); border-left: 4px solid var(--accent, #2563eb); padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 4px; font-size: 0.825rem; line-height: 1.4; color: var(--text-color, #1e293b);">
+          <div style="font-weight: 600; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
+            <span>🛡️ Moderação & Conformidade Legal</span>
+          </div>
+          <span data-i18n="ui.form.moderationNotice">Nota: Apenas administradores com chave autorizada podem publicar diretamente. Contribuições públicas de links devem possuir comprovação de licença aberta ou domínio público e passam por auditoria prévia.</span>
+        </div>
+
         <div class="form-group">
           <label data-i18n="ui.form.labelTitle">Título *</label>
           <input type="text" id="novo-titulo" class="form-input" required placeholder="Ex: Grande Sertão: Veredas" data-i18n-ph="ui.form.phTitle">
@@ -1023,7 +1031,7 @@
               <option value="cc-by" data-i18n="ui.licenses.cc-by">CC BY (Atribuição)</option>
               <option value="cc-by-sa" data-i18n="ui.licenses.cc-by-sa">CC BY-SA (Compartilha Igual)</option>
               <option value="cc-by-nc" data-i18n="ui.licenses.cc-by-nc">CC BY-NC (Não Comercial)</option>
-              <option value="outro" data-i18n="ui.licenses.outro">Outro (Livre Acesso)</option>
+              <option value="outro" data-i18n="ui.licenses.outro">Acesso Externo Aberto</option>
             </select>
           </div>
         </div>
@@ -1063,6 +1071,13 @@
         <div class="form-group">
           <label data-i18n="ui.form.labelText">Texto da Obra (opcional para leitura rápida)</label>
           <textarea id="novo-conteudo" class="form-input" rows="3" placeholder="Texto inicial ou capítulo introdutório..." data-i18n-ph="ui.form.phText"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="novo-admin-key" style="display: flex; justify-content: space-between; align-items: center;">
+            <span data-i18n="ui.form.labelAdminKey">Chave Administrativa (x-admin-key)</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted, #64748b); font-weight: normal;" data-i18n="ui.form.adminKeyHint">Exigida para publicação direta</span>
+          </label>
+          <input type="password" id="novo-admin-key" class="form-input" placeholder="Insira a chave autorizada ou deixe vazio para moderação" data-i18n-ph="ui.form.phAdminKey" autocomplete="off">
         </div>
         <div class="modal-card-footer">
           <button type="button" class="btn btn-secondary" onclick="app.fecharModais()" data-i18n="ui.form.cancel">Cancelar</button>
@@ -1105,7 +1120,7 @@
           <div style="background:#f5f5f4;border-left:4px solid #334155;padding:0.75rem 1rem;border-radius:4px;margin-bottom:1rem;">
             <p style="margin:0;font-size:0.9rem;color:#334155;"><strong>Diretriz Inviolável de Arquitetura:</strong> Os servidores e bancos de dados do Lino Livre <strong>NUNCA</strong> armazenam arquivos binários de livros (PDF, EPUB, MOBI ou TXT). O sistema armazena unicamente metadados públicos e hiperligações para provedores externos.</p>
           </div>
-          <p>Toda leitura externa é realizada através de redirecionamento de protocolo padrão (HTTP 302) para os repositórios originais na internet. A plataforma opera como mero provedor de aplicação de busca, conforme o Marco Civil da Internet (Lei 12.965/2014, art. 19), DMCA (17 U.S.C. § 512) e Diretiva de Comércio Eletrónico da UE (2000/31/CE).</p>
+          <p>Toda leitura externa é realizada através de redirecionamento de protocolo padrão (HTTP 302) para os repositórios originais na internet. A plataforma opera como mero intermediário tecnológico e provedor de busca educativa, conforme a Lei n.º 15/14 de Angola (arts. 32.º e 42.º a 45.º), os tratados da OMPI (WIPO), o Marco Civil da Internet (Lei 12.965/2014, art. 19), a DMCA (17 U.S.C. § 512) e a Diretiva de Comércio Eletrónico da UE (2000/31/CE).</p>
         </div>
 
         <!-- Aba 3: DMCA / Takedown -->

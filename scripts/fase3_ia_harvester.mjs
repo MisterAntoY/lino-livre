@@ -114,14 +114,14 @@ function mapLanguage(lang) {
 }
 
 async function fetchArchivePage(collection, rows = 1000, page = 1) {
-  let query = `mediatype:texts AND date:[1500 TO 1928] AND NOT access-restricted-item:true`;
+  let query = `mediatype:texts AND date:[1500 TO 1928]`;
   if (collection === 'portuguese') {
-    query += ` AND (language:por OR language:Portuguese)`;
+    query += ` AND language:por`;
   } else {
     query += ` AND collection:${collection}`;
   }
 
-  const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}&fl[]=identifier,title,creator,year,language,description&rows=${rows}&page=${page}&output=json`;
+  const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}&fl[]=identifier,title,creator,year,language&rows=${rows}&page=${page}&output=json`;
 
   const res = await fetch(url, {
     headers: { 'User-Agent': 'LinoLivre-Harvester/1.0 (biblioteca digital aberta; educacional)' },
@@ -134,6 +134,41 @@ async function fetchArchivePage(collection, rows = 1000, page = 1) {
 }
 
 async function getNextStartIds() {
+  let fallbackL = 313200;
+  let fallbackA = 82000;
+  let fallbackK = 413200;
+
+  // Verificar ficheiros SQL já gerados localmente para evitar colisões
+  if (fs.existsSync(SQL_DIR)) {
+    const files = fs.readdirSync(SQL_DIR).filter(f => f.endsWith('.sql'));
+    for (const f of files) {
+      try {
+        const content = fs.readFileSync(path.join(SQL_DIR, f), 'utf-8');
+        const matchesL = content.match(/INSERT OR IGNORE INTO livros \(id,[^)]*VALUES \((\d+),/g);
+        if (matchesL) {
+          for (const m of matchesL) {
+            const num = parseInt(m.match(/VALUES \((\d+),/)[1], 10);
+            if (num > fallbackL) fallbackL = num;
+          }
+        }
+        const matchesA = content.match(/INSERT OR IGNORE INTO autores \(id,[^)]*VALUES \((\d+),/g);
+        if (matchesA) {
+          for (const m of matchesA) {
+            const num = parseInt(m.match(/VALUES \((\d+),/)[1], 10);
+            if (num > fallbackA) fallbackA = num;
+          }
+        }
+        const matchesK = content.match(/INSERT OR IGNORE INTO links_livros \(id,[^)]*VALUES \((\d+),/g);
+        if (matchesK) {
+          for (const m of matchesK) {
+            const num = parseInt(m.match(/VALUES \((\d+),/)[1], 10);
+            if (num > fallbackK) fallbackK = num;
+          }
+        }
+      } catch {}
+    }
+  }
+
   try {
     const raw = execSync(`npx wrangler d1 execute ${DB} --remote --command "SELECT MAX(id) AS max_l FROM livros; SELECT MAX(id) AS max_a FROM autores; SELECT MAX(id) AS max_k FROM links_livros;" --json`, { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'] });
     const jsonStart = raw.indexOf('[');
@@ -143,20 +178,19 @@ async function getNextStartIds() {
       const maxA = parsed[1]?.results[0]?.max_a || 70000;
       const maxK = parsed[2]?.results[0]?.max_k || 400000;
       return {
-        nextLivroId: Math.max(maxL + 1, 310000),
-        nextAutorId: Math.max(maxA + 1, 80000),
-        nextLinkId: Math.max(maxK + 1, 410000)
+        nextLivroId: Math.max(maxL + 1, fallbackL + 1),
+        nextAutorId: Math.max(maxA + 1, fallbackA + 1),
+        nextLinkId: Math.max(maxK + 1, fallbackK + 1)
       };
     }
   } catch (err) {
-    console.warn(`   ⚠ Não foi possível consultar MAX(id) na D1 remota, usando limites locais: ${err.message?.slice(0, 80)}`);
+    console.warn(`   ⚠ Usando limites locais calculados: ${err.message?.slice(0, 80)}`);
   }
 
-  // Fallback seguro
   return {
-    nextLivroId: 310000,
-    nextAutorId: 80000,
-    nextLinkId: 410000
+    nextLivroId: fallbackL + 1,
+    nextAutorId: fallbackA + 1,
+    nextLinkId: fallbackK + 1
   };
 }
 

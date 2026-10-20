@@ -233,8 +233,17 @@
   // atalho global — usado por index.html e por app.js
   window.t = function (path, vars) { return I18N.t(path, vars); };
 
+  const LICENCAS_PADRAO = {
+    'dominio-publico': 'Domínio Público',
+    'cc0': 'CC0 (Dedicação Pública)',
+    'cc-by': 'CC BY (Atribuição)',
+    'cc-by-sa': 'CC BY-SA (Compartilha Igual)',
+    'cc-by-nc': 'CC BY-NC (Não Comercial)',
+    'outro': 'Acesso Externo Aberto'
+  };
+
   window.traduzirCategoria = nome => I18N.mapa('categories', nome, nome);
   window.traduzirArea = nome => I18N.mapa('areas', nome, nome);
   window.traduzirNivel = nome => I18N.mapa('levels', nome, I18N.t('courses.levelDefault'));
-  window.traduzirLicenca = chave => I18N.mapa('licenses', chave, chave);
+  window.traduzirLicenca = chave => I18N.mapa('licenses', chave, LICENCAS_PADRAO[chave] || chave);
 })();

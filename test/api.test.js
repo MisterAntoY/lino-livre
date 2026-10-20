@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 const { test, describe, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
@@ -14,10 +15,17 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
 
   let originalFetch;
 
-  before(async () => {
-    if (fs.existsSync(testDbPath)) {
-      try { fs.unlinkSync(testDbPath); } catch (_) {}
+  const limparBdTeste = () => {
+    for (const sufixo of ['', '-wal', '-shm']) {
+      const f = testDbPath + sufixo;
+      if (fs.existsSync(f)) {
+        try { fs.unlinkSync(f); } catch (_) {}
+      }
     }
+  };
+
+  before(async () => {
+    limparBdTeste();
     const db = initDatabase(testDbPath);
     seed(db);
 
@@ -71,6 +79,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Configurar variáveis de teste para comunidade e canal
     process.env.WHATSAPP_COMMUNITY_URL = 'https://chat.whatsapp.com/TESTE_LINO_LIVRE';
     process.env.WHATSAPP_CHANNEL_URL = 'https://whatsapp.com/channel/TESTE_CANAL_LINO';
+    process.env.ADMIN_API_KEY = 'lino-admin-dev-key';
 
     server = http.createServer(app);
     await new Promise((resolve) => {
@@ -90,9 +99,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     }
     await new Promise((resolve) => server.close(resolve));
     closeDatabase();
-    if (fs.existsSync(testDbPath)) {
-      try { fs.unlinkSync(testDbPath); } catch (_) {}
-    }
+    limparBdTeste();
   });
 
   const request = async (urlPath, options = {}) => {
@@ -121,6 +128,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Tentativa com licença inválida
     const resInvalido = await request('/api/livros', {
       method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
       body: JSON.stringify({
         titulo: 'Livro Irregular',
         licenca: 'licenca-inexistente'
@@ -131,6 +139,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Tentativa sem licença
     const resSemLicenca = await request('/api/livros', {
       method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
       body: JSON.stringify({
         titulo: 'Livro Sem Licenca'
       })
@@ -140,6 +149,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Criação válida
     const resCriacao = await request('/api/livros', {
       method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
       body: JSON.stringify({
         titulo: 'O Cortiço - Edição Especial',
         licenca: 'dominio-publico',
@@ -161,6 +171,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Atualização
     const resAtualizacao = await request(`/api/livros/${novoId}`, {
       method: 'PUT',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
       body: JSON.stringify({
         titulo: 'O Cortiço - Edição Anotada',
         licenca: 'cc-by'
@@ -220,6 +231,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
   test('5. Importação assíncrona registra job e mantém idempotência sem duplicações', async () => {
     const resPost = await request('/api/import', {
       method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
       body: JSON.stringify({
         fonte: 'gutenberg',
         query: 'machado'
@@ -240,6 +252,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // Criar um livro com link para ser removido
     const resCriar = await request('/api/livros', {
       method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
       body: JSON.stringify({
         titulo: 'Livro Para Remover',
         licenca: 'dominio-publico',
@@ -256,7 +269,10 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(linkAntes, 'Link deve existir antes da exclusão');
 
     // Executar DELETE
-    const resDel = await request(`/api/livros/${livroId}`, { method: 'DELETE' });
+    const resDel = await request(`/api/livros/${livroId}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' }
+    });
     assert.equal(resDel.status, 200);
 
     // Verificar cascata
@@ -332,6 +348,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // 9.2 - Disparar importação para o Guia de TI
     const resImport = await request('/api/import', {
       method: 'POST',
+      headers: { 'x-admin-key': 'lino-admin-dev-key' },
       body: JSON.stringify({
         fonte: 'guiadeti',
         query: 'python'
@@ -1161,6 +1178,97 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resRedirectGoogle = await request(`/api/cursos/${primeiroGoogle.id}/acessar`);
     assert.equal(resRedirectGoogle.status, 302);
     assert.equal(resRedirectGoogle.headers.get('location'), primeiroGoogle.url);
+  });
+
+  // Teste 26: Autenticação Administrativa e Proteção de Rotas de Escrita
+  test('26. Autenticação Administrativa: rejeita mutações sem chave (HTTP 401) e aceita x-admin-key / Bearer token', async () => {
+    // 26.1 - POST /api/livros sem cabeçalho deve retornar HTTP 401
+    const resPostSemAuth = await request('/api/livros', {
+      method: 'POST',
+      body: JSON.stringify({
+        titulo: 'Livro Não Autorizado',
+        licenca: 'dominio-publico'
+      })
+    });
+    assert.equal(resPostSemAuth.status, 401, 'POST /api/livros sem auth deve retornar 401');
+    assert.equal(resPostSemAuth.data.erro, 'Acesso não autorizado: chave administrativa necessária');
+
+    // 26.2 - DELETE /api/livros/:id sem cabeçalho deve retornar HTTP 401
+    const resDelSemAuth = await request('/api/livros/1', {
+      method: 'DELETE'
+    });
+    assert.equal(resDelSemAuth.status, 401, 'DELETE /api/livros/:id sem auth deve retornar 401');
+    assert.equal(resDelSemAuth.data.erro, 'Acesso não autorizado: chave administrativa necessária');
+
+    // 26.3 - PUT /api/livros/:id sem cabeçalho deve retornar HTTP 401
+    const resPutSemAuth = await request('/api/livros/1', {
+      method: 'PUT',
+      body: JSON.stringify({ titulo: 'Atualizacao Sem Auth' })
+    });
+    assert.equal(resPutSemAuth.status, 401, 'PUT /api/livros/:id sem auth deve retornar 401');
+
+    // 26.4 - POST /api/categorias sem cabeçalho deve retornar HTTP 401
+    const resCatSemAuth = await request('/api/categorias', {
+      method: 'POST',
+      body: JSON.stringify({ nome: 'Categoria Sem Auth' })
+    });
+    assert.equal(resCatSemAuth.status, 401, 'POST /api/categorias sem auth deve retornar 401');
+
+    // 26.5 - POST /api/cursos sem cabeçalho deve retornar HTTP 401
+    const resCursoSemAuth = await request('/api/cursos', {
+      method: 'POST',
+      body: JSON.stringify({ titulo: 'Curso Sem Auth', area: 'TI', plataforma: 'Online', url: 'https://exemplo.org' })
+    });
+    assert.equal(resCursoSemAuth.status, 401, 'POST /api/cursos sem auth deve retornar 401');
+
+    // 26.6 - POST /api/import sem cabeçalho deve retornar HTTP 401
+    const resImportSemAuth = await request('/api/import', {
+      method: 'POST',
+      body: JSON.stringify({ fonte: 'gutenberg' })
+    });
+    assert.equal(resImportSemAuth.status, 401, 'POST /api/import sem auth deve retornar 401');
+
+    // 26.7 - Chave incorreta deve retornar HTTP 401
+    const resChaveInvalida = await request('/api/livros', {
+      method: 'POST',
+      headers: { 'x-admin-key': 'chave-incorreta-xyz' },
+      body: JSON.stringify({ titulo: 'Livro Chave Errada', licenca: 'dominio-publico' })
+    });
+    assert.equal(resChaveInvalida.status, 401, 'Chave incorreta deve retornar 401');
+
+    // 26.8 - Autenticação com Authorization: Bearer <token> deve ser aceita
+    const resBearerValido = await request('/api/livros', {
+      method: 'POST',
+      headers: { 'authorization': 'Bearer lino-admin-dev-key' },
+      body: JSON.stringify({
+        titulo: 'Livro Com Bearer Token',
+        licenca: 'dominio-publico',
+        links: [{ formato: 'pdf', url: 'https://exemplo.org/bearer.pdf' }]
+      })
+    });
+    assert.equal(resBearerValido.status, 201, 'Bearer token válido deve permitir criação com 201');
+    assert.equal(resBearerValido.data.titulo, 'Livro Com Bearer Token');
+
+    // Limpar o livro criado via Bearer token
+    if (resBearerValido.data?.id) {
+      await request(`/api/livros/${resBearerValido.data.id}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-key': 'lino-admin-dev-key' }
+      });
+    }
+
+    // 26.9 - Rotas públicas permanecem acessíveis sem chave
+    const resGetLivros = await request('/api/livros?limit=1');
+    assert.equal(resGetLivros.status, 200, 'GET /api/livros continua público (200)');
+
+    const resGetCategorias = await request('/api/categorias');
+    assert.equal(resGetCategorias.status, 200, 'GET /api/categorias continua público (200)');
+
+    const resOuvirPod = await request('/api/podcasts/episodios/1/ouvir', {
+      method: 'POST'
+    });
+    // O endpoint /ouvir é público (pode responder 200 ou 500 se id não existir, mas NÃO 401)
+    assert.notEqual(resOuvirPod.status, 401, 'POST /api/podcasts/episodios/:id/ouvir permanece público sem exigir 401');
   });
 });
 

@@ -170,7 +170,20 @@
       "mostRead": "Obras Mais Lidas",
       "works": "obras",
       "readsShort": "leituras",
-      "error": "Erro ao carregar métricas: {msg}"
+      "error": "Erro ao carregar métricas: {msg}",
+      "links": "Links Externos",
+      "languages": "Idiomas",
+      "avgPages": "Média de Páginas",
+      "quality": "Integridade do Acervo",
+      "withCover": "Com capa",
+      "withSynopsis": "Com sinopse",
+      "withLink": "Com link de leitura",
+      "withAuthor": "Com autor",
+      "withCategory": "Com categoria",
+      "completeness": "Completude dos metadados",
+      "courseTypes": "Tipos de Curso",
+      "withCertificate": "Com certificado",
+      "topPlatforms": "Top Plataformas"
     },
     "whatsapp": {
       "title": "Junte-se ao Lino Livre no WhatsApp",
@@ -209,7 +222,6 @@
       "readFull": "📑 Ler Documento Legal Completo em Nova Aba ↗",
       "close": "Fechar"
     },
-
     "reader": {
       "backTitle": "Voltar ao Catálogo",
       "back": "Voltar",
@@ -276,7 +288,12 @@
       "save": "Salvar no Acervo",
       "savedOk": "\"{t}\" adicionado com sucesso ao acervo!",
       "error": "Erro ao cadastrar livro: {msg}",
-      "errorSave": "Falha ao cadastrar"
+      "errorSave": "Falha ao cadastrar",
+      "moderationNotice": "Nota: Apenas administradores com chave autorizada podem publicar diretamente. Contribuições públicas de links devem possuir comprovação de licença aberta ou domínio público e passam por auditoria prévia.",
+      "labelAdminKey": "Chave Administrativa (x-admin-key)",
+      "adminKeyHint": "Exigida para publicação direta",
+      "phAdminKey": "Insira a chave autorizada ou deixe vazio para moderação",
+      "adminKeyRequired": "Nota: Apenas administradores com chave autorizada podem publicar diretamente. Contribuições públicas de links devem possuir comprovação de licença aberta ou domínio público e passam por auditoria prévia."
     },
     "general": {
       "connection": "⚡ Conexão móvel detectada: Leitura online priorizada para economizar seu plano de dados."
@@ -287,7 +304,7 @@
       "cc-by": "CC BY (Atribuição)",
       "cc-by-sa": "CC BY-SA (Compartilha Igual)",
       "cc-by-nc": "CC BY-NC (Não Comercial)",
-      "outro": "Outro (Livre Acesso)"
+      "outro": "Acesso Externo Aberto"
     },
     "categories": {
       "Clássicos Brasileiros": "Clássicos Brasileiros",

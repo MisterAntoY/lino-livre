@@ -52,10 +52,8 @@ jobs:
 
       # Diagnóstico ANTES de qualquer escrita: identifica token ausente,
       # conta errada ou falta de permissão (ex.: D1: Edit) com mensagem clara.
-      # Não bloqueia o deploy — migrações e deploy têm permissões diferentes.
       - name: 🪪 Diagnóstico de credenciais Cloudflare
         id: credenciais
-        continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
@@ -79,44 +77,30 @@ jobs:
           fi
           echo "$WHOAMI"
 
-          # 2) Acesso de leitura à D1 (exige "D1: Edit"). Falha aqui não
-          #    bloqueia o deploy, mas impede as migrações.
+          # 2) Acesso à D1 (exige "D1: Edit"). Falha aqui interrompe o deploy.
           if ! D1=$(npx wrangler d1 migrations list lino-livre-db --remote 2>&1); then
             echo "$D1"
             if echo "$D1" | grep -q "9109"; then
-              echo "::warning::Token com filtro de IP (9109): a D1 não será acessada até o filtro ser removido."
+              echo "::error::Token com filtro de IP (9109): a D1 não será acessada até o filtro ser removido."
             else
-              echo "::warning::Token sem acesso à D1 (falta o escopo 'D1: Edit'): migrações serão ignoradas."
+              echo "::error::Token sem acesso à D1 (falta o escopo 'D1: Edit'): migrações são obrigatórias para o deploy."
             fi
             exit 1
           fi
           echo "$D1"
 
-      - name: 🗄️ Aplicar Migrações D1 (Remoto)
+      - name: 🗄️ Aplicar Migrações D1 (Remoto com backoff)
         id: migracoes
-        if: steps.credenciais.outcome == 'success'
-        continue-on-error: true
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: npx wrangler d1 migrations apply lino-livre-db --remote
-
-      # A API da D1 pode falhar transitoriamente (HTTP 5xx). Uma repetição
-      # evita derrubar o pipeline por instabilidade momentânea.
-      - name: 🔁 Repetir Migrações D1 (uma tentativa)
-        if: steps.migracoes.outcome == 'failure'
-        continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -uo pipefail
-          echo "↻ A repetir migrações D1 em 20s…"
-          sleep 20
-          npx wrangler d1 migrations apply lino-livre-db --remote
-
-      - name: ⚠️ Aviso — migrações D1 não aplicadas
-        if: steps.credenciais.outcome == 'failure' || steps.migracoes.outcome == 'failure'
-        run: |
-          echo "::warning::Migrações D1 não aplicadas (token sem 'D1: Edit', conta errada ou API indisponível). O deploy do Worker continuará. Corrija o segredo CLOUDFLARE_API_TOKEN e aplique as migrações com: npx wrangler d1 migrations apply lino-livre-db --remote"
+          echo "🔄 Aplicando migrações D1..."
+          if ! npx wrangler d1 migrations apply lino-livre-db --remote; then
+            echo "::warning::Primeira tentativa de migração falhou. Repetindo migrações D1 com backoff de 20s..."
+            sleep 20
+            npx wrangler d1 migrations apply lino-livre-db --remote
+          fi
 
       - name: 🚀 Deploy Worker & Assets
         env:

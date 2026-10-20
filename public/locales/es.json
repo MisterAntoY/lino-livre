@@ -179,7 +179,20 @@
       "mostRead": "Obras más leídas",
       "works": "obras",
       "readsShort": "lecturas",
-      "error": "Error al cargar estadísticas: {msg}"
+      "error": "Error al cargar estadísticas: {msg}",
+      "links": "Enlaces Externos",
+      "languages": "Idiomas",
+      "avgPages": "Promedio de Páginas",
+      "quality": "Integridad de la Colección",
+      "withCover": "Con portada",
+      "withSynopsis": "Con sinopsis",
+      "withLink": "Con enlace de lectura",
+      "withAuthor": "Con autor",
+      "withCategory": "Con categoría",
+      "completeness": "Completitud de metadatos",
+      "courseTypes": "Tipos de Curso",
+      "withCertificate": "Con certificado",
+      "topPlatforms": "Top Plataformas"
     },
     "whatsapp": {
       "title": "Únete a Lino Livre en WhatsApp",
@@ -218,7 +231,6 @@
       "readFull": "📑 Leer Documento Legal Completo en Nueva Pestaña ↗",
       "close": "Cerrar"
     },
-
     "reader": {
       "backTitle": "Volver al catálogo",
       "back": "Volver",
@@ -285,7 +297,12 @@
       "save": "Guardar en la colección",
       "savedOk": "¡«{t}» se ha añadido correctamente a la colección!",
       "error": "Error al guardar el libro: {msg}",
-      "errorSave": "Fallo al guardar"
+      "errorSave": "Fallo al guardar",
+      "moderationNotice": "Nota: Solo los administradores con clave autorizada pueden publicar directamente. Las contribuciones públicas de enlaces deben contar con comprobación de licencia abierta o dominio público y pasan por auditoría previa.",
+      "labelAdminKey": "Clave Administrativa (x-admin-key)",
+      "adminKeyHint": "Requerida para publicación directa",
+      "phAdminKey": "Ingrese la clave autorizada o déjelo vacío para moderación",
+      "adminKeyRequired": "Nota: Solo los administradores con clave autorizada pueden publicar directamente. Las contribuciones públicas de enlaces deben contar con comprobación de licencia abierta o dominio público y pasan por auditoría previa."
     },
     "general": {
       "connection": "⚡ Conexión móvil detectada: se prioriza la lectura en línea para ahorrar tu plan de datos."
@@ -296,7 +313,7 @@
       "cc-by": "CC BY (Atribución)",
       "cc-by-sa": "CC BY-SA (Compartir Igual)",
       "cc-by-nc": "CC BY-NC (No Comercial)",
-      "outro": "Otro (Acceso Libre)"
+      "outro": "Acceso Externo Abierto"
     },
     "categories": {
       "Clássicos Brasileiros": "Clásicos Brasileños",

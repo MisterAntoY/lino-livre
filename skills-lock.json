@@ -73,6 +73,18 @@
       "skillPath": "skills/sandbox-stable/SKILL.md",
       "computedHash": "4c6ad34430c75b84e68edc9f721d5a54fdd8a1d6754807154b5f7bc45665d0a4"
     },
+    "supabase": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/supabase/SKILL.md",
+      "computedHash": "211141fd078b4b3645803868528d54221bc7755d24d5c8af45a366785c151dba"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/supabase-postgres-best-practices/SKILL.md",
+      "computedHash": "e14e276241805c97dbcfe40dcbea1a3035269cc7293cac4b1832dda41a835e60"
+    },
     "turnstile-spin": {
       "source": "cloudflare/skills",
       "sourceType": "github",

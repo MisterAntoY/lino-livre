@@ -27,8 +27,9 @@ Em conformidade com as diretrizes estruturais da aplicação (**AGENTS.md**):
 
 ## 3. Isenção de Responsabilidade por Conteúdo de Terceiros (Safe Harbor / Disclaimer)
 
-### 3.1. Enquadramento Jurídico Internacional
-O Lino Livre ampara sua atuação nos princípios de limitação de responsabilidade de intermediários da Internet:
+### 3.1. Enquadramento Jurídico Angolano e Internacional
+O Lino Livre ampara sua atuação nos princípios de limitação de responsabilidade de intermediários da Internet e nas legislações de direitos autorais dos PALOP e internacionais:
+- **Lei sobre os Direitos de Autor e Conexos de Angola (Lei n.º 15/14, de 31 de Julho):** Observância estrita da duração dos direitos patrimoniais (art. 32.º — 70 anos post mortem), das utilizações livres para fins de ensino, investigação científica e formação sem intuitos lucrativos (arts. 42.º a 45.º) e do regime de bibliotecas e centros de documentação (art. 47.º).
 - **Marco Civil da Internet (Lei nº 12.965/2014, art. 19):** Provedores de aplicações de internet que apenas disponibilizam índices e buscas não respondem civilmente por conteúdos disponibilizados ou hospedados por terceiros, ressalvado o descumprimento de ordem judicial específica ou procedimento voluntário de notificação e retirada de boa-fé.
 - **Digital Millennium Copyright Act — DMCA (17 U.S.C. § 512):** O Lino Livre adota e aplica integralmente o regime de proteção e porto seguro (*Safe Harbor*), garantindo canal ágil para notificação e desindexação de links apontados.
 - **Diretiva de Comércio Eletrónico da União Europeia (Diretiva 2000/31/CE, arts. 12 a 15):** Princípio do mero conduto (*mere conduit*), cacheamento transitório e ausência de obrigação geral de monitoramento prévio do conteúdo de redes externas.

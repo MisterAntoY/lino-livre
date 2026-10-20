@@ -67,11 +67,16 @@
     "MAX_ITEMS_PER_PAGE": "100",
     "WHATSAPP_COMMUNITY_URL": "https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU",
     "WHATSAPP_CHANNEL_URL": "https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X",
-    "SUPPORT_EMAIL": "bv6alblu6@mozmail.com"
+    "SUPPORT_EMAIL": "bv6alblu6@mozmail.com",
+    // 'd1' (padrão) ou 'supabase'. Para usar Supabase, definir também os
+    // secrets SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY.
+    "DB_BACKEND": "d1"
   }
 
   // Secrets (set via: wrangler secret put <NAME>):
   // - WHATSAPP_COMMUNITY_URL
   // - WHATSAPP_CHANNEL_URL
   // - GOOGLE_BOOKS_API_KEY (optional, for cover enrichment)
+  // - SUPABASE_URL                    (ex.: https://xxxx.supabase.co)
+  // - SUPABASE_SERVICE_ROLE_KEY       (servidor apenas — nunca no frontend)
 }

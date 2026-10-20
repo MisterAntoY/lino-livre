@@ -40,6 +40,15 @@ exports.obterDiretrizesLegais = (req, res) => {
       armazenamento_preferencias: 'localStorage (exclusivo no navegador do usuário para tema, fonte e áudio)',
       conformidade: ['LGPD (Lei 13.709/2018)', 'RGPD (Regulamento UE 2016/679)']
     },
+    conformidade_legal: {
+      angola: 'Lei n.º 15/14, de 31 de Julho (Lei sobre os Direitos de Autor e Conexos)',
+      tratados_internacionais: [
+        'Convenção de Berna para a Protecção das Obras Literárias e Artísticas (OMPI/WIPO)',
+        'Tratado da OMPI sobre o Direito de Autor (WCT)',
+        'Tratado de Marraquexe'
+      ],
+      safe_harbor: ['DMCA (17 U.S.C. § 512)', 'Marco Civil da Internet (Lei 12.965/2014, art. 19)', 'Diretiva 2000/31/CE UE']
+    },
     licencas_suportadas: [
       'dominio-publico',
       'cc0',
