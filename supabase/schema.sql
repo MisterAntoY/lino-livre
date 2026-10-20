@@ -10,7 +10,9 @@
 -- Executar no SQL Editor do Supabase (uma vez).
 -- ============================================================
 
-create extension if not exists pg_trgm;
+create schema if not exists extensions;
+create extension if not exists pg_trgm with schema extensions;
+grant usage on schema extensions to postgres, anon, authenticated, service_role;
 
 -- ── Tabelas ─────────────────────────────────────────────────
 
