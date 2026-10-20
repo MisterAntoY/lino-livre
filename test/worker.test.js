@@ -1021,5 +1021,44 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
         assert.ok(sql.includes(nome), `a migração 0005 deve declarar ${nome}`);
       }
     });
+
+    test('8.6 - A contagem da busca usa a mesma expressão MATCH que os resultados', async () => {
+      // Se a contagem for sanitizada de forma diferente da consulta principal,
+      // o total apresentado deixa de bater certo com os itens devolvidos.
+      const ligacoes = [];
+      const db = createMockD1({
+        allHandler: async (sql, params) => {
+          if (sql.includes('FROM livros l')) {
+            ligacoes.push({ sql, params });
+            return { results: [] };
+          }
+          if (sql.includes('FROM livros_fts')) return { results: [] };
+          return { results: [] };
+        },
+        firstHandler: async (sql, params) => {
+          if (sql.includes('FROM livros_fts')) {
+            ligacoes.push({ sql, params });
+            return { total: 3 };
+          }
+          return null;
+        }
+      });
+
+      const res = await workerRequest('/api/livros?busca=%22dom%20casmurro%22', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+
+      const consultaPrincipal = ligacoes.find((l) => l.sql.includes('FROM livros l'));
+      const contagem = ligacoes.find((l) => l.sql.includes('FROM livros_fts'));
+      assert.ok(consultaPrincipal, 'a consulta principal deve ter sido executada');
+      assert.ok(contagem, 'a contagem na FTS deve ter sido executada');
+
+      // Na consulta principal o termo MATCH é o primeiro parâmetro.bind().
+      const termoPrincipal = consultaPrincipal.params[0];
+      assert.equal(
+        contagem.params[0],
+        termoPrincipal,
+        `a contagem deve usar a mesma expressão MATCH (${contagem.params[0]} ≠ ${termoPrincipal})`
+      );
+    });
   });
 });

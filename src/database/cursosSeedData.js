@@ -1420,6 +1420,259 @@ const cursosData = [
     "gratuito",
     "Iniciante",
     "Diretrizes de educação inclusiva, tecnologias assistivas e adaptações curriculares com certificação gratuita do IFRS."
+  ],
+
+  // ==================== OER COMMONS & RECURSOS EDUCACIONAIS ABERTOS (FASE 7) ====================
+  [
+    "OER Commons: Introdução à Ciência da Computação e Algoritmos",
+    "Tecnologia",
+    "OER Commons",
+    "https://www.oercommons.org/courses/introduction-to-computer-science-and-programming",
+    "cc-by",
+    "Iniciante",
+    "Curso aberto de fundamentos da ciência da computação, raciocínio lógico-algorítmico e estruturas de dados sob licença Creative Commons."
+  ],
+  [
+    "OER Commons: Cálculo Diferencial e Integral Aberto",
+    "Matemática",
+    "OER Commons",
+    "https://www.oercommons.org/courses/calculus-i",
+    "cc-by",
+    "Superior",
+    "Recurso educacional aberto cobrindo limites, continuidade, derivadas, integrais e aplicações com material instrucional livre."
+  ],
+  [
+    "OER Commons: Física Universitária — Mecânica e Ondas",
+    "Ciências Exatas",
+    "OER Commons",
+    "https://www.oercommons.org/courses/university-physics-volume-1",
+    "cc-by",
+    "Ensino Médio e Superior",
+    "Curso aberto cobrindo cinemática, leis de Newton, conservação de energia, momento linear e oscilações harmônicas."
+  ],
+  [
+    "OER Commons: Biologia Geral — Ecologia e Genética",
+    "Ciências Biológicas",
+    "OER Commons",
+    "https://www.oercommons.org/courses/general-biology-ecology-and-genetics",
+    "cc-by",
+    "Ensino Médio e Superior",
+    "Módulos instrucionais abertos sobre ecologia de populações, fluxo de energia, biologia celular e hereditariedade mendeliana."
+  ],
+  [
+    "OER Commons: Química Geral e Laboratório Interativo",
+    "Ciências Exatas",
+    "OER Commons",
+    "https://www.oercommons.org/courses/general-chemistry-principles-and-modern-applications",
+    "cc-by",
+    "Iniciante",
+    "Estrutura atômica, ligações covalentes e iônicas, estequiometria, equilíbrio químico e experimentos práticos virtuais."
+  ],
+  [
+    "OER Commons: Introdução à Inteligência Artificial e Ética dos Algoritmos",
+    "Tecnologia",
+    "OER Commons",
+    "https://www.oercommons.org/courses/introduction-to-artificial-intelligence",
+    "cc-by",
+    "Iniciante",
+    "Fundamentos de aprendizagem automática, redes neuronais, visão computacional e reflexão ética sobre impacto social da IA."
+  ],
+  [
+    "OER Commons: Estatística Descritiva e Probabilidade Aplicada",
+    "Matemática",
+    "OER Commons",
+    "https://www.oercommons.org/courses/introductory-statistics",
+    "cc-by",
+    "Iniciante",
+    "Medidas de tendência central, dispersão, probabilidade condicional, distribuições normal e binomial e inferência estatística."
+  ],
+  [
+    "OER Commons: Metodologia da Investigação Científica",
+    "Educação & Pedagogia",
+    "OER Commons",
+    "https://www.oercommons.org/courses/research-methods-in-education",
+    "cc-by",
+    "Superior",
+    "Formulações de hipóteses, técnicas de revisão bibliográfica, métodos qualitativos e quantitativos e elaboração de relatórios científicos."
+  ],
+  [
+    "OER Commons: História Mundial Contemporânea e Sociedade Global",
+    "Ciências Humanas",
+    "OER Commons",
+    "https://www.oercommons.org/courses/modern-world-history",
+    "cc-by",
+    "Ensino Médio e Superior",
+    "Revoluções industriais, movimentos de descolonização na África e Ásia, guerras mundiais e globalização no século XXI."
+  ],
+  [
+    "OER Commons: Filosofia Crítica, Lógica e Teoria do Conhecimento",
+    "Ciências Humanas",
+    "OER Commons",
+    "https://www.oercommons.org/courses/introduction-to-philosophy",
+    "cc-by",
+    "Iniciante",
+    "Epistemologia, lógica proposicional, falácias argumentativas e correntes do pensamento filosófico universal."
+  ],
+  [
+    "OER Commons: Sustentabilidade, Mudanças Climáticas e Energias Renováveis",
+    "Ciências Biológicas",
+    "OER Commons",
+    "https://www.oercommons.org/courses/environmental-science-and-sustainability",
+    "cc-by",
+    "Iniciante",
+    "Crise climática, transição energética, pegada de carbono, conservação de recursos hídricos e práticas sustentáveis globais."
+  ],
+  [
+    "OER Commons: Astronomia Geral — O Universo e o Sistema Solar",
+    "Ciências Exatas",
+    "OER Commons",
+    "https://www.oercommons.org/courses/astronomy",
+    "cc-by",
+    "Iniciante",
+    "Evolução estelar, galáxias, cosmologia moderna, planetas do sistema solar e exploração espacial aberta."
+  ],
+  [
+    "OER Commons: Redação Acadêmica e Comunicação Científica",
+    "Linguagens & Comunicação",
+    "OER Commons",
+    "https://www.oercommons.org/courses/college-writing-and-composition",
+    "cc-by",
+    "Ensino Médio e Superior",
+    "Estruturação de artigos científicos, argumentação dissertativa, normas de citação acadêmica e clareza expositiva."
+  ],
+  [
+    "OER Commons: Princípios de Economia e Microeconomia Aplicada",
+    "Gestão & Negócios",
+    "OER Commons",
+    "https://www.oercommons.org/courses/principles-of-microeconomics",
+    "cc-by",
+    "Iniciante",
+    "Oferta e demanda, elasticidade de mercado, estruturas de custos empresariais e bem-estar econômico coletivo."
+  ],
+  [
+    "OER Commons: Desenvolvimento Web Aberto com HTML5, CSS3 e JavaScript",
+    "Tecnologia",
+    "OER Commons",
+    "https://www.oercommons.org/courses/web-design-and-development",
+    "cc-by",
+    "Iniciante",
+    "Padrões abertos da W3C, acessibilidade web (WCAG), semântica HTML5, folhas de estilo modernas e interatividade."
+  ],
+
+  // ==================== OPENSTAX EXPANDIDO (CC BY) ====================
+  [
+    "Anatomia e Fisiologia Humana (OpenStax)",
+    "Ciências Biológicas",
+    "OpenStax",
+    "https://openstax.org/details/books/anatomy-and-physiology-2e",
+    "cc-by",
+    "Ensino Superior",
+    "Manual universitário aberto revisado por pares cobrindo todos os sistemas orgânicos do corpo humano, histologia e fisiopatologia."
+  ],
+  [
+    "Princípios de Gestão e Administração de Negócios (OpenStax)",
+    "Gestão & Negócios",
+    "OpenStax",
+    "https://openstax.org/details/books/principles-management",
+    "cc-by",
+    "Ensino Superior",
+    "Liderança estratégica, estruturas organizacionais, motivação de equipes, ética empresarial e governança corporativa."
+  ],
+  [
+    "Introdução à Sociologia 3ª Edição (OpenStax)",
+    "Ciências Humanas",
+    "OpenStax",
+    "https://openstax.org/details/books/introduction-sociology-3e",
+    "cc-by",
+    "Ensino Médio e Superior",
+    "Teorias sociológicas clássicas e contemporâneas, estratificação social, instituições, cultura e movimentos sociais."
+  ],
+  [
+    "Álgebra Universitária e Funções (OpenStax)",
+    "Matemática",
+    "OpenStax",
+    "https://openstax.org/details/books/college-algebra-2e",
+    "cc-by",
+    "Ensino Médio e Superior",
+    "Equações polinomiais, matrizes, determinantes, funções exponenciais e logarítmicas com centenas de exercícios resolvidos."
+  ],
+
+  // ==================== CK-12 FOUNDATION (CC BY-NC) ====================
+  [
+    "Álgebra Interativa e Geometria Plana (CK-12 FlexBook)",
+    "Matemática",
+    "CK-12 Foundation",
+    "https://www.ck12.org/algebra/",
+    "cc-by-nc",
+    "Iniciante",
+    "Livro flexível digital interativo com simulações, exercícios práticos adaptativos e fundamentos da geometria e álgebra."
+  ],
+  [
+    "Física e Simulações Interativas (CK-12 FlexBook)",
+    "Ciências Exatas",
+    "CK-12 Foundation",
+    "https://www.ck12.org/physics/",
+    "cc-by-nc",
+    "Ensino Médio",
+    "Conceitos de mecânica, óptica, termologia e eletromagnetismo integrados a simulações visuais e questionários práticos."
+  ],
+  [
+    "Biologia Celular e Organismos Vivos (CK-12 FlexBook)",
+    "Ciências Biológicas",
+    "CK-12 Foundation",
+    "https://www.ck12.org/biology/",
+    "cc-by-nc",
+    "Ensino Médio",
+    "Bioquímica celular, fotossíntese, respiração celular, genética molecular e reinos da natureza com atividades interativas."
+  ],
+
+  // ==================== PHET INTERACTIVE SIMULATIONS (CC BY) ====================
+  [
+    "Ondas em uma Corda e Propagação Sonora",
+    "Ciências Exatas",
+    "PhET Interactive Simulations",
+    "https://phet.colorado.edu/pt_BR/simulations/wave-on-a-string",
+    "cc-by",
+    "Iniciante",
+    "Laboratório interativo para explorar amplitude, frequência, velocidade de propagação, interferência e reflexão de ondas."
+  ],
+  [
+    "Efeito Estufa e Concentração de Gases",
+    "Ciências Biológicas",
+    "PhET Interactive Simulations",
+    "https://phet.colorado.edu/pt_BR/simulations/greenhouse-effect",
+    "cc-by",
+    "Iniciante",
+    "Simulação dos efeitos dos gases de efeito estufa na atmosfera e radiação térmica solar com modelagem climática visual."
+  ],
+
+  // ==================== KHAN ACADEMY CURADO (CC BY-NC-SA) ====================
+  [
+    "Matemática do Ensino Fundamental ao Médio",
+    "Matemática",
+    "Khan Academy Brasil",
+    "https://pt.khanacademy.org/math",
+    "cc-by-nc-sa",
+    "Iniciante",
+    "Trilhas gratuitas e progressivas de aritmética, álgebra, geometria euclidiana, trigonometria e pré-cálculo com exercícios práticos."
+  ],
+  [
+    "Fundamentos de Ciência da Computação e Algoritmos",
+    "Tecnologia",
+    "Khan Academy Brasil",
+    "https://pt.khanacademy.org/computing",
+    "cc-by-nc-sa",
+    "Iniciante",
+    "Aulas e exercícios interativos sobre algoritmos de ordenação, criptografia, redes e arquitetura da internet."
+  ],
+  [
+    "Ciências da Natureza: Física, Química e Biologia",
+    "Ciências Exatas",
+    "Khan Academy Brasil",
+    "https://pt.khanacademy.org/science",
+    "cc-by-nc-sa",
+    "Iniciante",
+    "Coleção completa de videoaulas e questionários de ciências fundamentais, biologia humana e química geral."
   ]
 ];
 
@@ -1427,6 +1680,11 @@ module.exports = {
   cursosData,
   guiaDeTICursosCount: 15,
   fundacaoBradescoCount: 61,
-  oerCount: 25,
+  oerCount: 52,
+  oerCommonsCount: 15,
+  openStaxCount: 8,
+  ck12Count: 5,
+  phetCount: 6,
+  khanCount: 6,
   trilhaInfoCount: 8
 };

@@ -664,7 +664,9 @@ app.get('/api/livros', async (c) => {
     } else if (temBusca && !temFormato && filtrosDiretos.length === 0) {
       // Busca pura: a FTS tem uma linha por livro, logo o COUNT do MATCH é
       // o total — lê ~10 linhas em vez de varrer os 104.848 livros.
-      totalConhecido = await contarNaFts(db, matchFts!);
+      // Passa-se o termo cru: é sanitizado dentro de contarNaFts, tal como
+      // na consulta principal, para o total e os resultados coincidirem.
+      totalConhecido = await contarNaFts(db, String(busca || ''));
     } else if (temFormato && !temBusca && filtrosDiretos.length === 0) {
       // Formato puro: contador pré-computado (cron diário).
       totalConhecido = await lerContador(db, 'formato', String(formato).toLowerCase());

@@ -498,10 +498,15 @@
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
           <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')" data-i18n="ui.courses.all">Todos</button>
+          <button class="pill" data-filtro="OER Commons" onclick="app.filtrarCursosPorPlataforma('OER Commons')">🏛️ OER Commons</button>
+          <button class="pill" data-filtro="OpenStax" onclick="app.filtrarCursosPorPlataforma('OpenStax')">📖 OpenStax (CC BY)</button>
+          <button class="pill" data-filtro="MIT" onclick="app.filtrarCursosPorPlataforma('MIT')"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo"> 🏛️ MIT OCW</button>
+          <button class="pill" data-filtro="PhET" onclick="app.filtrarCursosPorPlataforma('PhET')">🔬 PhET Simulações</button>
+          <button class="pill" data-filtro="CK-12" onclick="app.filtrarCursosPorPlataforma('CK-12')">📐 CK-12 Foundation</button>
+          <button class="pill" data-filtro="Khan Academy" onclick="app.filtrarCursosPorPlataforma('Khan Academy')">🟢 Khan Academy</button>
           <button class="pill" data-filtro="Cursa" onclick="app.filtrarCursosPorPlataforma('Cursa')"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo"> 🎓 Cursa App (Cursos)</button>
           <button class="pill" data-filtro="exercicios" onclick="app.filtrarCursosPorTipo('exercicios')"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo"> 📝 Cursa Exercícios & Simulados</button>
           <button class="pill" data-filtro="Harvard" onclick="app.filtrarCursosPorPlataforma('Harvard')"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo"> 🏛️ Harvard Online (PLL)</button>
-          <button class="pill" data-filtro="MIT" onclick="app.filtrarCursosPorPlataforma('MIT')"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo"> 🏛️ MIT OCW</button>
           <button class="pill" data-filtro="Stanford" onclick="app.filtrarCursosPorPlataforma('Stanford')">🌲 Stanford Online</button>
           <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo"> DIO Bootcamps</button>
 
