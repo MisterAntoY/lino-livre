@@ -129,6 +129,68 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   4. Script de auditoria automatizado [`scripts/corrigirMetricasDashboard.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/corrigirMetricasDashboard.js) com 100% de verificações verdes.
   5. Deploy realizado no Cloudflare Workers (`https://lino-livre.linolivre.workers.dev`, Version ID: `9dfd75e7-75de-4081-b01f-10b93206030c`).
 
+### 2.8. Resolução do Incidente de Esgotamento de Cota da D1 (Erro 7500 & Full Table Scan)
+- **Problema Relatado:** Na execução de importações e migrações (ex.: `node scripts/import_fase2_doab.mjs --apply`), a Cloudflare D1 retornava erro fatal:
+  ```text
+  ✘ [ERROR] A request to the Cloudflare API failed.
+  Your account has exceeded D1's free tier daily row read limit. Upgrade to a paid plan or wait until tomorrow (midnight UTC) to continue. [code: 7500]
+  ```
+- **Causa Raiz:** As consultas de listagem com ordenação padrão (`ORDER BY leituras DESC, titulo ASC`) e contagem por autor realizavam varreduras completas (*Full Table Scan*) de todas as linhas de `livros` a cada cache miss. Menos de 50 pedidos não cacheados esgotavam a cota gratuita de 5.000.000 de linhas lidas/dia da Cloudflare.
+- **Decisão e Resolução de Engenharia:**
+  1. **Criação de Índices Compostos de Performance na D1:**
+     - `idx_livros_popularidade ON livros(leituras DESC, titulo ASC)`
+     - `idx_livros_idioma_popularidade ON livros(idioma, leituras DESC, titulo ASC)`
+     - `idx_livros_fonte_popularidade ON livros(fonte_id, leituras DESC, titulo ASC)`
+     - `idx_livros_categoria_popularidade ON livros(categoria_id, leituras DESC, titulo ASC)`
+     - `idx_livros_autor_popularidade ON livros(autor_id, leituras DESC, titulo ASC)`
+     - `idx_livros_licenca_popularidade ON livros(licenca, leituras DESC, titulo ASC)`
+     - `idx_links_formato_livro ON links_livros(formato, livro_id)`
+     - `idx_autores_nome ON autores(nome)`
+     - `idx_autores_nome_nocase ON autores(nome COLLATE NOCASE)`
+     - `idx_cursos_url ON cursos(url)`
+  2. **Aplicação Direta de DDL sem Dependência de `d1_migrations`:** O comando `wrangler d1 migrations apply` executava `SELECT` interno que falhava sob cota esgotada. Os índices foram aplicados diretamente via `wrangler d1 execute` com DDL idempotente, pois operações de escrita não consomem cota de leitura.
+  3. **Ganho de Eficiência de 3.000x:** Cada consulta paginada lê agora apenas 24 linhas (via índice B-Tree) em vez de 104.848 linhas. O endpoint `/api/dashboard` lê ~36 linhas da tabela de agregados em vez de varrer a base inteira.
+  4. **Automação e Manutenção:** Criação da rota protegida `POST /api/admin/recalcular-estatisticas` e do script de monitoramento [`scripts/aplicar_indices_d1_auto.mjs`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/aplicar_indices_d1_auto.mjs).
+
+### 2.9. Auditoria Integral de Vulnerabilidades (Execução do Plano 2026-10-20)
+- **Diretriz do Usuário:** *"auditoria_lino_livre_2026-10-20.md aplique o plano, teste tudo denovo, leia cada linha de codigo para questão de possiveis vunerabilidades, resolva todas as vunerabilidades"*
+- **Ações Implementadas em Código:**
+  1. **Remediação de DOM XSS no Frontend (`public/js/app.js`):**
+     - Substituição de interpolação direta de URLs por sanitização estrita via `this.sanitizeUrl(x.url, '#')` em cartões de busca federada e podcasts.
+     - Remoção de handlers inline `onclick="app.ouvirShowCompleto('${s.slug}')"` em favor de atributos `data-slug` com delegação de eventos segura.
+     - Validação estrita por allowlist nas configurações de leitura do `localStorage` (temas: creme/sepia/noturno; alinhamento: left/center/right/justify).
+  2. **Blindagem Anti-SSRF em Ingestões e Mutação:**
+     - Validação obrigatória de URLs em `POST /api/cursos`, `POST /api/livros` e importadores via `validarUrlRedirecionamento`, barrando RFC 1918, loopbacks, metadados cloud e esquemas não-HTTP.
+  3. **Filtragem de Domínios Piratas na Busca Federada:**
+     - Neutralização automática de fontes e resultados provenientes de sites proibidos (LibGen, Z-Library, Sci-Hub, Anna's Archive, PDF Drive) antes de entregar os dados aos usuários.
+  4. **Prevenção de Ataques de Temporização (Timing Attacks):**
+     - Validação constante de chaves administrativas via `timingSafeEqualStr` no Cloudflare Worker e `crypto.timingSafeEqual` no Express.
+  5. **Prevenção de Path Traversal no Cache de Importação:**
+     - Sanitização estrita de identificadores de arquivo em `src/services/importer.js` através de `sanitizarNomeArquivoCache`, limitando nomes a `[a-zA-Z0-9_-]`.
+  6. **Injeção de Cabeçalhos HTTP Rigorosos em Produção:**
+     - Inclusão no Worker de `Strict-Transport-Security: max-age=31536000; includeSubDomains`, CSP isolada, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` e `Permissions-Policy`.
+
+### 2.10. Resiliência de Degradação do Dashboard e Frontend (Zero Telas Quebradas)
+- **Problema:** Quando a Cloudflare D1 atingia a cota diária de leitura antes da meia-noite UTC, instâncias novas (cold start) do Worker retornavam 503 com `cachedDashboard = null`, fazendo o frontend exibir "0 / 10.000.000" ou cair para contagens fragmentadas de fallback (ex.: 5 livros).
+- **Decisão e Resolução:**
+  1. **Fallback com Resumo Estável Real:** O Worker retorna, no próprio corpo do erro 503 (sem cache no header), o objeto `resumo_estavel` com os totais consolidados auditados.
+  2. **Frontend Resiliente (`public/js/app.js`):** `carregarPlacarMeta()` e `carregarDashboard()` detectam o estado de degradação e utilizam os valores estáveis auditados. O placar da meta nunca mais exibe 0 ou cai para contagens fragmentadas.
+  3. **Sincronização Automatizada:** O script [`scripts/corrigirMetricasDashboard.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/corrigirMetricasDashboard.js) mantém as duas fontes de verdade alinhadas:
+     - `public/index.html`: reflete o seed local de desenvolvimento (997 obras) como placeholder estático sem flash visual.
+     - `workers/src/index.ts`: reflete os dados de produção do D1/Supabase.
+
+### 2.11. A Grande Meta dos 10 Milhões de Livros Livres e Roadmap de Marcos
+- **Diretriz do Usuário:** *"A minha meta é 10 milhões de livros"*
+- **Compromisso Oficial:** O Lino Livre adota como meta coletiva global a indexação aberta de 10.000.000 de obras para a humanidade.
+- **Estrutura de Marcos:**
+  - **Marco Inicial (0):** Lançamento da Plataforma.
+  - **Marco 1 (1.000):** Acervo Clássico Lusófono e Repositórios Técnicos (Fase atual: 997 obras — faltam 3 obras para conclusão).
+  - **Marco 2 (10.000):** Ingestão Acadêmica Aberta (DOAB, Teses e Repositórios Universitários).
+  - **Marco 3 (100.000):** Domínio Público Global (Gutenberg, Wikisource, Standard Ebooks).
+  - **Marco 4 (1.000.000):** Federação Escalar com Bibliotecas Nacionais e Europeana.
+  - **Grande Meta (10.000.000):** Democratização universal do conhecimento livre.
+- **Regra Ética e Legal:** Nenhuma meta é antecipada ficticiamente; cada marco só é ativado no hodômetro visual após confirmação e auditoria real na base de dados.
+
 ---
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
@@ -173,6 +235,17 @@ Ambos os backends aplicam:
 - **Validação Estrita de Identificadores Numéricos:** Parâmetros de rota (`:id`, `:linkId`) são convertidos e validados estritamente como números inteiros positivos (`/^\d+$/`). Entradas não numéricas ou payloads maliciosos são sumariamente rejeitados.
 - **Fila de Moderação Sanitizada:** O endpoint de submissão de sugestões (`POST /api/sugestoes`) valida tamanho máximo, caracteres de controle e protocolo do link externo antes de enfileirar no banco de dados.
 
+### 3.7. Higienização DOM e Mitigação de XSS no Frontend
+- **Sanitização de URLs em Injeções Dinâmicas:** Todo link de obra, autor, capa ou podcast injetado via JavaScript passa obrigatoriamente pela função `this.sanitizeUrl(url, '#')`, que bloqueia esquemas perigosos (`javascript:`, `data:`, `vbscript:`) e aplica escape de entidades HTML.
+- **Eliminação de Eventos Inline (`onclick`):** Removidos handlers inline com interpolação de strings como `onclick="app.ouvirShowCompleto('${s.slug}')"`. A aplicação utiliza atributos `data-*` (ex.: `data-slug`) e delegação de eventos centralizada com `addEventListener`.
+- **Validação de Preferências em `localStorage`:** O leitor web valida estritamente os valores recuperados do armazenamento local através de listas permitidas (allowlist):
+  - Temas permitidos: `creme`, `sepia`, `noturno`.
+  - Alinhamentos permitidos: `left`, `center`, `right`, `justify`.
+  Valores fora dessas listas são sumariamente descartados para o valor padrão.
+
+### 3.8. Prevenção de Path Traversal no Cache de Importação
+- **Sanitização de Nomes de Ficheiro:** No serviço de importação ([`src/services/importer.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/services/importer.js)), a criação de ficheiros de cache temporário utiliza a função `sanitizarNomeArquivoCache(nome)`, que remove sequências de escape de diretório (`../`, `..\`) e restringe o nome a caracteres alfanuméricos seguros (`[^a-zA-Z0-9_-]`), impedindo qualquer escrita fora da pasta de cache designada.
+
 ---
 
 ## 🏗️ 4. Decisões de Arquitetura de Dados: Estratégia Híbrida (D1 + Supabase)
@@ -183,7 +256,9 @@ Ambos os backends aplicam:
 - **Eficiência e Controle de Cotas D1 (5M leituras/dia):**
   - Todas as consultas com paginação forçam limite máximo (`Math.min(limit, 500)`).
   - Consultas comuns usam tabelas de agregados pré-computados (`estatisticas`, `contadores`, `autor_totais`), evitando varreduras de 104k linhas.
-  - Cron diário às 00:10 UTC recalcula agregados e mantém os índices compostos de performance declarados em [`migrations/0005_indices_performance.sql`](file:///Users/mendes/Desktop/I%20am%20Abc/migrations/0005_indices_performance.sql).
+  - Índices compostos de performance ativos em produção: `idx_livros_popularidade`, `idx_livros_idioma_popularidade`, `idx_livros_fonte_popularidade`, `idx_livros_categoria_popularidade`, `idx_livros_autor_popularidade`, `idx_livros_licenca_popularidade`, `idx_autores_nome`, `idx_cursos_url`.
+  - Cron diário às 00:10 UTC recalcula agregados e garante a integridade dos índices declarados em [`migrations/0005_indices_performance.sql`](file:///Users/mendes/Desktop/I%20am%20Abc/migrations/0005_indices_performance.sql).
+  - Endpoint administrativo para recálculo manual a qualquer momento: `POST /api/admin/recalcular-estatisticas` (requer `x-admin-key`).
   - Cache de borda via Cloudflare Cache API protege rotas GET de leituras repetidas na D1.
 
 ### 4.2. Supabase como Backend Auxiliar / Híbrido (Migração Parcial)
@@ -238,6 +313,12 @@ npm run livros:csv
 
 # Iniciar servidor Express de desenvolvimento
 npm start
+
+# Sincronizar e auditar métricas entre banco local e produção
+node scripts/corrigirMetricasDashboard.js
+
+# Monitorar e aplicar índices de performance na D1 remota
+node scripts/aplicar_indices_d1_auto.mjs
 ```
 
 ---
