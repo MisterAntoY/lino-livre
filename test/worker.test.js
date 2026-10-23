@@ -1227,4 +1227,18 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.ok(sqlExecutado.includes('categoria_id IN (1, 19)'));
     });
   });
+
+  describe('Cenário 12: Edge Load Balancer & Circuit Breaker (Custo Zero Perpétuo)', () => {
+    test('12.1 - GET /api/loadbalancer/status retorna snapshot com circuitos e configurações', async () => {
+      const db = createMockD1();
+      const res = await workerRequest('/api/loadbalancer/status', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      const json = await res.json();
+      assert.ok(json.config, 'Deve conter config do load balancer');
+      assert.ok(json.backends, 'Deve conter backends do load balancer');
+      assert.equal(json.backends.d1.id, 'd1');
+      assert.equal(json.backends.supabase.id, 'supabase');
+      assert.ok(['CLOSED', 'OPEN', 'HALF_OPEN'].includes(json.backends.d1.state));
+    });
+  });
 });
