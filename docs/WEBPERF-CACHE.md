@@ -54,6 +54,23 @@ Implementado em `workers/src/index.ts` e `src/controllers/capasController.js`.
 O frontend usa `app.capaProxyUrl()` (`public/js/app.js`) para encaminhar apenas
 capas externas; caminhos locais (`/capas/...`) são servidos diretamente.
 
+### 2.3 Fontes versionadas no caminho (não na query string)
+
+O edge da Cloudflare guarda os assets **por caminho** e ignora a query string na
+chave de cache. Como as fontes já tinham sido servidas com `max-age=0` antes de a
+regra `/fonts/*` existir, a resposta antiga continuava a ser entregue mesmo com
+`?v=...`. A solução é versionar o **nome do ficheiro**:
+
+```text
+/fonts/lora-latin-var-v20261023.woff2
+/fonts/lora-italic-latin-var-v20261023.woff2
+```
+
+Ao atualizar as fontes: copiar para um novo sufixo de versão, atualizar
+`public/index.html` (preload + `@font-face`), `public/css/style.css` e a lista de
+pré-cache do `public/sw.js`, e subir o `?v=` do CSS. Os ficheiros antigos são
+mantidos para não quebrar CSS já em cache (`immutable` por 1 ano).
+
 ## 3. Como validar
 
 ```bash
