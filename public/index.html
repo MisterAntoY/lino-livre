@@ -77,9 +77,9 @@
   }
   </script>
   
-  <!-- Preload critical fonts with font-display: swap -->
+  <!-- Lora apenas (2 KB de CSS). O Noto Sans/Serif SC tem ~150 KB de @font-face
+       e é injetado por /js/i18n.js APENAS quando o idioma é zh (chinês). -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   
   <!-- Critical CSS (inlined for instant render) -->
   <style>
@@ -97,7 +97,7 @@
     .lang-switcher{position:relative}
     .lang-glove{flex-shrink:0}
     .lang-select{padding:.5rem 2.5rem .5rem .75rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.875rem;font-family:inherit;background:#fff;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;background-size:1rem;padding-right:2.5rem}
-    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:transform .15s ease,opacity .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
     .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
     .btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
     .btn-secondary{background:#f1f5f9;color:var(--text-main);border-color:var(--border)}
@@ -108,22 +108,29 @@
     .filter-section{padding:2rem 1.5rem 1rem 1.5rem;display:flex;flex-direction:column;gap:1.25rem}
     .search-bar{position:relative;max-width:600px;width:100%}
     .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
-    .search-bar input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.95rem;font-family:inherit;background:#fff;outline:none;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+    .search-bar input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.95rem;font-family:inherit;background:#fff;outline:none;transition:border-color .15s ease,box-shadow .15s ease;box-shadow:0 1px 2px rgba(0,0,0,.03)}
     .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(51,65,85,.12)}
     .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
-    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:transform .15s ease,opacity .15s ease}
     .pill:hover{background:#f1f5f9;color:var(--text-main)}
     .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
     .main-container{flex:1;padding:1rem 1.5rem 3rem 1.5rem}
     .books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
-    .book-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column;transition:all .25s ease}
+    .book-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column;transition:transform .25s ease,opacity .25s ease}
     .book-card:hover{transform:none;box-shadow:var(--shadow-hover);border-color:#cbd5e1}
     .book-cover-container{position:relative;width:100%;aspect-ratio:2/2.9;background:#e2e8f0;overflow:hidden;display:flex;align-items:center;justify-content:center}
     .book-cover{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;box-shadow:inset 4px 0 10px rgba(0,0,0,.15)}
     .loading{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--text-muted);font-size:1.125rem}
+    /* Herói/Placar: estilos críticos do elemento LCP (evita reflow/repaint quando o CSS completo chega) */
+    .goal-scoreboard-section{margin-top:1.25rem;margin-bottom:1.75rem}
+    .goal-scoreboard-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.85rem 2.25rem;position:relative;overflow:hidden}
+    .goal-header{display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem}
+    .goal-title-group{flex:1 1 500px}
+    .goal-title{font-size:1.85rem;font-weight:800;color:var(--text-main);margin:0 0 .45rem;line-height:1.25;letter-spacing:-.025em}
+    .goal-subtitle{font-size:.95rem;line-height:1.55;color:var(--text-main);margin:0;max-width:650px}
     .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
     .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
-    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:transform .15s ease,opacity .15s ease}
     .pill:hover{background:#f1f5f9;color:var(--text-main)}
     .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
     .reader-modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
@@ -137,7 +144,7 @@
     .badge-license{display:inline-block;padding:.25rem .625rem;border-radius:999px;font-size:.6875rem;font-weight:600;background:#eff6ff;color:var(--primary);border:1px solid #bfdbfe;width:fit-content}
     .book-synopsis{font-size:.8125rem;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
     .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
-    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:transform .15s ease,opacity .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
     .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
     .btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
     .btn-secondary{background:#f1f5f9;color:var(--text-main);border-color:var(--border)}
@@ -157,7 +164,7 @@
   
   <!-- Full CSS (render-blocking, 14 KB gzip): um único layout em vez de
        reflow completo ao trocar media="print" -> "all" no onload. -->
-  <link rel="stylesheet" href="/css/style.css?v=20261022">
+  <link rel="stylesheet" href="/css/style.css?v=20261024">
   
   <!-- Service Worker for offline caching -->
   <script>
@@ -322,7 +329,7 @@
         <!-- Barra de Progresso Visual e Marcos Históricos -->
         <div class="goal-progress-wrapper">
           <div class="goal-progress-bar-bg" role="progressbar" aria-valuenow="997" aria-valuemin="0" aria-valuemax="10000000" id="placar-progressbar-container">
-            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 1%;"></div>
+            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.01);"></div>
           </div>
           
           <!-- Marcos da Jornada / Milestones -->
@@ -1358,7 +1365,7 @@
   <div id="toast" class="toast hidden"></div>
 
 
-  <script defer src="/js/i18n.js?v=20261022"></script>
-  <script defer src="/js/app.js?v=20261022"></script>
+  <script defer src="/js/i18n.js?v=20261024"></script>
+  <script defer src="/js/app.js?v=20261024"></script>
 </body>
 </html>

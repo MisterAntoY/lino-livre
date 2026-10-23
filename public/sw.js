@@ -7,7 +7,7 @@
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
-const CACHE_VERSION = 'v20261023a';
+const CACHE_VERSION = 'v20261024perf';
 const CORE_CACHE = `linolivre-core-${CACHE_VERSION}`;
 const API_CACHE = `linolivre-api-${CACHE_VERSION}`;
 const IMAGE_CACHE = `linolivre-images-v1`;
@@ -22,9 +22,9 @@ const PRECACHE_ASSETS = [
   '/creditos.html',
   '/legal.html',
   '/termos.html',
-  '/css/style.css',
-  '/js/app.js',
-  '/js/i18n.js',
+  '/css/style.css?v=20261024',
+  '/js/app.js?v=20261024',
+  '/js/i18n.js?v=20261024',
   '/manifest.webmanifest',
   '/manifest.json',
   '/favicon.svg',

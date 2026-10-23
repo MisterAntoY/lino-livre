@@ -32,9 +32,42 @@
       // 2. idioma preferido
       const alvo = this.detectarIdioma();
 
-      // 3. carrega e aplica
+      // 3. Português: o HTML já está escrito em pt. NÃO reescrever o DOM.
+      //    Cada innerHTML em [data-i18n] força um novo paint e reinicia o LCP
+      //    (o <p class="goal-subtitle"> era repintado ~530 ms depois do TTFB).
+      if (alvo === 'pt') {
+        this.lang = 'pt';
+        this.dict = this.base;
+        this.carregado = !!this.base;
+        if (this.base) {
+          this.montarSeletor();
+          this.sincronizarSeletor();
+        }
+        return this.lang;
+      }
+
+      // 4. Outro idioma: carrega e aplica as traduções
       await this.carregarEAplicar(alvo);
       return this.lang;
+    },
+
+    // Noto Sans/Serif SC só é necessário em chinês. Carregá-lo no <head>
+    // custava ~150 KiB de CSS não usado em 100% das visitas em pt/en/etc.
+    garantirFontesIdioma(code) {
+      if (code !== 'zh') return;
+      if (document.getElementById('i18n-fontes-cjk')) return;
+
+      const preconnect = document.createElement('link');
+      preconnect.rel = 'preconnect';
+      preconnect.href = 'https://fonts.gstatic.com';
+      preconnect.crossOrigin = 'anonymous';
+      document.head.appendChild(preconnect);
+
+      const link = document.createElement('link');
+      link.id = 'i18n-fontes-cjk';
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap';
+      document.head.appendChild(link);
     },
 
     detectarIdioma() {
@@ -85,6 +118,7 @@
       this.dict = d;
       this.carregado = true;
 
+      this.garantirFontesIdioma(this.lang);
       this.aplicarDocumento();
       this.notificar();
     },
@@ -159,32 +193,41 @@
         const txt = this.t(el.getAttribute('data-i18n'));
         // textos com placeholders dinâmicos ({p}, {a}...) são preenchidos pelo app.js
         if (/\{[a-zA-Z_]+\}/.test(txt)) return;
+        // Não reescrever se o conteúdo já é idêntico: innerHTML igual gera
+        // mutação de DOM + repaint, atrasando o LCP sem qualquer ganho visual.
+        if (el.textContent === txt) return;
         el.innerHTML = txt;
       });
 
       // data-i18n-html="chave"     → innerHTML preservando marcação interna
       document.querySelectorAll('[data-i18n-html]').forEach(el => {
-        el.innerHTML = this.t(el.getAttribute('data-i18n-html'));
+        const html = this.t(el.getAttribute('data-i18n-html'));
+        if (el.innerHTML === html) return;
+        el.innerHTML = html;
       });
 
       // data-i18n-ph="chave"       → placeholder
       document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-        el.setAttribute('placeholder', this.t(el.getAttribute('data-i18n-ph')));
+        const v = this.t(el.getAttribute('data-i18n-ph'));
+        if (el.getAttribute('placeholder') !== v) el.setAttribute('placeholder', v);
       });
 
       // data-i18n-title="chave"    → atributo title
       document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        el.setAttribute('title', this.t(el.getAttribute('data-i18n-title')));
+        const v = this.t(el.getAttribute('data-i18n-title'));
+        if (el.getAttribute('title') !== v) el.setAttribute('title', v);
       });
 
       // data-i18n-alt="chave"      → atributo alt
       document.querySelectorAll('[data-i18n-alt]').forEach(el => {
-        el.setAttribute('alt', this.t(el.getAttribute('data-i18n-alt')));
+        const v = this.t(el.getAttribute('data-i18n-alt'));
+        if (el.getAttribute('alt') !== v) el.setAttribute('alt', v);
       });
 
       // data-i18n-aria="chave"     → atributo aria-label
       document.querySelectorAll('[data-i18n-aria]').forEach(el => {
-        el.setAttribute('aria-label', this.t(el.getAttribute('data-i18n-aria')));
+        const v = this.t(el.getAttribute('data-i18n-aria'));
+        if (el.getAttribute('aria-label') !== v) el.setAttribute('aria-label', v);
       });
 
       this.montarSeletor();
