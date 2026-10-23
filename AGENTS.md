@@ -325,7 +325,7 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   5. **Prevenção de Thundering Herd / Cache Stampede:** Variável `dashboardInFlight` unifica requisições concorrentes em uma única promessa.
   6. **Cabeçalhos CDN Globais (`s-maxage=3600`):** Injeção de `s-maxage=3600` e `stale-while-revalidate=86400` em rotas públicas, permitindo cache nos POPs globais da Cloudflare.
   7. **Ferramenta de Diagnóstico Automatizada:** Script `scripts/diagnostico_consumo_trafego.js` e comando `npm run diagnostico`.
-  8. **Ampliação da Suíte de Testes:** Criação de `test/d1_quota_consumption.test.js`, `test/supabase_consumption_traffic.test.js`, `test/traffic_and_monitoring.test.js` e `test/capas_proxy.test.js`, elevando a cobertura para **193 testes automatizados em 36 suítes (100% passando)**.
+  8. **Ampliação da Suíte de Testes:** Criação de `test/d1_quota_consumption.test.js`, `test/supabase_consumption_traffic.test.js`, `test/traffic_and_monitoring.test.js` e `test/capas_proxy.test.js`, elevando a cobertura para **196 testes automatizados em 37 suítes (100% passando)**.
 
 ### 2.20. Resolução dos Alertas do Supabase Database Linter & Plano de Otimização do Site
 - **Alertas de Segurança do Supabase Database Linter Identificados e Resolvidos:**
@@ -343,7 +343,7 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - **Zero CLS (Cumulative Layout Shift):** Adição de dimensões explícitas `width="16" height="16"` e `loading="lazy" decoding="async"` em 100% dos botões de pílulas (`.pill-logo`), `width="18" height="18"` nos cartões de cursos e trilhas (`.course-platform-logo`), e `width="400" height="190"` nos programas de podcast (`.podcast-cover-img`).
   - **Deduplicação de CSS Crítico:** Remoção de regras CSS redundantes repetidas no `<head>` de [`public/index.html`](file:///Users/mendes/Desktop/I%20am%20Abc/public/index.html) (`.pills-container`, `.pill`, `.pagination-container`, `.btn`), reduzindo o tempo de parsing de folha de estilo.
   - **Cache Imutável de Fontes e Assets:** Regra `/fonts/*` com `Cache-Control: public, max-age=31536000, immutable` consolidada em [`public/_headers`](file:///Users/mendes/Desktop/I%20am%20Abc/public/_headers).
-  - **Suíte Completa:** 193 testes automatizados em 36 arquivos de teste executando com 100% de sucesso.
+  - **Suíte Completa:** 196 testes automatizados em 37 arquivos de teste executando com 100% de sucesso.
 
 ### 2.21. Auditoria Lighthouse: Acessibilidade, Segurança, Imagens e SEO (100% Crawlable Links)
 - **Contexto & Relatório Lighthouse:** A aplicação foi submetida a auditoria completa de qualidade web (Lighthouse), registando notas de 93 em Acessibilidade e 92 em SEO devido a links não rastreáveis (`crawlable-anchors`).

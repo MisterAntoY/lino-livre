@@ -103,6 +103,7 @@ const app = {
     ]);
 
     this.verificarLinkDiretoLivro();
+    this.registrarFerramentasWebMCP();
   },
 
   verificarLinkDiretoLivro() {
@@ -151,6 +152,63 @@ const app = {
 
     if (mapaLegal[hash]) {
       this.abrirModalLegal(mapaLegal[hash]);
+    }
+  },
+
+  // ==================== WEBMCP & AGENTIC BROWSING ====================
+  registrarFerramentasWebMCP() {
+    const ctx = (typeof navigator !== 'undefined' && navigator.modelContext) ||
+      (typeof window !== 'undefined' && (window.modelContext || document.modelContext));
+    if (ctx && typeof ctx.registerTool === 'function') {
+      try {
+        ctx.registerTool({
+          name: 'buscar_livros',
+          description: 'Pesquisar livros digitais no acervo aberto do Lino Livre por título da obra, autor, assunto ou tema.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              q: {
+                type: 'string',
+                description: 'Termo de pesquisa (título da obra, nome do autor ou tópico de interesse)'
+              }
+            },
+            required: ['q']
+          },
+          handler: async ({ q }) => {
+            const input = document.getElementById('filtro-busca');
+            if (input) {
+              input.value = q;
+              this.trocarAba('livros');
+              this.buscarComDebounce();
+            }
+            return { status: 'success', query: q };
+          }
+        });
+
+        ctx.registerTool({
+          name: 'buscar_cursos',
+          description: 'Pesquisar cursos online gratuitos, certificações abertas e trilhas de aprendizagem no Lino Livre.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              curso: {
+                type: 'string',
+                description: 'Nome da tecnologia ou tema do curso (ex: Python, IA, Linux, Cloud)'
+              }
+            },
+            required: ['curso']
+          },
+          handler: async ({ curso }) => {
+            const input = document.getElementById('filtro-busca-cursos');
+            if (input) {
+              input.value = curso;
+              this.trocarAba('cursos');
+              this.buscarCursosComDebounce();
+            }
+            return { status: 'success', query: curso };
+          }
+        });
+      } catch (_) {}
     }
   },
 

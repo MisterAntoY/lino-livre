@@ -549,7 +549,10 @@
     <!-- Catálogo de Livros -->
     <main class="container main-container">
       <div id="grade-livros" class="books-grid">
-        <div class="loading" data-i18n="ui.books.loading">Carregando acervo digital...</div>
+        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
+        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
+        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
+        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
       </div>
 
       <!-- Paginação -->
@@ -570,9 +573,9 @@
         <p><span data-i18n="ui.courses.bannerDescBefore">Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas reunindo recursos do </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e da Fundação Bradesco.</span></p>
       </div>
 
-      <div class="search-bar" style="margin-bottom: 1.25rem;">
-        <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()">
-      </div>
+      <form id="form-busca-cursos" role="search" toolname="buscar_cursos" tooldescription="Pesquisar cursos online gratuitos, certificações abertas e formações de tecnologia e ciências" onsubmit="event.preventDefault(); app.buscarCursosComDebounce();" class="search-bar" style="margin-bottom: 1.25rem;">
+        <input type="search" id="filtro-busca-cursos" name="curso" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()" toolparamdescription="Termo de busca para cursos gratuitos (tecnologia, programação, idiomas, gestão ou ciências)">
+      </form>
 
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
@@ -830,7 +833,7 @@
   </div>
 
   <!-- Comunidade WhatsApp: grupo e canal -->
-  <section id="secao-whatsapp" class="container whatsapp-section hidden" aria-labelledby="whatsapp-titulo">
+  <section id="secao-whatsapp" class="container whatsapp-section" aria-labelledby="whatsapp-titulo">
     <h2 id="whatsapp-titulo" class="whatsapp-section-title">
       <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
       <span data-i18n="ui.whatsapp.title">Junte-se ao Lino Livre no WhatsApp</span>
@@ -838,7 +841,7 @@
     <p class="whatsapp-section-subtitle" data-i18n="ui.whatsapp.subtitle">Peça livros, receba novidades e partilhe leituras com a comunidade escolar.</p>
 
     <div class="whatsapp-cards">
-      <div id="card-comunidade" class="whatsapp-card hidden">
+      <div id="card-comunidade" class="whatsapp-card">
         <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="ui.whatsapp.groupAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-grupo-whatsapp.svg'">
         <h3 data-i18n="ui.whatsapp.groupTitle"> Grupo Lino Livre</h3>
         <p data-i18n="ui.whatsapp.groupDesc">Converse, peça e recomende livros que quer ler.</p>
@@ -848,7 +851,7 @@
         </a>
       </div>
 
-      <div id="card-canal" class="whatsapp-card hidden">
+      <div id="card-canal" class="whatsapp-card">
         <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="ui.whatsapp.channelAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-canal-whatsapp.svg'">
         <h3 data-i18n="ui.whatsapp.channelTitle"> Canal Livros e Cursos</h3>
         <p data-i18n="ui.whatsapp.channelDesc">Receba as novidades de livros e cursos gratuitos.</p>

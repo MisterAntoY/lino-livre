@@ -917,7 +917,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     // 17.2 - Verificação de capas SVG e links externos
     const esLivros = resEs.data.data;
     assert.ok(esLivros.every(l => Array.isArray(l.links) && l.links.length > 0), 'Todos os livros em espanhol devem possuir links de acesso');
-    assert.ok(esLivros.every(l => l.capa_url && (l.capa_url.includes('tech_') || l.capa_url.startsWith('http'))), 'Todos os livros devem ter capa válida');
+    assert.ok(esLivros.every(l => l.capa_url && (l.capa_url.includes('tech_') || l.capa_url.includes('/capas/') || l.capa_url.startsWith('http'))), 'Todos os livros devem ter capa válida');
   });
 
   // Teste 18: Literatura Lusófona Clássica e Vozes dos PALOP

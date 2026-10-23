@@ -56,8 +56,8 @@ const { kaSolutionList } = require('./kaSolutionData');
 const { ebacCoursesList } = require('./ebacData');
 const { oceanBrasilList } = require('./oceanBrasilData');
 const { msLearnList } = require('./msLearnData');
+const { doabBooksData } = require('./doabSeedData');
 const {
-
   domCasmurroTexto,
   memoriasPosthumasTexto,
   oCorticoTexto,
@@ -75,7 +75,10 @@ const {
   osLusiadasTexto,
   mensagemTexto,
   noiteNaTavernaTexto,
-  claraDosAnjosTexto
+  claraDosAnjosTexto,
+  osMaiasTexto,
+  memorialDeAiresTexto,
+  ilustreCasaRamiresTexto
 } = require('./textosObras');
 
 function seed(dbInstance = null) {
@@ -146,6 +149,8 @@ function seed(dbInstance = null) {
   const fUanTfc = insertFonte.run('uan-tfc', 'Universidade Agostinho Neto (UAN) — Repositório TFC', 'manual', 'https://uan-mapa-portal.lovable.app/trabalhos', 1).lastInsertRowid;
   // Fonte Fluência AI (fluencia.ai)
   const fFluencia = insertFonte.run('fluencia-ai', 'Fluência AI (fluencia.ai)', 'manual', 'https://www.fluencia.ai', 1).lastInsertRowid;
+  // Fonte Directory of Open Access Books (DOAB)
+  const fDoab = insertFonte.run('doab', 'Directory of Open Access Books (DOAB)', 'api', 'https://directory.doabooks.org', 1).lastInsertRowid;
 
   // 2. Inserir Categorias
   const insertCat = db.prepare('INSERT INTO categorias (nome, descricao) VALUES (?, ?)');
@@ -170,6 +175,7 @@ function seed(dbInstance = null) {
   const catPoesiaAfricana = insertCat.run('Poesia Africana', 'Poesia de autores africanos de língua portuguesa e outras línguas africanas').lastInsertRowid;
   const catAutoresLusofonos = insertCat.run('Autores Lusófonos Clássicos', 'Grandes nomes da literatura em português: Camões, Pessoa, Eça, autores africanos e brasileiros clássicos').lastInsertRowid;
   const catUanTfc = insertCat.run('🎓 Teses & Trabalhos Universitários (UAN)', 'Trabalhos de Fim de Curso (TFC) e investigações científicas de estudantes da Universidade Agostinho Neto (UAN)').lastInsertRowid;
+  const catDoab = insertCat.run('🎓 Livros Acadêmicos Abertos (DOAB)', 'Monografias e investigações científicas peer-reviewed de editoras universitárias mundiais em acesso aberto.').lastInsertRowid;
 
   // 3. Inserir Autores
   const insertAutor = db.prepare('INSERT INTO autores (nome, nacionalidade, biografia) VALUES (?, ?, ?)');
@@ -590,7 +596,8 @@ function seed(dbInstance = null) {
     '🌍 Contos & Tradição Oral Africana': catAfricaContos,
     '🌍 História & Sociedade Africana': catAfricaHist,
     '🌍 Filosofia & Pensamento Africano': catAfricaFilo,
-    '🎓 Teses & Trabalhos Universitários (UAN)': catUanTfc
+    '🎓 Teses & Trabalhos Universitários (UAN)': catUanTfc,
+    '🎓 Livros Acadêmicos Abertos (DOAB)': catDoab
   };
 
   const fonteMap = {
@@ -624,7 +631,8 @@ function seed(dbInstance = null) {
     'archive-ru': fArchiveRu,
     'archive-it': fArchiveIt,
     'uan-tfc': fUanTfc,
-    'github-livros-acervo': fGithubLivros
+    'github-livros-acervo': fGithubLivros,
+    'doab': fDoab
   };
 
   for (const b of githubBooks) {
@@ -1629,6 +1637,128 @@ function seed(dbInstance = null) {
     'TESE DO MÉTODO FLUÊNCIA: CRIATIVIDADE E LIDERANÇA NA ERA DA IA\n\nPor Camila Caligari — Fluência AI.\n\nUm guia profundo sobre como pensar, decidir e construir sistemas com inteligência artificial com método, critério e impacto real.'
   ).lastInsertRowid;
   insertLink.run(lTeseFluencia, 'pdf', 'https://www.fluencia.ai/_files/ugd/dff43d_4b80c894cb58416b8539e7deda773405.pdf', 684472, 1);
+
+  // 3 Obras Fundamentais do Cânone Clássico Lusófono (Completando o Marco 1: 1.000 Obras Abertas)
+  const autEca = insertAutor.run('Eça de Queirós', 'Português', 'Um dos maiores romancistas de sempre da literatura portuguesa e do Realismo europeu, autor de Os Maias, O Crime do Padre Amaro e A Ilustre Casa de Ramires.').lastInsertRowid;
+
+  // Obra 998: Os Maias (Eça de Queirós, 1888)
+  const lMaias = insertLivro.run(
+    'Os Maias',
+    'Episódios da Vida Romântica (1888)',
+    '978-9720049582',
+    1888,
+    'pt',
+    'Obra-prima indiscutível de Eça de Queirós, traçando com refinamento estilístico e ironia a saga aristocrática da família Maia em Lisboa, o amor trágico de Carlos da Maia e o painel sociopolítico de Portugal.',
+    '/capas/os_maias.svg',
+    720,
+    autEca,
+    catAutoresLusofonos,
+    fDomPub,
+    'dp-bv000301',
+    'dominio-publico',
+    0,
+    osMaiasTexto
+  ).lastInsertRowid;
+  insertLink.run(lMaias, 'epub', 'https://www.gutenberg.org/ebooks/50428.epub3.images', 1850000, 1);
+  insertLink.run(lMaias, 'html', 'https://pt.wikisource.org/wiki/Os_Maias', 0, 1);
+
+  // Obra 999: Memorial de Aires (Machado de Assis, 1908)
+  const lMemorial = insertLivro.run(
+    'Memorial de Aires',
+    'Edição Original Garnier (1908)',
+    '978-8572324021',
+    1908,
+    'pt',
+    'Último romance de Machado de Assis, narrado em forma de diário pelo diplomata aposentado Conselheiro Aires, com profunda reflexão sobre a velhice, o amor sereno, a saudade e a abolição da escravatura.',
+    '/capas/memorial_de_aires.svg',
+    192,
+    autMachado,
+    catClassicos,
+    fDomPub,
+    'dp-bv000302',
+    'dominio-publico',
+    0,
+    memorialDeAiresTexto
+  ).lastInsertRowid;
+  insertLink.run(lMemorial, 'epub', 'https://www.gutenberg.org/ebooks/55753.epub3.images', 950000, 1);
+  insertLink.run(lMemorial, 'html', 'https://pt.wikisource.org/wiki/Memorial_de_Aires', 0, 1);
+
+  // Obra 1000: A Ilustre Casa de Ramires (Eça de Queirós, 1900) — Marco 1 (1.000 Obras Atingido!)
+  const lRamires = insertLivro.run(
+    'A Ilustre Casa de Ramires',
+    'Edição Póstuma (1900)',
+    '978-9720049612',
+    1900,
+    'pt',
+    'A jornada de Gonçalo Mendes Ramires ao redigir a novela histórica dos seus antepassados cavaleiros medievais, confrontando as indecisões do Portugal oitocentista com o apelo heroico da sua história ancestral.',
+    '/capas/a_ilustre_casa_de_ramires.svg',
+    380,
+    autEca,
+    catAutoresLusofonos,
+    fDomPub,
+    'dp-bv000303',
+    'dominio-publico',
+    0,
+    ilustreCasaRamiresTexto
+  ).lastInsertRowid;
+  insertLink.run(lRamires, 'epub', 'https://www.gutenberg.org/ebooks/54830.epub3.images', 1200000, 1);
+  insertLink.run(lRamires, 'html', 'https://pt.wikisource.org/wiki/A_Ilustre_Casa_de_Ramires', 0, 1);
+
+  // Inserir Monografias Acadêmicas Abertas do DOAB (Directory of Open Access Books) — Fase 3 / Marco 2 (1.000 Obras Acadêmicas)
+  const autoresDoabMap = new Map();
+  for (const b of doabBooksData) {
+    const autorNome = b.autor || 'Autor Desconhecido';
+    let aId = autoresDoabMap.get(autorNome);
+    if (!aId) {
+      const existingAut = db.prepare('SELECT id FROM autores WHERE nome = ?').get(autorNome);
+      if (existingAut) {
+        aId = existingAut.id;
+      } else {
+        aId = insertAutor.run(
+          autorNome,
+          b.nacionalidade || 'Internacional',
+          b.biografia || 'Pesquisador(a) acadêmico(a) com monografia peer-reviewed catalogada no DOAB.'
+        ).lastInsertRowid;
+      }
+      autoresDoabMap.set(autorNome, aId);
+    }
+
+    const cId = catDoab;
+    const fId = fDoab;
+
+    const existingLivro = db.prepare('SELECT id FROM livros WHERE fonte_id = ? AND fonte_id_externo = ?').get(fId, b.fonteIdExterno);
+    if (existingLivro) continue;
+
+    const lic = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'].includes(b.licenca) ? b.licenca : 'cc-by';
+
+    const bId = insertLivro.run(
+      b.titulo,
+      b.subtitulo || null,
+      b.isbn || null,
+      b.ano || 2020,
+      b.idioma || 'pt',
+      b.sinopse,
+      b.capaUrl || '/capas/academic/academic_monograph.svg',
+      b.paginas || 220,
+      aId,
+      cId,
+      fId,
+      b.fonteIdExterno,
+      lic,
+      0,
+      null // Regra 4 de AGENTS.md: obras contemporâneas sob direitos autorais não possuem texto integral em conteudo_texto (acesso exclusivo por 302)
+    ).lastInsertRowid;
+
+    if (b.links && Array.isArray(b.links)) {
+      const seenFormatos = new Set();
+      for (const lk of b.links) {
+        const fmt = lk.formato || 'pdf';
+        if (seenFormatos.has(fmt)) continue;
+        seenFormatos.add(fmt);
+        insertLink.run(bId, fmt, lk.url, 0, 1);
+      }
+    }
+  }
 
   // 5. Inserir Cursos e Roadmaps (classificando com coluna 'tipo')
   const insertCurso = db.prepare(`

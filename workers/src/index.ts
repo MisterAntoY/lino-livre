@@ -7,6 +7,7 @@ import { dicasData } from '../../src/database/dicasData';
 import { executarImportacaoD1 } from './services/importer';
 import { obterMotor } from './services/federacaoBusca';
 import { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS } from './utils/urlValidator';
+import { edgeLoadBalancer } from './loadBalancer';
 
 const app = new Hono<{ Bindings: Bindings }>();
 

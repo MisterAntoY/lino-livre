@@ -190,6 +190,41 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 2rem;
+  min-height: 600px; /* reserva de espaço anti-CLS */
+}
+
+/* Skeleton Loading (Anti-CLS) */
+.skeleton-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 440px;
+}
+
+.skeleton-cover {
+  width: 100%;
+  aspect-ratio: 2 / 2.85;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+.skeleton-text {
+  height: 14px;
+  margin: 0.85rem 1rem 0.25rem 1rem;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .book-card {
@@ -4438,6 +4473,7 @@ html[lang^="zh"] .course-title {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
+  min-height: 480px; /* reserva de espaço anti-CLS */
 }
 
 .destaque-book-card {
