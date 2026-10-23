@@ -1,0 +1,62 @@
+{
+  "$schema": "https://agenticresourcediscovery.org/schemas/v1/ai-catalog.json",
+  "specVersion": "1.0.0",
+  "name": "Lino Livre",
+  "description": "Plataforma pública e comunitária de indexação e busca educacional de livros digitais livres em domínio público e cursos abertos nos PALOP e Sul Global.",
+  "url": "https://linolivre.org",
+  "documentationUrl": "https://linolivre.org/llms.txt",
+  "contact": {
+    "name": "Equipe Lino Livre",
+    "email": "bv6alblu6@mozmail.com"
+  },
+  "entries": [
+    {
+      "identifier": "urn:linolivre:tools:buscar_livros",
+      "displayName": "Buscar Livros Digitais Abertos",
+      "description": "Pesquisa no acervo de obras em domínio público e licenças abertas com busca textual FTS5, filtros por categoria, idioma e formato.",
+      "type": "application/vnd.oai.openapi+json",
+      "url": "https://linolivre.org/api/livros",
+      "representativeQueries": [
+        "buscar livros de Machado de Assis em português",
+        "encontrar livros clássicos de literatura africana",
+        "livros grátis de programação e tecnologia",
+        "obras em domínio público em PDF e EPUB"
+      ]
+    },
+    {
+      "identifier": "urn:linolivre:tools:buscar_cursos",
+      "displayName": "Buscar Cursos Gratuitos e Certificações",
+      "description": "Consulta diretório com mais de 8.500 cursos online gratuitos e certificações abertas (OER Commons, OpenStax, MIT, Khan Academy, Cursa).",
+      "type": "application/vnd.oai.openapi+json",
+      "url": "https://linolivre.org/api/cursos",
+      "representativeQueries": [
+        "cursos gratuitos de Python com certificado",
+        "trilhas de aprendizagem de inteligência artificial",
+        "cursos abertos do MIT e Fundação Bradesco",
+        "aulas gratuitas de computação em nuvem e DevOps"
+      ]
+    },
+    {
+      "identifier": "urn:linolivre:tools:busca_federada",
+      "displayName": "Busca Federada Global RRF",
+      "description": "Motor de busca federada que agrega múltiplos repositórios globais abertos em paralelo com ranqueamento Reciprocal Rank Fusion.",
+      "type": "application/vnd.oai.openapi+json",
+      "url": "https://linolivre.org/api/busca/federada",
+      "representativeQueries": [
+        "pesquisa federada global de livros abertos",
+        "buscar em múltiplos repositórios acadêmicos e bibliotecas digitais"
+      ]
+    },
+    {
+      "identifier": "urn:linolivre:tools:dashboard_metricas",
+      "displayName": "Métricas da Meta dos 10 Milhões de Livros",
+      "description": "Estatísticas em tempo real do acervo indexado, progresso da grande meta coletiva e distribuição por áreas e idiomas.",
+      "type": "application/vnd.oai.openapi+json",
+      "url": "https://linolivre.org/api/dashboard",
+      "representativeQueries": [
+        "quantos livros estão indexados no Lino Livre",
+        "progresso da meta de 10 milhões de livros livres"
+      ]
+    }
+  ]
+}

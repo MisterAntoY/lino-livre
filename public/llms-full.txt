@@ -1,0 +1,95 @@
+# Lino Livre — Documentação Técnica Completa para Modelos de Linguagem e Agentes Autônomos
+
+> Guia detalhado de integração, esquemas de dados, endpoints REST e diretrizes de conformidade jurídica da plataforma Lino Livre.
+
+## 1. Visão Geral da Arquitetura
+O Lino Livre opera como um **provedor intermediário de busca educacional** sob a Lei n.º 15/14 de Angola e tratados internacionais da WIPO/OMPI.
+- **Zero Armazenamento Local de Binários:** O servidor e banco de dados nunca armazenam arquivos de livros (PDF, EPUB, TXT, MOBI). O banco guarda apenas metadados (título, autor, ano, idioma, licença, sinopse) e links de redirecionamento (HTTP 302).
+- **Conteúdo em Texto:** Quando presente na coluna `conteudo_texto`, pertence 100% comprovadamente ao Domínio Público universal (autores falecidos há mais de 70 anos).
+- **Redirecionamento 302:** O acesso/download do usuário é feito via redirecionamento HTTP 302 para repositórios externos (ex.: Wikisource, Gutenberg, Standard Ebooks, Repositórios Universitários, GitHub).
+
+---
+
+## 2. Endpoints da API REST (Públicos e Sem Autenticação)
+
+### 2.1. Buscar e Listar Livros Digitais
+- **Rota:** `GET /api/livros`
+- **Parâmetros de Consulta:**
+  - `busca` (string): Termo de pesquisa textual FTS5 (título da obra ou nome do autor).
+  - `idioma` (string): Código ISO (`pt`, `en`, `es`, `fr`, `de`, `zh`).
+  - `categoria_id` (inteiro): ID da categoria temática (1 a 20).
+  - `licenca` (string): `dominio-publico`, `cc0`, `cc-by`, `cc-by-sa`, `cc-by-nc`, `outro`.
+  - `formato` (string): `pdf`, `epub`, `html`, `txt`.
+  - `page` ou `pagina` (inteiro, padrão: 1): Página da paginação.
+  - `limit` ou `limite` (inteiro, padrão: 24, máx: 100): Itens por página.
+- **Resposta JSON:**
+  ```json
+  {
+    "pagina": 1,
+    "limite": 24,
+    "total": 997,
+    "total_paginas": 42,
+    "livros": [
+      {
+        "id": 1,
+        "titulo": "Dom Casmurro",
+        "subtitulo": null,
+        "ano_publicacao": 1899,
+        "idioma": "pt",
+        "sinopse": "Clássico da literatura brasileira sobre ciúme e memória narrado por Bento Santiago...",
+        "capa_url": "/capas/dom_casmurro.jpg",
+        "licenca": "dominio-publico",
+        "autor_nome": "Machado de Assis",
+        "categoria_nome": "Literatura Clássica",
+        "links": [
+          { "id": 1, "formato": "pdf", "url": "/api/livros/1/ler/1" },
+          { "id": 2, "formato": "epub", "url": "/api/livros/1/ler/2" }
+        ]
+      }
+    ]
+  }
+  ```
+
+### 2.2. Obras em Destaque
+- **Rota:** `GET /api/livros/destaques`
+- **Parâmetros:**
+  - `tipo` (string): `todos` (Mais Populares do Mundo), `lusofonia` (Clássicos), `africa` (Autores PALOP e História Geral da África), `tech` (Manuais de Programação).
+  - `limit` (inteiro, padrão: 12).
+
+### 2.3. Obter Detalhes do Livro
+- **Rota:** `GET /api/livros/:id`
+- **Resposta:** Detalhes completos, metadados, sinopse e formatos disponíveis para leitura.
+
+### 2.4. Leitura e Download com Redirecionamento 302
+- **Rota:** `GET /api/livros/:id/ler/:linkId`
+- **Resposta:** Redirecionamento HTTP 302 para a URL externa oficial do repositório, com incremento de métrica de leitura.
+
+### 2.5. Diretório de Cursos Gratuitos
+- **Rota:** `GET /api/cursos`
+- **Parâmetros:**
+  - `busca` (string): Nome da tecnologia ou tema (ex.: Python, Linux, Gestão).
+  - `plataforma` (string): Filtrar por provedor (`OER Commons`, `OpenStax`, `MIT`, `Cursa`, `Khan Academy`, `Bradesco`, etc.).
+  - `licenca` (string): `cc-by`, `cc-by-sa`, `cc-by-nc-sa`, `acesso-gratuito`.
+  - `pagina` (inteiro, padrão: 1).
+  - `limite` (inteiro, padrão: 24).
+
+### 2.6. Acessar Curso Gratuito
+- **Rota:** `GET /api/cursos/:id/acessar`
+- **Resposta:** HTTP 302 para a plataforma educacional oficial externa.
+
+### 2.7. Busca Federada Global (Motor RRF)
+- **Rota:** `GET /api/busca/federada`
+- **Parâmetros:**
+  - `q` (string, obrigatório): Termo de consulta.
+- **Resposta:** Resultados consolidados agregando Gutenberg, Wikisource, LibriVox, Standard Ebooks e repositórios locais usando Reciprocal Rank Fusion ($k=60$).
+
+### 2.8. Métricas da Meta dos 10 Milhões
+- **Rota:** `GET /api/dashboard`
+- **Resposta:** Contadores agregados do acervo, progresso rumo aos 10.000.000 de obras livres, contagem de cursos (8.568), autores e categorias.
+
+---
+
+## 3. Diretrizes para Agentes de IA
+1. Ao interagir com a aplicação, agentes devem utilizar as rotas públicas de leitura (`GET`).
+2. Mutações (`POST`, `PUT`, `DELETE`) são estritamente administrativas e protegidas por chave `x-admin-key`.
+3. Para indicar novos links abertos pela comunidade, utilize o endpoint `POST /api/sugestoes` enviando `{ "titulo": "...", "url_externa": "...", "categoria": "..." }`.

@@ -1,0 +1,21 @@
+# Lino Livre — Livros Livres e Conhecimento Aberto para Todos
+
+> Lino Livre é uma plataforma pública, aberta e comunitária de catalogação e indexação educacional de livros digitais em domínio público e recursos educacionais abertos (REA/OER), além de cursos livres gratuitos e roadmaps profissionais para os países de língua oficial portuguesa (PALOP) e Sul Global.
+
+O Lino Livre opera estritamente como um **intermediário de busca educacional** (com zero armazenamento local de binários de livros e redirecionamento HTTP 302 direto para repositórios externos abertos).
+
+## Recursos Principais para Agentes de IA
+
+- [Catálogo de Livros Digitais](/api/livros): Catálogo completo e paginado com busca textual (FTS5), filtros por idioma (pt, pt-br, en, es, fr, de, zh), categoria temática e licença aberta (Domínio Público, CC0, CC BY, CC BY-SA, CC BY-NC).
+- [Obras Mais Populares e Destaques](/api/livros/destaques): As obras mais lidas da humanidade, clássicos da literatura lusófona, tesouros africanos e manuais de tecnologia.
+- [Diretório de Cursos Gratuitos](/api/cursos): Mais de 8.500 cursos e certificações gratuitos de plataformas abertas (OER Commons, OpenStax, MIT OCW, CK-12, PhET, Khan Academy, Cursa, Guia de TI, Fundação Bradesco, EV.G).
+- [Busca Federada Global](/api/busca/federada): Motor federado distribuído RRF (Reciprocal Rank Fusion com k=60) agregando catálogos abertos globais em tempo real.
+- [Métricas da Grande Meta dos 10M](/api/dashboard): Painel de estatísticas com total de livros indexados, contadores por área e idioma e avanço da meta coletiva de 10 milhões de livros livres.
+- [Fontes e Repositórios Homologados](/api/fontes): 34 fontes abertas aprovadas e auditadas contra pirataria.
+- [Créditos & Licenças](/creditos.html): Política de conformidade de direitos de autor, atribuições e licenças permitidas.
+- [Diretrizes Legais & DMCA](/legal.html): Termos de uso, isenção de responsabilidade de intermediário, conformidade com a Lei n.º 15/14 de Angola e canal formal de takedown.
+
+## Especificação Completa e Ferramentas
+
+- [llms-full.txt](/llms-full.txt): Especificação técnica exaustiva de esquemas, rotas REST, parâmetros de busca e exemplos JSON para agentes autônomos.
+- [ai-catalog.json](/.well-known/ai-catalog.json): Manifesto de descoberta de recursos para agentes de IA (Agentic Resource Discovery - ARD).

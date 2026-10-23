@@ -15,6 +15,8 @@ if (typeof window !== 'undefined' && window.trustedTypes && typeof window.truste
 
 const app = {
   abaAtiva: 'livros',
+  destaquesTipoAtivo: 'todos',
+  destaquesLivros: [],
   livros: [],
   cursos: [],
   roadmaps: [],
@@ -93,6 +95,7 @@ const app = {
     });
 
     await Promise.all([
+      this.carregarDestaques(),
       this.carregarLivros(),
       this.carregarPlacarMeta(),
       this.carregarCategoriasSelect(),
@@ -104,11 +107,50 @@ const app = {
 
   verificarLinkDiretoLivro() {
     const hash = window.location.hash;
-    if (hash && hash.startsWith('#livro-')) {
+    if (!hash) return;
+
+    if (hash.startsWith('#livro-')) {
       const id = parseInt(hash.replace('#livro-', ''), 10);
       if (id > 0) {
         setTimeout(() => this.abrirDetalhesLivro(id), 300);
       }
+      return;
+    }
+
+    const mapaAbas = {
+      '#aba-livros': 'livros',
+      '#livros': 'livros',
+      '#aba-cursos': 'cursos',
+      '#cursos': 'cursos',
+      '#aba-roadmaps': 'roadmaps',
+      '#roadmaps': 'roadmaps',
+      '#aba-podcasts': 'podcasts',
+      '#podcasts': 'podcasts',
+      '#aba-dicas': 'dicas',
+      '#dicas': 'dicas',
+      '#aba-dashboard': 'dashboard',
+      '#dashboard': 'dashboard'
+    };
+
+    if (mapaAbas[hash]) {
+      this.trocarAba(mapaAbas[hash]);
+      return;
+    }
+
+    const mapaLegal = {
+      '#termos': 'termos',
+      '#legal-termos': 'termos',
+      '#isencao': 'isencao',
+      '#legal-isencao': 'isencao',
+      '#takedown': 'takedown',
+      '#dmca': 'takedown',
+      '#legal-takedown': 'takedown',
+      '#privacidade': 'privacidade',
+      '#legal-privacidade': 'privacidade'
+    };
+
+    if (mapaLegal[hash]) {
+      this.abrirModalLegal(mapaLegal[hash]);
     }
   },
 
@@ -534,6 +576,102 @@ const app = {
             <div class="book-actions">
               ${botoesAcaoHtml}
               <button class="btn btn-outline" onclick="app.abrirDetalhesLivro(${l.id})" aria-label="Detalhes da obra ${this.escape(l.titulo)}" title="Ver sinopse e formatos para baixar">
+                ℹ Detalhes
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  },
+
+  // ==================== DESTAQUES (MAIS POPULARES E PROCURADOS) ====================
+  async carregarDestaques(tipo = 'todos') {
+    const grade = document.getElementById('grade-destaques');
+    if (!grade) return;
+    this.destaquesTipoAtivo = tipo;
+
+    try {
+      const res = await fetch(`/api/livros/destaques?tipo=${encodeURIComponent(tipo)}&limit=12`);
+      if (!res.ok) throw new Error('Falha ao carregar destaques');
+      const json = await res.json();
+      this.destaquesLivros = json.data || [];
+      this.renderizarDestaques(this.destaquesLivros);
+    } catch (err) {
+      if (this.livros && this.livros.length > 0) {
+        this.renderizarDestaques(this.livros.slice(0, 8));
+      } else {
+        grade.innerHTML = `<div class="loading" style="padding:1.5rem; color:#b91c1c;">${this.escape(t('books.error', { msg: err.message }))}</div>`;
+      }
+    }
+  },
+
+  trocarAbaDestaques(tipo) {
+    this.destaquesTipoAtivo = tipo;
+    document.querySelectorAll('#pills-destaques-tipo .pill-destaque-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tipo') === tipo);
+    });
+    const grade = document.getElementById('grade-destaques');
+    if (grade) {
+      grade.innerHTML = `<div class="loading" style="padding: 2rem 0;">${t('books.loading')}</div>`;
+    }
+    this.carregarDestaques(tipo);
+  },
+
+  renderizarDestaques(lista) {
+    const grade = document.getElementById('grade-destaques');
+    if (!grade) return;
+
+    if (!lista || lista.length === 0) {
+      grade.innerHTML = `<div class="loading" style="padding: 2rem 0;">${t('books.empty')}</div>`;
+      return;
+    }
+
+    grade.innerHTML = lista.map(l => {
+      const capaUrl = this.capaProxyUrl(l.capa_url, '/capas/dom_casmurro.jpg');
+      const links = l.links || [];
+      const badgeText = l.destaque_badge || '⭐ Muito Procurado';
+
+      const pdfLink = links.find(lnk => lnk.formato.toLowerCase() === 'pdf');
+      const htmlLink = links.find(lnk => lnk.formato.toLowerCase() === 'html');
+      const epubLink = links.find(lnk => lnk.formato.toLowerCase() === 'epub');
+      const mainLink = pdfLink || epubLink || htmlLink || links[0];
+
+      const tagsFormatos = links.slice(0, 3).map(lnk => {
+        return `<span class="badge-license" style="font-size:0.68rem; padding:0.15rem 0.45rem;">${lnk.formato.toUpperCase()}</span>`;
+      }).join('');
+
+      let btnLer = '';
+      if (mainLink) {
+        btnLer = `
+          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${mainLink.id}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" aria-label="Ler ${this.escape(l.titulo)}" title="Acessar obra imediatamente">
+            📖 Ler Agora
+          </a>
+        `;
+      } else {
+        btnLer = `
+          <button class="btn btn-primary" onclick="event.stopPropagation(); app.abrirDetalhesLivro(${l.id});">
+            📖 Ler Agora
+          </button>
+        `;
+      }
+
+      return `
+        <article class="destaque-book-card" onclick="app.abrirDetalhesLivro(${l.id})" title="${this.escape(l.titulo)} — Clique para ver detalhes">
+          <div class="destaque-cover-wrap">
+            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
+            <span class="destaque-badge-tag">${this.escape(badgeText)}</span>
+          </div>
+          <div class="destaque-info">
+            <span class="destaque-category">${this.escape(traduzirCategoria(l.categoria_nome) || 'Literatura')}</span>
+            <h3 class="destaque-book-title">${this.escape(l.titulo)}</h3>
+            <p class="destaque-book-author">${this.escape(l.autor_nome || 'Autor Consagrado')} ${l.ano_publicacao ? `• ${l.ano_publicacao}` : ''}</p>
+            <div class="destaque-formats">
+              ${tagsFormatos}
+            </div>
+            <div class="destaque-card-actions">
+              ${btnLer}
+              <button class="btn btn-outline" onclick="event.stopPropagation(); app.abrirDetalhesLivro(${l.id})" aria-label="Detalhes de ${this.escape(l.titulo)}" title="Ver detalhes completos da obra">
                 ℹ Detalhes
               </button>
             </div>
@@ -1431,75 +1569,75 @@ const app = {
 
       let logoHtml = '';
       if (isOcean) {
-        logoHtml = `<img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isDio) {
-        logoHtml = `<img src="/img/logos/dio.png" alt="DIO" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/dio.png" alt="DIO" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isKipper || isSegInfo || isGlaucia || isSacchi) {
-        logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isBnt) {
         logoHtml = `<span style="font-size:1.3rem;">🚀</span>`;
       } else if (isKaSolution) {
-        logoHtml = `<img src="/img/logos/kasolution.png" alt="KA Solution" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/kasolution.png" alt="KA Solution" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isEbac) {
-        logoHtml = `<img src="/img/logos/ebac.svg" alt="EBAC Online" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/ebac.svg" alt="EBAC Online" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isSantander) {
-        logoHtml = `<img src="/img/logos/santander.png" alt="Santander" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/santander.png" alt="Santander" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isCursoEmVideo) {
-        logoHtml = `<img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="course-platform-logo logo-round">`;
+        logoHtml = `<img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="course-platform-logo logo-round" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isDsa) {
-        logoHtml = `<img src="/img/logos/dsa.png" alt="Data Science Academy" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/dsa.png" alt="Data Science Academy" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isFiap) {
-        logoHtml = `<img src="/img/logos/fiap.png" alt="FIAP" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/fiap.png" alt="FIAP" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isEuCapacito) {
-        logoHtml = `<img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isIbm) {
-        logoHtml = `<img src="/img/logos/ibm.svg" alt="IBM SkillsBuild" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/ibm.svg" alt="IBM SkillsBuild" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isCisco) {
-        logoHtml = `<img src="/img/logos/cisco.svg" alt="Cisco NetAcad" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/cisco.svg" alt="Cisco NetAcad" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isEscolaTrab) {
-        logoHtml = `<img src="/img/logos/escoladotrabalhador.png" alt="Escola do Trabalhador 4.0" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/escoladotrabalhador.png" alt="Escola do Trabalhador 4.0" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isAws) {
-        logoHtml = `<img src="/img/logos/aws.svg" alt="AWS" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/aws.svg" alt="AWS" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isMsLearn) {
-        logoHtml = `<img src="/img/logos/microsoft.svg" alt="Microsoft Learn" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/microsoft.svg" alt="Microsoft Learn" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isFcc) {
-        logoHtml = `<img src="/img/logos/freecodecamp.png" alt="freeCodeCamp" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/freecodecamp.png" alt="freeCodeCamp" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isKultivi) {
-        logoHtml = `<img src="/img/logos/kultivi.png" alt="Kultivi" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/kultivi.png" alt="Kultivi" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isSenai) {
-        logoHtml = `<img src="/img/logos/senai.png" alt="SENAI" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/senai.png" alt="SENAI" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isOracleOne) {
-        logoHtml = `<img src="/img/logos/oracle.svg" alt="Oracle ONE" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/oracle.svg" alt="Oracle ONE" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isGeneration) {
-        logoHtml = `<img src="/img/logos/generation.png" alt="Generation Brasil" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/generation.png" alt="Generation Brasil" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isWmc) {
-        logoHtml = `<img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isBradesco) {
-        logoHtml = `<img src="/img/logos/bradesco.svg" alt="Fundação Bradesco" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/bradesco.svg" alt="Fundação Bradesco" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isGuiaDeTI) {
-        logoHtml = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isYouTube) {
-        logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isUsp) {
-        logoHtml = `<img src="/img/logos/usp.png" alt="USP" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/usp.png" alt="USP" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isAlura) {
-        logoHtml = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isEvg) {
-        logoHtml = `<img src="/img/logos/evg.png" alt="EV.G" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/evg.png" alt="EV.G" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isLumina) {
-        logoHtml = `<img src="/img/logos/lumina.svg" alt="Lumina UFRGS" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/lumina.svg" alt="Lumina UFRGS" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isIfrs) {
-        logoHtml = `<img src="/img/logos/ifrs.svg" alt="IFRS" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/ifrs.svg" alt="IFRS" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isGoogleAtelie) {
-        logoHtml = `<img src="/img/logos/google.svg" alt="Google Ateliê Digital" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/google.svg" alt="Google Ateliê Digital" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isOpenBootcamp) {
-        logoHtml = `<img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if ((c.plataforma || '').includes('Cursa')) {
-        logoHtml = `<img src="/img/logos/cursa.svg" alt="Cursa" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/cursa.svg" alt="Cursa" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if ((c.plataforma || '').includes('MIT')) {
-        logoHtml = `<img src="/img/logos/mit.png" alt="MIT" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/mit.png" alt="MIT" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if ((c.plataforma || '').includes('Harvard')) {
-        logoHtml = `<img src="/img/logos/harvard.png" alt="Harvard" class="course-platform-logo">`;
+        logoHtml = `<img src="/img/logos/harvard.png" alt="Harvard" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if ((c.plataforma || '').includes('Stanford')) {
         logoHtml = `<span style="font-size:1.3rem;">🌲</span>`;
       }
@@ -1626,19 +1764,19 @@ const app = {
       let logoRoadmap = '';
       if (isRoadmapSh) {
         badgeOrigem = ' Roadmap.sh';
-        logoRoadmap = `<img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="course-platform-logo">`;
+        logoRoadmap = `<img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isTrilha) {
         badgeOrigem = ' Trilha Info (BR)';
-        logoRoadmap = `<img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="course-platform-logo">`;
+        logoRoadmap = `<img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isGuiaTI) {
         badgeOrigem = ' Guia de TI';
-        logoRoadmap = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo">`;
+        logoRoadmap = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isAwesome) {
         badgeOrigem = '⭐ Awesome Roadmaps';
-        logoRoadmap = `<img src="/img/logos/github.svg" alt="GitHub" class="course-platform-logo">`;
+        logoRoadmap = `<img src="/img/logos/github.svg" alt="GitHub" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isTechGuide) {
         badgeOrigem = '🧭 TechGuide.sh (Alura)';
-        logoRoadmap = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo">`;
+        logoRoadmap = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isBoraNaTech) {
         badgeOrigem = '🚀 Bora na Tech?';
         logoRoadmap = `<span style="font-size:1.3rem;">🚀</span>`;
@@ -1756,7 +1894,7 @@ const app = {
       return `
         <article class="podcast-card">
           <div class="podcast-cover-box">
-            <img src="${capaUrl}" alt="${this.escape(s.titulo)}" class="podcast-cover-img" loading="lazy">
+            <img src="${capaUrl}" alt="${this.escape(s.titulo)}" class="podcast-cover-img" width="400" height="190" loading="lazy" decoding="async">
             <span class="podcast-category-badge">${this.escape(s.categoria || 'Educação')}</span>
           </div>
 

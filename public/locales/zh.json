@@ -51,6 +51,15 @@
       "dashboard": "📊 数据与来源"
     },
     "books": {
+      "highlightsTitle": "🌟 最热门与高需求图书",
+      "highlightsSubtitle": "探索人类历史上最受瞩目的名著、国际畅销书与不朽经典，支持即时在线免费阅读与下载。",
+      "highlightsBadge": "⭐ 精选力作 • 热度聚焦",
+      "highlightsAll": "🌟 全球最热门图书",
+      "highlightsClassics": "📜 葡语经典力作",
+      "highlightsAfrica": "🌍 非洲文明瑰宝",
+      "highlightsTech": "💻 编程与技术手册",
+      "highlightsViewAll": "探索全部100+热门名著",
+      "highlightsLoading": "正在加载精选图书……",
       "searchPlaceholder": "按标题或作者搜索……",
       "categories": "分类：",
       "all": "全部",

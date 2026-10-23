@@ -325,7 +325,75 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   5. **Prevenção de Thundering Herd / Cache Stampede:** Variável `dashboardInFlight` unifica requisições concorrentes em uma única promessa.
   6. **Cabeçalhos CDN Globais (`s-maxage=3600`):** Injeção de `s-maxage=3600` e `stale-while-revalidate=86400` em rotas públicas, permitindo cache nos POPs globais da Cloudflare.
   7. **Ferramenta de Diagnóstico Automatizada:** Script `scripts/diagnostico_consumo_trafego.js` e comando `npm run diagnostico`.
-  8. **Ampliação da Suíte de Testes:** Criação de `test/d1_quota_consumption.test.js`, `test/supabase_consumption_traffic.test.js` e `test/traffic_and_monitoring.test.js`, elevando a cobertura de 145 para **178 testes automatizados (100% passando)**.
+  8. **Ampliação da Suíte de Testes:** Criação de `test/d1_quota_consumption.test.js`, `test/supabase_consumption_traffic.test.js`, `test/traffic_and_monitoring.test.js` e `test/capas_proxy.test.js`, elevando a cobertura para **193 testes automatizados em 36 suítes (100% passando)**.
+
+### 2.20. Resolução dos Alertas do Supabase Database Linter & Plano de Otimização do Site
+- **Alertas de Segurança do Supabase Database Linter Identificados e Resolvidos:**
+  1. *Extension in Public (`public.pg_trgm`, Lint 0014):* A extensão `pg_trgm` foi detectada no schema `public`. A recomendação oficial é alocar extensões no schema `extensions`:
+     ```sql
+     CREATE SCHEMA IF NOT EXISTS extensions;
+     ALTER EXTENSION pg_trgm SET SCHEMA extensions;
+     ```
+  2. *SECURITY DEFINER Function Executable by Anon & Authenticated (`public.rls_auto_enable()`, Lints 0028 e 0029):* A função de trigger interna possuía privilégio de execução exposto para as roles `anon` e `authenticated` via PostgREST RPC (`/rest/v1/rpc/rls_auto_enable`). A resolução consiste em revogar o privilégio público ou alternar para `SECURITY INVOKER`:
+     ```sql
+     REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM public, anon, authenticated;
+     ```
+- **Plano Mestre de Otimização Integral do Site (Core Web Vitals & CDN):**
+  - Documentado detalhadamente no artefato de engenharia [`plano_otimizacao_site.md`](file:///Users/mendes/.gemini/antigravity/brain/3b703f86-86d1-4200-96a5-a49850395038/plano_otimizacao_site.md).
+  - **Zero CLS (Cumulative Layout Shift):** Adição de dimensões explícitas `width="16" height="16"` e `loading="lazy" decoding="async"` em 100% dos botões de pílulas (`.pill-logo`), `width="18" height="18"` nos cartões de cursos e trilhas (`.course-platform-logo`), e `width="400" height="190"` nos programas de podcast (`.podcast-cover-img`).
+  - **Deduplicação de CSS Crítico:** Remoção de regras CSS redundantes repetidas no `<head>` de [`public/index.html`](file:///Users/mendes/Desktop/I%20am%20Abc/public/index.html) (`.pills-container`, `.pill`, `.pagination-container`, `.btn`), reduzindo o tempo de parsing de folha de estilo.
+  - **Cache Imutável de Fontes e Assets:** Regra `/fonts/*` com `Cache-Control: public, max-age=31536000, immutable` consolidada em [`public/_headers`](file:///Users/mendes/Desktop/I%20am%20Abc/public/_headers).
+  - **Suíte Completa:** 193 testes automatizados em 36 arquivos de teste executando com 100% de sucesso.
+
+### 2.21. Auditoria Lighthouse: Acessibilidade, Segurança, Imagens e SEO (100% Crawlable Links)
+- **Contexto & Relatório Lighthouse:** A aplicação foi submetida a auditoria completa de qualidade web (Lighthouse), registando notas de 93 em Acessibilidade e 92 em SEO devido a links não rastreáveis (`crawlable-anchors`).
+- **Resoluções Implementadas e Auditadas:**
+  1. **Auditoria de Imagens (625 Ativos):**
+     - Verificação automatizada dos 625 ficheiros em `public/img` e `public/capas`.
+     - Correção de cabeçalhos binários corrompidos em 5 imagens: `dio.png`, `alura.png`, `mit.png`, `bradesco.png`, `africa_pt_sangue_negro.jpg`.
+     - Criação do logótipo vetorial SVG em falta `public/img/logos/github.svg`.
+     - Substituição de URLs instáveis de miniaturas da Wikimedia Commons por 10 capas vetoriais SVG locais e autónomas em `public/capas/palop_*.svg` para obras clássicas africanas (Agostinho Neto, Pepetela, Mia Couto, Paulina Chiziane, Baltasar Lopes, etc.).
+  2. **Acessibilidade Web (Lighthouse 93 → 100):**
+     - **ARIA Progressbar:** Adicionado `aria-label="Progresso da meta coletiva de 10 milhões de livros"` e atributo dinâmico `aria-valuetext="X de 10.000.000 livros livres indexados (Y% da meta)"` ao contentor `#placar-progressbar-container`.
+     - **Contraste de Cor (WCAG AAA/AA):** Textos secundários do rodapé e avisos atualizados de `#94a3b8` para `#334155` e `#475569`, cumprindo com folga o rácio de contraste 4.5:1.
+     - **Links com o mesmo destino (`identical-links-same-purpose`):** Injeção de `aria-label` com o nome específico da obra em todos os links e botões de leitura/download (ex.: `aria-label="Ler Dom Casmurro em formato PDF"`).
+  3. **Práticas Recomendadas e Isolamento de Origem (Lighthouse 100):**
+     - Cabeçalhos defensivos globais em `public/_headers`: `Content-Security-Policy`, `Strict-Transport-Security`, `Cross-Origin-Opener-Policy: same-origin`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`.
+     - Tag `<meta http-equiv="Content-Security-Policy">` em todas as páginas HTML estáticas.
+     - Inicialização de política `Trusted Types` no frontend (`public/js/app.js`).
+  4. **SEO & Rastreio por Motores de Busca (Lighthouse 92 → 100):**
+     - **Eliminação de `href="javascript:void(0)"` e `href="#"`:** Substituição de 100% dos pseudo-protocolos nos menus e rodapé por URLs válidos e crawlable targets.
+     - **Abas do Acervo:** Links com `href="#aba-livros"`, `href="#aba-cursos"`, `href="#aba-roadmaps"`, `href="#aba-podcasts"`, `href="#aba-dashboard"`.
+     - **Links Jurídicos:** Apontam para URLs canónicos estáticos (`href="/legal.html#secao-missao"`, `href="/legal.html#secao-isencao"`, `href="/legal.html#secao-direitos"`, `href="/legal.html#secao-privacidade"`).
+     - **Progressive Enhancement:** Motores de busca (Googlebot) rastreiam e indexam páginas reais; cliques no navegador ativam modais dinâmicos instantâneos sem recarregar a página.
+     - **Suporte a Hash Routes:** A função `verificarHash()` em `public/js/app.js` abre automaticamente a aba ou modal correspondente quando o utilizador acede via URL directo com fragmento de âncora.
+  5. **Cobertura de Testes Atualizada:** 193 testes automatizados passando em 35 suítes (`npm test`).
+
+### 2.22. Seção de Destaques: Livros Mais Populares e Muito Procurados e Ordenação de Abertura do Acervo
+- **Diretriz do Usuário:** *"Altere os destaque do site, quando alguém abri o site, quero ver os livros mais populares e muito procurados"*
+- **Diagnóstico da Experiência de Abertura:**
+  1. Anteriormente, na abertura do site (`/`), o catálogo geral (`GET /api/livros`) executava `ORDER BY l.leituras DESC, l.titulo ASC`. Como as contagens de leituras partem de zero no banco limpo, a ordenação caía estritamente para a ordem alfabética de títulos, exibindo livros técnicos ou manuais acadêmicos menos conhecidos (como *"A Byte of Python — Einführung in Python"*) em vez das grandes obras da literatura mundial e lusófona.
+  2. A área de destaque sob o placar consistia em um banner de texto puramente institucional da Coleção de África, sem cartões interativos de livros em destaque.
+- **Resoluções e Engenharia Implementadas:**
+  1. **Seção de Destaques Interativa (`#secao-destaques`):**
+     - Substituição do banner estático por um mostruário moderno e responsivo com cartões de livros em destaque contendo capas em alta resolução (`capaProxyUrl`), títulos, autores, anos, tags de formato (PDF, EPUB, Web) e badges distintivos (`destaque_badge`, ex.: *"🔥 #1 Mais Lido da História"*, *"🔥 > 500M de Leitores"*, *"🌟 > 140M de Leitores"*, *"🏆 Obra-Prima da Lusofonia"*).
+     - Botões de ação imediata: "📖 Ler Agora" (acesso direto/302 sem download de ficheiros pesados) e "ℹ Detalhes" (abre o modal com sinopse, licença e todos os formatos).
+     - Pílulas de filtragem rápida de destaques: *"🌟 Mais Procurados do Mundo"*, *"📜 Clássicos Lusófonos"*, *"🌍 Tesouros de África"* e *"💻 Manuais de Tecnologia"*.
+  2. **Endpoint Dedicado de Destaques (`GET /api/livros/destaques`):**
+     - Implementado no Express ([`src/controllers/livrosController.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/controllers/livrosController.js), [`src/routes/api.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/routes/api.js)) e no Cloudflare Worker ([`workers/src/index.ts`](file:///Users/mendes/Desktop/I%20am%20Abc/workers/src/index.ts)).
+     - Suporta parâmetro `?tipo=` (`todos`, `mundo`, `lusofonia`, `africa`, `tech`) e `?limit=`.
+     - Responde com cabeçalhos de cache de borda (`Cache-Control: public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400`), protegendo a D1 de leituras redundantes.
+  3. **Ordenação Otimizada de Abertura no Catálogo Geral:**
+     - Quando o utilizador abre o site sem pesquisa textual nem filtro temático, o catálogo prioriza:
+       - Obras com leituras acumuladas (`l.leituras DESC`).
+       - Clássicos mundiais e top bestsellers da história (`world-hist-*`, `world-top100-*`).
+       - Obras-primas da literatura brasileira e lusófona (*Dom Casmurro*, *Memórias Póstumas*, *Os Lusíadas*, *O Cortiço*, *Iracema*, *Mensagem*).
+       - Obras monumentais de África.
+     - Isso garante que a primeira página de qualquer visitante novo apresente de imediato os livros mais amados, populares e procurados de todos os tempos.
+  4. **Ajuste em `mais_lidos` do Dashboard:**
+     - O endpoint `/api/dashboard` adota a mesma lógica inteligente para a lista de mais lidos, eliminando a exibição de títulos técnicos aleatórios da ordenação alfabética quando as leituras são iguais a zero.
+  5. **Internacionalização em 7 Idiomas:** Chaves `highlightsTitle`, `highlightsSubtitle`, `highlightsBadge`, `highlightsAll`, `highlightsClassics`, `highlightsAfrica`, `highlightsTech`, `highlightsViewAll` e `highlightsLoading` atualizadas em `pt`, `pt-br`, `en`, `es`, `fr`, `de` e `zh`.
+  6. **Suíte de Testes:** Criação do Teste 34 em [`test/api.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/api.test.js) e do Cenário 11 em [`test/worker.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/worker.test.js), elevando a cobertura geral para **196 testes automatizados (100% passando)**.
 
 ---
 
@@ -429,8 +497,11 @@ Ambos os backends aplicam:
 ## 💻 6. Guia Rápido de Comandos para Agentes
 
 ```bash
-# Executar a suíte completa de testes automatizados (145 testes)
+# Executar a suíte completa de testes automatizados (196 testes em 37 suítes)
 npm test
+
+# Executar diagnóstico completo de tráfego e consumo de cotas (D1 e Supabase)
+npm run diagnostico
 
 # Executar apenas testes do Cloudflare Worker
 npm run test:worker
@@ -460,7 +531,7 @@ node scripts/aplicar_indices_d1_auto.mjs
 ---
 
 ## 🔒 7. Compromisso Contínuo dos Agentes
-- **Nunca** quebre os 145 testes automatizados.
+- **Nunca** quebre os 196 testes automatizados.
 - **Nunca** hospede arquivos de mídia locais.
 - **Sempre** rode `npm test` e `npx tsc --noEmit` antes de qualquer commit.
 - **Sempre** garanta que qualquer novo curso ou livro contenha uma licença aberta válida e comprovada.

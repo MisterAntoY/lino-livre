@@ -127,7 +127,15 @@ function metricas(req, res) {
       FROM livros l
       LEFT JOIN autores a ON a.id = l.autor_id
       LEFT JOIN categorias c ON c.id = l.categoria_id
-      ORDER BY l.leituras DESC, l.titulo ASC
+      ORDER BY 
+        l.leituras DESC,
+        CASE 
+          WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 1 
+          WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 2 
+          WHEN l.categoria_id IN (1, 19, 16, 12) THEN 3
+          ELSE 10 
+        END ASC,
+        l.titulo ASC
       LIMIT 5
     `).all();
 

@@ -271,7 +271,15 @@ app.get('/api/dashboard', async (c) => {
         FROM livros l
         LEFT JOIN autores a ON a.id = l.autor_id
         LEFT JOIN categorias c ON c.id = l.categoria_id
-        ORDER BY l.leituras DESC, l.titulo ASC
+        ORDER BY 
+          l.leituras DESC,
+          CASE 
+            WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 1 
+            WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 2 
+            WHEN l.categoria_id IN (1, 19, 16, 12) THEN 3
+            ELSE 10 
+          END ASC,
+          l.titulo ASC
         LIMIT 5
       `).all(),
       db.prepare('SELECT id, slug, nome, url_base FROM fontes WHERE ativa = 1').all()
@@ -641,6 +649,140 @@ async function cacheDeBorda(c: any, next: any) {
     c.executionCtx.waitUntil(cache.put(key, c.res.clone()));
   }
 }
+function gerarDestaqueBadge(livro: any): string {
+  if (!livro) return '⭐ Muito Procurado';
+  const fExt = livro.fonte_id_externo || '';
+  if (fExt === 'world-hist-1') return '🔥 #1 Mais Lido da História';
+  if (fExt === 'world-hist-2') return '🔥 > 500M de Leitores';
+  if (fExt === 'world-hist-3') return '📜 Tratado Histórico';
+  if (fExt === 'world-hist-4') return '📖 Livro Histórico';
+  if (fExt === 'world-hist-5') return '📖 Texto Sagrado Histórico';
+  if (fExt === 'world-top100-1') return '⭐ > 200M de Cópias';
+  if (fExt === 'world-top100-2') return '⭐ > 150M de Cópias';
+  if (fExt === 'world-top100-3') return '🌟 > 140M de Leitores';
+  if (fExt === 'world-top100-4') return '⭐ > 120M de Leitores';
+  if (fExt === 'world-top100-5') return '⭐ > 100M de Cópias';
+  if (fExt === 'world-top100-6') return '⭐ > 100M de Leitores';
+  if (fExt === 'world-top100-7') return '⭐ > 100M de Leitores';
+  if (fExt === 'world-top100-8') return '⭐ > 100M de Leitores';
+  if (fExt === 'world-top100-11') return '⭐ > 80M de Leitores';
+  if (fExt === 'world-top100-13') return '⭐ > 65M de Cópias';
+  if (fExt === 'world-top100-14') return '⭐ > 50M de Cópias';
+  if (fExt === 'world-top100-15') return '🌟 Distopia Universal';
+  if (fExt === 'world-top100-17') return '🌟 Clássico Universal';
+
+  const tit = (livro.titulo || '').toLowerCase();
+  if (tit.includes('casmurro')) return '🏆 Obra-Prima da Lusofonia';
+  if (tit.includes('brás cubas') || tit.includes('bras cubas')) return '📜 Marco do Realismo';
+  if (tit.includes('lusíadas') || tit.includes('lusiadas')) return '⚓ Epopeia Nacional';
+  if (tit.includes('cortiço') || tit.includes('cortico')) return '🏛️ Clássico do Naturalismo';
+  if (tit.includes('iracema')) return '🌿 Clássico Indianista';
+  if (tit.includes('mensagem')) return '📜 O Grande Épico Moderno';
+  if (tit.includes('cidade e as serras')) return '📖 Clássico Realista';
+  if (tit.includes('alienista')) return '🎭 Sátira Genial';
+
+  if (livro.categoria_id === 1 || livro.categoria_id === 19) return '📜 Clássico Universal';
+  if (livro.categoria_id >= 12 && livro.categoria_id <= 18) return '🌍 Tesouro de África';
+  if (livro.categoria_id >= 6 && livro.categoria_id <= 11) return '💻 Manual de Referência';
+  return '⭐ Muito Procurado';
+}
+
+app.get('/api/livros/destaques', async (c) => {
+  const queryParams = c.req.query();
+  const tipo = (queryParams.tipo || 'todos').toLowerCase();
+  const limit = Math.min(50, Math.max(1, parseInt(queryParams.limite || queryParams.limit || '12', 10)));
+
+  try {
+    const db = c.env.DB;
+    if (!db) return c.json({ status: 'ok', tipo, total: 0, data: [] });
+
+    let whereSql = '';
+    let orderBySql = '';
+    const params: any[] = [];
+
+    if (tipo === 'lusofonia' || tipo === 'classicos') {
+      whereSql = 'WHERE (l.categoria_id IN (1, 19) OR l.id IN (1, 2, 3, 4, 5, 828, 838))';
+      orderBySql = 'ORDER BY l.leituras DESC, l.id ASC';
+    } else if (tipo === 'africa') {
+      whereSql = "WHERE (l.categoria_id IN (12, 13, 14, 15, 16, 17, 18) OR l.fonte_id_externo LIKE 'africa-%')";
+      orderBySql = 'ORDER BY l.leituras DESC, l.id ASC';
+    } else if (tipo === 'tech' || tipo === 'tecnologia') {
+      whereSql = "WHERE (l.categoria_id IN (6, 7, 8, 9, 10, 11) OR l.fonte_id_externo LIKE 'github-%')";
+      orderBySql = 'ORDER BY l.leituras DESC, l.id ASC';
+    } else {
+      whereSql = `WHERE (
+        l.fonte_id_externo LIKE 'world-hist-%' 
+        OR l.fonte_id_externo LIKE 'world-top100-%'
+        OR l.id IN (1, 2, 3)
+      )`;
+      orderBySql = `ORDER BY 
+        CASE 
+          WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN CAST(SUBSTR(l.fonte_id_externo, 12) AS INTEGER) 
+          WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 10 + CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
+          WHEN l.id = 1 THEN 11 
+          WHEN l.id = 2 THEN 12 
+          ELSE 999 
+        END ASC,
+        l.leituras DESC, l.titulo ASC`;
+    }
+
+    const selectQuery = `
+      SELECT 
+        l.id, l.titulo, l.subtitulo, l.isbn, l.ano_publicacao, l.idioma,
+        l.sinopse, l.capa_url, l.paginas, l.licenca, l.leituras, l.criado_em,
+        l.fonte_id_externo,
+        a.id AS autor_id, a.nome AS autor_nome,
+        c.id AS categoria_id, c.nome AS categoria_nome,
+        f.slug AS fonte_slug, f.nome AS fonte_nome
+      FROM livros l
+      LEFT JOIN autores a ON a.id = l.autor_id
+      LEFT JOIN categorias c ON c.id = l.categoria_id
+      LEFT JOIN fontes f ON f.id = l.fonte_id
+      ${whereSql}
+      ${orderBySql}
+      LIMIT ?
+    `;
+
+    const livros = (await db.prepare(selectQuery).bind(...params, limit).all()).results as any[];
+
+    if (livros.length > 0) {
+      const ids = livros.map(l => l.id);
+      const placeholders = ids.map(() => '?').join(',');
+      const links = (await db.prepare(`
+        SELECT livro_id, id, formato, url, tamanho_bytes, link_externo
+        FROM links_livros
+        WHERE livro_id IN (${placeholders})
+      `).bind(...ids).all()).results as any[];
+
+      const linksPorLivro: Record<number, any[]> = {};
+      for (const link of links) {
+        if (!linksPorLivro[link.livro_id]) linksPorLivro[link.livro_id] = [];
+        linksPorLivro[link.livro_id].push({
+          id: link.id,
+          formato: link.formato,
+          url: link.url,
+          tamanho_bytes: link.tamanho_bytes,
+          link_externo: link.link_externo
+        });
+      }
+      for (const livro of livros) {
+        livro.links = linksPorLivro[livro.id] || [];
+        livro.destaque_badge = gerarDestaqueBadge(livro);
+      }
+    }
+
+    c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
+    return c.json({
+      status: 'ok',
+      tipo,
+      total: livros.length,
+      data: livros
+    });
+  } catch (err: any) {
+    return c.json({ erro: 'Erro ao obter livros em destaque: ' + err.message }, 500);
+  }
+});
+
 app.get('/api/livros', async (c) => {
   const queryParams = c.req.query();
   const rawPage = queryParams.pagina || queryParams.page || '1';
@@ -812,7 +954,22 @@ app.get('/api/livros', async (c) => {
            WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
            ELSE 9999 
          END ASC, l.leituras DESC, l.titulo ASC`
-      : 'l.leituras DESC, l.titulo ASC';
+      : `l.leituras DESC, 
+         CASE 
+           WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 1 
+           WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 2 
+           WHEN l.categoria_id = 1 THEN 3 
+           WHEN l.categoria_id = 19 THEN 4 
+           WHEN l.categoria_id = 16 THEN 5 
+           WHEN l.categoria_id = 12 THEN 6 
+           ELSE 10 
+         END ASC, 
+         CASE 
+           WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN CAST(SUBSTR(l.fonte_id_externo, 12) AS INTEGER) 
+           WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
+           ELSE l.id 
+         END ASC, 
+         l.titulo ASC`;
 
     const selectQuery = `
       SELECT 
@@ -2112,6 +2269,70 @@ app.get('/offline', async (c) => {
   }
   return c.text('Offline', 503);
 });
+
+// ==================== AGENTIC WEB & DISCOVERY (llms.txt & ai-catalog.json) ====================
+app.get('/llms.txt', async (c) => {
+  if (c.env.ASSETS) {
+    const res = await c.env.ASSETS.fetch(c.req.raw);
+    const newRes = new Response(res.body, res);
+    newRes.headers.set('Content-Type', 'text/markdown; charset=utf-8');
+    newRes.headers.set('Cache-Control', 'public, max-age=86400');
+    return newRes;
+  }
+  return c.text('# Lino Livre — Livros Livres e Conhecimento Aberto para Todos\n\n> Plataforma pública de catalogação e busca de livros em domínio público e cursos livres gratuitos.', 200, {
+    'Content-Type': 'text/markdown; charset=utf-8',
+    'Cache-Control': 'public, max-age=86400'
+  });
+});
+
+app.get('/llms-full.txt', async (c) => {
+  if (c.env.ASSETS) {
+    const res = await c.env.ASSETS.fetch(c.req.raw);
+    const newRes = new Response(res.body, res);
+    newRes.headers.set('Content-Type', 'text/markdown; charset=utf-8');
+    newRes.headers.set('Cache-Control', 'public, max-age=86400');
+    return newRes;
+  }
+  return c.text('# Lino Livre — Documentação Técnica Completa para Modelos de Linguagem\n\nAPI REST: GET /api/livros, GET /api/cursos, GET /api/busca/federada, GET /api/dashboard.', 200, {
+    'Content-Type': 'text/markdown; charset=utf-8',
+    'Cache-Control': 'public, max-age=86400'
+  });
+});
+
+const servirAiCatalogWorker = async (c: any) => {
+  if (c.env.ASSETS) {
+    const res = await c.env.ASSETS.fetch(c.req.raw);
+    const newRes = new Response(res.body, res);
+    newRes.headers.set('Content-Type', 'application/json; charset=utf-8');
+    newRes.headers.set('Cache-Control', 'public, max-age=86400');
+    return newRes;
+  }
+  return c.json({
+    specVersion: '1.0.0',
+    name: 'Lino Livre',
+    description: 'Plataforma pública e comunitária de indexação e busca educacional de livros digitais em domínio público e cursos abertos.',
+    url: 'https://linolivre.org',
+    documentationUrl: 'https://linolivre.org/llms.txt',
+    entries: [
+      {
+        identifier: 'urn:linolivre:tools:buscar_livros',
+        displayName: 'Buscar Livros Digitais Abertos',
+        url: 'https://linolivre.org/api/livros'
+      },
+      {
+        identifier: 'urn:linolivre:tools:buscar_cursos',
+        displayName: 'Buscar Cursos Gratuitos',
+        url: 'https://linolivre.org/api/cursos'
+      }
+    ]
+  }, 200, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'public, max-age=86400'
+  });
+};
+
+app.get('/.well-known/ai-catalog.json', servirAiCatalogWorker);
+app.get('/ai-catalog.json', servirAiCatalogWorker);
 
 // Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade
 app.get('/api/legal', (c) => {

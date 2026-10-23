@@ -457,6 +457,26 @@ Sua filha única, Clara dos Anjos, era uma jovem mulata de beleza meiga e ingên
 
 Nesse ambiente pacato insinuou-se Cassi Jones, um rapaz branco de família abastada, vadio e sedutor contumaz, célebre pelos escândalos que causava entre as jovens pobres dos arrabaldes da cidade. Cassi viu em Clara uma presa fácil para o seu orgulho perverso, e a tragédia da ingênua suburbaninha começou a ser tecida com as linhas implacáveis do preconceito de raça e da hipocrisia social.`;
 
+const osMaiasTexto = `### CAPÍTULO I
+
+A casa que os Maias vieram habitar em Lisboa, no outono de 1875, era conhecida na vizinhança da Rua de São Francisco de Paula, ao Ramalhete, por esse nome tradicional do Ramalhete, com as suas paredes severas de convento e o vasto terraço sobre o rio Tejo.
+
+Carlos da Maia, acabado de formar em Medicina por Coimbra, regressava a Lisboa com o brilho aristocrático da sua linhagem, a inteligência afiada e o requinte educacional que seu avô, o velho Afonso da Maia, lhe imprimira nos retiros de Santa Olávia. Rodeado de amigos refinados como João da Ega, Carlos sonhava em reformar a medicina e a cultura da capital, mas a atmosfera ociosa e voluptuosa de Lisboa logo o envolveria numa teia de paixões estéticas e no drama inelutável do seu destino.`;
+
+const memorialDeAiresTexto = `### ADVERTÊNCIA
+
+Este livro não é propriamente uma narrativa contínua, mas os apontamentos esparsos que o Conselheiro Aires, aposentado das missões diplomáticas no estrangeiro, recolheu em seus cadernos particulares entre os anos de 1888 e 1889, testemunhando com serenidade irônica e melancolia a passagem dos tempos e a abolição da escravatura no Brasil.
+
+### 9 de Janeiro de 1888
+
+Volto a pegar no caderno para anotar que o mundo continua a girar com a mesma indiferença olímpica pelas paixões dos homens. Fidelidade e esquecimento são os dois remos que conduzem a nossa barca frágil sobre as águas turvas do tempo. D. Carmo e Aguiar cuidam da vida alheia como se fosse própria, e eu olho para o entardecer do Catete sabendo que o silêncio é a mais sábia das respostas humanas.`;
+
+const ilustreCasaRamiresTexto = `### CAPÍTULO I
+
+Desde as quatro horas da tarde, no seu casarão ancestral de Santa Ireneia, na fresca e verdejante veiga do Douro, o fidalgo Gonçalo Mendes Ramires, último rebento de uma das mais antigas famílias de Portugal, mais nobre que a própria Casa de Bragança, labutava sobre a sua escrivaninha de pau-santo na criação da novela histórica "A Torre de D. Ramires".
+
+Em volta do seu gabinete silencioso repousavam os pergaminhos carcomidos e as armas dos seus antepassados cavaleiros, enquanto Gonçalo, debatendo-se com as dúvidas modernas e as ambições eleitorais da Regeneração, procurava redimir a sua fraqueza contemporânea invocando a bravura indomável dos velhos Ramires medievais.`;
+
 module.exports = {
   domCasmurroTexto,
   memoriasPosthumasTexto,
@@ -475,5 +495,8 @@ module.exports = {
   osLusiadasTexto,
   mensagemTexto,
   noiteNaTavernaTexto,
-  claraDosAnjosTexto
+  claraDosAnjosTexto,
+  osMaiasTexto,
+  memorialDeAiresTexto,
+  ilustreCasaRamiresTexto
 };

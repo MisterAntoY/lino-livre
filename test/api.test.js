@@ -1862,6 +1862,44 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resBusca.data.total, 3, 'Deve encontrar os livros de Harry Potter e Pedro Coelho (Beatrix Potter)');
     assert.ok(resBusca.data.data.every(b => b.fonte_id_externo.startsWith('world-')), 'Todos os resultados devem pertencer à coleção world-*');
   });
+
+  // Teste 34: Livros Mais Populares e Procurados (Seção de Destaques e Ordenação Inicial)
+  test('34. Livros Mais Populares e Muito Procurados: endpoint /api/livros/destaques e ordenação de abertura', async () => {
+    // 34.1 - GET /api/livros/destaques retorna 200 com curadoria oficial
+    const resDestaques = await request('/api/livros/destaques?limit=8');
+    assert.equal(resDestaques.status, 200, 'Destaques deve responder HTTP 200');
+    assert.equal(resDestaques.data.status, 'ok');
+    assert.ok(Array.isArray(resDestaques.data.data), 'Deve retornar array de livros');
+    assert.equal(resDestaques.data.data.length, 8, 'Deve respeitar o limite solicitado');
+
+    // 34.2 - As primeiras obras devem ser os maiores clássicos com badges enriquecidos
+    const primeiro = resDestaques.data.data[0];
+    assert.equal(primeiro.fonte_id_externo, 'world-hist-1', 'Primeiro destaque deve ser a Bíblia');
+    assert.ok(primeiro.destaque_badge.includes('Mais Lido'), 'Deve conter badge de mais lido da história');
+    assert.ok(Array.isArray(primeiro.links) && primeiro.links.length > 0, 'Destaque deve vir acompanhado de links');
+
+    // 34.3 - Filtragem temática de destaques: lusofonia
+    const resLuso = await request('/api/livros/destaques?tipo=lusofonia&limit=5');
+    assert.equal(resLuso.status, 200);
+    assert.ok(resLuso.data.data.some(b => b.titulo.includes('Casmurro')), 'Lusofonia deve conter Dom Casmurro');
+    assert.ok(resLuso.data.data.every(b => b.destaque_badge), 'Todos os destaques devem ter badge formatado');
+
+    // 34.4 - Filtragem temática de destaques: africa e tech
+    const resAfrica = await request('/api/livros/destaques?tipo=africa&limit=4');
+    assert.equal(resAfrica.status, 200);
+    assert.ok(resAfrica.data.data.length > 0, 'Deve retornar destaques de África');
+
+    const resTech = await request('/api/livros/destaques?tipo=tech&limit=4');
+    assert.equal(resTech.status, 200);
+    assert.ok(resTech.data.data.length > 0, 'Deve retornar destaques de tecnologia');
+
+    // 34.5 - Ao abrir o site (GET /api/livros sem filtros), os livros mais populares e procurados aparecem primeiro
+    const resAbertura = await request('/api/livros?page=1&limit=6');
+    assert.equal(resAbertura.status, 200);
+    const titulosAbertura = resAbertura.data.data.map(b => b.titulo);
+    assert.ok(titulosAbertura[0].includes('Bíblia') || titulosAbertura[0].includes('Quixote'), 'Abertura deve começar por clássicos mundiais universais');
+    assert.ok(!titulosAbertura[0].includes('Einführung in Python'), 'Abertura NÃO deve colocar livros técnicos obscuros em alemão em primeiro lugar');
+  });
 });
 
 

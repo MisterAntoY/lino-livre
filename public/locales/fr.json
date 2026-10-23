@@ -51,6 +51,15 @@
       "dashboard": "📊 Statistiques & Sources"
     },
     "books": {
+      "highlightsTitle": "🌟 Livres Les Plus Populaires et Très Recherchés",
+      "highlightsSubtitle": "Découvrez les chefs-d'œuvre les plus lus de l'humanité, les grands best-sellers internationaux et les classiques avec lecture en ligne immédiate.",
+      "highlightsBadge": "⭐ Œuvres en Vedette • Les Plus Demandées",
+      "highlightsAll": "🌟 Les Plus Lus du Monde",
+      "highlightsClassics": "📜 Classiques Lusophones",
+      "highlightsAfrica": "🌍 Trésors d'Afrique",
+      "highlightsTech": "💻 Manuels de Technologie",
+      "highlightsViewAll": "Explorer les 100+ Plus Lus",
+      "highlightsLoading": "Chargement des œuvres en vedette...",
       "searchPlaceholder": "Rechercher par titre ou auteur...",
       "categories": "Catégories :",
       "all": "Tous",

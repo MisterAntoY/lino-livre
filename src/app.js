@@ -154,6 +154,23 @@ app.get('/offline', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/offline.html'));
 });
 
+// ==================== AGENTIC WEB & DISCOVERY (llms.txt & ai-catalog.json) ====================
+app.get('/llms.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.sendFile(path.join(__dirname, '../public/llms.txt'));
+});
+app.get('/llms-full.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.sendFile(path.join(__dirname, '../public/llms-full.txt'));
+});
+app.get(['/.well-known/ai-catalog.json', '/ai-catalog.json'], (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.sendFile(path.join(__dirname, '../public/.well-known/ai-catalog.json'));
+});
+
 // ==================== ESTÁTICOS COM CACHE ====================
 app.use(express.static(path.join(__dirname, '../public'), {
   maxAge: '1d',
@@ -163,6 +180,12 @@ app.use(express.static(path.join(__dirname, '../public'), {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     } else if (filePath.endsWith('manifest.webmanifest') || filePath.endsWith('manifest.json')) {
       res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    } else if (filePath.endsWith('llms.txt') || filePath.endsWith('llms-full.txt')) {
+      res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    } else if (filePath.endsWith('ai-catalog.json')) {
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.setHeader('Cache-Control', 'public, max-age=86400');
     } else if (/\.(jpg|jpeg|png|svg|webp|woff2|woff|ttf)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');

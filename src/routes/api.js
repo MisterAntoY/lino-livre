@@ -30,6 +30,7 @@ router.delete('/autores/:id', verificarAdmin, autoresController.remover);
 
 // 4. Livros Digitais (Catálogo, FTS5, Leitura com Redirect 302, CRUD)
 router.get('/livros', livrosController.listar);
+router.get('/livros/destaques', livrosController.destaques);
 router.get('/livros/:id', livrosController.obterPorId);
 router.get('/livros/:id/ler/:linkId', livrosController.lerRedirect);
 router.post('/livros', verificarAdmin, livrosController.criar);

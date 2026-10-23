@@ -51,6 +51,15 @@
       "dashboard": "📊 Kennzahlen & Quellen"
     },
     "books": {
+      "highlightsTitle": "🌟 Beliebteste und Meistgesuchte Bücher",
+      "highlightsSubtitle": "Entdecken Sie die meistgelesenen Meisterwerke der Menschheit, internationale Bestseller und Klassiker mit sofortiger kostenloser Online-Lektüre.",
+      "highlightsBadge": "⭐ Highlights • Sehr Gefragt",
+      "highlightsAll": "🌟 Weltweit Meistgelesen",
+      "highlightsClassics": "📜 Lusophone Klassiker",
+      "highlightsAfrica": "🌍 Schätze Afrikas",
+      "highlightsTech": "💻 Tech-Handbücher",
+      "highlightsViewAll": "Alle 100+ Meistgelesenen entdecken",
+      "highlightsLoading": "Lade Highlights...",
       "searchPlaceholder": "Nach Titel oder Autor suchen...",
       "categories": "Kategorien:",
       "all": "Alle",

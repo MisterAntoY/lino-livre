@@ -1176,4 +1176,55 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.ok(queryExecutada.includes("world-%"), 'Deve filtrar por fonte_id_externo LIKE world-%');
     });
   });
+
+  // =========================================================================
+  // CENÁRIO 11: Seção de Destaques e Livros Mais Populares no Worker
+  // =========================================================================
+  describe('Cenário 11: Livros em Destaque no Worker (/api/livros/destaques)', () => {
+    test('11.1 - GET /api/livros/destaques responde 200 com array de livros e badges enriquecidos', async () => {
+      let sqlExecutado = '';
+      const db = createMockD1({
+        allHandler: async (sql) => {
+          if (sql.includes('FROM livros l')) {
+            sqlExecutado = sql;
+            return {
+              results: [
+                { id: 467, titulo: 'A Bíblia Sagrada', fonte_id_externo: 'world-hist-1', leituras: 10 }
+              ]
+            };
+          }
+          if (sql.includes('FROM links_livros')) {
+            return {
+              results: [
+                { livro_id: 467, id: 537, formato: 'pdf', url: 'https://gutenberg.org/10.pdf' }
+              ]
+            };
+          }
+          return { results: [] };
+        }
+      });
+
+      const res = await workerRequest('/api/livros/destaques?limit=1', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.equal(data.status, 'ok');
+      assert.equal(data.data.length, 1);
+      assert.equal(data.data[0].destaque_badge, '🔥 #1 Mais Lido da História');
+      assert.ok(sqlExecutado.includes('world-hist-') || sqlExecutado.includes('world-top100-'));
+    });
+
+    test('11.2 - GET /api/livros/destaques com tipo=lusofonia filtra por categorias e IDs lusófonos', async () => {
+      let sqlExecutado = '';
+      const db = createMockD1({
+        allHandler: async (sql) => {
+          sqlExecutado = sql;
+          return { results: [] };
+        }
+      });
+
+      const res = await workerRequest('/api/livros/destaques?tipo=lusofonia', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      assert.ok(sqlExecutado.includes('categoria_id IN (1, 19)'));
+    });
+  });
 });
