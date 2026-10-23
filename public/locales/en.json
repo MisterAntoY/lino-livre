@@ -19,6 +19,11 @@
       "channelTitle": "Follow the Lino Livre WhatsApp channel",
       "addBook": "+ Add Book"
     },
+    "pwa": {
+      "installBtn": "Install App",
+      "installTitle": "Install Lino Livre on your phone or desktop",
+      "offlineMode": "Offline Mode: No internet connection. Browsing cached books and pages."
+    },
     "goal": {
       "badge": "🎯 Global Collective Goal",
       "title": "Towards 10 Million Free Books",
@@ -66,6 +71,7 @@
       "searchPlaceholder": "Search by title or author...",
       "categories": "Categories:",
       "all": "All",
+      "catTop100": "🌟 Top 100 Most Read in the World",
       "catGuides": "💻 Guides & Technology",
       "catClassics": "Lusophone Classics",
       "catRomance": "Novels",
@@ -330,7 +336,9 @@
       "Literatura Angolana": "Angolan Literature",
       "Literatura Africana Lusófona": "Lusophone African Literature",
       "Poesia Africana": "African Poetry",
-      "Autores Lusófonos Clássicos": "Classic Lusophone Authors"
+      "Autores Lusófonos Clássicos": "Classic Lusophone Authors",
+      "🌟 Mais Lidos do Mundo": "🌟 World's Most Read",
+      "Mais Lidos do Mundo": "🌟 World's Most Read"
     },
     "areas": {
       "Tecnologia": "Technology",

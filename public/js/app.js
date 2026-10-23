@@ -61,6 +61,7 @@ const app = {
     this.carregarPreferenciasLeitor();
     this.iniciarSinteseVoz();
     this.verificarEconomiaDeDados();
+    this.iniciarPwa();
 
     // Fechar modais ao pressionar tecla Escape
     document.addEventListener('keydown', (e) => {
@@ -317,7 +318,14 @@ const app = {
     try {
       const params = new URLSearchParams();
       if (this.termoBusca) params.append('busca', this.termoBusca);
-      if (this.categoriaAtiva) params.append('categoria_id', this.obterCategoriaId(this.categoriaAtiva));
+      if (this.categoriaAtiva) {
+        if (this.categoriaAtiva.includes('Mais Lidos')) {
+          params.append('categoria_id', '🌟 Mais Lidos do Mundo');
+          params.append('colecao', 'top100');
+        } else {
+          params.append('categoria_id', this.obterCategoriaId(this.categoriaAtiva));
+        }
+      }
       if (this.fonteLivroAtiva) params.append('fonte_slug', this.fonteLivroAtiva);
       if (this.formatoAtivo) params.append('formato', this.formatoAtivo);
       if (this.licencaAtiva) params.append('licenca', this.licencaAtiva);
@@ -357,7 +365,14 @@ const app = {
       '🌍 Literatura & Vozes de África': 12,
       '🌍 Contos & Tradição Oral Africana': 13,
       '🌍 História & Sociedade Africana': 14,
-      '🌍 Filosofia & Pensamento Africano': 15
+      '🌍 Filosofia & Pensamento Africano': 15,
+      'Literatura Angolana': 16,
+      'Literatura Africana Lusófona': 17,
+      'Poesia Africana': 18,
+      'Autores Lusófonos Clássicos': 19,
+      '🎓 Teses & Trabalhos Universitários (UAN)': 20,
+      '🌟 Mais Lidos do Mundo': '🌟 Mais Lidos do Mundo',
+      'Mais Lidos do Mundo': '🌟 Mais Lidos do Mundo'
     };
     return mapa[nome] || nome || '';
   },
@@ -371,7 +386,7 @@ const app = {
     }
 
     grid.innerHTML = lista.map(l => {
-      const capaUrl = this.sanitizeUrl(l.capa_url, '/capas/dom_casmurro.jpg');
+      const capaUrl = this.capaProxyUrl(l.capa_url, '/capas/dom_casmurro.jpg');
       const licencaFormatada = traduzirLicenca(l.licenca || 'dominio-publico');
       
       const links = l.links || [];
@@ -461,6 +476,16 @@ const app = {
       const rawLang = String(l.idioma || 'pt').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
       const flagLabel = langFlags[rawLang] || this.escape(rawLang.toUpperCase());
       const isAfrica = (l.categoria_nome && l.categoria_nome.includes('África'));
+      const isTop100Book = (l.fonte_id_externo && String(l.fonte_id_externo).startsWith('world-'));
+      let top100BadgeHtml = '';
+      if (isTop100Book) {
+        if (String(l.fonte_id_externo).startsWith('world-top100-')) {
+          const rankNum = String(l.fonte_id_externo).replace('world-top100-', '');
+          top100BadgeHtml = `<span class="top100-badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fde047; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700; border-radius:4px;">🌟 #${rankNum} Mais Lido do Mundo</span>`;
+        } else {
+          top100BadgeHtml = `<span class="top100-badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fde047; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700; border-radius:4px;">🌟 Clássico Universal</span>`;
+        }
+      }
 
       return `
         <article class="book-card ${isAfrica ? 'book-card-africa' : ''}">
@@ -475,6 +500,7 @@ const app = {
             <div>
               <span class="book-lang-badge lang-${rawLang}">${flagLabel}</span>
               <span class="badge-license">${this.escape(licencaFormatada)}</span>
+              ${top100BadgeHtml}
               ${isAfrica ? `<span class="africa-stats-badge" style="background:#fef3c7; color:#78350f; border-color:#f59e0b; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700;"> Coleção África</span>` : ''}
             </div>
 
@@ -655,7 +681,11 @@ const app = {
     this.renderizarConteudoCapitulo(cap);
 
     const scrollEl = document.getElementById('reader-body-scroll');
-    if (scrollEl) scrollEl.scrollTop = 0;
+    if (scrollEl) {
+      // Escrever scrollTop logo após innerHTML força um layout síncrono;
+      // adiar para o próximo frame evita o "forced reflow".
+      requestAnimationFrame(() => { scrollEl.scrollTop = 0; });
+    }
   },
 
   renderizarConteudoCapitulo(cap) {
@@ -2229,7 +2259,7 @@ const app = {
       const modal = document.getElementById('modal-detalhes-livro');
       if (!modal) return;
 
-      const capaUrl = this.sanitizeUrl(livro.capa_url, '/capas/dom_casmurro.jpg');
+      const capaUrl = this.capaProxyUrl(livro.capa_url, '/capas/dom_casmurro.jpg');
       const licencaFormatada = traduzirLicenca(livro.licenca || 'dominio-publico');
       const sinopse = I18N.sinopse(livro.id, livro.sinopse || t('books.synopsisFallback'));
       const rawLang = String(livro.idioma || 'pt').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
@@ -2680,6 +2710,99 @@ const app = {
       }
     } catch (_) {}
     return fallback;
+  },
+
+  // Capas externas passam pelo proxy /api/capas para receberem Cache-Control
+  // eficiente (1 ano) e para evitar pedidos repetidos a origens lentas.
+  capaProxyUrl(url, fallback = '/capas/dom_casmurro.jpg') {
+    if (!url || typeof url !== 'string') return fallback;
+    const trimmed = url.trim();
+    if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
+      return this.escape(trimmed);
+    }
+    try {
+      const parsed = new URL(trimmed);
+      if (parsed.protocol === 'https:') {
+        return this.escape(`/api/capas?u=${encodeURIComponent(parsed.href)}`);
+      }
+    } catch (_) {}
+    return fallback;
+  },
+
+  deferredPrompt: null,
+
+  iniciarPwa() {
+    // 1. Registro do Service Worker para suporte offline e cache do app shell
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+          .then((reg) => {
+            console.log('[PWA] Service Worker registrado com sucesso. Escopo:', reg.scope);
+            reg.addEventListener('updatefound', () => {
+              const newWorker = reg.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('[PWA] Nova versão disponível em segundo plano.');
+                  }
+                });
+              }
+            });
+          })
+          .catch((err) => {
+            console.warn('[PWA] Aviso ao registrar Service Worker:', err.message);
+          });
+      });
+    }
+
+    // 2. Intercepta evento de instalação nativa para botão customizado
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      this.deferredPrompt = e;
+      const btn = document.getElementById('btn-instalar-app');
+      if (btn) btn.classList.remove('hidden');
+    });
+
+    // 3. Notificação quando o aplicativo é instalado no ecrã principal
+    window.addEventListener('appinstalled', () => {
+      this.deferredPrompt = null;
+      const btn = document.getElementById('btn-instalar-app');
+      if (btn) btn.classList.add('hidden');
+      this.mostrarToast('Aplicativo Lino Livre instalado com sucesso!');
+    });
+
+    // 4. Detecção e notificação do status de rede (Online / Modo Offline)
+    const atualizarStatusConexao = () => {
+      const banner = document.getElementById('banner-offline');
+      if (!banner) return;
+      if (navigator.onLine) {
+        if (!banner.classList.contains('hidden')) {
+          banner.classList.add('hidden');
+          this.mostrarToast('Ligação à internet restabelecida.');
+        }
+      } else {
+        banner.classList.remove('hidden');
+      }
+    };
+
+    window.addEventListener('online', atualizarStatusConexao);
+    window.addEventListener('offline', atualizarStatusConexao);
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      atualizarStatusConexao();
+    }
+  },
+
+  async instalarPwa() {
+    if (!this.deferredPrompt) {
+      this.mostrarToast('Para instalar, use a opção "Adicionar ao ecrã principal" do seu navegador.');
+      return;
+    }
+    this.deferredPrompt.prompt();
+    const { outcome } = await this.deferredPrompt.userChoice;
+    console.log('[PWA] Resposta de instalação do utilizador:', outcome);
+    this.deferredPrompt = null;
+    const btn = document.getElementById('btn-instalar-app');
+    if (btn) btn.classList.add('hidden');
   }
 };
 

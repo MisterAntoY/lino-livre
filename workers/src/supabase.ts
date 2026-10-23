@@ -189,6 +189,18 @@ export class RepoSupabase {
   }
 
   async livros(op: FiltrosLivros) {
+    const isTop100 = (op.categoria && (
+      op.categoria === '🌟 Mais Lidos do Mundo' ||
+      op.categoria === 'Mais Lidos do Mundo' ||
+      String(op.categoria).includes('Mais Lidos') ||
+      op.categoria === 'top100' ||
+      op.categoria === 'mais_lidos'
+    )) || (op as any).colecao === 'top100' || (op as any).colecao === 'mais_lidos';
+
+    if (isTop100) {
+      throw new Error('Top 100 mundial é gerenciado pelo catálogo D1');
+    }
+
     const offset = (op.page - 1) * op.limit;
     const busca = limparTermo(op.busca);
 

@@ -41,14 +41,18 @@ app.use('*', async (c, next) => {
   );
 });
 
-// WAF de Borda: bloqueio de scanners automatizados conhecidos e sondas de caminhos sensíveis
+// WAF de Borda: bloqueio de scanners automatizados conhecidos, sondas e rastreadores agressivos em rotas de API
 const SCANNERS_RE = /\b(sqlmap|nikto|dirbuster|gobuster|acunetix|nuclei|masscan|wpscan|zgrab)\b/i;
 const PROBE_PATHS_RE = /\/(\.env|\.git|wp-admin|phpmyadmin|cgi-bin|\.aws|\.docker)\b/i;
+const AGGRESSIVE_API_BOTS_RE = /\b(bytespider|ahrefsbot|semrushbot|dotbot|petalbot|mj12bot|dataforseo|screaming frog|seekport|zoominfobot)\b/i;
 
 app.use('*', async (c, next) => {
   const ua = c.req.header('user-agent') || '';
   if (SCANNERS_RE.test(ua)) {
     return c.json({ erro: 'Acesso bloqueado por política de segurança (WAF).' }, 403);
+  }
+  if (c.req.path.startsWith('/api/') && AGGRESSIVE_API_BOTS_RE.test(ua)) {
+    return c.json({ erro: 'Acesso automatizado a APIs bloqueado para rastreadores (WAF).' }, 403);
   }
   if (PROBE_PATHS_RE.test(c.req.path)) {
     return c.text('Not Found', 404);
@@ -66,6 +70,8 @@ app.use('/api/cursos', cacheDeBorda);
 app.use('/api/roadmaps', cacheDeBorda);
 app.use('/api/livros', cacheDeBorda);
 app.use('/api/livros/:id', cacheDeBorda);
+app.use('/api/creditos', cacheDeBorda);
+app.use('/api/busca/federada', cacheDeBorda);
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
@@ -220,10 +226,13 @@ async function contadoresDe(db: any, dimensao: string): Promise<any[]> {
 
 // 1. Dashboard de Acervo e Leituras
 app.get('/api/dashboard', async (c) => {
-  const noCache = c.req.header('cache-control')?.includes('no-cache') || c.req.header('pragma')?.includes('no-cache');
+  const adminKey = c.env.ADMIN_API_KEY || (c.env.ENVIRONMENT === 'production' ? null : 'lino-admin-dev-key');
+  const headerKey = c.req.header('x-admin-key');
+  const isAdmin = !!(adminKey && headerKey && timingSafeEqualStr(headerKey, adminKey));
+  const noCache = isAdmin && (c.req.header('cache-control')?.includes('no-cache') || c.req.header('pragma')?.includes('no-cache'));
   const now = Date.now();
   if (!noCache && cachedDashboard && (now - cachedDashboard.timestamp < DASHBOARD_CACHE_TTL)) {
-    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
     return c.json(cachedDashboard.data);
   }
 
@@ -534,6 +543,36 @@ app.delete('/api/autores/:id', verificarAdminWorker, async (c) => {
 
 // 4. Livros Digitais
 
+// Dimensões estáticas conhecidas: fallback imediato para cold-starts e proteção contra limites de cota da D1.
+const DIMENSOES_ESTATICAS = {
+  fontes: [
+    { id: 1, slug: 'wikisource' }, { id: 2, slug: 'gutenberg' }, { id: 3, slug: 'openstax' },
+    { id: 4, slug: 'archive-org' }, { id: 5, slug: 'standardebooks' }, { id: 6, slug: 'cursa' },
+    { id: 7, slug: 'uan' }, { id: 8, slug: 'github' }, { id: 9, slug: 'mit-ocw' },
+    { id: 10, slug: 'khan-academy' }, { id: 11, slug: 'phet' }, { id: 12, slug: 'ck-12' },
+    { id: 13, slug: 'oer-commons' }, { id: 14, slug: 'harvard-pll' }, { id: 15, slug: 'stanford-online' },
+    { id: 16, slug: 'bradesco' }, { id: 17, slug: 'enap' }, { id: 18, slug: 'lumina' },
+    { id: 19, slug: 'ifrs' }, { id: 20, slug: 'google-atelie' }, { id: 21, slug: 'openbootcamp' },
+    { id: 22, slug: 'dio' }, { id: 23, slug: 'santander' }, { id: 24, slug: 'curso-em-video' },
+    { id: 25, slug: 'europeana' }, { id: 26, slug: 'librivox' }, { id: 27, slug: 'doab' },
+    { id: 28, slug: 'scielo' }, { id: 29, slug: 'bndigital' }, { id: 30, slug: 'camões' },
+    { id: 31, slug: 'unesco' }, { id: 32, slug: 'ted' }, { id: 33, slug: 'edx' },
+    { id: 34, slug: 'coursera' }
+  ],
+  categorias: [
+    { id: 1, nome: 'Clássicos Brasileiros' }, { id: 2, nome: 'Romance & Crônicas' },
+    { id: 3, nome: 'Teatro & Poesia' }, { id: 4, nome: 'Romance Indianista' },
+    { id: 5, nome: 'Apoio Pedagógico & Filosofia' }, { id: 6, nome: 'Tecnologia & Programação' },
+    { id: 7, nome: 'Matemática & Ciências Exatas' }, { id: 8, nome: 'Física & Astronomia' },
+    { id: 9, nome: 'Química & Biologia' }, { id: 10, nome: 'História & Geografia' },
+    { id: 11, nome: 'Filosofia & Sociologia' }, { id: 12, nome: 'Artes & Cultura' },
+    { id: 13, nome: 'Infantojuvenil' }, { id: 14, nome: 'Direito & Legislação' },
+    { id: 15, nome: 'Economia & Administração' }, { id: 16, nome: 'Medicina & Saúde' },
+    { id: 17, nome: 'Psicologia & Desenvolvimento' }, { id: 18, nome: 'Idiomas & Linguística' },
+    { id: 19, nome: 'Educação & Pedagogia' }, { id: 20, nome: 'África & Literatura Angolana' }
+  ]
+};
+
 // Dimensões pequenas (fontes e categorias) em cache por isolate.
 // Evita LIKE e JOINs na tabela livros (104k+ linhas) para resolver filtros.
 let cacheDimensoes: {
@@ -541,21 +580,31 @@ let cacheDimensoes: {
   categorias: { id: number; nome: string }[];
   timestamp: number;
 } | null = null;
-const DIMENSOES_CACHE_TTL = 5 * 60 * 1000;
+const DIMENSOES_CACHE_TTL = 30 * 60 * 1000; // 30 minutos
 
 async function obterDimensoes(db: any) {
   if (cacheDimensoes && Date.now() - cacheDimensoes.timestamp < DIMENSOES_CACHE_TTL) {
     return cacheDimensoes;
   }
-  const [fontes, categorias] = await Promise.all([
-    db.prepare('SELECT id, slug FROM fontes').all(),
-    db.prepare('SELECT id, nome FROM categorias').all()
-  ]);
-  cacheDimensoes = {
-    fontes: (fontes.results || []) as { id: number; slug: string }[],
-    categorias: (categorias.results || []) as { id: number; nome: string }[],
-    timestamp: Date.now()
-  };
+  try {
+    const [fontes, categorias] = await Promise.all([
+      db.prepare('SELECT id, slug FROM fontes').all(),
+      db.prepare('SELECT id, nome FROM categorias').all()
+    ]);
+    const fList = (fontes?.results || []) as { id: number; slug: string }[];
+    const cList = (categorias?.results || []) as { id: number; nome: string }[];
+    cacheDimensoes = {
+      fontes: fList.length > 0 ? fList : DIMENSOES_ESTATICAS.fontes,
+      categorias: cList.length > 0 ? cList : DIMENSOES_ESTATICAS.categorias,
+      timestamp: Date.now()
+    };
+  } catch {
+    cacheDimensoes = {
+      fontes: DIMENSOES_ESTATICAS.fontes,
+      categorias: DIMENSOES_ESTATICAS.categorias,
+      timestamp: Date.now()
+    };
+  }
   return cacheDimensoes;
 }
 
@@ -580,8 +629,28 @@ app.get('/api/livros', async (c) => {
   const rawLimit = queryParams.limite || queryParams.limit || '24';
   const numPage = Math.max(1, parseInt(rawPage, 10) || 1);
   const numLimit = Math.min(100, Math.max(1, parseInt(rawLimit, 10) || 24));
+  const { busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug, colecao } = queryParams;
+
+  // Guardrail de Paginação Profunda: previne varreduras de offset não-indexadas (scrapers/bots).
+  // Navegações gerais sem filtro são limitadas às primeiras 50 páginas (1.200 livros).
+  // Para explorar o restante do acervo de 104k obras, exige-se busca textual ou filtros temáticos.
+  const temFiltroEspecifico = !!(busca || categoria_id || autor_id || idioma || formato || licenca || fonte || fonte_slug || colecao);
+  const MAX_PAGINA_LIVRE = 50;
+  if (!temFiltroEspecifico && numPage > MAX_PAGINA_LIVRE) {
+    c.header('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+    return c.json({
+      page: numPage,
+      pagina: numPage,
+      limit: numLimit,
+      limite: numLimit,
+      total: 104848,
+      total_pages: Math.ceil(104848 / numLimit),
+      total_paginas: Math.ceil(104848 / numLimit),
+      aviso: 'Navegação sequencial no catálogo geral limitada a 50 páginas. Para explorar o acervo completo, utilize a busca ou selecione uma categoria/idioma.',
+      data: []
+    });
+  }
   const offset = (numPage - 1) * numLimit;
-  const { busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug } = queryParams;
 
   try {
     const repo = repoSupabase(c);
@@ -621,7 +690,18 @@ app.get('/api/livros', async (c) => {
       params.push(matchFts);
     }
 
-    if (categoria_id) {
+    const catDecoded = categoria_id ? decodeURIComponent(String(categoria_id)) : '';
+    const isTop100 = (categoria_id && (
+      catDecoded === '🌟 Mais Lidos do Mundo' ||
+      catDecoded === 'Mais Lidos do Mundo' ||
+      catDecoded.includes('Mais Lidos') ||
+      categoria_id === 'top100' ||
+      categoria_id === 'mais_lidos'
+    )) || (colecao === 'top100' || colecao === 'mais_lidos');
+
+    if (isTop100) {
+      filtros.push("(l.fonte_id_externo LIKE 'world-%')");
+    } else if (categoria_id) {
       if (/^\d+$/.test(categoria_id)) {
         filtros.push('l.categoria_id = ?');
         params.push(categoria_id);
@@ -685,6 +765,8 @@ app.get('/api/livros', async (c) => {
     const filtrosDiretos = filtros.filter((f) => !f.startsWith('l.id IN'));
     if (filtros.includes('1=0')) {
       totalConhecido = 0;
+    } else if (isTop100 && !temBusca) {
+      totalConhecido = 105;
     } else if (temBusca && !temFormato && filtrosDiretos.length === 0) {
       // Busca pura: a FTS tem uma linha por livro, logo o COUNT do MATCH é
       // o total — lê ~10 linhas em vez de varrer os 104.848 livros.
@@ -706,10 +788,19 @@ app.get('/api/livros', async (c) => {
       else if (fonteFiltro && fonteIds.length === 1) totalConhecido = await lerContador(db, 'fonte', String(fonteIds[0]));
     }
 
+    const orderByClause = isTop100
+      ? `CASE 
+           WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 0 
+           WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
+           ELSE 9999 
+         END ASC, l.leituras DESC, l.titulo ASC`
+      : 'l.leituras DESC, l.titulo ASC';
+
     const selectQuery = `
       SELECT 
         l.id, l.titulo, l.subtitulo, l.isbn, l.ano_publicacao, l.idioma,
         l.sinopse, l.capa_url, l.paginas, l.licenca, l.leituras, l.criado_em,
+        l.fonte_id_externo,
         a.id AS autor_id, a.nome AS autor_nome,
         c.id AS categoria_id, c.nome AS categoria_nome,
         f.slug AS fonte_slug, f.nome AS fonte_nome
@@ -718,7 +809,7 @@ app.get('/api/livros', async (c) => {
       LEFT JOIN categorias c ON c.id = l.categoria_id
       LEFT JOIN fontes f ON f.id = l.fonte_id
       WHERE 1=1${whereSql}
-      ORDER BY l.leituras DESC, l.titulo ASC
+      ORDER BY ${orderByClause}
       LIMIT ? OFFSET ?
     `;
 
@@ -746,10 +837,41 @@ app.get('/api/livros', async (c) => {
     let total: number;
     if (totalConhecido !== null) {
       total = totalConhecido;
+    } else if (numPage === 1 && livros.length < numLimit) {
+      // Primeira página com menos itens que o limite: total exato com ZERO linhas lidas adicionais da D1
+      total = livros.length;
     } else {
       try {
-        const countStmt = db.prepare(`SELECT COUNT(*) AS total FROM livros l WHERE 1=1${whereSql}`).bind(...params);
-        total = Number((await countStmt.first<{ total: number }>())?.total || 0);
+        // Bounded count: escaneia no máximo 500 registros em vez de 104.848.
+        // Impede estourar o limite diário da D1 e reduz latência em até 99.8%.
+        const tetoBusca = Math.max(offset + numLimit + 1, 500);
+        const countStmt = db.prepare(`SELECT COUNT(*) AS total FROM (SELECT 1 FROM livros l WHERE 1=1${whereSql} LIMIT ?)`)
+          .bind(...params, tetoBusca);
+        const subTotal = Number((await countStmt.first<{ total: number }>())?.total || 0);
+
+        if (subTotal < tetoBusca) {
+          total = subTotal;
+        } else {
+          // Se excedeu 500, calcula limite superior derivado dos contadores pré-computados
+          let menorContador: number | null = null;
+          if (idioma) {
+            const cId = await lerContador(db, 'idioma', idioma);
+            if (cId !== null) menorContador = menorContador !== null ? Math.min(menorContador, cId) : cId;
+          }
+          if (licenca) {
+            const cLic = await lerContador(db, 'licenca', licenca);
+            if (cLic !== null) menorContador = menorContador !== null ? Math.min(menorContador, cLic) : cLic;
+          }
+          if (categoria_id && /^\d+$/.test(categoria_id)) {
+            const cCat = await lerContador(db, 'categoria', categoria_id);
+            if (cCat !== null) menorContador = menorContador !== null ? Math.min(menorContador, cCat) : cCat;
+          }
+          if (fonteFiltro && fonteIds.length === 1) {
+            const cFte = await lerContador(db, 'fonte', String(fonteIds[0]));
+            if (cFte !== null) menorContador = menorContador !== null ? Math.min(menorContador, cFte) : cFte;
+          }
+          total = menorContador !== null ? menorContador : offset + livros.length + (livros.length === numLimit ? numLimit : 0);
+        }
       } catch {
         // Cota da D1 esgotada em filtros complexos: estima para não quebrar a UI.
         total = offset + livros.length + (livros.length === numLimit ? 1 : 0);
@@ -1086,6 +1208,7 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
 
     const novo = await db.prepare('SELECT * FROM livros WHERE id = ?').bind(livroId).first<any>();
     novo.links = (await db.prepare('SELECT * FROM links_livros WHERE livro_id = ?').bind(livroId).all()).results;
+    await registrarMutacaoAcervo(db);
 
     return c.json(novo, 201);
   } catch (err: any) {
@@ -1159,6 +1282,7 @@ app.delete('/api/livros/:id', verificarAdminWorker, async (c) => {
     const db = c.env.DB;
     const res = await db.prepare('DELETE FROM livros WHERE id = ?').bind(id).run();
     if (res.meta.changes === 0) return c.json({ erro: 'Livro não encontrado' }, 404);
+    await registrarMutacaoAcervo(db);
     return c.json({ mensagem: 'Livro e links removidos com sucesso' });
   } catch (err: any) {
     return c.json({ erro: 'Erro ao remover livro: ' + err.message }, 500);
@@ -1763,6 +1887,108 @@ app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
+// PROXY DE CAPAS EXTERNAS — cache de borda com TTL eficiente
+// Apenas miniaturas de capa (metadados visuais) passam por aqui. Nenhum
+// ficheiro de livro é armazenado: a resposta é transmitida em streaming e
+// guardada apenas no Cache API de borda da Cloudflare.
+// ═══════════════════════════════════════════════════════════════════════════
+const HOSTS_CAPAS_PERMITIDOS = [
+  'gutenberg.org',
+  'openlibrary.org',
+  'archive.org',
+  'githubusercontent.com',
+  'guiadeti.com.br',
+  'supabase.co',
+  'unsplash.com',
+  'wikimedia.org',
+  'africanstorybook.org',
+  'standardebooks.org'
+];
+
+const CAPA_CACHE_CONTROL = 'public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=604800';
+const CAPA_TAMANHO_MAXIMO = 5 * 1024 * 1024;
+
+function hostCapaPermitido(hostname: string): boolean {
+  const host = String(hostname || '').toLowerCase();
+  return HOSTS_CAPAS_PERMITIDOS.some((base) => host === base || host.endsWith(`.${base}`));
+}
+
+app.get('/api/capas', async (c) => {
+  const bruto = String(c.req.query('u') || '').trim();
+  if (!bruto) return c.json({ erro: 'Parâmetro "u" (URL da capa) é obrigatório' }, 400);
+  if (bruto.length > 1000) return c.json({ erro: 'URL de capa demasiado longa' }, 400);
+
+  let destino: string;
+  try {
+    destino = validarUrlRedirecionamento(bruto);
+  } catch {
+    return c.json({ erro: 'URL de capa inválida' }, 400);
+  }
+
+  const alvo = new URL(destino);
+  if (alvo.protocol !== 'https:' || !hostCapaPermitido(alvo.hostname)) {
+    return c.json({ erro: 'Origem de capa não permitida' }, 403);
+  }
+
+  const chave = new Request(
+    `https://lino-livre.internal/capa?u=${encodeURIComponent(alvo.href)}`,
+    { method: 'GET' }
+  );
+  const cache = caches.default;
+  const emCache = await cache.match(chave);
+  if (emCache) return emCache;
+
+  let origem: Response;
+  try {
+    origem = await fetch(alvo.href, {
+      redirect: 'follow',
+      headers: {
+        Accept: 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
+        'User-Agent': 'LinoLivre-CoverProxy/1.0 (+https://lino-livre.linolivre.workers.dev)'
+      },
+      cf: { cacheEverything: true, cacheTtl: 2592000 }
+    });
+  } catch {
+    return c.json({ erro: 'Não foi possível obter a capa na origem' }, 502);
+  }
+
+  if (!origem.ok || !origem.body) {
+    return c.json({ erro: 'Origem da capa indisponível' }, 502);
+  }
+
+  // Revalida o destino final para bloquear redirecionamentos para a rede interna (SSRF).
+  try {
+    validarUrlRedirecionamento(origem.url);
+  } catch {
+    return c.json({ erro: 'Redirecionamento de capa não permitido' }, 403);
+  }
+
+  const tipo = String(origem.headers.get('content-type') || '').toLowerCase();
+  if (!tipo.startsWith('image/')) {
+    return c.json({ erro: 'O conteúdo remoto não é uma imagem' }, 415);
+  }
+
+  const tamanho = Number(origem.headers.get('content-length') || '0');
+  if (Number.isFinite(tamanho) && tamanho > CAPA_TAMANHO_MAXIMO) {
+    return c.json({ erro: 'Imagem acima do limite permitido' }, 413);
+  }
+
+  const resposta = new Response(origem.body, {
+    status: 200,
+    headers: {
+      'Content-Type': tipo,
+      'Cache-Control': CAPA_CACHE_CONTROL,
+      'X-Content-Type-Options': 'nosniff',
+      'Cross-Origin-Resource-Policy': 'cross-origin',
+      'Access-Control-Allow-Origin': '*'
+    }
+  });
+
+  c.executionCtx.waitUntil(cache.put(chave, resposta.clone()));
+  return resposta;
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
 // FASE 4 — BUSCA FEDERADA GLOBAL (motor distribuído com RRF)
 // Interroga vários catálogos abertos em paralelo na borda e funde os
 // resultados num ranking único. Apenas METADADOS (zero armazenamento).
@@ -1799,6 +2025,7 @@ app.get('/api/busca/federada', async (c) => {
       }))
       .filter((x: any) => x.url); // só resultados com link externo válido (302)
 
+    c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
     return c.json({
       q: q.slice(0, 200),
       total: seguros.length,
@@ -1822,6 +2049,50 @@ app.get('/api/busca/federada/diagnostico', (c) => {
     k: 60,
     upstreams: obterMotor().diagnostico()
   });
+});
+
+// ==================== PWA, SERVICE WORKER E MANIFEST ====================
+app.get('/manifest.webmanifest', async (c) => {
+  if (c.env.ASSETS) {
+    const res = await c.env.ASSETS.fetch(c.req.raw);
+    const newRes = new Response(res.body, res);
+    newRes.headers.set('Content-Type', 'application/manifest+json; charset=utf-8');
+    newRes.headers.set('Cache-Control', 'public, max-age=86400');
+    return newRes;
+  }
+  return c.text('Not found', 404);
+});
+
+app.get('/manifest.json', async (c) => {
+  if (c.env.ASSETS) {
+    const res = await c.env.ASSETS.fetch(c.req.raw);
+    const newRes = new Response(res.body, res);
+    newRes.headers.set('Content-Type', 'application/manifest+json; charset=utf-8');
+    newRes.headers.set('Cache-Control', 'public, max-age=86400');
+    return newRes;
+  }
+  return c.text('Not found', 404);
+});
+
+app.get('/sw.js', async (c) => {
+  if (c.env.ASSETS) {
+    const res = await c.env.ASSETS.fetch(c.req.raw);
+    const newRes = new Response(res.body, res);
+    newRes.headers.set('Content-Type', 'application/javascript; charset=utf-8');
+    newRes.headers.set('Service-Worker-Allowed', '/');
+    newRes.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    return newRes;
+  }
+  return c.text('Not found', 404);
+});
+
+app.get('/offline', async (c) => {
+  if (c.env.ASSETS) {
+    const url = new URL(c.req.url);
+    url.pathname = '/offline.html';
+    return c.env.ASSETS.fetch(new Request(url.toString(), c.req.raw));
+  }
+  return c.text('Offline', 503);
 });
 
 // Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade
@@ -1903,6 +2174,7 @@ app.get('/api/creditos', async (c) => {
       } catch (_) {}
     }
 
+    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json({
       status: 'ativo',
       plataforma: c.env.SITE_NAME || 'Lino Livre',
@@ -1946,20 +2218,62 @@ app.get('/api/creditos', async (c) => {
 
 app.post('/api/admin/recalcular-estatisticas', verificarAdminWorker, async (c) => {
   try {
-    await recomputarEstatisticas(c.env.DB);
+    const force = c.req.query('force') === 'true' || true;
+    const resultado = await recomputarEstatisticas(c.env.DB, force);
     cachedDashboard = null;
-    return c.json({ sucesso: true, mensagem: 'Estatísticas e índices recalculados com sucesso' });
+    return c.json({
+      sucesso: true,
+      mensagem: 'Estatísticas e índices recalculados com sucesso',
+      resultado
+    });
   } catch (err: any) {
     return c.json({ erro: 'Falha ao recalcular estatísticas', detalhe: err?.message || String(err) }, 500);
   }
 });
 
 // ────────────────────────────────────────────────────────────
-// Cron diário (00:10 UTC, após o reset da cota da D1).
-// Uma única varredura por dia mantém estatisticas/contadores exatos,
-// em vez de varrer 104k linhas em cada cache miss.
+// Rastreador de Mutações para Economia de Cota da D1
 // ────────────────────────────────────────────────────────────
-async function recomputarEstatisticas(db: D1Database): Promise<void> {
+async function registrarMutacaoAcervo(db: D1Database) {
+  try {
+    await db.prepare(`
+      INSERT INTO estatisticas (chave, valor) VALUES ('versao_mutacoes', 1)
+      ON CONFLICT(chave) DO UPDATE SET valor = valor + 1
+    `).run();
+  } catch (_) {}
+}
+
+// ────────────────────────────────────────────────────────────
+// Cron diário (00:10 UTC, após o reset da cota da D1).
+// Recálculo inteligente: verifica se houve mutações antes de varrer
+// as 104k linhas, poupando 838.000 leituras e 75.000 escritas diárias.
+// ────────────────────────────────────────────────────────────
+async function recomputarEstatisticas(db: D1Database, force: boolean = false): Promise<{ executado: boolean; motivo?: string }> {
+  if (!force) {
+    try {
+      const stats = await db.prepare(
+        "SELECT chave, valor FROM estatisticas WHERE chave IN ('total_livros', 'atualizado_em_epoch', 'versao_mutacoes', 'versao_calculada')"
+      ).all();
+      const mapa: Record<string, number> = {};
+      for (const row of (stats.results || []) as any[]) {
+        mapa[row.chave] = Number(row.valor);
+      }
+      const totalLivros = mapa.total_livros || 0;
+      const versaoMutacoes = mapa.versao_mutacoes || 0;
+      const versaoCalculada = mapa.versao_calculada || 0;
+
+      // Se temos agregados válidos e nenhuma alteração no acervo ocorreu:
+      if (totalLivros > 0 && versaoMutacoes <= versaoCalculada) {
+        return {
+          executado: false,
+          motivo: 'Acervo íntegro e sem mutações pendentes. Varredura da D1 evitada (economia de ~838k leituras e ~76k escritas).'
+        };
+      }
+    } catch {
+      // Se tabelas ainda não existirem, segue para o lote 1 inicial
+    }
+  }
+
   // Lote 1 — DDL idempotente + índices + limpeza (as tabelas podem não existir antes
   // do primeiro cron; a migração pode ter falhado durante a cota esgotada).
   await db.batch([
@@ -2026,8 +2340,11 @@ async function recomputarEstatisticas(db: D1Database): Promise<void> {
       ('total_categorias', (SELECT COUNT(*) FROM categorias)),
       ('total_cursos', (SELECT COUNT(*) FROM cursos)),
       ('total_fontes', (SELECT COUNT(*) FROM fontes WHERE ativa = 1)),
-      ('atualizado_em_epoch', CAST(strftime('%s','now') AS INTEGER))`)
+      ('atualizado_em_epoch', CAST(strftime('%s','now') AS INTEGER)),
+      ('versao_calculada', (SELECT COALESCE(MAX(valor), 0) FROM estatisticas WHERE chave = 'versao_mutacoes'))`)
   ]);
+
+  return { executado: true };
 }
 
 export function _limparCacheDashboard() {

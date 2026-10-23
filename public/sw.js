@@ -1,163 +1,207 @@
 /**
- * Service Worker for Lino Livre
- * Caches static assets for offline access and faster subsequent loads
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Service Worker — Lino Livre PWA
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Proporciona carregamento instantâneo, funcionamento offline para estudantes
+ * e professores, cache resiliente e navegação em áreas sem internet.
+ * ═══════════════════════════════════════════════════════════════════════════
  */
 
-const CACHE_NAME = 'linolivre-v20261022a';
-const STATIC_ASSETS = [
+const CACHE_VERSION = 'v20261023a';
+const CORE_CACHE = `linolivre-core-${CACHE_VERSION}`;
+const API_CACHE = `linolivre-api-${CACHE_VERSION}`;
+const IMAGE_CACHE = `linolivre-images-v1`;
+const FONT_CACHE = `linolivre-fonts-v1`;
+
+// Ficheiros essenciais do App Shell (armazenados durante a instalação)
+const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/css/style.css?v=20261022',
-  '/js/i18n.js?v=20261022',
-  '/js/app.js?v=20261022',
+  '/offline.html',
+  '/comunidade.html',
+  '/creditos.html',
+  '/legal.html',
+  '/termos.html',
+  '/css/style.css',
+  '/js/app.js',
+  '/js/i18n.js',
+  '/manifest.webmanifest',
+  '/manifest.json',
+  '/favicon.svg',
+  '/apple-touch-icon.png',
+  '/img/icons/icon-192.png',
+  '/img/icons/icon-512.png',
+  '/img/icons/icon-maskable-192.png',
+  '/img/icons/icon-maskable-512.png',
+  '/locales/pt.json',
+  '/locales/pt-br.json',
+  '/locales/en.json',
+  '/locales/es.json',
+  '/locales/fr.json',
+  '/locales/de.json',
+  '/locales/zh.json'
 ];
 
-const FONT_CACHE = 'linolivre-fonts-v1';
-const IMAGE_CACHE = 'linolivre-images-v1';
-
-// Install event - cache static assets
+// Instalação do Service Worker: pré-carrega o app shell
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
+    caches.open(CORE_CACHE).then((cache) => {
+      return Promise.allSettled(
+        PRECACHE_ASSETS.map((url) =>
+          cache.add(url).catch((err) => {
+            console.warn(`[PWA SW] Aviso ao pré-carregar ${url}:`, err.message);
+          })
+        )
+      );
     })
   );
   self.skipWaiting();
 });
 
-// Activate event - clean old caches
+// Ativação: remove caches antigos de versões anteriores
 self.addEventListener('activate', (event) => {
+  const currentCaches = [CORE_CACHE, API_CACHE, IMAGE_CACHE, FONT_CACHE];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then((names) => {
       return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME && name !== FONT_CACHE && name !== IMAGE_CACHE)
+        names
+          .filter((name) => !currentCaches.includes(name))
           .map((name) => caches.delete(name))
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// Fetch event - serve from cache with network fallback
+// Estratégias de Interceptação de Rede
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
-  
-  // Skip non-GET requests
+
+  // Apenas processa requisições HTTP/HTTPS GET
   if (request.method !== 'GET') return;
 
-  // Não interceptar requisições para a API dinâmica:
-  // Garante que o navegador e o CDN da Cloudflare respeitem o Cache-Control
-  // sem servir dados estáticos ou desatualizados do cache local do Service Worker.
-  if (url.pathname.startsWith('/api/')) return;
-  
-  // Skip cross-origin requests (except fonts and images)
-  if (url.origin !== location.origin) {
-    // Allow fonts and images from external origins
-    if (request.destination === 'font' || request.destination === 'image') {
-      // Handle external fonts/images with cache-first strategy
-      event.respondWith(
-        caches.open(FONT_CACHE).then(async (cache) => {
-          const cached = await cache.match(request);
-          if (cached) return cached;
-          
-          try {
-            const response = await fetch(request);
-            if (response.ok) cache.put(request, response.clone());
-            return response;
-          } catch (e) {
-            return new Response('', { status: 504 });
+  // 1. Navegação (HTML Pages) — Network-First com Fallback Offline
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((networkRes) => {
+          if (networkRes.ok) {
+            const copy = networkRes.clone();
+            caches.open(CORE_CACHE).then((cache) => cache.put(request, copy));
           }
+          return networkRes;
         })
-      );
-    }
+        .catch(async () => {
+          const cachedRes = await caches.match(request);
+          if (cachedRes) return cachedRes;
+          const indexCached = await caches.match('/index.html');
+          if (indexCached) return indexCached;
+          const offlinePage = await caches.match('/offline.html');
+          return offlinePage || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+        })
+    );
     return;
   }
-  
-  // Handle same-origin requests
-  if (request.destination === 'font') {
-    // Fonts: cache-first with network fallback
+
+  // 2. APIs Públicas de Consulta (/api/dashboard, /api/categorias, /api/fontes, /api/dicas)
+  // Estratégia: Stale-While-Revalidate para permitir consulta offline de estatísticas e categorias
+  if (url.origin === location.origin && (
+      url.pathname === '/api/dashboard' ||
+      url.pathname === '/api/categorias' ||
+      url.pathname === '/api/fontes' ||
+      url.pathname === '/api/dicas'
+  )) {
     event.respondWith(
-      caches.open(FONT_CACHE).then(async (cache) => {
-        const cached = await cache.match(request);
-        if (cached) return cached;
-        
-        try {
-          const response = await fetch(request);
-          if (response.ok) cache.put(request, response.clone());
-          return response;
-        } catch (e) {
-          return new Response('', { status: 504 });
-        }
+      caches.open(API_CACHE).then(async (cache) => {
+        const cachedRes = await cache.match(request);
+        const networkPromise = fetch(request)
+          .then((networkRes) => {
+            if (networkRes.ok) {
+              cache.put(request, networkRes.clone());
+            }
+            return networkRes;
+          })
+          .catch(() => cachedRes);
+
+        return cachedRes || networkPromise;
       })
     );
     return;
   }
-  
-  if (request.destination === 'image') {
-    // Images: cache-first with network fallback
+
+  // Não interceptar outras rotas da API dinâmica ou redirecionamentos 302 (/api/livros/*/ler, /api/cursos/*/acessar)
+  if (url.pathname.startsWith('/api/')) {
+    return;
+  }
+
+  // 3. Imagens de capas e logotipos (Same-origin ou Cross-origin) — Cache-First
+  if (request.destination === 'image' || url.pathname.match(/\.(png|jpg|jpeg|svg|webp|gif|ico)$/i)) {
     event.respondWith(
       caches.open(IMAGE_CACHE).then(async (cache) => {
         const cached = await cache.match(request);
         if (cached) return cached;
-        
+
         try {
-          const response = await fetch(request);
-          if (response.ok) cache.put(request, response.clone());
-          return response;
-        } catch (e) {
+          const networkRes = await fetch(request);
+          if (networkRes.ok || networkRes.type === 'opaque') {
+            cache.put(request, networkRes.clone());
+          }
+          return networkRes;
+        } catch (_) {
+          return new Response('', { status: 404 });
+        }
+      })
+    );
+    return;
+  }
+
+  // 4. Fontes Web (Google Fonts / Noto / Lora) — Cache-First
+  if (request.destination === 'font' || url.hostname.includes('gstatic.com') || url.hostname.includes('googleapis.com')) {
+    event.respondWith(
+      caches.open(FONT_CACHE).then(async (cache) => {
+        const cached = await cache.match(request);
+        if (cached) return cached;
+
+        try {
+          const networkRes = await fetch(request);
+          if (networkRes.ok || networkRes.type === 'opaque') {
+            cache.put(request, networkRes.clone());
+          }
+          return networkRes;
+        } catch (_) {
           return new Response('', { status: 504 });
         }
       })
     );
     return;
   }
-  
-  // HTML, CSS, JS: network-first with cache fallback
-  if (['document', 'script', 'style'].includes(request.destination) || 
-      url.pathname.endsWith('.html') || 
-      url.pathname.endsWith('.css') || 
-      url.pathname.endsWith('.js')) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-          }
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
-    return;
-  }
-  
-  // Default: network-first
+
+  // 5. Assets Estáticos do Core (CSS, JS, Locales) — Stale-While-Revalidate
   event.respondWith(
-    fetch(request)
-      .then((response) => {
-        if (response.ok) {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-        }
-        return response;
-      })
-      .catch(() => caches.match(request))
+    caches.open(CORE_CACHE).then(async (cache) => {
+      const cached = await cache.match(request);
+      const networkPromise = fetch(request)
+        .then((networkRes) => {
+          if (networkRes.ok) {
+            cache.put(request, networkRes.clone());
+          }
+          return networkRes;
+        })
+        .catch(() => cached);
+
+      return cached || networkPromise;
+    })
   );
 });
 
-// Handle messages from clients
+// Mensagens vindas do cliente
 self.addEventListener('message', (event) => {
   if (event.data === 'skipWaiting') {
     self.skipWaiting();
   }
-  
   if (event.data === 'clearCache') {
     caches.keys().then((names) => {
       names.forEach((name) => caches.delete(name));
     });
   }
 });
-
-console.log('[SW] Lino Livre Service Worker loaded');

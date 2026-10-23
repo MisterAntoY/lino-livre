@@ -1129,4 +1129,51 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       }
     });
   });
+
+  // =========================================================================
+  // CENÁRIO 10: Coleção Os 100 Mais Lidos do Mundo no Worker
+  // =========================================================================
+  describe('Cenário 10: Coleção Os 100 Mais Lidos do Mundo no Worker', () => {
+    test('10.1 - GET /api/livros com categoria_id=🌟 Mais Lidos do Mundo aplica filtro world-% e ordena por ranking', async () => {
+      let queryExecutada = '';
+      const db = createMockD1({
+        allHandler: async (sql) => {
+          if (sql.includes('FROM livros l')) queryExecutada = sql;
+          if (sql.includes('FROM links_livros')) return { results: [] };
+          return {
+            results: [
+              { id: 472, titulo: 'Um Conto de Duas Cidades', fonte_id_externo: 'world-top100-1', leituras: 10 }
+            ]
+          };
+        },
+        firstHandler: async (sql) => {
+          if (sql.includes('COUNT(*)')) return { total: 105 };
+          return null;
+        }
+      });
+
+      const res = await workerRequest('/api/livros?categoria_id=%F0%9F%8C%9F%20Mais%20Lidos%20do%20Mundo&limite=1', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.equal(data.total, 105);
+      assert.ok(queryExecutada.includes("world-%"), 'Deve filtrar por fonte_id_externo LIKE world-%');
+      assert.ok(queryExecutada.includes("CASE"), 'Deve ordenar por ranking oficial');
+      assert.equal(data.data[0].fonte_id_externo, 'world-top100-1');
+    });
+
+    test('10.2 - GET /api/livros com colecao=top100 aplica o mesmo filtro world-%', async () => {
+      let queryExecutada = '';
+      const db = createMockD1({
+        allHandler: async (sql) => {
+          queryExecutada = sql;
+          return { results: [] };
+        },
+        firstHandler: async () => ({ total: 105 })
+      });
+
+      const res = await workerRequest('/api/livros?colecao=top100', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      assert.ok(queryExecutada.includes("world-%"), 'Deve filtrar por fonte_id_externo LIKE world-%');
+    });
+  });
 });

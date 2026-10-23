@@ -1817,6 +1817,51 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(fs.existsSync('materiais/lino-livre-qrcode.svg'), 'Arquivo de cartaz materiais/lino-livre-qrcode.svg deve existir');
     assert.ok(fs.existsSync('materiais/lino-livre-canal-qrcode.svg'), 'Arquivo de cartaz materiais/lino-livre-canal-qrcode.svg deve existir');
   });
+
+  // Teste 33: Catálogo dos 100 Livros Mais Lidos do Mundo (Curadoria Oficial)
+  test('33. Catálogo dos 100 Livros Mais Lidos do Mundo: filtragem por categoria, colecao, ordenação por ranking e busca', async () => {
+    // 33.1 - Filtro com o rótulo exato do botão do frontend: "🌟 Mais Lidos do Mundo"
+    const resPill = await request('/api/livros?categoria_id=%F0%9F%8C%9F%20Mais%20Lidos%20do%20Mundo&limit=12');
+    assert.equal(resPill.status, 200, 'Deve responder HTTP 200');
+    assert.equal(resPill.data.total, 105, 'Deve retornar o total de 105 obras (100 do ranking + 5 históricas)');
+    assert.equal(resPill.data.total_pages, 9, 'Com limite 12, deve paginar em 9 páginas');
+    assert.equal(resPill.data.data.length, 12, 'Primeira página deve conter 12 itens');
+
+    // 33.2 - Verificação de ordenação cronológica/ranking e presença de fonte_id_externo
+    const primeiro = resPill.data.data[0];
+    assert.equal(primeiro.fonte_id_externo, 'world-hist-1', 'Primeira obra deve ser a Bíblia Sagrada (world-hist-1)');
+    assert.ok(primeiro.titulo.includes('Bíblia'), 'Título deve ser Bíblia Sagrada');
+
+    const sexto = resPill.data.data[5];
+    assert.equal(sexto.fonte_id_externo, 'world-top100-1', 'Sexta obra (#1 do ranking comercial) deve ser world-top100-1');
+    assert.ok(sexto.titulo.includes('Duas Cidades'), 'Deve ser Um Conto de Duas Cidades');
+
+    // 33.3 - Suporte a variações de parâmetro: "Mais Lidos do Mundo", "top100" e "colecao=top100"
+    const resSemEmoji = await request('/api/livros?categoria_id=Mais%20Lidos%20do%20Mundo');
+    assert.equal(resSemEmoji.status, 200);
+    assert.equal(resSemEmoji.data.total, 105);
+
+    const resTop100 = await request('/api/livros?categoria_id=top100');
+    assert.equal(resTop100.status, 200);
+    assert.equal(resTop100.data.total, 105);
+
+    const resColecao = await request('/api/livros?colecao=top100');
+    assert.equal(resColecao.status, 200);
+    assert.equal(resColecao.data.total, 105);
+
+    // 33.4 - Filtragem combinada por idioma dentro do acervo dos mais lidos
+    const resPt = await request('/api/livros?categoria_id=top100&idioma=pt');
+    assert.equal(resPt.status, 200);
+    assert.equal(resPt.data.total, 2, 'Obras em português no top 100 histórico devem ser 2 (Bíblia e O Alquimista)');
+    const titulosPt = resPt.data.data.map(b => b.titulo);
+    assert.ok(titulosPt.some(t => t.includes('Alquimista')), 'Deve conter O Alquimista');
+
+    // 33.5 - Busca textual por título/autor dentro do acervo dos mais lidos
+    const resBusca = await request('/api/livros?categoria_id=top100&busca=Potter');
+    assert.equal(resBusca.status, 200);
+    assert.equal(resBusca.data.total, 3, 'Deve encontrar os livros de Harry Potter e Pedro Coelho (Beatrix Potter)');
+    assert.ok(resBusca.data.data.every(b => b.fonte_id_externo.startsWith('world-')), 'Todos os resultados devem pertencer à coleção world-*');
+  });
 });
 
 

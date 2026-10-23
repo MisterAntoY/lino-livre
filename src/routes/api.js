@@ -56,6 +56,10 @@ const dicasController = require('../controllers/dicasController');
 router.get('/dicas', dicasController.listar);
 router.get('/dicas/:id', dicasController.obterPorId);
 
+// 6.3 Proxy de Capas Externas (streaming com Cache-Control eficiente)
+const capasController = require('../controllers/capasController');
+router.get('/capas', capasController.proxy);
+
 // 7. Comunidade e Canal WhatsApp (Links diretos e QR Codes SVG)
 router.get('/comunidade', comunidadeController.getComunidade);
 router.get('/comunidade/qrcode.svg', comunidadeController.getComunidadeQrCode);

@@ -20,6 +20,11 @@
       "kofi": "Apoyar Proyecto",
       "addBook": "+ Añadir Libro"
     },
+    "pwa": {
+      "installBtn": "Instalar App",
+      "installTitle": "Instalar la aplicación Lino Livre en tu dispositivo",
+      "offlineMode": "Modo Offline: Sin conexión a internet. Navegando en libros y páginas en caché."
+    },
     "kofi": {
       "cardTitle": "☕ Apoya en Ko-fi",
       "cardDesc": "Contribuye con cualquier aporte para ayudar a mantener el servidor y expandir la biblioteca libre.",
@@ -78,6 +83,7 @@
       "searchPlaceholder": "Buscar por título o autor...",
       "categories": "Categorías:",
       "all": "Todas",
+      "catTop100": "🌟 Los 100 Más Leídos del Mundo",
       "catGuides": "💻 Guías y Tecnología",
       "catClassics": "Clásicos Lusófonos",
       "catRomance": "Novelas y Crónicas",
@@ -351,6 +357,7 @@
       "Poesia Africana": "Poesía Africana",
       "Autores Lusófonos Clássicos": "Autores Lusófonos Clásicos",
       "🌟 Mais Lidos do Mundo": "🌟 Más Leídos del Mundo",
+      "Mais Lidos do Mundo": "🌟 Más Leídos del Mundo",
       "🌍 Literatura & Vozes de África": "🌍 Literatura y Voces de África",
       "🌍 Contos & Tradição Oral Africana": "🌍 Relatos y Tradición Oral Africana",
       "🌍 História & Sociedade Africana": "🌍 Historia y Sociedad Africana",

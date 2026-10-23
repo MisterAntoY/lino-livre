@@ -39,7 +39,7 @@ function listar(req, res) {
   try {
     const db = getDatabase();
     const { 
-      busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug
+      busca, categoria_id, autor_id, idioma, formato, licenca, fonte, fonte_slug, colecao
     } = req.query;
 
     const rawPage = req.query.pagina || req.query.page || 1;
@@ -66,7 +66,17 @@ function listar(req, res) {
       }
     }
 
-    if (categoria_id) {
+    const isTop100 = (categoria_id && (
+      categoria_id === '🌟 Mais Lidos do Mundo' ||
+      categoria_id === 'Mais Lidos do Mundo' ||
+      String(categoria_id).includes('Mais Lidos') ||
+      categoria_id === 'top100' ||
+      categoria_id === 'mais_lidos'
+    )) || (colecao === 'top100' || colecao === 'mais_lidos');
+
+    if (isTop100) {
+      filtros.push("(l.fonte_id_externo LIKE 'world-%')");
+    } else if (categoria_id) {
       if (/^\d+$/.test(categoria_id)) {
         filtros.push('l.categoria_id = ?');
         params.push(categoria_id);
@@ -156,11 +166,20 @@ function listar(req, res) {
       total = totalRow ? totalRow.total : 0;
     }
 
+    const orderByClause = isTop100
+      ? `CASE 
+           WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 0 
+           WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
+           ELSE 9999 
+         END ASC, l.leituras DESC, l.titulo ASC`
+      : 'l.leituras DESC, l.titulo ASC';
+
     // Buscar itens paginados
     const selectQuery = `
       SELECT 
         l.id, l.titulo, l.subtitulo, l.isbn, l.ano_publicacao, l.idioma,
         l.sinopse, l.capa_url, l.paginas, l.licenca, l.leituras, l.criado_em,
+        l.fonte_id_externo,
         a.id AS autor_id, a.nome AS autor_nome,
         c.id AS categoria_id, c.nome AS categoria_nome,
         f.slug AS fonte_slug, f.nome AS fonte_nome
@@ -169,7 +188,7 @@ function listar(req, res) {
       LEFT JOIN categorias c ON c.id = l.categoria_id
       LEFT JOIN fontes f ON f.id = l.fonte_id
       WHERE 1=1${whereSql}
-      ORDER BY l.leituras DESC, l.titulo ASC
+      ORDER BY ${orderByClause}
       LIMIT ? OFFSET ?
     `;
 

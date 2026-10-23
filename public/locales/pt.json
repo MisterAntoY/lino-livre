@@ -20,6 +20,11 @@
       "kofi": "Apoiar Projeto",
       "addBook": "+ Adicionar Livro"
     },
+    "pwa": {
+      "installBtn": "Instalar App",
+      "installTitle": "Instalar aplicativo Lino Livre no telemóvel",
+      "offlineMode": "Modo Offline: Sem ligação à internet. Navegando no acervo e páginas em cache."
+    },
     "kofi": {
       "cardTitle": "☕ Apoie no Ko-fi",
       "cardDesc": "Contribua com qualquer valor para ajudar a manter o servidor e expandir o acervo livre.",
@@ -78,6 +83,7 @@
       "searchPlaceholder": "Pesquisar por título ou autor...",
       "categories": "Categorias:",
       "all": "Todas",
+      "catTop100": "🌟 Os 100 Mais Lidos do Mundo",
       "catGuides": "💻 Guias & Tecnologia",
       "catClassics": "Clássicos Lusófonos",
       "catRomance": "Romances",
@@ -344,7 +350,9 @@
       "Literatura Angolana": "Literatura Angolana",
       "Literatura Africana Lusófona": "Literatura Africana Lusófona",
       "Poesia Africana": "Poesia Africana",
-      "Autores Lusófonos Clássicos": "Autores Lusófonos Clássicos"
+      "Autores Lusófonos Clássicos": "Autores Lusófonos Clássicos",
+      "🌟 Mais Lidos do Mundo": "🌟 Mais Lidos do Mundo",
+      "Mais Lidos do Mundo": "🌟 Mais Lidos do Mundo"
     },
     "areas": {
       "Tecnologia": "Tecnologia",

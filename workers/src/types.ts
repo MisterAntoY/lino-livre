@@ -1,5 +1,6 @@
 export interface Bindings {
   DB: D1Database;
+  ASSETS?: Fetcher;
   ASSETS_BUCKET?: R2Bucket;
   ENVIRONMENT?: string;
   ADMIN_API_KEY?: string;

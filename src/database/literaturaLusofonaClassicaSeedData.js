@@ -367,7 +367,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Considerada por historiadores e críticos a obra inaugural da literatura de ficção de Angola. Narra a história de Nga Muturi, viúva luandense inserida nas dinâmicas sociais, linguísticas e jurídicas de Luanda no final do século XIX.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Luanda_1880s_harbor.jpg/640px-Luanda_1880s_harbor.jpg",
+    capaUrl: "/capas/palop_nga_muturi.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://pt.wikisource.org/wiki/Nga_Muturi" },
@@ -388,7 +388,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Romance histórico que retrata a vida cotidiana, os conflitos e as tradições do interior e litoral de Angola, mesclando crônica etnográfica e sensibilidade literária pioneira.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Fortaleza_de_S%C3%A3o_Miguel_de_Luanda_historical.jpg/640px-Fortaleza_de_S%C3%A3o_Miguel_de_Luanda_historical.jpg",
+    capaUrl: "/capas/palop_scenas_africa.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://pt.wikisource.org/wiki/Scenas_d%27Africa" }
@@ -408,7 +408,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Clássico romance de costumes angolanos ambientado entre Luanda e o Dondo, pintando com fidelidade o drama social, as feitiçarias, o comércio colonial e as paixões humanas da sociedade mista angolana.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Kwanza_River_Angola_landscape.jpg/640px-Kwanza_River_Angola_landscape.jpg",
+    capaUrl: "/capas/palop_segredo_morta.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://archive.org/details/osegredodamorta00assi" }
@@ -428,7 +428,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Recolha pioneira de centenas de provérbios e axiomas da sabedoria oral banta em língua kimbundu, com suas respectivas traduções e explicações conceituais em língua portuguesa.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Baobab_tree_Angola.jpg/640px-Baobab_tree_Angola.jpg",
+    capaUrl: "/capas/palop_proverbios_angolenses.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://archive.org/details/philosophia-popular-proverbios-angolenses" }
@@ -448,7 +448,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Primeira coletânea poética impressa de um autor nativo angolano no século XIX, cantando os amores da juventude, as belezas naturais da terra natal e a consciência histórica africana.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Sunset_Luanda_bay.jpg/640px-Sunset_Luanda_bay.jpg",
+    capaUrl: "/capas/palop_delirios.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://pt.wikisource.org/wiki/Del%C3%ADrios" }
@@ -472,7 +472,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Compilação póstuma das mais comoventes mornas e poemas líricos de Eugénio Tavares, expressando a 'sodade', o mar, a despedida dos emigrantes e o amor às ilhas de Cabo Verde.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Brava_Cape_Verde_coast.jpg/640px-Brava_Cape_Verde_coast.jpg",
+    capaUrl: "/capas/palop_mornas_tavares.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://pt.wikisource.org/wiki/Mornas:_Cantigas_Crioulas" }
@@ -492,7 +492,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Monumental estudo e compilação do cancioneiro, histórias populares, crenças e expressões linguísticas tradicionais do arquipélago de Cabo Verde.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Fogo_Cape_Verde_Pico.jpg/640px-Fogo_Cape_Verde_Pico.jpg",
+    capaUrl: "/capas/palop_folclore_caboverdiano.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://archive.org/details/folclore-caboverdiano-cardoso" }
@@ -512,7 +512,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Livro de sonetos e poemas líricos que retrata a beleza agreste da paisagem vulcânica, a bravura dos marinheiros e a identidade telúrica de Cabo Verde.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Cape_Verde_Santo_Antao_mountains.jpg/640px-Cape_Verde_Santo_Antao_mountains.jpg",
+    capaUrl: "/capas/palop_algas_corais.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://pt.wikisource.org/wiki/Algas_e_Corais" }
@@ -532,7 +532,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Publicado em Lisboa após sua morte prematura, 'Versos' é uma obra-prima histórica: os primeiros poemas em língua portuguesa onde a cor negra da pele é afirmada com altivez, orgulho lírico e beleza estética incomparável.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Sao_Tome_Pico_Cao_Grande.jpg/640px-Sao_Tome_Pico_Cao_Grande.jpg",
+    capaUrl: "/capas/palop_versos_costa_alegre.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://pt.wikisource.org/wiki/Versos_(Costa_Alegre)" }
@@ -552,7 +552,7 @@ const literaturaLusofonaClassica = [
     idioma: "pt",
     licenca: "dominio-publico",
     sinopse: "Coletânea monumental com sonetos célebres como 'Surge et Ambula' ('Levanta-te e Anda'), conclamando a África a despertar de seu longo sono colonial com dignidade, justiça e força cultural.",
-    capaUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Maputo_Bay_Mozambique.jpg/640px-Maputo_Bay_Mozambique.jpg",
+    capaUrl: "/capas/palop_sonetos_noronha.svg",
     leituras: 0,
     links: [
       { formato: "html", url: "https://pt.wikisource.org/wiki/Sonetos_(Rui_de_Noronha)" }

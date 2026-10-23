@@ -11,7 +11,16 @@
   <meta name="author" content="Lino Livre">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <link rel="canonical" href="https://lino-livre.linolivre.workers.dev/">
-  <meta name="theme-color" content="#334155">
+  
+  <!-- ═══════════ PWA & Mobile Web App ═══════════ -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#10b981">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lino Livre">
 
   <!-- ═══════════ Open Graph (WhatsApp, Facebook, LinkedIn) ═══════════ -->
   <meta property="og:type" content="website">
@@ -146,10 +155,9 @@
     ::selection{background:rgba(51,65,85,.16);color:var(--text-main)}
   </style>
   
-  <!-- Full CSS loaded asynchronously -->
-  <link rel="stylesheet" href="/css/style.css?v=20261022" media="print" onload="this.media='all'">
-  
-  <noscript><link rel="stylesheet" href="/css/style.css?v=20261022"></noscript>
+  <!-- Full CSS (render-blocking, 14 KB gzip): um único layout em vez de
+       reflow completo ao trocar media="print" -> "all" no onload. -->
+  <link rel="stylesheet" href="/css/style.css?v=20261022">
   
   <!-- Service Worker for offline caching -->
   <script>
@@ -160,6 +168,51 @@
         });
       });
     }
+  </script>
+
+  <!-- Diagnóstico de Layout Shift (CLS) — ativa apenas com ?clsdebug (RUM de depuração, sem custo em produção) -->
+  <script>
+    (function () {
+      if (typeof PerformanceObserver === 'undefined') return;
+      if (!new URLSearchParams(location.search).has('clsdebug')) return;
+      var shifts = [];
+      try {
+        var po = new PerformanceObserver(function (list) {
+          for (var i = 0; i < list.getEntries().length; i++) {
+            var e = list.getEntries()[i];
+            if (e.hadRecentInput) continue;
+            var srcs = [];
+            (e.sources || []).forEach(function (s) {
+              var src = '(node)';
+              try {
+                var n = s.node;
+                if (n) {
+                  if (n.nodeType === 1) {
+                    src = n.tagName.toLowerCase() + (n.id ? '#' + n.id : '') +
+                      (typeof n.className === 'string' && n.className ? '.' + n.className.trim().split(/\s+/).slice(0, 3).join('.') : '');
+                  } else {
+                    src = '<' + (n.parentElement && n.parentElement.nodeType === 1
+                      ? n.parentElement.tagName.toLowerCase() + (n.parentElement.id ? '#' + n.parentElement.id : '') : n.nodeName) + '> (texto)';
+                  }
+                }
+              } catch (x) {}
+              var mov = null;
+              try {
+                var p = s.previousRect, c = s.currentRect;
+                if (p && c) mov = { dx: Math.round(c.x - p.x), dy: Math.round(c.y - p.y), w: Math.round(c.width), h: Math.round(c.height) };
+              } catch (y) {}
+              srcs.push({ src: src, mov: mov });
+            });
+            shifts.push({ score: +e.value.toFixed(5), t: Math.round(e.startTime), sources: srcs });
+          }
+          window.__clsDebug = {
+            total: +shifts.reduce(function (a, s) { return a + s.score; }, 0).toFixed(5),
+            shifts: shifts
+          };
+        });
+        po.observe({ type: 'layout-shift', buffered: true });
+      } catch (err) { console.warn('[clsdebug]', err); }
+    })();
   </script>
   
 </head>
@@ -212,10 +265,21 @@
         <a id="btn-header-kofi" class="btn btn-kofi" href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" title="Apoiar o Lino Livre no Ko-fi">
            <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
         </a>
+        <button id="btn-instalar-app" class="btn btn-pwa-install hidden" onclick="app.instalarPwa()" data-i18n-title="ui.pwa.installTitle" title="Instalar aplicativo Lino Livre no telemóvel">
+          <span>📲</span> <span data-i18n="ui.pwa.installBtn">Instalar App</span>
+        </button>
         <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()" data-i18n="ui.header.addBook">+ Adicionar Livro</button>
       </div>
     </div>
   </header>
+
+  <!-- Banner de Conectividade / Modo Offline -->
+  <div id="banner-offline" class="banner-offline-notify hidden" role="status" aria-live="polite">
+    <div class="container banner-offline-content">
+      <span class="offline-dot"></span>
+      <span data-i18n="ui.pwa.offlineMode">Modo Offline: Sem ligação à internet. Navegando no acervo e páginas em cache.</span>
+    </div>
+  </div>
 
   <!-- Navegação Principal por Abas -->
   <nav class="container nav-tabs-section">
@@ -400,7 +464,7 @@
         <span class="filter-label" data-i18n="ui.books.categories">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
           <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')" data-i18n="ui.books.all">Todas</button>
-          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')">🌟 Os 100 Mais Lidos do Mundo</button>
+          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')" data-i18n="ui.books.catTop100">🌟 Os 100 Mais Lidos do Mundo</button>
           <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" onclick="app.filtrarPorCategoria('Autores Lusófonos Clássicos')">📜 Autores Lusófonos Clássicos</button>
           <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" onclick="app.filtrarPorCategoria('Literatura Angolana')">🇦🇴 Literatura Angolana</button>
           <button class="pill highlight-pill-africa" data-categoria="🎓 Teses & Trabalhos Universitários (UAN)" onclick="app.filtrarPorCategoria('🎓 Teses & Trabalhos Universitários (UAN)')">🎓 Teses & Trabalhos UAN</button>
@@ -759,7 +823,7 @@
 
     <div class="whatsapp-cards">
       <div id="card-comunidade" class="whatsapp-card hidden">
-        <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="ui.whatsapp.groupAlt" width="160" height="160" loading="lazy">
+        <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="ui.whatsapp.groupAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-grupo-whatsapp.svg'">
         <h3 data-i18n="ui.whatsapp.groupTitle"> Grupo Lino Livre</h3>
         <p data-i18n="ui.whatsapp.groupDesc">Converse, peça e recomende livros que quer ler.</p>
         <a id="link-card-comunidade" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
@@ -769,7 +833,7 @@
       </div>
 
       <div id="card-canal" class="whatsapp-card hidden">
-        <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="ui.whatsapp.channelAlt" width="160" height="160" loading="lazy">
+        <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="ui.whatsapp.channelAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-canal-whatsapp.svg'">
         <h3 data-i18n="ui.whatsapp.channelTitle"> Canal Livros e Cursos</h3>
         <p data-i18n="ui.whatsapp.channelDesc">Receba as novidades de livros e cursos gratuitos.</p>
         <a id="link-card-canal" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">

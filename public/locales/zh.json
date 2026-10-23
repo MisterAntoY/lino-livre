@@ -19,6 +19,11 @@
       "channelTitle": "关注 Lino Livre WhatsApp 频道",
       "addBook": "+ 添加书籍"
     },
+    "pwa": {
+      "installBtn": "安装应用",
+      "installTitle": "在手机或电脑上安装 Lino Livre",
+      "offlineMode": "离线模式：暂无网络连接，正在浏览本地缓存的内容与图书。"
+    },
     "goal": {
       "badge": "🎯 全球共同目标",
       "title": "迈向 1000 万本自由开放图书",
@@ -49,6 +54,7 @@
       "searchPlaceholder": "按标题或作者搜索……",
       "categories": "分类：",
       "all": "全部",
+      "catTop100": "🌟 全球最受瞩目的100本著作",
       "catGuides": "💻 指南与科技",
       "catClassics": "葡语经典",
       "catRomance": "小说",
@@ -313,7 +319,9 @@
       "Literatura Angolana": "安哥拉文学",
       "Literatura Africana Lusófona": "葡语非洲文学",
       "Poesia Africana": "非洲诗歌",
-      "Autores Lusófonos Clássicos": "经典葡语作家"
+      "Autores Lusófonos Clássicos": "经典葡语作家",
+      "🌟 Mais Lidos do Mundo": "🌟 全球最畅销与必读书籍",
+      "Mais Lidos do Mundo": "🌟 全球最畅销与必读书籍"
     },
     "areas": {
       "Tecnologia": "技术",
