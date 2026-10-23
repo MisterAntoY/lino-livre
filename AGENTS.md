@@ -538,7 +538,10 @@ Ambos os backends aplicam:
 - **Status das Tabelas Sincronizadas Parcialmente:**
   - `fontes`: 34 registros.
   - `categorias`: 20 registros.
+  - `autores`: 37.919 registros (100% dos autores sincronizados).
   - `cursos`: 8.541 registros.
+  - `livros`: Em migração keyset com checkpoint (600+ registros).
+  - `links_livros`: Em migração keyset com checkpoint (500+ registros).
 - **Script de Migração Parcial:** [`scripts/migrar_d1_para_supabase.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/migrar_d1_para_supabase.js).
 
 ---
