@@ -37,7 +37,8 @@ app.use('*', async (c, next) => {
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "frame-ancestors 'none'"
+      "frame-ancestors 'none'",
+      "upgrade-insecure-requests"
     ].join('; ')
   );
 });

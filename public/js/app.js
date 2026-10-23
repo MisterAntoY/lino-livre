@@ -2924,7 +2924,13 @@ const app = {
     }
     try {
       const parsed = new URL(trimmed);
-      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      if (parsed.hostname.toLowerCase().includes('africanstorybook.org')) {
+        return fallback;
+      }
+      if (parsed.protocol === 'http:') {
+        parsed.protocol = 'https:';
+      }
+      if (parsed.protocol === 'https:') {
         return this.escape(parsed.href);
       }
     } catch (_) {}
@@ -2941,6 +2947,14 @@ const app = {
     }
     try {
       const parsed = new URL(trimmed);
+      // African Storybook tem certificado SSL expirado e ficheiros inexistentes na origem
+      if (parsed.hostname.toLowerCase().includes('africanstorybook.org')) {
+        return fallback;
+      }
+      // Forçar HTTPS para evitar qualquer pedido inseguro / mixed content
+      if (parsed.protocol === 'http:') {
+        parsed.protocol = 'https:';
+      }
       if (parsed.protocol === 'https:') {
         return this.escape(`/api/capas?u=${encodeURIComponent(parsed.href)}`);
       }
