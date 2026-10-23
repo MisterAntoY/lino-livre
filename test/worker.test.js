@@ -1241,4 +1241,35 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.ok(['CLOSED', 'OPEN', 'HALF_OPEN'].includes(json.backends.d1.state));
     });
   });
+
+  describe('Cenário 13: Rotas de Navegação com Agência (Agentic Web: llms.txt e ai-catalog.json)', () => {
+    test('13.1 - GET /llms.txt no Worker responde 200 com text/markdown e cabeçalho H1', async () => {
+      const res = await workerRequest('/llms.txt', { method: 'GET' });
+      assert.equal(res.status, 200);
+      const ct = res.headers.get('content-type') || '';
+      assert.ok(ct.includes('text/markdown') || ct.includes('text/plain'));
+      const text = await res.text();
+      assert.ok(text.includes('# Lino Livre'));
+    });
+
+    test('13.2 - GET /llms-full.txt no Worker responde 200 com documentação técnica', async () => {
+      const res = await workerRequest('/llms-full.txt', { method: 'GET' });
+      assert.equal(res.status, 200);
+      const text = await res.text();
+      assert.ok(text.includes('# Lino Livre'));
+    });
+
+    test('13.3 - GET /.well-known/ai-catalog.json e /ai-catalog.json respondem 200 com ARD schema', async () => {
+      const res1 = await workerRequest('/.well-known/ai-catalog.json', { method: 'GET' });
+      assert.equal(res1.status, 200);
+      const json1 = await res1.json();
+      assert.equal(json1.name, 'Lino Livre');
+      assert.equal(json1.specVersion, '1.0.0');
+
+      const res2 = await workerRequest('/ai-catalog.json', { method: 'GET' });
+      assert.equal(res2.status, 200);
+      const json2 = await res2.json();
+      assert.equal(json2.name, 'Lino Livre');
+    });
+  });
 });
