@@ -307,6 +307,26 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - Carregamento assíncrono das fontes Han chinesas (*Noto Sans SC* / *Noto Serif SC*) estritamente sob demanda ao selecionar o idioma chinês (`zh`), economizando ~50 KB e dezenas de conexões em idiomas ocidentais.
   - Reserva de layout (`.btn-agendado`) no cabeçalho para botões de comunidade/canal, eliminando Cumulative Layout Shift (CLS = 0).
 
+### 2.19. Diagnóstico Profundo e Eliminação dos Avisos de Consumo da Cloudflare D1
+- **Investigação e Métricas Reais do Incidente:**
+  - `wrangler d1 info lino-livre-db`: Base de dados com **126 MB**, **104.848 livros** e **19 tabelas**.
+  - O relatório apontou **1.180.515 linhas lidas em 24h (23.61% da cota diária)** e **75.995 linhas gravadas (76.00% da cota de escrita)**.
+  - A Cloudflare envia e-mails de alerta automáticos ao cruzar os limites de 20% (1 milhão de leituras) e 75% de escritas diárias.
+- **Causas Raízes Identificadas:**
+  1. **Disparo Automático do Cron Noturno (`10 0 * * *`):** A função `recomputarEstatisticas` executava 8 varreduras completas (*Full Table Scans*) de 104.848 linhas todas as noites (838.784 leituras) e apagava/regravava mais de 70.000 linhas em `autor_totais` (75.995 escritas), mesmo sem haver nenhuma alteração de obras naquele dia.
+  2. **Brecha de Cache Bypass com `Cache-Control: no-cache`:** Clientes anônimos ou bots que enviassem cabeçalhos `no-cache` forçavam leituras desnecessárias na D1 ignorando o cache em memória.
+  3. **Varredura por Paginação Profunda (*Deep Offset Scanning*):** Scrapers e crawlers que percorriam páginas profundas sequenciais (`?pagina=100`, `pagina=500`, `pagina=4000`) forçavam o SQLite a percorrer e descartar milhares de linhas do índice B-Tree a cada requisição.
+  4. **Rastreadores Agressivos em APIs:** Bots comerciais (Bytespider, Ahrefs, PetalBot, SemrushBot) ignorando `robots.txt` e requisitando repetidamente rotas `/api/*`.
+- **Soluções de Engenharia Implementadas e Auditadas:**
+  1. **Recálculo Inteligente e Incremental:** O cron diário verifica os marcadores `versao_mutacoes` e `versao_calculada`. Se não houve mutações no acervo, a rotina encerra imediatamente (4 leituras e 0 escritas, contra 838k leituras e 76k escritas anteriores).
+  2. **Rastreamento Atômico de Mutações (`registrarMutacaoAcervo`):** Somente mutações reais (`POST /api/livros`, `DELETE /api/livros`, importações de lote) incrementam a versão para recomputação programada ou via `POST /api/admin/recalcular-estatisticas`.
+  3. **Guardrail de Paginação Profunda:** Navegação sequencial sem filtros limitada às primeiras 50 páginas (1.200 livros). Páginas superiores a 50 sem filtros retornam aviso educativo e payload vazio com cache de borda de 24h, sem tocar na D1.
+  4. **WAF Anti-Scraper de APIs:** Bloqueio imediato no WAF de borda (HTTP 403) para rastreadores agressivos conhecidos em rotas `/api/*`.
+  5. **Prevenção de Thundering Herd / Cache Stampede:** Variável `dashboardInFlight` unifica requisições concorrentes em uma única promessa.
+  6. **Cabeçalhos CDN Globais (`s-maxage=3600`):** Injeção de `s-maxage=3600` e `stale-while-revalidate=86400` em rotas públicas, permitindo cache nos POPs globais da Cloudflare.
+  7. **Ferramenta de Diagnóstico Automatizada:** Script `scripts/diagnostico_consumo_trafego.js` e comando `npm run diagnostico`.
+  8. **Ampliação da Suíte de Testes:** Criação de `test/d1_quota_consumption.test.js`, `test/supabase_consumption_traffic.test.js` e `test/traffic_and_monitoring.test.js`, elevando a cobertura de 145 para **178 testes automatizados (100% passando)**.
+
 ---
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
