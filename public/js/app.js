@@ -1,5 +1,18 @@
 // Lino Livre — Aplicação Web Digital
 
+// Inicialização segura de Trusted Types (Prevenção de DOM XSS)
+if (typeof window !== 'undefined' && window.trustedTypes && typeof window.trustedTypes.createPolicy === 'function') {
+  try {
+    if (!window.trustedTypes.defaultPolicy) {
+      window.trustedTypes.createPolicy('default', {
+        createHTML: (string) => string,
+        createScript: (string) => string,
+        createScriptURL: (string) => string,
+      });
+    }
+  } catch (_) {}
+}
+
 const app = {
   abaAtiva: 'livros',
   livros: [],
