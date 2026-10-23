@@ -393,7 +393,7 @@
             <button class="btn btn-goal-share" onclick="app.compartilharMeta10M()">
               <span></span> <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
             </button>
-            <a class="btn btn-goal-whatsapp hidden" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
+            <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
               <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
               <span data-i18n="ui.goal.btnJoin">Comunidade</span>
             </a>
@@ -430,24 +430,27 @@
           <button class="pill-destaque-tab" data-tipo="tech" onclick="app.trocarAbaDestaques('tech')" data-i18n="ui.books.highlightsTech">💻 Manuais de Tecnologia</button>
         </div>
 
-        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva) -->
+        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
         <div class="destaques-grid" id="grade-destaques">
-          <div class="loading" style="padding: 2rem 0;" data-i18n="ui.books.highlightsLoading">Carregando obras em destaque...</div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
         </div>
       </div>
     </section>
 
-    <!-- Filtros e Busca -->
+    <!-- Filtros e Busca com Anotações WebMCP para Agentes de IA -->
     <section class="container filter-section">
-      <div class="search-bar-wrap">
+      <form id="form-busca-livros" role="search" toolname="buscar_livros" tooldescription="Pesquisar livros digitais no acervo aberto do Lino Livre por título da obra, autor, assunto ou tema" onsubmit="event.preventDefault(); app.buscarComDebounce();" class="search-bar-wrap">
         <div class="search-bar">
-          <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()">
+          <input type="search" id="filtro-busca" name="q" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()" toolparamdescription="Termo de pesquisa para buscar no acervo aberto (título, autor ou tema)">
         </div>
-        <button class="btn btn-federada" id="btn-busca-federada" onclick="app.alternarBuscaFederada()" title="Consultar catálogos globais em paralelo (Fase 4)">
+        <button type="button" class="btn btn-federada" id="btn-busca-federada" onclick="app.alternarBuscaFederada()" title="Consultar catálogos globais em paralelo (Fase 4)">
           <span class="fed-icon">🌐</span>
           <span data-i18n="ui.books.federatedSearch">Busca Global</span>
         </button>
-      </div>
+      </form>
 
       <!-- Resultados da Busca Federada Global (Fase 4 — motor distribuído RRF) -->
       <div id="painel-federada" class="federada-panel hidden">
