@@ -124,6 +124,7 @@ async function verificarAdminWorker(c: any, next: any) {
 
 // Cache em memória para estatísticas de dashboard para economizar cotas de leitura da D1
 let cachedDashboard: { data: any; timestamp: number } | null = null;
+let dashboardInFlight: Promise<any> | null = null;
 const DASHBOARD_CACHE_TTL = 10 * 60 * 1000; // 10 minutos
 
 // ────────────────────────────────────────────────────────────
@@ -236,14 +237,23 @@ app.get('/api/dashboard', async (c) => {
     return c.json(cachedDashboard.data);
   }
 
-  try {
+  // Prevenção de Thundering Herd / Cache Stampede:
+  // Requisições concorrentes aguardam a mesma consulta em andamento em vez de disparar leituras simultâneas na D1
+  if (!noCache && dashboardInFlight) {
+    try {
+      const payload = await dashboardInFlight;
+      c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
+      return c.json(payload);
+    } catch (_) {}
+  }
+
+  const carregarDadosDashboard = async () => {
     const repo = repoSupabase(c);
     if (repo) {
       try {
         const payload = await repo.dashboard();
-        cachedDashboard = { data: payload, timestamp: now };
-        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-        return c.json(payload);
+        cachedDashboard = { data: payload, timestamp: Date.now() };
+        return payload;
       } catch (err) {
         console.error('Supabase dashboard falhou; a usar D1:', err);
       }
@@ -297,7 +307,13 @@ app.get('/api/dashboard', async (c) => {
       mais_lidos: maisLidosRes.results || []
     };
 
-    cachedDashboard = { data: payload, timestamp: now };
+    cachedDashboard = { data: payload, timestamp: Date.now() };
+    return payload;
+  };
+
+  try {
+    dashboardInFlight = carregarDadosDashboard();
+    const payload = await dashboardInFlight;
     c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
     return c.json(payload);
   } catch (err: any) {
@@ -319,6 +335,8 @@ app.get('/api/dashboard', async (c) => {
         total_fontes: 32
       }
     }, 503);
+  } finally {
+    dashboardInFlight = null;
   }
 });
 

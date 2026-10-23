@@ -23,6 +23,8 @@ const PRECACHE_ASSETS = [
   '/legal.html',
   '/termos.html',
   '/css/style.css',
+  '/fonts/lora-latin-var.woff2',
+  '/fonts/lora-italic-latin-var.woff2',
   '/js/app.js',
   '/js/i18n.js',
   '/manifest.webmanifest',

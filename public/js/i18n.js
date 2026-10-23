@@ -37,6 +37,20 @@
       return this.lang;
     },
 
+    // Fontes chinesas (Noto Sans SC / Noto Serif SC) apenas quando o idioma é zh.
+    // Anti-CLS + anti-desperdício: ~50 KB de @font-face e dezenas de subconjuntos han
+    // deixam de pesar em cada visita em português/inglês/etc.
+    garantirFontesZh() {
+      if (this._fontesZh) return;
+      this._fontesZh = true;
+      try {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap';
+        document.head.appendChild(link);
+      } catch (_) {}
+    },
+
     detectarIdioma() {
       // 1. ?lang= na URL tem prioridade (links compartilhados por idioma)
       try {
@@ -84,6 +98,8 @@
       this.lang = (d.meta && d.meta.code) || code;
       this.dict = d;
       this.carregado = true;
+
+      if (this.lang === 'zh' || code === 'zh') this.garantirFontesZh();
 
       this.aplicarDocumento();
       this.notificar();

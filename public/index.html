@@ -261,11 +261,14 @@
             <option value="fr">Français</option>
           </select>
         </div>
-        <a id="btn-header-comunidade" class="btn btn-whatsapp hidden" href="#" target="_blank" rel="noopener noreferrer" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
+        <!-- btn-agendado: reserve a largura final do cabeçalho (visibility) em vez de display:none,
+             para que a ativação via /api/comunidade e /api/canal não desloque os botões vizinhos (cls).
+             app.js troca a classe e remove aria-hidden/tabindex quando os URLs chegam. -->
+        <a id="btn-header-comunidade" class="btn btn-whatsapp btn-agendado" href="#" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.header.group">Grupo</span>
         </a>
-        <a id="btn-header-canal" class="btn btn-whatsapp-outline hidden" href="#" target="_blank" rel="noopener noreferrer" data-i18n-title="ui.header.channelTitle" title="Seguir o canal Lino Livre no WhatsApp">
+        <a id="btn-header-canal" class="btn btn-whatsapp-outline btn-agendado" href="#" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.channelTitle" title="Seguir o canal Lino Livre no WhatsApp">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.header.channel">Canal</span>
         </a>
@@ -328,7 +331,7 @@
 
         <!-- Barra de Progresso Visual e Marcos Históricos -->
         <div class="goal-progress-wrapper">
-          <div class="goal-progress-bar-bg" role="progressbar" aria-valuenow="997" aria-valuemin="0" aria-valuemax="10000000" id="placar-progressbar-container">
+          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="997" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="997 de 10.000.000 obras catalogadas" id="placar-progressbar-container">
             <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 1%;"></div>
           </div>
           

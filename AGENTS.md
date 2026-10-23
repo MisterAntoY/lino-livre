@@ -239,6 +239,74 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - Scripts de importação em lote (`scripts/fase3_orquestrador_acervo.mjs`) operam com lotes controlados de até 5.000 obras por lote.
   - Ingestões diárias devem respeitar o teto de 80.000 inserções por dia para manter 20% de margem de segurança na D1.
 
+### 2.16. Resolução da Exibição dos 100 Livros Mais Lidos do Mundo (`world-top100` e `world-hist`)
+- **Problema Reportado pelo Usuário:** Ao clicar na pílula *"🌟 Os 100 Mais Lidos do Mundo"* no catálogo frontend, a interface retornava *"Nenhum livro encontrado para os filtros selecionados."* (conforme imagem enviada pelo usuário).
+- **Causa Raiz Identificada:**
+  - O botão no frontend enviava `categoria_id="🌟 Mais Lidos do Mundo"`.
+  - No banco de dados (`categorias`), não existia uma categoria com o nome literal `"🌟 Mais Lidos do Mundo"` (as obras pertencem a categorias temáticas como *Romance & Crônicas* e *Apoio Pedagógico & Filosofia*, e são identificadas por `fonte_id_externo LIKE 'world-%'`: 100 livros de ranking comercial `world-top100-1` a `world-top100-100` e 5 obras de circulação universal histórica `world-hist-1` a `world-hist-5`).
+  - Tanto no Express (`src/controllers/livrosController.js`) quanto no Cloudflare Worker (`workers/src/index.ts`), categorias não encontradas na tabela geravam `1=0`, resultando em 0 obras encontradas.
+- **Decisão e Resolução de Engenharia:**
+  1. **Detecção e Mapeamento de Coleção Especial (`isTop100`):**
+     - No backend Express (`livrosController.js`) e no Cloudflare Worker (`workers/src/index.ts`), requisições com `categoria_id` contendo `"Mais Lidos"`, `"🌟 Mais Lidos do Mundo"`, `"top100"`, ou com o parâmetro `colecao=top100`, ativam a filtragem direta pela coleção:
+       ```sql
+       (l.fonte_id_externo LIKE 'world-%')
+       ```
+  2. **Ordenação pelo Ranking Oficial Histórico:**
+     - Ao filtrar pelos Mais Lidos do Mundo, a cláusula `ORDER BY` prioriza a ordem exata da lista histórica e do ranking comercial de `OS-100-LIVROS-MAIS-LIDOS-DO-MUNDO.md`:
+       ```sql
+       CASE 
+         WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 0 
+         WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
+         ELSE 9999 
+       END ASC, l.leituras DESC, l.titulo ASC
+       ```
+     - As obras aparecem na ordem consagrada: #1 *Um Conto de Duas Cidades*, #2 *O Pequeno Príncipe*, #3 *O Senhor dos Anéis*, #4 *O Alquimista*, #5 *Harry Potter e a Pedra Filosofal*, até #100 *Kokoro*.
+  3. **Inclusão de `fonte_id_externo` nas Consultas e Badges Visuais:**
+     - A coluna `l.fonte_id_externo` foi adicionada ao `SELECT` paginado em ambos os backends.
+     - No frontend (`public/js/app.js`), cada cartão da coleção exibe badge dourado dedicado: `🌟 #X Mais Lido do Mundo` ou `🌟 Clássico Universal`.
+  4. **Internacionalização em 7 Idiomas:**
+     - Adicionada a chave `catTop100` em `pt`, `pt-br`, `en`, `es`, `fr`, `de`, `zh`, garantindo tradução perfeita da pílula.
+  5. **Cobertura de Testes Automatizados TDD:**
+     - `test/api.test.js`: Teste 33 validando retorno das 105 obras, ordenação pelo ranking, busca interna e filtros combinados por idioma.
+     - `test/worker.test.js`: Cenário 10 com 2 testes validando o comportamento na Cloudflare D1.
+     - Suíte completa: 173/173 testes passando (100% verde).
+
+### 2.17. Implementação do PWA (Progressive Web App) e Suporte Offline para Estudantes
+- **Decisão:** Tornar o Lino Livre uma aplicação web progressiva (PWA) instalável em dispositivos móveis (Android, iOS, Tablets) e desktops, com funcionamento resiliente sob conectividade instável ou nula nos PALOP e no Brasil.
+- **Estrutura Implementada:**
+  1. **Web App Manifest (`public/manifest.webmanifest` & `manifest.json`):**
+     - Compatível com a especificação W3C PWA: `id: "/"`, `name: "Lino Livre — Plataforma Aberta de Conhecimento"`, `short_name: "Lino Livre"`, `theme_color: "#10b981"`, `background_color: "#0f172a"`, `display: "standalone"`.
+     - Ícones de alta resolução gerados (`icon-192.png`, `icon-512.png`, `icon-maskable-192.png`, `icon-maskable-512.png`, `apple-touch-icon.png` e SVG vetorial).
+     - Atalhos rápidos (`shortcuts`) para Catálogo de Livros, Cursos Gratuitos, Cartaz Escolar e Dicas de Estudo.
+  2. **Service Worker (`public/sw.js`):**
+     - Pré-cache do App Shell (`/`, `/index.html`, `/offline.html`, `/comunidade.html`, `/creditos.html`, `/legal.html`, `/termos.html`, CSS, JS e fontes WOFF2 locais).
+     - Estratégia **Network-First** com fallback gracioso para cache e tela dedicada `/offline.html`.
+     - Estratégia **Stale-While-Revalidate** para APIs públicas de leitura (`/api/dashboard`, `/api/categorias`, `/api/fontes`, `/api/dicas`).
+     - Estratégia **Cache-First** para fontes tipográficas locais e imagens de capas.
+  3. **Página Dedicada de Fallback Offline (`public/offline.html`):**
+     - Interface amigável informando a falta de internet com detecção de reconexão (`window.addEventListener('online')`), botão para tentar reconectar e acesso rápido a conteúdos em cache.
+  4. **Frontend & Experiência do Usuário (`public/js/app.js`):**
+     - Registro do Service Worker no ciclo de vida da página.
+     - Captura do evento `beforeinstallprompt` com exibição de botão nativo de instalação (`#btn-instalar-app`).
+     - Detecção de rede com notificação dinâmica via `#banner-offline`.
+     - Tipografia `Lora` auto-hospedada em WOFF2 (`font-display: optional`), prevenindo Layout Shifts (CLS) e eliminando dependência de CDN externa no modo offline.
+  5. **Configuração de Cabeçalhos e Rotas nos Servidores:**
+     - Express e Cloudflare Workers configurados para servir `/sw.js` com `Service-Worker-Allowed: /` e `Cache-Control: no-cache, no-store, must-revalidate`.
+     - Manifest servido com `Content-Type: application/manifest+json; charset=utf-8`.
+  6. **Testes Automatizados PWA (`test/pwa.test.js`):**
+     - Suíte dedicada com 8 testes validando integridade do manifest, cabeçalhos do Service Worker, escopo, arquivos físicos de ícones e chaves de i18n em 7 idiomas.
+
+### 2.18. Otimização de Performance, Acessibilidade (a11y) e Mitigação de Cache Stampede
+- **Mitigação de Thundering Herd / Cache Stampede na D1:**
+  - Em `workers/src/index.ts`, a variável de controle `dashboardInFlight` garante que múltiplos cold starts ou requisições simultâneas em cache miss aguardem a mesma promessa em andamento em vez de disparar leituras simultâneas na Cloudflare D1.
+- **Acessibilidade Web (WCAG 2.1 AA):**
+  - Adição de `aria-label` descritivos e unívocos em todos os links e botões de leitura/download por formato (PDF, EPUB, TXT, HTML) contendo o título da obra.
+  - Indicadores semânticos `aria-valuenow` e `aria-valuetext` na barra de progresso da meta dos 10 milhões de livros.
+  - Ajuste de contraste tipográfico no rodapé (`#334155` e `#475569`) sobre fundos claros, eliminando alertas de contraste insuficiente.
+- **Carregamento Otimizado de Fontes Internacionais:**
+  - Carregamento assíncrono das fontes Han chinesas (*Noto Sans SC* / *Noto Serif SC*) estritamente sob demanda ao selecionar o idioma chinês (`zh`), economizando ~50 KB e dezenas de conexões em idiomas ocidentais.
+  - Reserva de layout (`.btn-agendado`) no cabeçalho para botões de comunidade/canal, eliminando Cumulative Layout Shift (CLS = 0).
+
 ---
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
