@@ -462,6 +462,23 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - Execução de consultas analíticas e buscas vetoriais no próprio navegador do usuário através de **DuckDB WASM**.
   - O motor DuckDB WASM executa requisições HTTP Range (`Range: bytes=start-end`), baixando apenas as páginas de colunas específicas solicitadas pelo usuário (título, autor, link 302), consumindo **ZERO computação do servidor** e operando com custo **$0.00 perpétuo**.
 
+### 2.29. Conclusão do Marco 1 (1.000 Obras) e Ingestão de 1.000 Monografias Acadêmicas do DOAB (2.000 Obras Consolidadas)
+- **Marco 1 Oficialmente Atingido:**
+  - Inclusão dos clássicos lusófonos em Domínio Público universal: *Os Maias* (Eça de Queirós, 1888, ID 998), *Memorial de Aires* (Machado de Assis, 1908, ID 999) e *A Ilustre Casa de Ramires* (Eça de Queirós, 1900, ID 1000) em [`src/database/textosObras.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/database/textosObras.js).
+  - Capas vetoriais SVG de alta fidelidade geradas em [`public/capas/`](file:///Users/mendes/Desktop/I%20am%20Abc/public/capas/).
+  - Conclusão exata das 1.000 obras fundacionais.
+- **Ingestão Acadêmica do DOAB (Fases 3 e 4 - Rumo ao Marco 2):**
+  - Curadoria e catalogação de **1.000 monografias científicas peer-reviewed** do Directory of Open Access Books ([`src/database/doabSeedData.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/database/doabSeedData.js)) publicadas por editoras universitárias de prestígio internacional (Imprensa da Universidade de Coimbra, SciELO Books, Fiocruz, UNAM, UCL Press, TU Delft, Oxford e Cambridge Open).
+  - Distribuição linguística: 222 obras em Português, 415 em Espanhol e 363 em Inglês/Francês.
+  - Conformidade estrita com a Regra 4 de Domínio Público: `conteudo_texto = NULL` para todas as obras contemporâneas; acesso integral provido unicamente por redirecionamento HTTP 302 seguro para as fontes abertas oficiais.
+  - Criação de capas acadêmicas vetoriais em SVG ([`public/capas/academic/academic_*.svg`](file:///Users/mendes/Desktop/I%20am%20Abc/public/capas/academic/)).
+- **Sincronização do Hodômetro e Métricas Reais:**
+  - Acervo local consolidado: **2.000 livros abertos**, **8.568 cursos gratuitos**, **1.353 autores**, **36 fontes aprovadas** e **20 categorias**.
+  - Hodômetro `#placar-total-livros` atualizado para **2.000** (0.0200% da grande meta de 10.000.000).
+  - Marco 1 (1.000) comemorado com a classe `reached`; Marco 2 (10.000) promovido a `active` com tag "Próximo marco" e meta imediata definida para 10.000.
+  - Faltam exatamente 8.000 obras para atingir o Marco 2 e 9.998.000 para a grande meta global.
+  - Suíte automatizada mantida em **100% verde** (211 testes em 44 suítes) e TypeScript sem erros.
+
 ---
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
