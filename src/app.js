@@ -81,7 +81,7 @@ app.use((req, res, next) => {
   if (SCANNERS_RE.test(ua)) {
     return res.status(403).json({ erro: 'Acesso bloqueado por política de segurança (WAF).' });
   }
-  if (PROBE_PATHS_RE.test(req.path)) {
+  if (PROBE_PATHS_RE.test(caminhoDecodificado(req.path))) {
     return res.status(404).send('Not Found');
   }
   next();
@@ -134,8 +134,10 @@ app.use('/api/podcasts/episodios/:id/ouvir', limitadorReproducao);
 app.use('/api/livros/:id/ler/:linkId', limitadorLeitura);
 
 // ==================== PAYLOAD LIMITS ====================
+// A API só aceita JSON; `extended: false` evita o parser de objetos aninhados
+// do qs (superfície de prototype pollution) e `parameterLimit` limita o custo.
 app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+app.use(express.urlencoded({ extended: false, limit: '1mb', parameterLimit: 100 }));
 
 // ==================== ROTAS PWA & SERVICE WORKER ====================
 app.get('/sw.js', (req, res) => {
@@ -187,12 +189,34 @@ app.get('/ai-catalog.json', (req, res) => {
 // registadas antes deste guard e continuam acessíveis.
 const ARQUIVOS_NUNCA_SERVIDOS = /\.(pdf|epub|mobi|azw3?|mp3|mp4|wav|ogg|flac|txt)$/i;
 
+/**
+ * Decodifica o caminho antes de o inspecionar. O `express.static` descodifica
+ * `%2e` e serve o ficheiro real; sem esta normalização, `/obra%2Epdf`
+ * contornava o guard de "zero armazenamento" (CWE-180 / bypass de validação).
+ * Descodifica no máximo 3 vezes para apanhar dupla/tripla codificação.
+ */
+function caminhoDecodificado(caminho) {
+  let atual = String(caminho || '');
+  for (let i = 0; i < 3; i++) {
+    let proximo;
+    try {
+      proximo = decodeURIComponent(atual);
+    } catch (_) {
+      break;
+    }
+    if (proximo === atual) break;
+    atual = proximo;
+  }
+  return atual.replace(/\\/g, '/');
+}
+
 app.use((req, res, next) => {
+  const caminho = caminhoDecodificado(req.path);
   // Metadados de segurança e ficheiros de política não são obras.
-  if (req.path.startsWith('/.well-known/') || req.path === '/robots.txt' || req.path === '/ads.txt') {
+  if (caminho.startsWith('/.well-known/') || caminho === '/robots.txt' || caminho === '/ads.txt') {
     return next();
   }
-  if (ARQUIVOS_NUNCA_SERVIDOS.test(req.path)) {
+  if (ARQUIVOS_NUNCA_SERVIDOS.test(caminho)) {
     return res.status(404).json({
       erro: 'O Lino Livre não armazena nem serve ficheiros de obras. Utilize o link de redirecionamento para a fonte externa.'
     });
@@ -201,8 +225,10 @@ app.use((req, res, next) => {
 });
 
 // ==================== ESTÁTICOS COM CACHE ====================
+// `dotfiles: 'ignore'`: ficheiros ocultos em public/ nunca são servidos por
+// acidente. Os ficheiros de /.well-known/ têm rotas explícitas acima.
 app.use(express.static(path.join(__dirname, '../public'), {
-  dotfiles: 'allow',
+  dotfiles: 'ignore',
   maxAge: '1d',
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('sw.js')) {

@@ -162,6 +162,14 @@ function sanitizarFts5(termo: string | undefined | null): string | null {
   return unicos.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
 }
 
+/**
+ * Escapa os metacaracteres de LIKE. Sem isto, `busca=%a%b%c...` transforma o
+ * filtro num varrimento com múltiplos wildcards (DoS de CPU na D1).
+ */
+function escaparLike(valor: any): string {
+  return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
+}
+
 function timingSafeEqualStr(a: string, b: string): boolean {
   if (typeof a !== 'string' || typeof b !== 'string') return false;
   // Comparação de comprimento variável sem saída antecipada (evita revelar o
@@ -178,6 +186,9 @@ function timingSafeEqualStr(a: string, b: string): boolean {
 // Middleware de Autenticação Administrativa para Rotas de Escrita
 // ────────────────────────────────────────────────────────────
 async function verificarAdminWorker(c: any, next: any) {
+  // Respostas administrativas nunca podem ser guardadas em caches
+  // intermédios — nem as de erro (401), que também revelam a existência da rota.
+  c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   const adminKey = c.env.ADMIN_API_KEY || null;
   const headerKey = c.req.header('x-admin-key');
   const authHeader = c.req.header('authorization');
@@ -213,9 +224,10 @@ function resposta429(c: any, retrySegundos: number): any {
 }
 
 async function limitarRequisicao(c: any, escopo: string, max: number, janelaMs = 60_000): Promise<any | null> {
-  const ip = c.req.header('cf-connecting-ip')
-    || c.req.header('x-real-ip')
-    || 'desconhecido';
+  // CF-Connecting-IP é injetado pela Cloudflare e não pode ser forjado pelo
+  // cliente. Não usar X-Real-IP: é um cabeçalho arbitrário e permitiria
+  // contornar o limite quando o Worker é servido através de outro proxy.
+  const ip = c.req.header('cf-connecting-ip') || 'desconhecido';
   const chave = `${escopo}:${ip}`;
 
   // 1) Binding nativo da Cloudflare (se configurado): limite distribuído entre
@@ -623,8 +635,8 @@ app.get('/api/autores', async (c) => {
       query += ' WHERE a.nome = ? COLLATE NOCASE';
       params.push(nomeExato);
     } else if (busca) {
-      query += ' WHERE a.nome LIKE ?';
-      params.push(`%${busca}%`);
+      query += " WHERE a.nome LIKE ? ESCAPE '\\'";
+      params.push(`%${escaparLike(busca)}%`);
     }
 
     query += ' ORDER BY a.nome ASC';
@@ -632,9 +644,9 @@ app.get('/api/autores', async (c) => {
     // Limite por omissão: sem ele, a rota devolvia os ~37.919 autores numa
     // só resposta (dezenas de milhares de linhas lidas). A paginação
     // (?limit / ?page) continua disponível para quem precisar de mais.
-    const limit = Math.min(Math.max(parseInt(limitParam || '500', 10), 1), 500);
+    const limit = Math.min(Math.max(parseInt(limitParam || '500', 10) || 500, 1), 500);
     if (limitParam || pageParam) {
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -939,7 +951,8 @@ app.get('/api/livros/destaques', async (c) => {
       data: livros
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao obter livros em destaque: ' + err.message }, 500);
+    console.error('Erro ao obter livros em destaque:', err);
+    return c.json({ erro: 'Erro ao obter livros em destaque' }, 500);
   }
 });
 
@@ -1873,8 +1886,8 @@ app.get('/api/cursos', async (c) => {
       params.push(nivel);
     }
     if (plataforma) {
-      query += ' AND plataforma LIKE ?';
-      params.push(`%${plataforma}%`);
+      query += " AND plataforma LIKE ? ESCAPE '\\'";
+      params.push(`%${escaparLike(plataforma)}%`);
     } else if (fonte && (fonte.toLowerCase() === 'guiadeti' || fonte.toLowerCase() === 'guia de ti')) {
       query += ' AND plataforma LIKE ?';
       params.push('%Guia de TI%');
@@ -1888,8 +1901,8 @@ app.get('/api/cursos', async (c) => {
       params.push('%certifica%', '%certifica%');
     }
     if (busca && busca.trim()) {
-      const termo = `%${busca.trim()}%`;
-      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      const termo = `%${escaparLike(busca.trim())}%`;
+      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
       params.push(termo, termo, termo);
     }
 
@@ -1898,8 +1911,8 @@ app.get('/api/cursos', async (c) => {
     const limitParam = filtros.limit || filtros.limite;
     const pageParam = filtros.page || filtros.pagina;
     if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -1934,16 +1947,16 @@ app.get('/api/roadmaps', async (c) => {
     const params: any[] = [];
 
     if (plataforma) {
-      query += ' AND plataforma LIKE ?';
-      params.push(`%${plataforma}%`);
+      query += " AND plataforma LIKE ? ESCAPE '\\'";
+      params.push(`%${escaparLike(plataforma)}%`);
     }
     if (area) {
       query += ' AND area = ?';
       params.push(area);
     }
     if (busca && busca.trim()) {
-      const termo = `%${busca.trim()}%`;
-      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      const termo = `%${escaparLike(busca.trim())}%`;
+      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
       params.push(termo, termo, termo);
     }
 
@@ -1952,8 +1965,8 @@ app.get('/api/roadmaps', async (c) => {
     const limitParam = filtros.limit || filtros.limite;
     const pageParam = filtros.page || filtros.pagina;
     if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -2030,7 +2043,8 @@ app.post('/api/cursos', verificarAdminWorker, async (c) => {
     try {
       urlValida = validarUrlRedirecionamento(url);
     } catch (err: any) {
-      return c.json({ erro: 'URL do curso inválida ou não autorizada: ' + err.message }, 400);
+      console.error('URL de curso inválida:', err?.message);
+      return c.json({ erro: 'URL do curso inválida ou não autorizada' }, 400);
     }
 
     const db = c.env.DB;
@@ -2169,13 +2183,13 @@ app.get('/api/podcasts', async (c) => {
     const params: any[] = [];
 
     if (categoria && categoria.trim()) {
-      query += ` AND s.categoria LIKE ?`;
-      params.push(`%${categoria.trim()}%`);
+      query += ` AND s.categoria LIKE ? ESCAPE '\\'`;
+      params.push(`%${escaparLike(categoria.trim())}%`);
     }
 
     if (busca && busca.trim()) {
-      query += ` AND (s.titulo LIKE ? OR s.descricao LIKE ?)`;
-      const term = `%${busca.trim()}%`;
+      query += ` AND (s.titulo LIKE ? ESCAPE '\\' OR s.descricao LIKE ? ESCAPE '\\')`;
+      const term = `%${escaparLike(busca.trim())}%`;
       params.push(term, term);
     }
 
@@ -2605,6 +2619,36 @@ const servirAiCatalogWorker = async (c: any) => {
 
 app.get('/.well-known/ai-catalog.json', servirAiCatalogWorker);
 app.get('/ai-catalog.json', servirAiCatalogWorker);
+
+// Divulgação responsável de vulnerabilidades (RFC 9116). O runtime de Assets
+// não serve ficheiros em diretórios ocultos por omissão, pelo que a rota tem
+// de existir explicitamente no Worker (em produção respondia 404).
+const SECURITY_TXT = [
+  'Contact: mailto:bv6alblu6@mozmail.com',
+  'Expires: 2027-10-23T00:00:00.000Z',
+  'Preferred-Languages: pt, en',
+  'Canonical: https://lino-livre.linolivre.workers.dev/.well-known/security.txt',
+  'Policy: https://lino-livre.linolivre.workers.dev/legal',
+  ''
+].join('\n');
+
+app.get('/.well-known/security.txt', async (c) => {
+  if (c.env.ASSETS) {
+    try {
+      const res = await c.env.ASSETS.fetch(c.req.raw);
+      if (res.ok) {
+        const newRes = new Response(res.body, res);
+        newRes.headers.set('Content-Type', 'text/plain; charset=utf-8');
+        newRes.headers.set('Cache-Control', 'public, max-age=86400');
+        return newRes;
+      }
+    } catch { /* usa o conteúdo embutido */ }
+  }
+  return c.text(SECURITY_TXT, 200, {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'public, max-age=86400'
+  });
+});
 
 // Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade
 app.get('/api/legal', (c) => {

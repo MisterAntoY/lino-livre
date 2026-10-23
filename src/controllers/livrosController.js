@@ -618,7 +618,8 @@ function destaques(req, res) {
       data: livros
     });
   } catch (err) {
-    return res.status(500).json({ erro: 'Erro ao obter livros em destaque: ' + err.message });
+    console.error('[livros.destaques]', err);
+    return res.status(500).json({ erro: 'Erro ao obter livros em destaque' });
   }
 }
 

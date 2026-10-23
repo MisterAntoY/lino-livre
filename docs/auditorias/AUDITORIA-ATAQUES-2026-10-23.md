@@ -239,10 +239,56 @@ Os seis riscos que estavam aceites na primeira entrega foram corrigidos e cobert
 
 ---
 
-## 7. Como reproduzir
+## 9. Terceira ronda — reauditoria independente (2026-10-24)
+
+Nova passagem completa sobre o estado do PR, sem assumir que a ronda anterior estava correta: revisão estática de todos os controladores, serviços, middlewares e Worker; duas sondas dinâmicas novas (66 asserções no Express em `NODE_ENV=production` e 45 no Worker com D1/Cache API simulados); e verificação black-box de produção.
+
+### Achados corrigidos nesta ronda
+
+| ID | Severidade | Achado | Correção |
+| :--- | :--- | :--- | :--- |
+| AUD-01 | **Média** | `GET /api/autores` (Express) devolvia **todos** os autores (37.919 em produção) numa única resposta; o parâmetro `?nome=` usado pelo frontend era ignorado. Enumeração em massa + leitura desnecessária da BD. | Limite por omissão de 100 (máx. 500, página máx. 2000), `?nome=` com correspondência exacta `COLLATE NOCASE` (usa o índice) e contagem apenas dos autores devolvidos (`idx_livros_autor`), em vez de `LEFT JOIN` sobre toda a tabela de livros. Paridade com o Worker. |
+| AUD-02 | **Média** | `LIKE '%termo%'` sem escape de `%`/`_` em autores (Express + Worker), cursos, roadmaps e podcasts. `?busca=%a%b%c…` força varrimentos com múltiplos wildcards (CPU). | `escaparLike()` (limite de 120 caracteres, `ESCAPE '\'`) em todas as buscas `LIKE`, nos dois runtimes. |
+| AUD-03 | **Média** | Bypass do guard de "zero armazenamento": `/obra%2Epdf` era descodificado pelo `express.static` e servido com `200 application/pdf`, apesar de `/.pdf` directo devolver 404. | `caminhoDecodificado()` (até 3 descodificações, normaliza `\`) aplicado ao guard de extensões e ao WAF de sondas; testes cobrem codificação simples e dupla. |
+| AUD-04 | **Baixa** | `express.static({ dotfiles: 'allow' })` servia qualquer ficheiro oculto colocado em `public/`. | `dotfiles: 'ignore'`; `/.well-known/*` continua servido por rotas explícitas. |
+| AUD-05 | **Baixa** | `err.message` devolvido ao cliente em `/api/livros/destaques` (Express + Worker) e `/api/cursos` (Express + Worker) — potenciais detalhes de SQL/infra. | Mensagem genérica ao cliente, detalhe apenas no `console.error`. |
+| AUD-06 | **Baixa** | `?limit=abc` produzia `NaN` em `LIMIT` no Worker (autores/cursos/roadmaps) → 500. | `parseInt(...) || default` e página limitada a 2000. |
+| AUD-07 | **Baixa** | Respostas `401` das rotas administrativas do Worker não tinham `Cache-Control: no-store` (só o corpo de sucesso tinha). | `no-store` aplicado no início de `verificarAdminWorker`, antes de qualquer `return`. |
+| AUD-08 | **Média (produção)** | `GET /.well-known/security.txt` devolvia **404 em produção**: o runtime de Assets não serve ficheiros de diretórios ocultos e não existia rota no Worker (ao contrário do `ai-catalog.json`). | Rota explícita no Worker com `ASSETS.fetch` + fallback embutido (RFC 9116), entrada em `public/_headers` e teste 13.4. |
+| AUD-09 | **Baixa** | O rate limiter do Worker aceitava `X-Real-IP` como alternativa a `CF-Connecting-IP`; num proxy intermédio o cabeçalho é forjável (CWE-348). | Removido o fallback; apenas `CF-Connecting-IP` ou `'desconhecido'`. |
+| AUD-10 | **Baixa** | `express.urlencoded({ extended: true })` ativava o parser de objetos aninhados do `qs` sem necessidade (a API é JSON). | `extended: false`, `parameterLimit: 100`. |
+
+### Verificações que passaram (sem alterações)
+
+- SSRF: 14 payloads no Express e 11 no Worker (IPv4/IPv6 não canónicos, decimal/hex, NAT64, mapeado, `nip.io`, credenciais embutidas, `file:`/`gopher:`) → todos 400/403 e **zero** pedidos ao servidor interno instrumentado.
+- IDOR: `/api/livros/:id/ler/:linkId` valida sempre `livro_id` **e** `link_id`; 404 para IDs cruzados/inexistentes.
+- Autenticação: 401 sem chave, 401 com chave errada, 401/431 com chave de 20 KB, **503 fail-closed** sem `ADMIN_API_KEY`.
+- CORS: leitura `*`; escrita/preflight de origem desconhecida → 403; origem permitida passa.
+- Turnstile: com segredo configurado e sem token → 403; `/api/config` não expõe o segredo.
+- Rate limit: 320 pedidos → 62 respostas 429 no Express e 20 no Worker; `X-Forwarded-For`/`X-Real-IP` não contornam.
+- Headers: HSTS, CSP com 4 hashes e sem `unsafe-inline` em `script-src`, XFO `DENY`, `nosniff`, COOP, Permissions-Policy, sem `X-Powered-By`.
+- Path traversal (`/%2e%2e/…`, `/..%2f…`), 404 real (sem soft-404), corpo de 2 MB → 413, `Content-Type` errado → 400.
+- Dependências: `npm audit --omit=dev` → **0 vulnerabilidades**.
+
+### Estado
+
+- **286 testes em 58 suítes, 100% verdes** (14 novos: 10 em `test/security_audit_round3.test.js` e 4 no Worker — testes 13.4 e 14.1–14.3).
+- `npx tsc --noEmit` limpo; `wrangler deploy --dry-run` OK.
+- Nota de deploy: a instância em produção ainda corre `main` (CSP com `'unsafe-inline' https:`, CORS de escrita devolvendo 401 em vez de 403, `security.txt` 404). Estas correções só produzem efeito após merge e deploy deste PR.
+
+### Riscos remanescentes (baixos, aceites)
+
+- `style-src` mantém `'unsafe-inline'` (sem impacto em execução de script).
+- O Worker não resolve DNS no proxy de capas (o Express resolve); a allowlist de hostnames é a barreira primária e o runtime da Cloudflare não encaminha para IPs privados.
+- `GET /api/loadbalancer/status` é público e revela o estado dos circuitos (telemetria não sensível).
+- Assets estáticos da Cloudflare são servidos antes do Worker: um ficheiro de obra colocado em `public/` seria servido pela plataforma. A política é preventiva (não existem esses ficheiros) e o guard do Express não se aplica à camada de Assets.
+
+---
+
+## 10. Como reproduzir
 
 ```bash
-# Suíte completa (272 testes)
+# Suíte completa (286 testes)
 npm test
 
 # Apenas a matriz de ataques (29 testes)
@@ -254,13 +300,13 @@ npm run security:probe
 # Tipagem
 npx tsc --noEmit
 
-# Dependências
-npm audit
+# Dependências (runtime)
+npm audit --omit=dev
 ```
 
 ---
 
-## 8. Ficheiros alterados
+## 11. Ficheiros alterados
 
 ```
 .env.example
@@ -284,6 +330,7 @@ test/api.test.js
 test/capas_proxy.test.js
 test/hardening_csp_cors_bot.test.js      (novo)
 test/security_attack_matrix.test.js      (novo)
+test/security_audit_round3.test.js       (novo)
 workers/src/index.ts
 workers/src/types.ts
 workers/src/utils/urlValidator.ts
@@ -291,4 +338,4 @@ workers/src/utils/urlValidator.ts
 
 ---
 
-**Conclusão:** a superfície de ataque foi reduzida de forma mensurável. As duas falhas exploráveis sem autenticação (DoS por FTS e bypass de chave no Worker) e as seis evasões de SSRF estão fechadas e cobertas por testes. A segunda ronda removeu a última via directa de execução de script no browser (CSP sem `unsafe-inline`, confirmada em browser real), restringiu CORS em escritas, adicionou verificação anti-bot opcional, distribuiu o rate limiting, eliminou o soft-404 e fixou a supply chain do CI. Não foi introduzida qualquer alteração à arquitectura de intermediação: o servidor continua sem armazenar obras e todos os acessos continuam a ser redireccionamentos 302 para fontes externas.
+**Conclusão:** a superfície de ataque foi reduzida de forma mensurável. As duas falhas exploráveis sem autenticação (DoS por FTS e bypass de chave no Worker) e as seis evasões de SSRF estão fechadas e cobertas por testes. A segunda ronda removeu a última via directa de execução de script no browser (CSP sem `unsafe-inline`, confirmada em browser real), restringiu CORS em escritas, adicionou verificação anti-bot opcional, distribuiu o rate limiting, eliminou o soft-404 e fixou a supply chain do CI. A terceira ronda fechou a enumeração em massa de autores, o escape de wildcards `LIKE`, o bypass por percent-encoding do guard de zero armazenamento, as fugas de mensagens internas, o `security.txt` inexistente em produção e o `no-store` das respostas administrativas. Não foi introduzida qualquer alteração à arquitectura de intermediação: o servidor continua sem armazenar obras e todos os acessos continuam a ser redireccionamentos 302 para fontes externas.

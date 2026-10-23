@@ -140,7 +140,8 @@ function criar(req, res) {
     try {
       urlValida = validarUrlRedirecionamento(url);
     } catch (err) {
-      return res.status(400).json({ erro: 'URL do curso inválida ou não autorizada: ' + err.message });
+      console.error('[cursos.criar] URL inválida:', err.message);
+      return res.status(400).json({ erro: 'URL do curso inválida ou não autorizada' });
     }
 
     const db = getDatabase();
