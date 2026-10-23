@@ -3,6 +3,12 @@ const { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
+// Limites anti-DoS do FTS5: cada token vira uma consulta de prefixo; 4000
+// tokens (pedido de 21 KB) bloqueavam o processo durante ~29 s.
+const FTS_MAX_CARACTERES = 120;
+const FTS_MAX_TERMOS = 8;
+const PAGINA_MAXIMA = 2000;
+
 /**
  * Sanitiza termos para busca no SQLite FTS5.
  * Neutraliza caracteres especiais e operadores (AND, OR, NOT, NEAR, aspas, dois pontos, asteriscos, parênteses)
@@ -10,13 +16,16 @@ const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-
  */
 function sanitizarFts5(termo) {
   if (!termo || typeof termo !== 'string') return null;
-  const tokens = termo
+  const tokens = String(termo)
+    .slice(0, FTS_MAX_CARACTERES)
     .replace(/[^\p{L}\p{N}\s-]/gu, ' ')
     .trim()
     .split(/\s+/)
     .filter(Boolean);
-  if (tokens.length === 0) return null;
-  return tokens.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
+
+  const unicos = [...new Set(tokens)].slice(0, FTS_MAX_TERMOS);
+  if (unicos.length === 0) return null;
+  return unicos.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
 }
 
 // Dimensões pequenas (fontes/categorias) em cache: evita LIKE e JOINs na tabela livros
@@ -45,7 +54,7 @@ function listar(req, res) {
     const rawPage = req.query.pagina || req.query.page || 1;
     const rawLimit = req.query.limite || req.query.limit || 24;
 
-    const numPage = Math.max(1, parseInt(rawPage, 10) || 1);
+    const numPage = Math.min(PAGINA_MAXIMA, Math.max(1, parseInt(rawPage, 10) || 1));
     const numLimit = Math.min(100, Math.max(1, parseInt(rawLimit, 10) || 24));
     const offset = (numPage - 1) * numLimit;
 
@@ -245,7 +254,8 @@ function listar(req, res) {
       data: livros
     });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar livros: ' + err.message });
+    console.error('[livros.listar]', err);
+    res.status(500).json({ erro: 'Erro interno ao buscar livros' });
   }
 }
 
@@ -273,7 +283,8 @@ function obterPorId(req, res) {
 
     res.json(livro);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao carregar livro: ' + err.message });
+    console.error('[livros.obterPorId]', err);
+    res.status(500).json({ erro: 'Erro interno ao carregar livro' });
   }
 }
 
@@ -309,7 +320,8 @@ function lerRedirect(req, res) {
       conteudo_texto: link.conteudo_texto
     });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao processar leitura: ' + err.message });
+    console.error('[livros.lerRedirect]', err);
+    res.status(500).json({ erro: 'Erro interno ao processar leitura' });
   }
 }
 
@@ -319,7 +331,7 @@ function criar(req, res) {
       titulo, subtitulo, isbn, ano_publicacao, idioma, sinopse, capa_url,
       paginas, autor_id, categoria_id, fonte_id, fonte_id_externo, licenca,
       conteudo_texto, links 
-    } = req.body;
+    } = req.body || {};
 
     if (!titulo || !titulo.trim()) {
       return res.status(400).json({ erro: 'O título do livro é obrigatório' });
@@ -346,6 +358,13 @@ function criar(req, res) {
       }
     } catch (confErr) {
       return res.status(400).json({ erro: confErr.message });
+    }
+
+    // Regra inviolável (AGENTS.md §1.4): texto integral só para domínio público.
+    if (conteudo_texto && String(conteudo_texto).trim() && licenca !== 'dominio-publico') {
+      return res.status(400).json({
+        erro: 'O texto integral (conteudo_texto) só é permitido para obras em domínio público. Use licenca="dominio-publico" ou disponibilize apenas metadados e o link externo.'
+      });
     }
 
     const db = getDatabase();
@@ -393,7 +412,8 @@ function criar(req, res) {
 
     res.status(201).json(novo);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao cadastrar livro: ' + err.message });
+    console.error('[livros.criar]', err);
+    res.status(500).json({ erro: 'Erro interno ao cadastrar livro' });
   }
 }
 
@@ -402,10 +422,10 @@ function atualizar(req, res) {
     const { 
       titulo, subtitulo, isbn, ano_publicacao, idioma, sinopse, capa_url,
       paginas, autor_id, categoria_id, licenca, conteudo_texto 
-    } = req.body;
+    } = req.body || {};
 
     const db = getDatabase();
-    const livroAtual = db.prepare('SELECT id FROM livros WHERE id = ?').get(req.params.id);
+    const livroAtual = db.prepare('SELECT id, licenca FROM livros WHERE id = ?').get(req.params.id);
     if (!livroAtual) {
       return res.status(404).json({ erro: 'Livro não encontrado' });
     }
@@ -430,6 +450,14 @@ function atualizar(req, res) {
       }
     } catch (confErr) {
       return res.status(400).json({ erro: confErr.message });
+    }
+
+    // Regra inviolável (AGENTS.md §1.4): manter a licença coerente com o texto.
+    const licencaEfetiva = licenca || livroAtual.licenca;
+    if (conteudo_texto !== undefined && conteudo_texto !== null && String(conteudo_texto).trim() && licencaEfetiva !== 'dominio-publico') {
+      return res.status(400).json({
+        erro: 'O texto integral (conteudo_texto) só é permitido para obras em domínio público (licenca="dominio-publico").'
+      });
     }
 
     db.prepare(`
@@ -457,7 +485,8 @@ function atualizar(req, res) {
     const atualizado = db.prepare('SELECT * FROM livros WHERE id = ?').get(req.params.id);
     res.json(atualizado);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao atualizar livro: ' + err.message });
+    console.error('[livros.atualizar]', err);
+    res.status(500).json({ erro: 'Erro interno ao atualizar livro' });
   }
 }
 
@@ -602,7 +631,8 @@ function remover(req, res) {
     }
     res.json({ mensagem: 'Livro e links removidos com sucesso' });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao remover livro: ' + err.message });
+    console.error('[livros.remover]', err);
+    res.status(500).json({ erro: 'Erro interno ao remover livro' });
   }
 }
 

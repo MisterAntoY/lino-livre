@@ -19,7 +19,9 @@
     "supabase:dry-run": "node scripts/migrar_d1_para_supabase.js --dry-run --tabela=fontes",
     "supabase:schema": "node scripts/aplicar_schema_supabase.js",
     "supabase:status": "node scripts/migrar_d1_para_supabase.js --status",
-    "diagnostico": "node scripts/diagnostico_consumo_trafego.js"
+    "diagnostico": "node scripts/diagnostico_consumo_trafego.js",
+    "test:security": "node --test test/security_attack_matrix.test.js",
+    "security:probe": "node scripts/security_probe_local.js"
   },
   "keywords": [],
   "author": "",

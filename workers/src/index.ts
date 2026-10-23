@@ -22,6 +22,10 @@ app.use('*', async (c, next) => {
   c.header('Referrer-Policy', 'strict-origin-when-cross-origin');
   c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   c.header('Cross-Origin-Opener-Policy', 'same-origin');
+  c.header('Cross-Origin-Resource-Policy', 'cross-origin');
+  c.header('Origin-Agent-Cluster', '?1');
+  c.header('X-DNS-Prefetch-Control', 'off');
+  c.header('X-Permitted-Cross-Domain-Policies', 'none');
   c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   c.header(
     'Content-Security-Policy',
@@ -37,7 +41,8 @@ app.use('*', async (c, next) => {
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "frame-ancestors 'none'"
+      "frame-ancestors 'none'",
+      "upgrade-insecure-requests"
     ].join('; ')
   );
 });
@@ -61,6 +66,16 @@ app.use('*', async (c, next) => {
   await next();
 });
 
+// Rate limiting global por IP: leituras 300/min, escritas 30/min.
+// Aplicado antes das rotas e depois do WAF.
+app.use('/api/*', async (c, next) => {
+  const metodo = c.req.method.toUpperCase();
+  const escrita = metodo !== 'GET' && metodo !== 'HEAD' && metodo !== 'OPTIONS';
+  const bloqueio = limitarRequisicao(c, escrita ? 'api-write' : 'api-read', escrita ? 30 : 300);
+  if (bloqueio) return bloqueio;
+  await next();
+});
+
 // Cache de borda para leituras públicas. Registado antes das rotas para
 // envolver os handlers (o Cache API evita invocações e leituras na D1).
 app.use('/api/dashboard', cacheDeBorda);
@@ -81,24 +96,32 @@ const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-
  * Neutraliza caracteres especiais e operadores (AND, OR, NOT, NEAR, aspas, dois pontos, asteriscos, parênteses)
  * evitando exceções de sintaxe e ataques de DoS via busca.
  */
+// Limites anti-DoS do FTS5: cada token vira uma consulta de prefixo. Sem teto,
+// um pedido de 21 KB (4000 tokens) bloqueava o processamento.
+const FTS_MAX_CARACTERES = 120;
+const FTS_MAX_TERMOS = 8;
+
 function sanitizarFts5(termo: string | undefined | null): string | null {
   if (!termo || typeof termo !== 'string') return null;
   const tokens = termo
+    .slice(0, FTS_MAX_CARACTERES)
     .replace(/[^\p{L}\p{N}\s-]/gu, ' ')
     .trim()
     .split(/\s+/)
     .filter(Boolean);
-  if (tokens.length === 0) return null;
-  return tokens.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
+  const unicos = [...new Set(tokens)].slice(0, FTS_MAX_TERMOS);
+  if (unicos.length === 0) return null;
+  return unicos.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
 }
 
 function timingSafeEqualStr(a: string, b: string): boolean {
-  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) {
-    return false;
-  }
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  // Comparação de comprimento variável sem saída antecipada (evita revelar o
+  // tamanho da chave por temporização).
+  const max = Math.max(a.length, b.length);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < max; i++) {
+    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
   }
   return diff === 0;
 }
@@ -107,7 +130,7 @@ function timingSafeEqualStr(a: string, b: string): boolean {
 // Middleware de Autenticação Administrativa para Rotas de Escrita
 // ────────────────────────────────────────────────────────────
 async function verificarAdminWorker(c: any, next: any) {
-  const adminKey = c.env.ADMIN_API_KEY || (c.env.ENVIRONMENT === 'production' ? null : 'lino-admin-dev-key');
+  const adminKey = c.env.ADMIN_API_KEY || null;
   const headerKey = c.req.header('x-admin-key');
   const authHeader = c.req.header('authorization');
   let bearerToken: string | undefined;
@@ -121,6 +144,49 @@ async function verificarAdminWorker(c: any, next: any) {
   }
 
   await next();
+}
+
+// ────────────────────────────────────────────────────────────
+// Rate limiting leve por isolate (token bucket em memória)
+// Protege a cota de escrita da D1 (100k linhas/dia no plano gratuito) e
+// os endpoints com fan-out/egress (proxy de capas e busca federada).
+// A chave é o IP real visto pela Cloudflare (CF-Connecting-IP), que o cliente
+// não consegue forjar atrás da CDN.
+// ────────────────────────────────────────────────────────────
+const LIMITES_MEMORIA = new Map<string, { count: number; resetAt: number }>();
+const LIMITE_MAX_ENTRADAS = 10_000;
+
+function limitarRequisicao(c: any, escopo: string, max: number, janelaMs = 60_000): any | null {
+  const ip = c.req.header('cf-connecting-ip')
+    || c.req.header('x-real-ip')
+    || c.req.header('x-forwarded-for')?.split(',')[0]?.trim()
+    || 'desconhecido';
+  const chave = `${escopo}:${ip}`;
+  const agora = Date.now();
+
+  if (LIMITES_MEMORIA.size > LIMITE_MAX_ENTRADAS) {
+    for (const [k, v] of LIMITES_MEMORIA) {
+      if (agora > v.resetAt) LIMITES_MEMORIA.delete(k);
+    }
+    if (LIMITES_MEMORIA.size > LIMITE_MAX_ENTRADAS) LIMITES_MEMORIA.clear();
+  }
+
+  const entrada = LIMITES_MEMORIA.get(chave);
+  if (!entrada || agora > entrada.resetAt) {
+    LIMITES_MEMORIA.set(chave, { count: 1, resetAt: agora + janelaMs });
+    return null;
+  }
+
+  entrada.count++;
+  if (entrada.count > max) {
+    const retry = Math.max(1, Math.ceil((entrada.resetAt - agora) / 1000));
+    return c.json(
+      { erro: 'Demasiadas requisições. Tente novamente em instantes.', retry_after_s: retry },
+      429,
+      { 'Retry-After': String(retry) }
+    );
+  }
+  return null;
 }
 
 // Cache em memória para estatísticas de dashboard para economizar cotas de leitura da D1
@@ -234,7 +300,7 @@ app.get('/api/loadbalancer/status', (c) => {
 
 // 1. Dashboard de Acervo e Leituras
 app.get('/api/dashboard', async (c) => {
-  const adminKey = c.env.ADMIN_API_KEY || (c.env.ENVIRONMENT === 'production' ? null : 'lino-admin-dev-key');
+  const adminKey = c.env.ADMIN_API_KEY || null;
   const headerKey = c.req.header('x-admin-key');
   const isAdmin = !!(adminKey && headerKey && timingSafeEqualStr(headerKey, adminKey));
   const noCache = isAdmin && (c.req.header('cache-control')?.includes('no-cache') || c.req.header('pragma')?.includes('no-cache'));
@@ -380,7 +446,7 @@ app.get('/api/categorias', async (c) => {
     return c.json(categorias);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao buscar categorias: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar categorias' }, 500);
   }
 });
 
@@ -392,7 +458,7 @@ app.get('/api/categorias/:id', async (c) => {
     if (!categoria) return c.json({ erro: 'Categoria não encontrada' }, 404);
     return c.json(categoria);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar categoria' }, 500);
   }
 });
 
@@ -409,7 +475,7 @@ app.post('/api/categorias', verificarAdminWorker, async (c) => {
     if (err.message?.includes('UNIQUE')) {
       return c.json({ erro: 'Já existe uma categoria com este nome' }, 400);
     }
-    return c.json({ erro: 'Erro ao cadastrar categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar categoria' }, 500);
   }
 });
 
@@ -429,7 +495,7 @@ app.put('/api/categorias/:id', verificarAdminWorker, async (c) => {
     if (err.message?.includes('UNIQUE')) {
       return c.json({ erro: 'Já existe uma categoria com este nome' }, 400);
     }
-    return c.json({ erro: 'Erro ao atualizar categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao atualizar categoria' }, 500);
   }
 });
 
@@ -441,7 +507,7 @@ app.delete('/api/categorias/:id', verificarAdminWorker, async (c) => {
     if (res.meta.changes === 0) return c.json({ erro: 'Categoria não encontrada' }, 404);
     return c.json({ mensagem: 'Categoria removida com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover categoria' }, 500);
   }
 });
 
@@ -508,7 +574,7 @@ app.get('/api/autores', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(autores);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar autores: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar autores' }, 500);
   }
 });
 
@@ -522,7 +588,7 @@ app.get('/api/autores/:id', async (c) => {
     const livros = (await db.prepare('SELECT id, titulo, ano_publicacao FROM livros WHERE autor_id = ?').bind(id).all()).results;
     return c.json({ ...autor, livros });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar autor' }, 500);
   }
 });
 
@@ -539,7 +605,7 @@ app.post('/api/autores', verificarAdminWorker, async (c) => {
     const novo = await db.prepare('SELECT * FROM autores WHERE id = ?').bind(res.meta.last_row_id).first();
     return c.json(novo, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao cadastrar autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar autor' }, 500);
   }
 });
 
@@ -558,7 +624,7 @@ app.put('/api/autores/:id', verificarAdminWorker, async (c) => {
     const atualizado = await db.prepare('SELECT * FROM autores WHERE id = ?').bind(id).first();
     return c.json(atualizado);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao atualizar autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao atualizar autor' }, 500);
   }
 });
 
@@ -570,7 +636,7 @@ app.delete('/api/autores/:id', verificarAdminWorker, async (c) => {
     if (res.meta.changes === 0) return c.json({ erro: 'Autor não encontrado' }, 404);
     return c.json({ mensagem: 'Autor removido com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover autor' }, 500);
   }
 });
 
@@ -1251,11 +1317,16 @@ app.get('/api/livros/:id', async (c) => {
     c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
     return c.json(livro);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao carregar livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao carregar livro' }, 500);
   }
 });
 
 app.get('/api/livros/:id/ler/:linkId', async (c) => {
+  // Cada leitura incrementa `leituras` na D1: limitar para não esgotar a cota
+  // de escrita gratuita com pedidos repetidos (o contador é analítico).
+  const bloqueioLeitura = limitarRequisicao(c, 'leitura', 60);
+  if (bloqueioLeitura) return bloqueioLeitura;
+
   try {
     const id = c.req.param('id');
     const linkId = c.req.param('linkId');
@@ -1311,7 +1382,7 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
       conteudo_texto: link.conteudo_texto
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao processar leitura: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao processar leitura' }, 500);
   }
 });
 
@@ -1331,6 +1402,13 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
     if (!licenca || !LICENCAS_VALIDAS.includes(licenca)) {
       return c.json({ 
         erro: `Licença inválida ou obrigatória. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` 
+      }, 400);
+    }
+
+    // Regra inviolável (AGENTS.md §1.4): texto integral só para domínio público.
+    if (conteudo_texto && String(conteudo_texto).trim() && licenca !== 'dominio-publico') {
+      return c.json({
+        erro: 'O texto integral (conteudo_texto) só é permitido para obras em domínio público. Use licenca="dominio-publico" ou disponibilize apenas metadados e o link externo.'
       }, 400);
     }
 
@@ -1394,7 +1472,7 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
 
     return c.json(novo, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao cadastrar livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar livro' }, 500);
   }
 });
 
@@ -1408,13 +1486,21 @@ app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
     } = body;
 
     const db = c.env.DB;
-    const livroAtual = await db.prepare('SELECT id FROM livros WHERE id = ?').bind(id).first();
+    const livroAtual = await db.prepare('SELECT id, licenca FROM livros WHERE id = ?').bind(id).first();
     if (!livroAtual) return c.json({ erro: 'Livro não encontrado' }, 404);
 
     if (!titulo || !titulo.trim()) return c.json({ erro: 'O título do livro é obrigatório' }, 400);
 
     if (licenca && !LICENCAS_VALIDAS.includes(licenca)) {
       return c.json({ erro: `Licença inválida. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` }, 400);
+    }
+
+    // Regra inviolável (AGENTS.md §1.4): manter a licença coerente com o texto.
+    const licencaEfetiva = licenca || (livroAtual as any).licenca;
+    if (conteudo_texto !== undefined && conteudo_texto !== null && String(conteudo_texto).trim() && licencaEfetiva !== 'dominio-publico') {
+      return c.json({
+        erro: 'O texto integral (conteudo_texto) só é permitido para obras em domínio público (licenca="dominio-publico").'
+      }, 400);
     }
 
     try {
@@ -1454,7 +1540,7 @@ app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
     const atualizado = await db.prepare('SELECT * FROM livros WHERE id = ?').bind(id).first();
     return c.json(atualizado);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao atualizar livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao atualizar livro' }, 500);
   }
 });
 
@@ -1467,7 +1553,7 @@ app.delete('/api/livros/:id', verificarAdminWorker, async (c) => {
     await registrarMutacaoAcervo(db);
     return c.json({ mensagem: 'Livro e links removidos com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover livro' }, 500);
   }
 });
 
@@ -1498,7 +1584,7 @@ app.get('/api/fontes', async (c) => {
     return c.json(fontes);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao listar fontes: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar fontes' }, 500);
   }
 });
 
@@ -1536,13 +1622,17 @@ app.post('/api/import', verificarAdminWorker, async (c) => {
       query: termoBusca
     }, 202);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao iniciar importação: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao iniciar importação' }, 500);
   }
 });
 
-app.get('/api/import/:id', async (c) => {
+app.get('/api/import/:id', verificarAdminWorker, async (c) => {
   try {
-    const id = c.req.param('id');
+    c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    const id = parseInt(c.req.param('id'), 10);
+    if (!Number.isInteger(id) || id <= 0) {
+      return c.json({ erro: 'ID de importação inválido' }, 400);
+    }
     const db = c.env.DB;
     const job = await db.prepare(`
       SELECT j.*, f.slug AS fonte_slug, f.nome AS fonte_nome
@@ -1554,14 +1644,22 @@ app.get('/api/import/:id', async (c) => {
     if (!job) return c.json({ erro: 'Job de importação não encontrado' }, 404);
     return c.json(job);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao consultar status da importação: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao consultar status da importação' }, 500);
   }
 });
 
 // 5.5 Sugestões da Comunidade (Moderação Pública)
 app.post('/api/sugestoes', async (c) => {
+  const bloqueio = limitarRequisicao(c, 'sugestoes', 5);
+  if (bloqueio) return bloqueio;
+
   try {
-    const body = await c.req.json<any>();
+    let body: any;
+    try {
+      body = await c.req.json<any>();
+    } catch {
+      return c.json({ erro: 'Corpo JSON inválido' }, 400);
+    }
     const { titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato, url_link, capa_url, sinopse } = body || {};
 
     if (!titulo || typeof titulo !== 'string' || titulo.trim().length < 2) {
@@ -1579,6 +1677,25 @@ app.post('/api/sugestoes', async (c) => {
       return c.json({ erro: 'URL inválida ou não autorizada: ' + err.message }, 400);
     }
 
+    let capaValida: string | null = null;
+    if (capa_url) {
+      try {
+        capaValida = validarUrlRedirecionamento(String(capa_url).slice(0, 500));
+      } catch {
+        return c.json({ erro: 'URL da capa inválida ou não autorizada' }, 400);
+      }
+    }
+
+    const licencaFinal = LICENCAS_VALIDAS.includes(licenca) ? licenca : 'outro';
+    const formatosValidos = ['pdf', 'epub', 'txt', 'html', 'mp3', 'mp4', 'outro'];
+    const formatoFinal = formatosValidos.includes(String(formato).toLowerCase())
+      ? String(formato).toLowerCase()
+      : 'outro';
+    const anoNum = parseInt(ano_publicacao, 10);
+    const anoFinal = Number.isInteger(anoNum) && anoNum > 0 && anoNum <= 2100 ? anoNum : null;
+    const categoriaNum = parseInt(categoria_id, 10);
+    const categoriaFinal = Number.isInteger(categoriaNum) && categoriaNum > 0 ? categoriaNum : null;
+
     const db = c.env.DB;
     const res = await db.prepare(`
       INSERT INTO sugestoes (
@@ -1588,12 +1705,12 @@ app.post('/api/sugestoes', async (c) => {
     `).bind(
       titulo.trim().slice(0, 250),
       autor_nome ? String(autor_nome).trim().slice(0, 150) : null,
-      ano_publicacao ? parseInt(ano_publicacao, 10) : null,
-      categoria_id ? parseInt(categoria_id, 10) : null,
-      licenca || 'outro',
-      formato || 'html',
+      anoFinal,
+      categoriaFinal,
+      licencaFinal,
+      formatoFinal,
       urlValida,
-      capa_url ? String(capa_url).trim().slice(0, 500) : null,
+      capaValida,
       sinopse ? String(sinopse).trim().slice(0, 1000) : null
     ).run();
 
@@ -1603,18 +1720,19 @@ app.post('/api/sugestoes', async (c) => {
       id: res.meta?.last_row_id
     }, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao processar sugestão: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao processar sugestão' }, 500);
   }
 });
 
 app.get('/api/sugestoes', verificarAdminWorker, async (c) => {
   try {
+    c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     const status = c.req.query('status') || 'pendente';
     const db = c.env.DB;
     const sugestoes = (await db.prepare('SELECT * FROM sugestoes WHERE status = ? ORDER BY criado_em DESC LIMIT 50').bind(status).all()).results;
     return c.json(sugestoes);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar sugestões: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar sugestões' }, 500);
   }
 });
 
@@ -1696,7 +1814,7 @@ app.get('/api/cursos', async (c) => {
     return c.json(cursos);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao buscar cursos: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar cursos' }, 500);
   }
 });
 
@@ -1750,7 +1868,7 @@ app.get('/api/roadmaps', async (c) => {
     return c.json(roadmaps);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao buscar roadmaps: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar roadmaps' }, 500);
   }
 });
 
@@ -1773,7 +1891,7 @@ app.get('/api/cursos/:id', async (c) => {
     if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
     return c.json(curso);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao carregar curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao carregar curso' }, 500);
   }
 });
 
@@ -1801,7 +1919,7 @@ app.get('/api/cursos/:id/acessar', async (c) => {
     const urlSegura = validarUrlRedirecionamento(curso.url);
     return c.redirect(urlSegura, 302);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao redirecionar para o curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao redirecionar para o curso' }, 500);
   }
 });
 
@@ -1831,7 +1949,7 @@ app.post('/api/cursos', verificarAdminWorker, async (c) => {
     const novo = await db.prepare('SELECT * FROM cursos WHERE id = ?').bind(res.meta.last_row_id).first();
     return c.json(novo, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao cadastrar curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar curso' }, 500);
   }
 });
 
@@ -1843,7 +1961,7 @@ app.delete('/api/cursos/:id', verificarAdminWorker, async (c) => {
     if (res.meta.changes === 0) return c.json({ erro: 'Curso não encontrado' }, 404);
     return c.json({ mensagem: 'Curso removido com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover curso' }, 500);
   }
 });
 
@@ -1870,7 +1988,7 @@ app.get('/api/dicas', (c) => {
 
     return c.json(resultados);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar dicas de estudo: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar dicas de estudo' }, 500);
   }
 });
 
@@ -1881,7 +1999,7 @@ app.get('/api/dicas/:id', (c) => {
     if (!dica) return c.json({ erro: 'Dica não encontrada' }, 404);
     return c.json(dica);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar dica: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar dica' }, 500);
   }
 });
 
@@ -1906,7 +2024,7 @@ app.get('/api/comunidade/qrcode.svg', async (c) => {
       'Cache-Control': 'public, max-age=86400'
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao gerar QR code: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao gerar QR code' }, 500);
   }
 });
 
@@ -1927,7 +2045,7 @@ app.get('/api/canal/qrcode.svg', async (c) => {
       'Cache-Control': 'public, max-age=86400'
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao gerar QR code: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao gerar QR code' }, 500);
   }
 });
 
@@ -1970,7 +2088,7 @@ app.get('/api/podcasts', async (c) => {
     const result = await c.env.DB.prepare(query).bind(...params).all();
     return c.json(result.results || []);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar podcasts: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar podcasts' }, 500);
   }
 });
 
@@ -1999,7 +2117,7 @@ app.get('/api/podcasts/episodios/recentes', async (c) => {
     const result = await c.env.DB.prepare(query).all();
     return c.json(result.results || []);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar episódios recentes: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar episódios recentes' }, 500);
   }
 });
 
@@ -2042,13 +2160,21 @@ app.get('/api/podcasts/:slugOuId', async (c) => {
       episodios: episodios.results || []
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao obter podcast: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao obter podcast' }, 500);
   }
 });
 
 app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
+  // Contador público mas com escrita na D1: limitado para não esgotar a cota
+  // de escrita gratuita (100k linhas/dia) com pedidos repetidos.
+  const bloqueio = limitarRequisicao(c, 'ouvir', 20);
+  if (bloqueio) return bloqueio;
+
   try {
     const id = parseInt(c.req.param('id'), 10);
+    if (!Number.isInteger(id) || id <= 0) {
+      return c.json({ erro: 'ID do episódio inválido' }, 400);
+    }
     const repo = repoSupabase(c);
     if (repo) {
       try {
@@ -2064,7 +2190,7 @@ app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
     ).bind(id).run();
     return c.json({ sucesso: true, id });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao registar reprodução: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao registar reprodução' }, 500);
   }
 });
 
@@ -2089,13 +2215,21 @@ const HOSTS_CAPAS_PERMITIDOS = [
 
 const CAPA_CACHE_CONTROL = 'public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=604800';
 const CAPA_TAMANHO_MAXIMO = 5 * 1024 * 1024;
+const CAPA_MAX_REDIRECTS = 3;
+const TIPOS_IMAGEM_PERMITIDOS = new Set([
+  'image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/avif', 'image/gif'
+]);
+const STATUS_REDIRECT = new Set([301, 302, 303, 307, 308]);
 
 function hostCapaPermitido(hostname: string): boolean {
-  const host = String(hostname || '').toLowerCase();
+  const host = String(hostname || '').toLowerCase().replace(/\.$/, '');
   return HOSTS_CAPAS_PERMITIDOS.some((base) => host === base || host.endsWith(`.${base}`));
 }
 
 app.get('/api/capas', async (c) => {
+  const bloqueioCapa = limitarRequisicao(c, 'capas', 60);
+  if (bloqueioCapa) return bloqueioCapa;
+
   const bruto = String(c.req.query('u') || '').trim();
   if (!bruto) return c.json({ erro: 'Parâmetro "u" (URL da capa) é obrigatório' }, 400);
   if (bruto.length > 1000) return c.json({ erro: 'URL de capa demasiado longa' }, 400);
@@ -2120,38 +2254,69 @@ app.get('/api/capas', async (c) => {
   const emCache = await cache.match(chave);
   if (emCache) return emCache;
 
-  let origem: Response;
-  try {
-    origem = await fetch(alvo.href, {
-      redirect: 'follow',
-      headers: {
-        Accept: 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
-        'User-Agent': 'LinoLivre-CoverProxy/1.0 (+https://lino-livre.linolivre.workers.dev)'
-      },
-      cf: { cacheEverything: true, cacheTtl: 2592000 }
-    });
-  } catch {
-    return c.json({ erro: 'Não foi possível obter a capa na origem' }, 502);
+  // Segue redirecionamentos MANUALMENTE: cada salto é revalidado antes de ser
+  // pedido, impedindo o pivô SSRF (302 da origem permitida para 169.254.169.254).
+  let atual = alvo.href;
+  let origem: Response | null = null;
+
+  for (let salto = 0; salto <= CAPA_MAX_REDIRECTS; salto++) {
+    let resposta: Response;
+    try {
+      resposta = await fetch(atual, {
+        redirect: 'manual',
+        headers: {
+          Accept: 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
+          'User-Agent': 'LinoLivre-CoverProxy/1.0 (+https://lino-livre.linolivre.workers.dev)'
+        },
+        cf: { cacheEverything: true, cacheTtl: 2592000 }
+      });
+    } catch {
+      return c.json({ erro: 'Não foi possível obter a capa na origem' }, 502);
+    }
+
+    if (STATUS_REDIRECT.has(resposta.status)) {
+      const location = resposta.headers.get('location');
+      try { await resposta.body?.cancel(); } catch { /* ignorado */ }
+      if (!location) {
+        return c.json({ erro: 'Redirecionamento inválido na origem' }, 502);
+      }
+      let proximo: URL;
+      try {
+        proximo = new URL(location, atual);
+        if (proximo.protocol !== 'https:' || !hostCapaPermitido(proximo.hostname)) {
+          throw new Error('origem não permitida');
+        }
+        validarUrlRedirecionamento(proximo.href);
+      } catch {
+        return c.json({ erro: 'Redirecionamento de capa não permitido' }, 403);
+      }
+      atual = proximo.href;
+      continue;
+    }
+
+    origem = resposta;
+    break;
+  }
+
+  if (!origem) {
+    return c.json({ erro: 'Demasiados redirecionamentos na origem da capa' }, 502);
   }
 
   if (!origem.ok || !origem.body) {
     return c.json({ erro: 'Origem da capa indisponível' }, 502);
   }
 
-  // Revalida o destino final para bloquear redirecionamentos para a rede interna (SSRF).
-  try {
-    validarUrlRedirecionamento(origem.url);
-  } catch {
-    return c.json({ erro: 'Redirecionamento de capa não permitido' }, 403);
-  }
-
-  const tipo = String(origem.headers.get('content-type') || '').toLowerCase();
-  if (!tipo.startsWith('image/')) {
-    return c.json({ erro: 'O conteúdo remoto não é uma imagem' }, 415);
+  // Apenas imagens raster. SVG é um documento executável: servido da nossa
+  // origem permitiria XSS armazenado (script inline com a CSP da aplicação).
+  const tipo = String(origem.headers.get('content-type') || '').toLowerCase().split(';')[0].trim();
+  if (!TIPOS_IMAGEM_PERMITIDOS.has(tipo)) {
+    try { await origem.body.cancel(); } catch { /* ignorado */ }
+    return c.json({ erro: 'O conteúdo remoto não é uma imagem suportada' }, 415);
   }
 
   const tamanho = Number(origem.headers.get('content-length') || '0');
   if (Number.isFinite(tamanho) && tamanho > CAPA_TAMANHO_MAXIMO) {
+    try { await origem.body.cancel(); } catch { /* ignorado */ }
     return c.json({ erro: 'Imagem acima do limite permitido' }, 413);
   }
 
@@ -2161,6 +2326,7 @@ app.get('/api/capas', async (c) => {
       'Content-Type': tipo,
       'Cache-Control': CAPA_CACHE_CONTROL,
       'X-Content-Type-Options': 'nosniff',
+      'Content-Security-Policy': "default-src 'none'; sandbox",
       'Cross-Origin-Resource-Policy': 'cross-origin',
       'Access-Control-Allow-Origin': '*'
     }
@@ -2176,7 +2342,10 @@ app.get('/api/capas', async (c) => {
 // resultados num ranking único. Apenas METADADOS (zero armazenamento).
 // ═══════════════════════════════════════════════════════════════════════════
 app.get('/api/busca/federada', async (c) => {
-  const q = String(c.req.query('q') ?? c.req.query('busca') ?? '').trim();
+  const bloqueioBusca = limitarRequisicao(c, 'busca-federada', 20);
+  if (bloqueioBusca) return bloqueioBusca;
+
+  const q = String(c.req.query('q') ?? c.req.query('busca') ?? '').trim().slice(0, 120);
   if (!q) {
     return c.json({ erro: 'Parâmetro "q" (termo de busca) é obrigatório' }, 400);
   }
@@ -2220,7 +2389,7 @@ app.get('/api/busca/federada', async (c) => {
       k: 60
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro na busca federada: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro na busca federada' }, 500);
   }
 });
 
@@ -2458,7 +2627,7 @@ app.get('/api/creditos', async (c) => {
       }
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao obter créditos e conformidade: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao obter créditos e conformidade' }, 500);
   }
 });
 

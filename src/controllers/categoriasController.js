@@ -12,7 +12,8 @@ function listar(req, res) {
     `).all();
     res.json(categorias);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar categorias: ' + err.message });
+    console.error('[categoriasController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar categorias' });
   }
 }
 
@@ -25,13 +26,14 @@ function obterPorId(req, res) {
     }
     res.json(categoria);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar categoria: ' + err.message });
+    console.error('[categoriasController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar categoria' });
   }
 }
 
 function criar(req, res) {
   try {
-    const { nome, descricao } = req.body;
+    const { nome, descricao } = req.body || {};
     if (!nome || !nome.trim()) {
       return res.status(400).json({ erro: 'O nome da categoria é obrigatório' });
     }
@@ -43,13 +45,14 @@ function criar(req, res) {
     if (err.message.includes('UNIQUE')) {
       return res.status(400).json({ erro: 'Já existe uma categoria com este nome' });
     }
-    res.status(500).json({ erro: 'Erro ao cadastrar categoria: ' + err.message });
+    console.error('[categoriasController]', err);
+    res.status(500).json({ erro: 'Erro ao cadastrar categoria' });
   }
 }
 
 function atualizar(req, res) {
   try {
-    const { nome, descricao } = req.body;
+    const { nome, descricao } = req.body || {};
     if (!nome || !nome.trim()) {
       return res.status(400).json({ erro: 'O nome da categoria é obrigatório' });
     }
@@ -64,7 +67,8 @@ function atualizar(req, res) {
     if (err.message.includes('UNIQUE')) {
       return res.status(400).json({ erro: 'Já existe uma categoria com este nome' });
     }
-    res.status(500).json({ erro: 'Erro ao atualizar categoria: ' + err.message });
+    console.error('[categoriasController]', err);
+    res.status(500).json({ erro: 'Erro ao atualizar categoria' });
   }
 }
 
@@ -77,7 +81,8 @@ function remover(req, res) {
     }
     res.json({ mensagem: 'Categoria removida com sucesso' });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao remover categoria: ' + err.message });
+    console.error('[categoriasController]', err);
+    res.status(500).json({ erro: 'Erro ao remover categoria' });
   }
 }
 

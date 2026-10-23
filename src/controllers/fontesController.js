@@ -7,14 +7,15 @@ function listar(req, res) {
     const fontes = db.prepare('SELECT id, slug, nome, tipo, url_base, ativa FROM fontes WHERE ativa = 1 ORDER BY id ASC').all();
     res.json(fontes);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao listar fontes: ' + err.message });
+    console.error('[fontesController]', err);
+    res.status(500).json({ erro: 'Erro ao listar fontes' });
   }
 }
 
 function iniciarImportacao(req, res) {
   try {
     const db = getDatabase();
-    const { fonte_id, fonte: fonteInput, query } = req.body;
+    const { fonte_id, fonte: fonteInput, query } = req.body || {};
 
     let fonte;
     if (fonte_id) {
@@ -53,7 +54,8 @@ function iniciarImportacao(req, res) {
       query: termoBusca
     });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao iniciar importação: ' + err.message });
+    console.error('[fontesController]', err);
+    res.status(500).json({ erro: 'Erro ao iniciar importação' });
   }
 }
 
@@ -73,7 +75,8 @@ function obterStatusImportacao(req, res) {
 
     res.json(job);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao consultar status da importação: ' + err.message });
+    console.error('[fontesController]', err);
+    res.status(500).json({ erro: 'Erro ao consultar status da importação' });
   }
 }
 

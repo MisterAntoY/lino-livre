@@ -72,7 +72,8 @@ function obterShow(req, res) {
     if (s) {
       return res.json(s);
     }
-    res.status(500).json({ erro: 'Erro ao buscar podcast: ' + err.message });
+    console.error('[podcastsController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar podcast' });
   }
 }
 
@@ -121,7 +122,8 @@ function ouvirEpisodio(req, res) {
     }
     res.json({ sucesso: true, id });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao registar reprodução: ' + err.message });
+    console.error('[podcastsController]', err);
+    res.status(500).json({ erro: 'Erro ao registar reprodução' });
   }
 }
 

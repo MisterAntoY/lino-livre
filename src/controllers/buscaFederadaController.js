@@ -34,10 +34,13 @@ function obterMotor() {
 
 async function buscar(req, res) {
   try {
-    const q = req.query.q || req.query.busca || req.query.termo || '';
-    const limite = req.query.limite ? parseInt(req.query.limite, 10) : undefined;
+    const q = String(req.query.q || req.query.busca || req.query.termo || '').trim().slice(0, 120);
+    // Cada busca faz fan-out para vários upstreams: nunca deixar o cliente
+    // escolher um limite arbitrário (amplificação de pedidos).
+    const limiteBruto = parseInt(req.query.limite, 10);
+    const limite = Number.isInteger(limiteBruto) ? Math.min(50, Math.max(1, limiteBruto)) : undefined;
 
-    if (!String(q).trim()) {
+    if (!q) {
       return res.status(400).json({ erro: 'Parâmetro "q" (termo de busca) é obrigatório' });
     }
 
@@ -72,7 +75,8 @@ async function buscar(req, res) {
       k: 60
     });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro na busca federada: ' + err.message });
+    console.error('[buscaFederadaController]', err);
+    res.status(500).json({ erro: 'Erro na busca federada' });
   }
 }
 
@@ -85,7 +89,8 @@ function diagnostico(req, res) {
       upstreams: m.diagnostico()
     });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro no diagnóstico: ' + err.message });
+    console.error('[buscaFederadaController]', err);
+    res.status(500).json({ erro: 'Erro no diagnóstico' });
   }
 }
 

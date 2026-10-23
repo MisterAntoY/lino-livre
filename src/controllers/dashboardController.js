@@ -191,7 +191,8 @@ function metricas(req, res) {
       mais_lidos: maisLidos
     });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao carregar estatísticas do acervo: ' + err.message });
+    console.error('[dashboardController]', err);
+    res.status(500).json({ erro: 'Erro ao carregar estatísticas do acervo' });
   }
 }
 

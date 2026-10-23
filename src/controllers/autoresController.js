@@ -32,7 +32,8 @@ function listar(req, res) {
     const autores = db.prepare(query).all(...params);
     res.json(autores);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar autores: ' + err.message });
+    console.error('[autoresController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar autores' });
   }
 }
 
@@ -50,13 +51,14 @@ function obterPorId(req, res) {
     const livros = db.prepare('SELECT id, titulo, ano_publicacao, leituras, capa_url FROM livros WHERE autor_id = ?').all(id);
     res.json({ ...autor, livros });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar autor: ' + err.message });
+    console.error('[autoresController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar autor' });
   }
 }
 
 function criar(req, res) {
   try {
-    const { nome, nacionalidade, biografia } = req.body;
+    const { nome, nacionalidade, biografia } = req.body || {};
     if (!nome || !nome.trim()) {
       return res.status(400).json({ erro: 'O nome do autor é obrigatório' });
     }
@@ -69,13 +71,14 @@ function criar(req, res) {
     const novo = db.prepare('SELECT * FROM autores WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json(novo);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao cadastrar autor: ' + err.message });
+    console.error('[autoresController]', err);
+    res.status(500).json({ erro: 'Erro ao cadastrar autor' });
   }
 }
 
 function atualizar(req, res) {
   try {
-    const { nome, nacionalidade, biografia } = req.body;
+    const { nome, nacionalidade, biografia } = req.body || {};
     if (!nome || !nome.trim()) {
       return res.status(400).json({ erro: 'O nome do autor é obrigatório' });
     }
@@ -92,7 +95,8 @@ function atualizar(req, res) {
     const atualizado = db.prepare('SELECT * FROM autores WHERE id = ?').get(req.params.id);
     res.json(atualizado);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao atualizar autor: ' + err.message });
+    console.error('[autoresController]', err);
+    res.status(500).json({ erro: 'Erro ao atualizar autor' });
   }
 }
 
@@ -105,7 +109,8 @@ function remover(req, res) {
     }
     res.json({ mensagem: 'Autor removido com sucesso' });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao remover autor: ' + err.message });
+    console.error('[autoresController]', err);
+    res.status(500).json({ erro: 'Erro ao remover autor' });
   }
 }
 

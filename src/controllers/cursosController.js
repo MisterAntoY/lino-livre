@@ -1,6 +1,12 @@
 const { getDatabase } = require('../database');
 const { validarUrlRedirecionamento } = require('../utils/urlValidator');
 
+// Escapa os metacaracteres de LIKE. Sem isto, `busca=%a%b%c...` transforma o
+// filtro num varrimento com múltiplos wildcards (DoS de CPU na base de dados).
+function escaparLike(valor) {
+  return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
+}
+
 function listar(req, res) {
   try {
     const db = getDatabase();
@@ -44,8 +50,8 @@ function listar(req, res) {
       params.push('%certifica%', '%certifica%');
     }
     if (busca && busca.trim()) {
-      const termo = `%${busca.trim()}%`;
-      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      const termo = `%${escaparLike(busca.trim())}%`;
+      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
       params.push(termo, termo, termo);
     }
 
@@ -55,8 +61,8 @@ function listar(req, res) {
     const limitParam = req.query.limit || req.query.limite;
     const pageParam = req.query.page || req.query.pagina;
     if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -65,7 +71,8 @@ function listar(req, res) {
     const cursos = db.prepare(query).all(...params);
     res.json(cursos);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar cursos: ' + err.message });
+    console.error('[cursosController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar cursos' });
   }
 }
 
@@ -85,8 +92,8 @@ function listarRoadmaps(req, res) {
       params.push(area);
     }
     if (busca && busca.trim()) {
-      const termo = `%${busca.trim()}%`;
-      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      const termo = `%${escaparLike(busca.trim())}%`;
+      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
       params.push(termo, termo, termo);
     }
 
@@ -95,8 +102,8 @@ function listarRoadmaps(req, res) {
     const limitParam = req.query.limit || req.query.limite;
     const pageParam = req.query.page || req.query.pagina;
     if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -105,7 +112,8 @@ function listarRoadmaps(req, res) {
     const roadmaps = db.prepare(query).all(...params);
     res.json(roadmaps);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar roadmaps: ' + err.message });
+    console.error('[cursosController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar roadmaps' });
   }
 }
 
@@ -116,13 +124,14 @@ function obterPorId(req, res) {
     if (!curso) return res.status(404).json({ erro: 'Curso não encontrado' });
     res.json(curso);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao carregar curso: ' + err.message });
+    console.error('[cursosController]', err);
+    res.status(500).json({ erro: 'Erro ao carregar curso' });
   }
 }
 
 function criar(req, res) {
   try {
-    const { titulo, area, plataforma, url, licenca, nivel, descricao } = req.body;
+    const { titulo, area, plataforma, url, licenca, nivel, descricao } = req.body || {};
     if (!titulo || !area || !plataforma || !url) {
       return res.status(400).json({ erro: 'Campos obrigatórios: titulo, area, plataforma, url' });
     }
@@ -151,7 +160,8 @@ function criar(req, res) {
     const novo = db.prepare('SELECT * FROM cursos WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json(novo);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao cadastrar curso: ' + err.message });
+    console.error('[cursosController]', err);
+    res.status(500).json({ erro: 'Erro ao cadastrar curso' });
   }
 }
 
@@ -162,7 +172,8 @@ function remover(req, res) {
     if (resDel.changes === 0) return res.status(404).json({ erro: 'Curso não encontrado' });
     res.json({ mensagem: 'Curso removido com sucesso' });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao remover curso: ' + err.message });
+    console.error('[cursosController]', err);
+    res.status(500).json({ erro: 'Erro ao remover curso' });
   }
 }
 
@@ -177,7 +188,8 @@ function acessarRedirect(req, res) {
     const urlDestino = validarUrlRedirecionamento(curso.url);
     res.redirect(302, urlDestino);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao redirecionar para o curso: ' + err.message });
+    console.error('[cursosController]', err);
+    res.status(500).json({ erro: 'Erro ao redirecionar para o curso' });
   }
 }
 

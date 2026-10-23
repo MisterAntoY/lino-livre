@@ -343,7 +343,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(resPost.data.job_id);
 
     const jobId = resPost.data.job_id;
-    const resJob = await request(`/api/import/${jobId}`);
+    const resJob = await request(`/api/import/${jobId}`, { headers: { 'x-admin-key': 'lino-admin-dev-key' } });
     assert.equal(resJob.status, 200);
     assert.ok(['pendente', 'em_curso', 'concluido', 'erro'].includes(resJob.data.status));
   });
@@ -1389,7 +1389,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
 
     // Aguardar conclusão do job assíncrono
     await new Promise(r => setTimeout(r, 200));
-    const jobWs = await request(`/api/import/${resWs.data.job_id}`);
+    const jobWs = await request(`/api/import/${resWs.data.job_id}`, { headers: { 'x-admin-key': 'lino-admin-dev-key' } });
     assert.equal(jobWs.data.status, 'concluido');
     assert.ok(jobWs.data.processados > 0);
 
@@ -1406,7 +1406,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resLv.data.fonte, 'librivox');
 
     await new Promise(r => setTimeout(r, 200));
-    const jobLv = await request(`/api/import/${resLv.data.job_id}`);
+    const jobLv = await request(`/api/import/${resLv.data.job_id}`, { headers: { 'x-admin-key': 'lino-admin-dev-key' } });
     assert.equal(jobLv.data.status, 'concluido');
     assert.ok(jobLv.data.processados > 0);
 
@@ -1423,7 +1423,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resSe.data.fonte, 'standardebooks');
 
     await new Promise(r => setTimeout(r, 200));
-    const jobSe = await request(`/api/import/${resSe.data.job_id}`);
+    const jobSe = await request(`/api/import/${resSe.data.job_id}`, { headers: { 'x-admin-key': 'lino-admin-dev-key' } });
     assert.equal(jobSe.data.status, 'concluido');
     assert.ok(jobSe.data.processados > 0);
 
@@ -1440,7 +1440,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resEur.data.fonte, 'europeana');
 
     await new Promise(r => setTimeout(r, 200));
-    const jobEur = await request(`/api/import/${resEur.data.job_id}`);
+    const jobEur = await request(`/api/import/${resEur.data.job_id}`, { headers: { 'x-admin-key': 'lino-admin-dev-key' } });
     assert.equal(jobEur.data.status, 'concluido');
     assert.ok(jobEur.data.processados > 0);
 

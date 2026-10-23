@@ -1,0 +1,5 @@
+Contact: mailto:bv6alblu6@mozmail.com
+Expires: 2027-10-23T00:00:00.000Z
+Preferred-Languages: pt, en
+Canonical: https://lino-livre.linolivre.workers.dev/.well-known/security.txt
+Policy: https://lino-livre.linolivre.workers.dev/legal

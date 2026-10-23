@@ -44,7 +44,8 @@ async function getComunidadeQrCode(req, res) {
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.send(cacheQRCodes.comunidade);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao gerar QR code: ' + err.message });
+    console.error('[comunidadeController]', err);
+    res.status(500).json({ erro: 'Erro ao gerar QR code' });
   }
 }
 
@@ -79,7 +80,8 @@ async function getCanalQrCode(req, res) {
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.send(cacheQRCodes.canal);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao gerar QR code: ' + err.message });
+    console.error('[comunidadeController]', err);
+    res.status(500).json({ erro: 'Erro ao gerar QR code' });
   }
 }
 

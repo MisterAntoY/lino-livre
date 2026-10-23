@@ -14,16 +14,20 @@ describe('Cloudflare Worker — Proxy de Capas (/api/capas)', () => {
   let cacheHit = null;
   const cachePuts = [];
 
-  const fakeUpstream = (url, { type = 'image/jpeg', status = 200, body = 'fake-image' } = {}) => ({
-    ok: status >= 200 && status < 300,
-    status,
-    url,
-    headers: new Headers({
+  const fakeUpstream = (url, { type = 'image/jpeg', status = 200, body = 'fake-image', location = null } = {}) => {
+    const headers = new Headers({
       'content-type': type,
       'content-length': String(body.length)
-    }),
-    body
-  });
+    });
+    if (location) headers.set('location', location);
+    return {
+      ok: status >= 200 && status < 300,
+      status,
+      url,
+      headers,
+      body
+    };
+  };
 
   before(() => {
     esbuild.buildSync({
@@ -42,7 +46,9 @@ describe('Cloudflare Worker — Proxy de Capas (/api/capas)', () => {
       fetchCount += 1;
       const alvo = String(url);
       if (alvo.includes('redirecionar-ssrf')) {
-        return fakeUpstream('http://127.0.0.1/segredo.jpg');
+        // A origem responde 302 para a rede interna. Com `redirect: 'manual'`
+        // o Worker valida o Location ANTES de o seguir (não há segundo fetch).
+        return fakeUpstream(alvo, { status: 302, location: 'http://127.0.0.1/segredo.jpg', body: '' });
       }
       if (alvo.includes('nao-e-imagem')) {
         return fakeUpstream(alvo, { type: 'text/html' });
@@ -101,8 +107,10 @@ describe('Cloudflare Worker — Proxy de Capas (/api/capas)', () => {
   });
 
   test('4. Bloqueia SSRF por redirecionamento da origem (403)', async () => {
+    const antes = fetchCount;
     const res = await pedir('/api/capas?u=' + encodeURIComponent('https://www.gutenberg.org/redirecionar-ssrf.jpg'));
     assert.equal(res.status, 403);
+    assert.equal(fetchCount, antes + 1, 'Não deve haver segundo fetch para o destino do redirect');
   });
 
   test('5. Recusa conteúdo que não é imagem (415)', async () => {

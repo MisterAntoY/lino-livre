@@ -9,11 +9,22 @@ if (typeof process.loadEnvFile === 'function') {
 }
 
 const apiRoutes = require('./routes/api');
+const { criarRateLimit } = require('./middlewares/rateLimit');
 
 const app = express();
 
-// Desconfia de proxies (X-Forwarded-For) para rate limiting correcto
-app.set('trust proxy', 1);
+// Não expor a tecnologia do servidor (fingerprinting).
+app.disable('x-powered-by');
+
+// Só confia em X-Forwarded-For quando existe um proxy explicitamente
+// configurado. Com um valor por omissão, qualquer cliente conseguia forjar o
+// IP e contornar o rate limiting (CWE-348 / CVE-2026-90711).
+const TRUST_PROXY = process.env.TRUST_PROXY;
+if (TRUST_PROXY) {
+  app.set('trust proxy', /^\d+$/.test(TRUST_PROXY) ? Number(TRUST_PROXY) : TRUST_PROXY);
+} else {
+  app.set('trust proxy', false);
+}
 
 // Compressão HTTP (Gzip/Deflate) para economizar dados móveis
 app.use(compression());
@@ -76,58 +87,51 @@ app.use((req, res, next) => {
   next();
 });
 
-// ==================== RATE LIMITING (in-memory) ====================
-const rateLimitStore = new Map();
-// Nos testes de integração não limitamos pedidos: o suite faz dezenas de
-// escritas no mesmo caminho e o limite tornaria os resultados instáveis.
-const RATE_LIMIT_ATIVO = process.env.NODE_ENV !== 'test';
-
-function rateLimit({ windowMs = 60_000, max = 120, message = 'Demasiadas requisições. Tente novamente em instantes.' } = {}) {
-  return (req, res, next) => {
-    if (!RATE_LIMIT_ATIVO || process.env.NODE_ENV === 'test') return next();
-    const ip = req.ip || req.socket?.remoteAddress || 'desconhecido';
-    const key = `${ip}:${req.baseUrl}${req.path}`;
-    const now = Date.now();
-    const entry = rateLimitStore.get(key);
-
-    if (!entry || now > entry.resetAt) {
-      rateLimitStore.set(key, { count: 1, resetAt: now + windowMs });
-    } else {
-      entry.count++;
-      if (entry.count > max) {
-        const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
-        res.setHeader('Retry-After', String(retryAfter));
-        res.setHeader('X-RateLimit-Limit', String(max));
-        res.setHeader('X-RateLimit-Remaining', '0');
-        return res.status(429).json({ erro: message, retry_after_s: retryAfter });
-      }
-    }
-
-    // Limpeza periódica do store
-    if (rateLimitStore.size > 5000) {
-      for (const [k, v] of rateLimitStore) {
-        if (now > v.resetAt) rateLimitStore.delete(k);
-      }
-    }
-
-    next();
-  };
-}
-
-// Rate limit global (API)
-app.use('/api', (req, res, next) => {
-  if (process.env.NODE_ENV === 'test') return next();
-  return rateLimit({ windowMs: 60_000, max: 300 })(req, res, next);
+// ==================== RATE LIMITING ====================
+// Instâncias criadas uma única vez (não por pedido) e com teto de memória.
+const limitadorApi = criarRateLimit({
+  windowMs: 60_000, max: 300, escopo: 'api',
+  message: 'Demasiadas requisições. Tente novamente em instantes.'
+});
+const limitadorEscrita = criarRateLimit({
+  windowMs: 60_000, max: 30, escopo: 'api-escrita',
+  message: 'Limite de escritas excedido. Tente novamente em instantes.'
+});
+// Endpoints caros: proxy de imagens (memória/egress) e busca federada (fan-out).
+const limitadorCapas = criarRateLimit({
+  windowMs: 60_000, max: 60, escopo: 'capas',
+  message: 'Limite de pedidos de capa excedido. Tente novamente em instantes.'
+});
+const limitadorFederada = criarRateLimit({
+  windowMs: 60_000, max: 20, escopo: 'busca-federada',
+  message: 'Limite de buscas federadas excedido. Tente novamente em instantes.'
+});
+const limitadorSugestoes = criarRateLimit({
+  windowMs: 60_000, max: 5, escopo: 'sugestoes',
+  message: 'Limite de sugestões excedido. Tente novamente mais tarde.'
+});
+const limitadorReproducao = criarRateLimit({
+  windowMs: 60_000, max: 20, escopo: 'reproducao',
+  message: 'Limite de registos de reprodução excedido.'
+});
+// Cada leitura redireccionada incrementa o contador `leituras` (escrita).
+const limitadorLeitura = criarRateLimit({
+  windowMs: 60_000, max: 60, escopo: 'leitura',
+  message: 'Limite de aberturas de obra excedido. Tente novamente em instantes.'
 });
 
-// Rate limit mais agressivo para operações de escrita
+app.use('/api', limitadorApi);
 app.use('/api', (req, res, next) => {
-  if (process.env.NODE_ENV === 'test') return next();
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
-    return rateLimit({ windowMs: 60_000, max: 30, message: 'Limite de escritas excedido. Tente novamente em instantes.' })(req, res, next);
+    return limitadorEscrita(req, res, next);
   }
   next();
 });
+app.use('/api/capas', limitadorCapas);
+app.use('/api/busca/federada', limitadorFederada);
+app.use('/api/sugestoes', limitadorSugestoes);
+app.use('/api/podcasts/episodios/:id/ouvir', limitadorReproducao);
+app.use('/api/livros/:id/ler/:linkId', limitadorLeitura);
 
 // ==================== PAYLOAD LIMITS ====================
 app.use(express.json({ limit: '1mb' }));
@@ -176,6 +180,26 @@ app.get('/ai-catalog.json', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/ai-catalog.json'));
 });
 
+// ==================== ZERO ARMAZENAMENTO DE OBRAS ====================
+// Mesmo que alguém (agente, script, PR) coloque um ficheiro de livro em
+// `public/`, ele nunca é servido. O acesso a obras é sempre por 302 externo.
+// As rotas explícitas acima (llms*.txt, robots.txt, ads.txt, .well-known) são
+// registadas antes deste guard e continuam acessíveis.
+const ARQUIVOS_NUNCA_SERVIDOS = /\.(pdf|epub|mobi|azw3?|mp3|mp4|wav|ogg|flac|txt)$/i;
+
+app.use((req, res, next) => {
+  // Metadados de segurança e ficheiros de política não são obras.
+  if (req.path.startsWith('/.well-known/') || req.path === '/robots.txt' || req.path === '/ads.txt') {
+    return next();
+  }
+  if (ARQUIVOS_NUNCA_SERVIDOS.test(req.path)) {
+    return res.status(404).json({
+      erro: 'O Lino Livre não armazena nem serve ficheiros de obras. Utilize o link de redirecionamento para a fonte externa.'
+    });
+  }
+  next();
+});
+
 // ==================== ESTÁTICOS COM CACHE ====================
 app.use(express.static(path.join(__dirname, '../public'), {
   dotfiles: 'allow',
@@ -213,12 +237,6 @@ app.use('/api', (req, res) => {
   res.status(404).json({ erro: 'Endpoint da API não encontrado' });
 });
 
-// ==================== ERROR HANDLER ====================
-app.use((err, req, res, next) => {
-  console.error('[erro]', err.message);
-  res.status(err.status || 500).json({ erro: 'Erro interno do servidor' });
-});
-
 // Páginas Públicas Institucionais & Compliance
 app.get('/creditos', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/creditos.html'));
@@ -233,9 +251,30 @@ app.get('/comunidade', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/comunidade.html'));
 });
 
+// Divulgação responsável de vulnerabilidades (RFC 9116)
+app.get('/.well-known/security.txt', (req, res) => {
+  res.type('text/plain').send([
+    'Contact: mailto:bv6alblu6@mozmail.com',
+    'Expires: 2027-10-23T00:00:00.000Z',
+    'Preferred-Languages: pt, en',
+    'Canonical: https://lino-livre.linolivre.workers.dev/.well-known/security.txt',
+    'Policy: https://lino-livre.linolivre.workers.dev/legal',
+    ''
+  ].join('\n'));
+});
+
 // Fallback para SPA/Frontend
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+// ==================== ERROR HANDLER ====================
+// Registado no fim da pilha para apanhar erros de todas as rotas. Nunca
+// devolve stack traces ao cliente.
+app.use((err, req, res, next) => {
+  console.error('[erro]', err.stack || err.message);
+  if (res.headersSent) return next(err);
+  res.status(err.status || 500).json({ erro: 'Erro interno do servidor' });
 });
 
 module.exports = app;
