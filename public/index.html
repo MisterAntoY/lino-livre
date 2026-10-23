@@ -209,6 +209,7 @@
   
 </head>
 <body>
+  <a class="skip-link" href="#conteudo-principal">Saltar para o conteúdo principal</a>
 
   <!-- Conteúdo de contexto para motores de busca e utilizadores sem JavaScript -->
   <noscript>
@@ -546,8 +547,8 @@
       </div>
     </section>
 
-    <!-- Catálogo de Livros -->
-    <main class="container main-container">
+    <!-- Catálogo de Livros — único marco "main" do documento (axe: landmark-one-main) -->
+    <main class="container main-container" id="conteudo-principal">
       <div id="grade-livros" class="books-grid">
         <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
         <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
@@ -647,11 +648,11 @@
       </div>
     </section>
 
-    <main class="container main-container">
+    <section class="container main-container">
       <div id="grade-cursos" class="courses-grid">
         <div class="loading" data-i18n="ui.courses.loading">Carregando catálogo de cursos...</div>
       </div>
-    </main>
+    </section>
   </div>
 
   <!-- ==================== ABA 3: ROADMAPS & TRILHAS ==================== -->
@@ -685,11 +686,11 @@
       </div>
     </section>
 
-    <main class="container main-container">
+    <section class="container main-container">
       <div id="grade-roadmaps" class="roadmaps-grid">
         <div class="loading" data-i18n="ui.roadmaps.loading">Carregando roadmaps e trilhas interativas...</div>
       </div>
-    </main>
+    </section>
   </div>
 
   <!-- ==================== ABA 4: DICAS & FERRAMENTAS ==================== -->
@@ -721,11 +722,11 @@
       </div>
     </section>
 
-    <main class="container main-container">
+    <section class="container main-container">
       <div id="grade-dicas" class="dicas-grid">
         <div class="loading" data-i18n="ui.tips.loading">Carregando dicas e ferramentas...</div>
       </div>
-    </main>
+    </section>
   </div>
 
   <!-- ==================== ABA 4: PODCASTS & SPOTIFY ==================== -->

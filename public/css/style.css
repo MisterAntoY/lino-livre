@@ -4618,3 +4618,56 @@ html[lang^="zh"] .course-title {
     font-size: 0.925rem;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   ACESSIBILIDADE — aplica as guias Lighthouse/web.dev (2026-10-23)
+   Fontes: developer.chrome.com/docs/lighthouse/best-practices/doctype,
+   developer.chrome.com/docs/lighthouse/accessibility/scoring,
+   web.dev/articles/how-to-review (Rob Dodson)
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* 1. Anel de foco visível para navegação por teclado.
+      A guia web.dev proíbe desativar indicadores de foco sem alternativa:
+      "evite outline: none — os usuários de teclado não terão como saber
+      qual elemento está em foco". O :focus-visible mantém o cenário do
+      rato intocado (sem interferência no design) devolvendo o anel
+      nos cenários de teclado, mesmo onde exista outline: none prévio. */
+:focus-visible {
+  outline: 3px solid #1d4ed8 !important;
+  outline-offset: 2px;
+}
+
+/* 2. Link de salto ("bypass" — peso 7 no scoring axe do Lighthouse).
+      Fica fora da vista (top negativo) e tem impacto zero no layout:
+      CLS zero por construção; só se torna visível no primeiro Tab. */
+.skip-link {
+  position: absolute;
+  top: -64px;
+  left: 8px;
+  z-index: 2000;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 0.65rem 1.1rem;
+  border-radius: 0 0 var(--radius-md) 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28);
+  transition: top 0.15s ease;
+}
+.skip-link:hover { text-decoration: underline; }
+.skip-link:focus { top: 0; }
+
+/* 3. Respeita a preferência do sistema por movimento reduzido
+      (media query prefers-reduced-motion) em TODAS as páginas do acervo,
+      não apenas na home (que tem o bloco no CSS crítico inline). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
