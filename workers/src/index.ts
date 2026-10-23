@@ -298,7 +298,7 @@ app.get('/api/dashboard', async (c) => {
     };
 
     cachedDashboard = { data: payload, timestamp: now };
-    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
     return c.json(payload);
   } catch (err: any) {
     if (!noCache && cachedDashboard) {
@@ -1296,7 +1296,7 @@ app.get('/api/fontes', async (c) => {
     if (repo) {
       try {
         const fontes = await repo.fontes();
-        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
         return c.json(fontes);
       } catch (err) {
         console.error('Supabase fontes falhou; a usar D1:', err);
@@ -1312,7 +1312,7 @@ app.get('/api/fontes', async (c) => {
       WHERE f.ativa = 1
       ORDER BY f.id ASC
     `).all()).results;
-    c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
     return c.json(fontes);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);

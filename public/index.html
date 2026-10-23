@@ -77,9 +77,10 @@
   }
   </script>
   
-  <!-- Preload critical fonts with font-display: swap -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <!-- ═══════════ Tipografia auto-hospedada (Lora — licença SIL OFL; zero dependência do Google; anti-CLS) ═══════════ -->
+  <!-- font-display: optional garante que a Lora só é usada se estiver pronta na 1.ª pintura — nunca há troca de fonte a meio do carregamento. -->
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-latin-var.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-italic-latin-var.woff2" crossorigin>
   
   <!-- Critical CSS (inlined for instant render) -->
   <style>
@@ -121,6 +122,9 @@
     .book-cover-container{position:relative;width:100%;aspect-ratio:2/2.9;background:#e2e8f0;overflow:hidden;display:flex;align-items:center;justify-content:center}
     .book-cover{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;box-shadow:inset 4px 0 10px rgba(0,0,0,.15)}
     .loading{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--text-muted);font-size:1.125rem}
+    /* Lora auto-hospedada (subconjunto latin; eixo de peso variável) — font-display:optional = zero CLS. O Noto SC (chinês) é injetado por /js/i18n.js apenas quando o idioma é zh. */
+    @font-face{font-family:'Lora';font-style:normal;font-weight:400 700;font-display:optional;src:url(/fonts/lora-latin-var.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+    @font-face{font-family:'Lora';font-style:italic;font-weight:400 700;font-display:optional;src:url(/fonts/lora-italic-latin-var.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
     .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
     .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
     .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
@@ -157,7 +161,7 @@
   
   <!-- Full CSS (render-blocking, 14 KB gzip): um único layout em vez de
        reflow completo ao trocar media="print" -> "all" no onload. -->
-  <link rel="stylesheet" href="/css/style.css?v=20261022">
+  <link rel="stylesheet" href="/css/style.css?v=20261023">
   
   <!-- Service Worker for offline caching -->
   <script>
@@ -246,12 +250,15 @@
         <div class="lang-switcher">
           <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <select id="seletor-idioma" class="lang-select" onchange="app.trocarIdioma(this.value)" data-i18n-aria="ui.langLabel" aria-label="Idioma do site">
-            <option value="pt"> Português</option>
-            <option value="en"> English</option>
-            <option value="es"> Español</option>
-            <option value="de"> Deutsch</option>
-            <option value="zh"> 中文</option>
-            <option value="fr"> Français</option>
+            <!-- Etiquetas exatamente iguais a LABELS_PADRAO em /js/i18n.js: o montarSeletor() reconstrói
+                 as opções após o arranque e qualquer diferença mudaria a largura do seletor (cls). -->
+            <option value="pt">Português (Angola)</option>
+            <option value="pt-br">Português (Brasil)</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="zh">中文</option>
+            <option value="fr">Français</option>
           </select>
         </div>
         <a id="btn-header-comunidade" class="btn btn-whatsapp hidden" href="#" target="_blank" rel="noopener noreferrer" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
@@ -334,7 +341,7 @@
             <div class="milestone-step active" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
               <span class="milestone-dot"></span>
               <span class="milestone-text">1.000</span>
-              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>
+              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo marco</span>
             </div>
             <div class="milestone-step" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
               <span class="milestone-dot"></span>
@@ -1358,7 +1365,7 @@
   <div id="toast" class="toast hidden"></div>
 
 
-  <script defer src="/js/i18n.js?v=20261022"></script>
-  <script defer src="/js/app.js?v=20261022"></script>
+  <script defer src="/js/i18n.js?v=20261023"></script>
+  <script defer src="/js/app.js?v=20261023"></script>
 </body>
 </html>
