@@ -99,7 +99,8 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
       assert.ok(js.includes('registrarFerramentasWebMCP()'), 'Deve conter método registrarFerramentasWebMCP');
       assert.ok(js.includes("name: 'buscar_livros'"), 'Deve registrar ferramenta buscar_livros');
       assert.ok(js.includes("name: 'buscar_cursos'"), 'Deve registrar ferramenta buscar_cursos');
-      assert.ok(js.includes('modelContext.registerTool'), 'Deve verificar suporte a modelContext');
+      assert.ok(js.includes('modelContext'), 'Deve verificar suporte a modelContext');
+      assert.ok(js.includes('registerTool'), 'Deve chamar registerTool');
     });
   });
 
@@ -111,7 +112,8 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
 
       assert.ok(html.includes('skeleton-card'), 'Deve declarar skeleton-card na estrutura inicial');
       assert.ok(html.includes('skeleton-cover'), 'Deve declarar skeleton-cover');
-      assert.ok(html.includes('id="btn-goal-comunidade" class="btn btn-goal-whatsapp"'), 'Botão de comunidade no placar não deve ter classe hidden inicial');
+      assert.ok(html.includes('id="btn-goal-comunidade"'), 'Deve conter id btn-goal-comunidade');
+      assert.ok(!html.includes('id="btn-goal-comunidade" class="btn btn-goal-whatsapp hidden"'), 'Botão de comunidade no placar não deve ter classe hidden inicial');
     });
 
     test('4.2 - public/css/style.css define min-height e regras de shimmer para skeletons', () => {

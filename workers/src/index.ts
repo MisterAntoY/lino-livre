@@ -226,6 +226,12 @@ async function contadoresDe(db: any, dimensao: string): Promise<any[]> {
   }
 }
 
+// 0. Diagnóstico do Edge Load Balancer e Circuit Breaker (Custo Zero Perpétuo)
+app.get('/api/loadbalancer/status', (c) => {
+  c.header('Cache-Control', 'no-store');
+  return c.json(edgeLoadBalancer.getSnapshot());
+});
+
 // 1. Dashboard de Acervo e Leituras
 app.get('/api/dashboard', async (c) => {
   const adminKey = c.env.ADMIN_API_KEY || (c.env.ENVIRONMENT === 'production' ? null : 'lino-admin-dev-key');

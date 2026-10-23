@@ -165,14 +165,20 @@ app.get('/llms-full.txt', (req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=86400');
   res.sendFile(path.join(__dirname, '../public/llms-full.txt'));
 });
-app.get(['/.well-known/ai-catalog.json', '/ai-catalog.json'], (req, res) => {
+app.get('/.well-known/ai-catalog.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=86400');
-  res.sendFile(path.join(__dirname, '../public/.well-known/ai-catalog.json'));
+  res.sendFile(path.join(__dirname, '../public/.well-known/ai-catalog.json'), { dotfiles: 'allow' });
+});
+app.get('/ai-catalog.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.sendFile(path.join(__dirname, '../public/ai-catalog.json'));
 });
 
 // ==================== ESTÁTICOS COM CACHE ====================
 app.use(express.static(path.join(__dirname, '../public'), {
+  dotfiles: 'allow',
   maxAge: '1d',
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('sw.js')) {
