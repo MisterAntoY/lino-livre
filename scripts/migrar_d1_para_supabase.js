@@ -183,7 +183,8 @@ async function upsert(tabela, linhas) {
 }
 
 async function estadoTabela(nome) {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${nome}?select=id&limit=1`, {
+  const col = nome === 'estatisticas' || nome === 'contadores' ? 'chave' : nome === 'autor_totais' ? 'autor_id' : 'id';
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${nome}?select=${col}&limit=1`, {
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${SUPABASE_KEY}`,
