@@ -51,23 +51,25 @@
       return this.lang;
     },
 
-    // Noto Sans/Serif SC só é necessário em chinês. Carregá-lo no <head>
-    // custava ~150 KiB de CSS não usado em 100% das visitas em pt/en/etc.
-    garantirFontesIdioma(code) {
-      if (code !== 'zh') return;
-      if (document.getElementById('i18n-fontes-cjk')) return;
+    // Fontes chinesas (Noto Sans SC / Noto Serif SC) apenas quando o idioma é zh.
+    // Anti-CLS + anti-desperdício: ~150 KB de @font-face e dezenas de subconjuntos han
+    // deixam de pesar em cada visita em português/inglês/etc.
+    garantirFontesZh() {
+      if (this._fontesZh) return;
+      this._fontesZh = true;
+      try {
+        const preconnect = document.createElement('link');
+        preconnect.rel = 'preconnect';
+        preconnect.href = 'https://fonts.gstatic.com';
+        preconnect.crossOrigin = 'anonymous';
+        document.head.appendChild(preconnect);
 
-      const preconnect = document.createElement('link');
-      preconnect.rel = 'preconnect';
-      preconnect.href = 'https://fonts.gstatic.com';
-      preconnect.crossOrigin = 'anonymous';
-      document.head.appendChild(preconnect);
-
-      const link = document.createElement('link');
-      link.id = 'i18n-fontes-cjk';
-      link.rel = 'stylesheet';
-      link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap';
-      document.head.appendChild(link);
+        const link = document.createElement('link');
+        link.id = 'i18n-fontes-cjk';
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap';
+        document.head.appendChild(link);
+      } catch (_) {}
     },
 
     detectarIdioma() {
@@ -118,7 +120,7 @@
       this.dict = d;
       this.carregado = true;
 
-      this.garantirFontesIdioma(this.lang);
+      if (this.lang === 'zh' || code === 'zh') this.garantirFontesZh();
       this.aplicarDocumento();
       this.notificar();
     },

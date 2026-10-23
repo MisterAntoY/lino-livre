@@ -1,11 +1,25 @@
-# Cache-Control eficiente para assets estáticos (Lino Livre)
-# O HTML e o Service Worker permanecem sempre revalidados.
-# Imagens, CSS, JS e locales recebem cache longo; o CSS/JS usa ?v= para versionar.
+# ═══════════════════════════════════════════════════════════════════════════
+# Cabeçalhos Globais de Segurança HTTP (Lino Livre)
+# Compatível com Cloudflare Pages e Cloudflare Workers Static Assets
+# ═══════════════════════════════════════════════════════════════════════════
 
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
+
+# Cache-Control eficiente para assets estáticos
 /
   Cache-Control: public, max-age=0, must-revalidate
 
 /index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
   Cache-Control: public, max-age=0, must-revalidate
 
 /sw.js

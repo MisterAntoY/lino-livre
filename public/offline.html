@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self';">
   <title>Modo Offline — Lino Livre</title>
   <meta name="theme-color" content="#10b981">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -84,7 +85,7 @@
       font-weight: 600;
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
       border: 1px solid transparent;
     }
     .btn-primary {

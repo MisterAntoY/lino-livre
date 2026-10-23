@@ -5,7 +5,7 @@
   --bg-page: #f8fafc;
   --bg-card: #ffffff;
   --text-main: #0f172a;
-  --text-muted: #64748b;
+  --text-muted: #475569;
   --border: #e2e8f0;
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -120,7 +120,7 @@ body {
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   border: 1px solid transparent;
   text-decoration: none;
   white-space: nowrap;
@@ -228,7 +228,7 @@ body {
   font-family: inherit;
   background: #ffffff;
   outline: none;
-  transition: all 0.15s;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
@@ -252,7 +252,7 @@ body {
   font-size: 0.825rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .pill:hover {
@@ -286,7 +286,7 @@ body {
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
-  transition: all 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .book-card:hover {
@@ -346,7 +346,7 @@ body {
   font-size: 0.825rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .pill:hover {
@@ -470,7 +470,7 @@ body {
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   border: 1px solid transparent;
   text-decoration: none;
   white-space: nowrap;

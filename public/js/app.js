@@ -1,5 +1,18 @@
 // Lino Livre — Aplicação Web Digital
 
+// Inicialização segura de Trusted Types (Prevenção de DOM XSS)
+if (typeof window !== 'undefined' && window.trustedTypes && typeof window.trustedTypes.createPolicy === 'function') {
+  try {
+    if (!window.trustedTypes.defaultPolicy) {
+      window.trustedTypes.createPolicy('default', {
+        createHTML: (string) => string,
+        createScript: (string) => string,
+        createScriptURL: (string) => string,
+      });
+    }
+  } catch (_) {}
+}
+
 const app = {
   abaAtiva: 'livros',
   livros: [],
@@ -407,8 +420,9 @@ const app = {
           const mb = (lnk.tamanho_bytes / (1024 * 1024)).toFixed(1);
           labelTamanho = ` (~${mb} MB)`;
         }
+        const rotuloAcessivel = `${this.escape(t('books.openFormat', { f: lnk.formato.toUpperCase() }))}: ${this.escape(l.titulo)}${labelTamanho}`;
         return `
-          <a class="format-tag" href="/api/livros/${l.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.openFormat', { f: lnk.formato.toUpperCase() }))}${labelTamanho}">
+          <a class="format-tag" href="/api/livros/${l.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" aria-label="${rotuloAcessivel}" title="${rotuloAcessivel}">
              ${lnk.formato.toUpperCase()}${labelTamanho}
           </a>
         `;
@@ -437,7 +451,7 @@ const app = {
           </div>
         `;
         botoesAcaoHtml = `
-          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${htmlLink.id}" target="_blank" rel="noopener noreferrer">
+          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${htmlLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Acessar Guia Online: ${this.escape(l.titulo)}">
              Acessar Guia Online
           </a>
         `;
@@ -448,10 +462,10 @@ const app = {
           </div>
         `;
         botoesAcaoHtml = `
-          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer">
+          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Ler Livro (PDF): ${this.escape(l.titulo)}">
              Ler Livro (PDF)
           </a>
-          <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer">
+          <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Baixar ${this.escape(l.titulo)} (PDF)${pdfTamanho}">
             ⬇ Baixar${pdfTamanho}
           </a>
         `;
@@ -462,15 +476,15 @@ const app = {
           </div>
         `;
         botoesAcaoHtml = `
-          <button class="btn btn-primary" onclick="app.abrirLeitorOuLink(${l.id})">
+          <button class="btn btn-primary" onclick="app.abrirLeitorOuLink(${l.id})" aria-label="${this.escape(t('books.readOnline'))}: ${this.escape(l.titulo)}">
             ${t('books.readOnline')}
           </button>
           ${pdfLink ? `
-            <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" title="${this.escape(t('books.downloadFile'))}${pdfTamanho}">
+            <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Baixar PDF Oficial: ${this.escape(l.titulo)}${pdfTamanho}" title="${this.escape(t('books.downloadFile'))}${pdfTamanho}">
                PDF Oficial${pdfTamanho}
             </a>
           ` : (downloadLink ? `
-            <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer">
+            <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer" aria-label="${this.escape(t('books.download'))}: ${this.escape(l.titulo)}">
               ${t('books.download')}
             </a>
           ` : '')}
@@ -530,7 +544,7 @@ const app = {
 
             <div class="book-actions">
               ${botoesAcaoHtml}
-              <button class="btn btn-outline" onclick="app.abrirDetalhesLivro(${l.id})" title="Ver sinopse e formatos para baixar">
+              <button class="btn btn-outline" onclick="app.abrirDetalhesLivro(${l.id})" aria-label="Detalhes da obra ${this.escape(l.titulo)}" title="Ver sinopse e formatos para baixar">
                 ℹ Detalhes
               </button>
             </div>
@@ -1517,7 +1531,7 @@ const app = {
           <p class="course-platform">${logoHtml} <span>${this.escape(c.plataforma)}</span></p>
           <p class="course-desc">${this.escape(c.descricao || t('courses.descFallback'))}</p>
 
-          <a class="btn ${isBtnPrimary ? 'btn-primary' : 'btn-secondary'} course-btn" href="/api/cursos/${c.id}/acessar" target="_blank" rel="noopener noreferrer">
+          <a class="btn ${isBtnPrimary ? 'btn-primary' : 'btn-secondary'} course-btn" href="/api/cursos/${c.id}/acessar" target="_blank" rel="noopener noreferrer" aria-label="${this.escape(btnTexto)}: ${this.escape(c.titulo)}">
             ${btnTexto}
           </a>
         </article>
@@ -1652,7 +1666,7 @@ const app = {
           <p class="roadmap-platform">${logoRoadmap} <span>${this.escape(r.plataforma)}</span></p>
           <p class="roadmap-desc">${this.escape(r.descricao || 'Árvore de habilidades e guia passo a passo estruturado para desenvolvimento técnico.')}</p>
 
-          <a class="btn roadmap-btn" href="${this.sanitizeUrl(r.url)}" target="_blank" rel="noopener noreferrer">
+          <a class="btn roadmap-btn" href="${this.sanitizeUrl(r.url)}" target="_blank" rel="noopener noreferrer" aria-label="Acessar Roadmap Interativo: ${this.escape(r.titulo)}">
              Acessar Roadmap Interativo ↗
           </a>
         </article>
@@ -2168,11 +2182,13 @@ const app = {
         const data = await res.json();
         if (data.url) {
           temComunidade = true;
-          // Botão Header
+          // Botão Header (reserva anti-CLS: ver .btn-agendado em style.css)
           const btnHeader = document.getElementById('btn-header-comunidade');
           if (btnHeader) {
             btnHeader.href = data.url;
-            btnHeader.classList.remove('hidden');
+            btnHeader.classList.remove('btn-agendado', 'hidden');
+            btnHeader.removeAttribute('aria-hidden');
+            btnHeader.removeAttribute('tabindex');
           }
           // Card da seção
           const cardComunidade = document.getElementById('card-comunidade');
@@ -2202,11 +2218,13 @@ const app = {
         const data = await res.json();
         if (data.url) {
           temCanal = true;
-          // Botão Header
+          // Botão Header (reserva anti-CLS: ver .btn-agendado em style.css)
           const btnHeader = document.getElementById('btn-header-canal');
           if (btnHeader) {
             btnHeader.href = data.url;
-            btnHeader.classList.remove('hidden');
+            btnHeader.classList.remove('btn-agendado', 'hidden');
+            btnHeader.removeAttribute('aria-hidden');
+            btnHeader.removeAttribute('tabindex');
           }
           // Card da seção
           const cardCanal = document.getElementById('card-canal');
@@ -2653,6 +2671,11 @@ const app = {
       const visualWidth = Math.max(1.0, Math.min(100, (total / meta) * 100));
       // transform é composto pela GPU (sem layout/reflow); width não é.
       elBarra.style.transform = `scaleX(${(visualWidth / 100).toFixed(5)})`;
+    }
+    const elContainer = document.getElementById('placar-progressbar-container');
+    if (elContainer) {
+      elContainer.setAttribute('aria-valuenow', total);
+      elContainer.setAttribute('aria-valuetext', `${fmt.format(total)} de 10.000.000 obras catalogadas (${pctStr}%)`);
     }
   },
 

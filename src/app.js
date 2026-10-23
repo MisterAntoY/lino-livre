@@ -191,25 +191,6 @@ app.use((err, req, res, next) => {
 });
 
 // Páginas Públicas Institucionais & Compliance
-app.get('/manifest.webmanifest', (req, res) => {
-  res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=86400');
-  res.sendFile(path.join(__dirname, '../public/manifest.webmanifest'));
-});
-app.get('/manifest.json', (req, res) => {
-  res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=86400');
-  res.sendFile(path.join(__dirname, '../public/manifest.json'));
-});
-app.get('/sw.js', (req, res) => {
-  res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-  res.setHeader('Service-Worker-Allowed', '/');
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.sendFile(path.join(__dirname, '../public/sw.js'));
-});
-app.get('/offline', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/offline.html'));
-});
 app.get('/creditos', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/creditos.html'));
 });

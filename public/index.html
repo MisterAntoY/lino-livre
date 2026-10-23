@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self';">
 
   <!-- ═══════════ SEO ═══════════ -->
   <title>Lino Livre — Biblioteca digital gratuita de livros de África e da lusofonia</title>
@@ -77,9 +78,12 @@
   }
   </script>
   
-  <!-- Lora apenas (2 KB de CSS). O Noto Sans/Serif SC tem ~150 KB de @font-face
-       e é injetado por /js/i18n.js APENAS quando o idioma é zh (chinês). -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <!-- ═══════════ Tipografia auto-hospedada (Lora — licença SIL OFL; zero dependência do Google; anti-CLS) ═══════════ -->
+  <!-- font-display: optional garante que a Lora só é usada se estiver pronta na 1.ª pintura — nunca há troca de fonte a meio do carregamento. -->
+  <!-- As fontes chinesas (Noto Sans/Serif SC, ~150 KiB de @font-face) NÃO estão no <head>:
+       são injetadas por /js/i18n.js apenas quando o idioma efetivo é zh. -->
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-latin-var.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-italic-latin-var.woff2" crossorigin>
   
   <!-- Critical CSS (inlined for instant render) -->
   <style>
@@ -121,6 +125,9 @@
     .book-cover-container{position:relative;width:100%;aspect-ratio:2/2.9;background:#e2e8f0;overflow:hidden;display:flex;align-items:center;justify-content:center}
     .book-cover{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;box-shadow:inset 4px 0 10px rgba(0,0,0,.15)}
     .loading{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--text-muted);font-size:1.125rem}
+    /* Lora auto-hospedada (subconjunto latin; eixo de peso variável) — font-display:optional = zero CLS. O Noto SC (chinês) é injetado por /js/i18n.js apenas quando o idioma é zh. */
+    @font-face{font-family:'Lora';font-style:normal;font-weight:400 700;font-display:optional;src:url(/fonts/lora-latin-var.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+    @font-face{font-family:'Lora';font-style:italic;font-weight:400 700;font-display:optional;src:url(/fonts/lora-italic-latin-var.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
     /* Herói/Placar: estilos críticos do elemento LCP (evita reflow/repaint quando o CSS completo chega) */
     .goal-scoreboard-section{margin-top:1.25rem;margin-bottom:1.75rem}
     .goal-scoreboard-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.85rem 2.25rem;position:relative;overflow:hidden}
@@ -253,19 +260,25 @@
         <div class="lang-switcher">
           <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <select id="seletor-idioma" class="lang-select" onchange="app.trocarIdioma(this.value)" data-i18n-aria="ui.langLabel" aria-label="Idioma do site">
-            <option value="pt"> Português</option>
-            <option value="en"> English</option>
-            <option value="es"> Español</option>
-            <option value="de"> Deutsch</option>
-            <option value="zh"> 中文</option>
-            <option value="fr"> Français</option>
+            <!-- Etiquetas exatamente iguais a LABELS_PADRAO em /js/i18n.js: o montarSeletor() reconstrói
+                 as opções após o arranque e qualquer diferença mudaria a largura do seletor (cls). -->
+            <option value="pt">Português (Angola)</option>
+            <option value="pt-br">Português (Brasil)</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="zh">中文</option>
+            <option value="fr">Français</option>
           </select>
         </div>
-        <a id="btn-header-comunidade" class="btn btn-whatsapp hidden" href="#" target="_blank" rel="noopener noreferrer" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
+        <!-- btn-agendado: reserve a largura final do cabeçalho (visibility) em vez de display:none,
+             para que a ativação via /api/comunidade e /api/canal não desloque os botões vizinhos (cls).
+             app.js troca a classe e remove aria-hidden/tabindex quando os URLs chegam. -->
+        <a id="btn-header-comunidade" class="btn btn-whatsapp btn-agendado" href="#" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.header.group">Grupo</span>
         </a>
-        <a id="btn-header-canal" class="btn btn-whatsapp-outline hidden" href="#" target="_blank" rel="noopener noreferrer" data-i18n-title="ui.header.channelTitle" title="Seguir o canal Lino Livre no WhatsApp">
+        <a id="btn-header-canal" class="btn btn-whatsapp-outline btn-agendado" href="#" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.channelTitle" title="Seguir o canal Lino Livre no WhatsApp">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.header.channel">Canal</span>
         </a>
@@ -328,7 +341,7 @@
 
         <!-- Barra de Progresso Visual e Marcos Históricos -->
         <div class="goal-progress-wrapper">
-          <div class="goal-progress-bar-bg" role="progressbar" aria-valuenow="997" aria-valuemin="0" aria-valuemax="10000000" id="placar-progressbar-container">
+          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="997" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="997 de 10.000.000 obras catalogadas" id="placar-progressbar-container">
             <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.01);"></div>
           </div>
           
@@ -341,7 +354,7 @@
             <div class="milestone-step active" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
               <span class="milestone-dot"></span>
               <span class="milestone-text">1.000</span>
-              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>
+              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo marco</span>
             </div>
             <div class="milestone-step" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
               <span class="milestone-dot"></span>

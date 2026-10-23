@@ -22,9 +22,11 @@ const PRECACHE_ASSETS = [
   '/creditos.html',
   '/legal.html',
   '/termos.html',
-  '/css/style.css?v=20261024',
-  '/js/app.js?v=20261024',
-  '/js/i18n.js?v=20261024',
+  '/css/style.css',
+  '/fonts/lora-latin-var.woff2',
+  '/fonts/lora-italic-latin-var.woff2',
+  '/js/app.js',
+  '/js/i18n.js',
   '/manifest.webmanifest',
   '/manifest.json',
   '/favicon.svg',
@@ -103,13 +105,21 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. APIs Públicas de Consulta (/api/dashboard, /api/categorias, /api/fontes, /api/dicas)
-  // Estratégia: Stale-While-Revalidate para permitir consulta offline de estatísticas e categorias
+  // 2. APIs Públicas de Consulta (Dashboard, Categorias, Fontes, Livros, Cursos, Dicas, etc.)
+  // Estratégia: Stale-While-Revalidate — Carregamento em 0ms no navegador, suporte offline para estudantes
+  // e ZERO consumo de cota no servidor para acessos repetidos (100% Free Architecture).
   if (url.origin === location.origin && (
       url.pathname === '/api/dashboard' ||
       url.pathname === '/api/categorias' ||
       url.pathname === '/api/fontes' ||
-      url.pathname === '/api/dicas'
+      url.pathname === '/api/dicas' ||
+      url.pathname === '/api/creditos' ||
+      url.pathname === '/api/cursos' ||
+      url.pathname === '/api/roadmaps' ||
+      url.pathname === '/api/podcasts' ||
+      url.pathname === '/api/comunidade' ||
+      url.pathname === '/api/canal' ||
+      (url.pathname === '/api/livros' && !url.pathname.includes('/ler'))
   )) {
     event.respondWith(
       caches.open(API_CACHE).then(async (cache) => {
