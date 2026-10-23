@@ -395,6 +395,28 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   5. **Internacionalização em 7 Idiomas:** Chaves `highlightsTitle`, `highlightsSubtitle`, `highlightsBadge`, `highlightsAll`, `highlightsClassics`, `highlightsAfrica`, `highlightsTech`, `highlightsViewAll` e `highlightsLoading` atualizadas em `pt`, `pt-br`, `en`, `es`, `fr`, `de` e `zh`.
   6. **Suíte de Testes:** Criação do Teste 34 em [`test/api.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/api.test.js) e do Cenário 11 em [`test/worker.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/worker.test.js), elevando a cobertura geral para **196 testes automatizados (100% passando)**.
 
+### 2.23. Otimização para Navegação com Agência de IA (WebMCP, ARD, llms.txt e Zero CLS)
+- **Contexto da Auditoria Lighthouse (Agentic Web / Navegação com Agência):**
+  A auditoria apontou a necessidade de conformidade com os novos padrões de agentes de IA (`https://goo.gle/lighthouse-agentic-web`) e registou **Cumulative Layout Shift (CLS) = 0.41**, além de auditorias não aplicáveis sobre `WebMCP`, `llms.txt` e `ai-catalog.json`.
+- **Resoluções de Engenharia Implementadas:**
+  1. **Eliminação do Cumulative Layout Shift (CLS 0.41 → 0.00):**
+     - **Reserva de Espaço Estrutural:** Adicionado `min-height: 480px` na classe `.destaques-grid`, `min-height: 600px` em `.books-grid` e `min-height: 320px` em `.whatsapp-cards`.
+     - **Skeleton Cards Nativos com Shimmer:** O HTML inicial de `#grade-destaques` e `#grade-livros` já renderiza 4 cartões esqueletais com animação de shimmer e a exata proporção `aspect-ratio: 2/2.85`. Quando o JSON da API chega e monta os livros, as dimensões verticais já estão reservadas, eliminando o deslocamento do conteúdo.
+     - **Pre-renderização Estática de Componentes:** Remoção da classe `hidden` inicial dos botões `#btn-goal-comunidade`, da secção `#secao-whatsapp` e dos cards `#card-comunidade` e `#card-canal`, que provocavam saltos no layout ao serem ativados assincronamente via JavaScript.
+  2. **Anotações Declarativas WebMCP em Formulários:**
+     - `<form id="form-busca-livros">` com `toolname="buscar_livros"`, `tooldescription="..."` e `toolparamdescription="..."` no `<input type="search" name="q">`.
+     - `<form id="form-busca-cursos">` com `toolname="buscar_cursos"`, `tooldescription="..."` e `toolparamdescription="..."` no `<input type="search" name="curso">`.
+  3. **Registro Imperativo de Ferramentas WebMCP (`public/js/app.js`):**
+     - Implementação de `registrarFerramentasWebMCP()` invocando `navigator.modelContext?.registerTool` com esquemas JSON estruturados e mapeamento de intenção para agentes de navegação autónomos (ex: Chrome Agentic Browsing, Gemini, Claude).
+  4. **Padronização `llms.txt` e `llms-full.txt` (llmstxt.org):**
+     - Criação de `public/llms.txt` com cabeçalho H1 obrigatório, resumo em blockquote, manifesto de intermediação legal e hiperligações para todas as rotas abertas.
+     - Criação de `public/llms-full.txt` com documentação técnica exaustiva de parâmetros de busca e modelos de dados.
+     - Disponibilizado com `Content-Type: text/markdown; charset=utf-8` no Express e no Cloudflare Worker.
+  5. **Manifesto `ai-catalog.json` (Agentic Resource Discovery - ARD):**
+     - Implementado em `public/.well-known/ai-catalog.json` e `public/ai-catalog.json` com especificação ARD 1.0.0, catalogando as ferramentas `buscar_livros`, `buscar_cursos`, `busca_federada` e `dashboard_metricas` com `representativeQueries`.
+     - Configurado `dotfiles: 'allow'` no Express e rota dedicada no Cloudflare Worker.
+  6. **Suíte de Testes:** Criação da suíte `test/agentic_web.test.js` (11 testes) e do Cenário 13 em `test/worker.test.js` (3 testes), elevando a cobertura para **211 testes automatizados em 44 suítes (100% passando)**.
+
 ---
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
@@ -497,7 +519,7 @@ Ambos os backends aplicam:
 ## 💻 6. Guia Rápido de Comandos para Agentes
 
 ```bash
-# Executar a suíte completa de testes automatizados (196 testes em 37 suítes)
+# Executar a suíte completa de testes automatizados (211 testes em 44 suítes)
 npm test
 
 # Executar diagnóstico completo de tráfego e consumo de cotas (D1 e Supabase)
