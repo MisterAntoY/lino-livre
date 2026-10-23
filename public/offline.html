@@ -149,7 +149,7 @@
     <p>O Lino Livre continua acessível no seu telemóvel! As páginas, dicas de estudo e livros clássicos previamente abertos continuam disponíveis na sua memória local.</p>
 
     <div class="btn-group">
-      <button class="btn btn-primary" onclick="window.location.reload()">
+      <button class="btn btn-primary" data-acao="recarregar">
         <span>↻</span> Tentar Novamente
       </button>
       <a class="btn btn-secondary" href="/">
@@ -162,6 +162,15 @@
     // Se a conexão for restabelecida, recarrega automaticamente
     window.addEventListener('online', () => {
       window.location.reload();
+    });
+
+    // Botão "Tentar novamente" sem handler inline (CSP sem 'unsafe-inline').
+    document.addEventListener('click', (ev) => {
+      const alvo = ev.target instanceof Element ? ev.target.closest('[data-acao]') : null;
+      if (alvo && alvo.dataset.acao === 'recarregar') {
+        ev.preventDefault();
+        window.location.reload();
+      }
     });
   </script>
 </body>

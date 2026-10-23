@@ -19,6 +19,14 @@ const fontesController = require('../controllers/fontesController');
 const cursosController = require('../controllers/cursosController');
 const comunidadeController = require('../controllers/comunidadeController');
 
+// 0. Configuração pública do frontend (apenas valores públicos, nunca segredos)
+router.get('/config', (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=300');
+  res.json({
+    turnstile_site_key: process.env.TURNSTILE_SITE_KEY || null
+  });
+});
+
 // 1. Dashboard de Acervo e Leituras
 router.get('/dashboard', dashboardController.metricas);
 

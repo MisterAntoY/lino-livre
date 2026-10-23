@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { cors } from 'hono/cors';
 import { Bindings } from './types';
 import { RepoSupabase, obterConfigSupabase, backendSupabase } from './supabase';
 import { generateQrCodeSvg } from './utils/qrcode';
@@ -11,8 +10,57 @@ import { edgeLoadBalancer } from './loadBalancer';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// Enable CORS
-app.use('/api/*', cors());
+// ────────────────────────────────────────────────────────────
+// CORS: leitura pública abrangente, mutações restritas.
+// A API de leitura é pública (metadados abertos), mas operações de escrita só
+// aceitam origens conhecidas. Pedidos sem Origin (curl, server-to-server,
+// cron) continuam permitidos — a autorização real é a chave administrativa.
+// ────────────────────────────────────────────────────────────
+const ORIGENS_PERMITIDAS = new Set([
+  'https://lino-livre.linolivre.workers.dev',
+  'https://linolivre.org',
+  'https://www.linolivre.org',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+]);
+
+app.use('/api/*', async (c, next) => {
+  const origin = c.req.header('origin');
+  const metodo = c.req.method.toUpperCase();
+  const mutacao = !['GET', 'HEAD', 'OPTIONS'].includes(metodo);
+  const origemConhecida = !!origin && ORIGENS_PERMITIDAS.has(origin);
+
+  if (origin && mutacao && !origemConhecida) {
+    return c.json({ erro: 'Origem não autorizada para operações de escrita' }, 403);
+  }
+
+  if (origemConhecida) {
+    c.header('Access-Control-Allow-Origin', origin!);
+    c.header('Vary', 'Origin');
+  } else if (!mutacao) {
+    // Só a leitura pública é exposta a qualquer origem. Escritas sem Origin
+    // (curl, cron, server-to-server) não recebem ACAO — não há browser envolvido.
+    c.header('Access-Control-Allow-Origin', '*');
+  }
+
+  if (metodo === 'OPTIONS') {
+    const pedido = (c.req.header('access-control-request-method') || '').toUpperCase();
+    const pedidoMutacao = !!pedido && !['GET', 'HEAD'].includes(pedido);
+    if (pedidoMutacao && !origemConhecida) {
+      return c.body(null, 403);
+    }
+    c.header('Access-Control-Allow-Methods', 'GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS');
+    const cabecalhos = ['Content-Type', 'Cache-Control', 'Pragma'];
+    if (origemConhecida) {
+      cabecalhos.push('x-admin-key', 'Authorization');
+    }
+    c.header('Access-Control-Allow-Headers', cabecalhos.join(', '));
+    c.header('Access-Control-Max-Age', '86400');
+    return c.body(null, 204);
+  }
+
+  await next();
+});
 
 // Cabeçalhos de segurança HTTP globais
 app.use('*', async (c, next) => {
@@ -31,13 +79,13 @@ app.use('*', async (c, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'sha256-VObpZF2rrhL4LG40uRUH3yRXC/1nwGniYanKxkqAWxo=' 'sha256-keHLDO8UACnw+cRVVeKuRurHKeLrwqY0rMi7Sjqgzkc=' 'sha256-wZSMpQgLrgIlbRyynN5NCOpERrzb5ODoykQ0lbDTWnQ=' 'sha256-qOpPGAwL3XogEKhDdObnXr0bcx7NIZEs41a4ijt3hWM=' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: https:",
-      "connect-src 'self'",
+      "connect-src 'self' https://challenges.cloudflare.com",
       "media-src 'self' https:",
-      "frame-src 'self' https://www.youtube.com https://open.spotify.com",
+      "frame-src 'self' https://www.youtube.com https://open.spotify.com https://challenges.cloudflare.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -71,7 +119,7 @@ app.use('*', async (c, next) => {
 app.use('/api/*', async (c, next) => {
   const metodo = c.req.method.toUpperCase();
   const escrita = metodo !== 'GET' && metodo !== 'HEAD' && metodo !== 'OPTIONS';
-  const bloqueio = limitarRequisicao(c, escrita ? 'api-write' : 'api-read', escrita ? 30 : 300);
+  const bloqueio = await limitarRequisicao(c, escrita ? 'api-write' : 'api-read', escrita ? 30 : 300);
   if (bloqueio) return bloqueio;
   await next();
 });
@@ -156,12 +204,35 @@ async function verificarAdminWorker(c: any, next: any) {
 const LIMITES_MEMORIA = new Map<string, { count: number; resetAt: number }>();
 const LIMITE_MAX_ENTRADAS = 10_000;
 
-function limitarRequisicao(c: any, escopo: string, max: number, janelaMs = 60_000): any | null {
+function resposta429(c: any, retrySegundos: number): any {
+  return c.json(
+    { erro: 'Demasiadas requisições. Tente novamente em instantes.', retry_after_s: retrySegundos },
+    429,
+    { 'Retry-After': String(retrySegundos) }
+  );
+}
+
+async function limitarRequisicao(c: any, escopo: string, max: number, janelaMs = 60_000): Promise<any | null> {
   const ip = c.req.header('cf-connecting-ip')
     || c.req.header('x-real-ip')
-    || c.req.header('x-forwarded-for')?.split(',')[0]?.trim()
     || 'desconhecido';
   const chave = `${escopo}:${ip}`;
+
+  // 1) Binding nativo da Cloudflare (se configurado): limite distribuído entre
+  // isolates e colos. O limite numérico é definido no wrangler.jsonc.
+  const binding = c.env?.RATE_LIMITER;
+  if (binding && typeof binding.limit === 'function') {
+    try {
+      const resultado = await binding.limit({ key: chave });
+      if (resultado && resultado.success === false) {
+        return resposta429(c, Math.ceil(janelaMs / 1000));
+      }
+      return null;
+    } catch {
+      // Binding indisponível: degrada para o contador em memória.
+    }
+  }
+
   const agora = Date.now();
 
   if (LIMITES_MEMORIA.size > LIMITE_MAX_ENTRADAS) {
@@ -179,14 +250,30 @@ function limitarRequisicao(c: any, escopo: string, max: number, janelaMs = 60_00
 
   entrada.count++;
   if (entrada.count > max) {
-    const retry = Math.max(1, Math.ceil((entrada.resetAt - agora) / 1000));
-    return c.json(
-      { erro: 'Demasiadas requisições. Tente novamente em instantes.', retry_after_s: retry },
-      429,
-      { 'Retry-After': String(retry) }
-    );
+    return resposta429(c, Math.max(1, Math.ceil((entrada.resetAt - agora) / 1000)));
   }
   return null;
+}
+
+// Anti-bot opcional (Turnstile). Sem segredo configurado não há verificação;
+// com segredo, o token é obrigatório (falha fechada).
+async function verificarTurnstileWorker(c: any, token: string | undefined): Promise<boolean> {
+  const secret = c.env?.TURNSTILE_SECRET_KEY;
+  if (!secret) return true;
+  if (!token || typeof token !== 'string' || token.length > 2048) return false;
+  try {
+    const corpo = new URLSearchParams({ secret, response: token });
+    const ip = c.req.header('cf-connecting-ip');
+    if (ip) corpo.set('remoteip', ip);
+    const resposta = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: corpo
+    });
+    const dados: any = await resposta.json().catch(() => null);
+    return dados?.success === true;
+  } catch {
+    return false;
+  }
 }
 
 // Cache em memória para estatísticas de dashboard para economizar cotas de leitura da D1
@@ -1324,7 +1411,7 @@ app.get('/api/livros/:id', async (c) => {
 app.get('/api/livros/:id/ler/:linkId', async (c) => {
   // Cada leitura incrementa `leituras` na D1: limitar para não esgotar a cota
   // de escrita gratuita com pedidos repetidos (o contador é analítico).
-  const bloqueioLeitura = limitarRequisicao(c, 'leitura', 60);
+  const bloqueioLeitura = await limitarRequisicao(c, 'leitura', 60);
   if (bloqueioLeitura) return bloqueioLeitura;
 
   try {
@@ -1649,8 +1736,13 @@ app.get('/api/import/:id', verificarAdminWorker, async (c) => {
 });
 
 // 5.5 Sugestões da Comunidade (Moderação Pública)
+app.get('/api/config', (c) => {
+  c.header('Cache-Control', 'public, max-age=300');
+  return c.json({ turnstile_site_key: c.env.TURNSTILE_SITE_KEY || null });
+});
+
 app.post('/api/sugestoes', async (c) => {
-  const bloqueio = limitarRequisicao(c, 'sugestoes', 5);
+  const bloqueio = await limitarRequisicao(c, 'sugestoes', 5);
   if (bloqueio) return bloqueio;
 
   try {
@@ -1674,7 +1766,7 @@ app.post('/api/sugestoes', async (c) => {
     try {
       urlValida = validarUrlRedirecionamento(url_link);
     } catch (err: any) {
-      return c.json({ erro: 'URL inválida ou não autorizada: ' + err.message }, 400);
+      return c.json({ erro: 'URL inválida ou não autorizada' }, 400);
     }
 
     let capaValida: string | null = null;
@@ -1684,6 +1776,10 @@ app.post('/api/sugestoes', async (c) => {
       } catch {
         return c.json({ erro: 'URL da capa inválida ou não autorizada' }, 400);
       }
+    }
+
+    if (!(await verificarTurnstileWorker(c, body?.turnstile_token))) {
+      return c.json({ erro: 'Verificação anti-bot falhou. Recarregue a página e tente novamente.' }, 403);
     }
 
     const licencaFinal = LICENCAS_VALIDAS.includes(licenca) ? licenca : 'outro';
@@ -2167,7 +2263,7 @@ app.get('/api/podcasts/:slugOuId', async (c) => {
 app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
   // Contador público mas com escrita na D1: limitado para não esgotar a cota
   // de escrita gratuita (100k linhas/dia) com pedidos repetidos.
-  const bloqueio = limitarRequisicao(c, 'ouvir', 20);
+  const bloqueio = await limitarRequisicao(c, 'ouvir', 20);
   if (bloqueio) return bloqueio;
 
   try {
@@ -2227,7 +2323,7 @@ function hostCapaPermitido(hostname: string): boolean {
 }
 
 app.get('/api/capas', async (c) => {
-  const bloqueioCapa = limitarRequisicao(c, 'capas', 60);
+  const bloqueioCapa = await limitarRequisicao(c, 'capas', 60);
   if (bloqueioCapa) return bloqueioCapa;
 
   const bruto = String(c.req.query('u') || '').trim();
@@ -2342,7 +2438,7 @@ app.get('/api/capas', async (c) => {
 // resultados num ranking único. Apenas METADADOS (zero armazenamento).
 // ═══════════════════════════════════════════════════════════════════════════
 app.get('/api/busca/federada', async (c) => {
-  const bloqueioBusca = limitarRequisicao(c, 'busca-federada', 20);
+  const bloqueioBusca = await limitarRequisicao(c, 'busca-federada', 20);
   if (bloqueioBusca) return bloqueioBusca;
 
   const q = String(c.req.query('q') ?? c.req.query('busca') ?? '').trim().slice(0, 120);
@@ -2765,6 +2861,24 @@ async function recomputarEstatisticas(db: D1Database, force: boolean = false): P
 export function _limparCacheDashboard() {
   cachedDashboard = null;
 }
+
+// 404 real (sem "soft 404"): a API devolve JSON; a navegação recebe HTML 404.
+// O site usa routing por hash, portanto nenhum caminho desconhecido deve
+// devolver 200 com a página inicial (mascarava sondas e prejudicava o SEO).
+app.notFound((c) => {
+  c.header('Cache-Control', 'no-store');
+  const aceitaHtml = String(c.req.header('accept') || '').includes('text/html');
+  if (c.req.path.startsWith('/api/') || !aceitaHtml) {
+    return c.json({ erro: 'Recurso não encontrado' }, 404);
+  }
+  return c.html(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>404 — Página não encontrada | Lino Livre</title>
+<meta name="robots" content="noindex">
+<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center;padding:24px}a{color:#34d399}</style>
+</head><body><main><h1>404</h1><p>Esta página não existe no Lino Livre.</p>
+<p><a href="/">Voltar ao acervo de livros livres</a></p></main></body></html>`, 404);
+});
 
 export { app };
 

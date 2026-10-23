@@ -4618,3 +4618,15 @@ html[lang^="zh"] .course-title {
     font-size: 0.925rem;
   }
 }
+
+
+/* Widget Turnstile (anti-bot opcional): reserva a altura do iframe para
+   garantir zero Cumulative Layout Shift quando é revelado. */
+.turnstile-widget {
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+}
+.turnstile-widget[hidden] {
+  display: none;
+}

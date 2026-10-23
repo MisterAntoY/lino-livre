@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Lora auto-hospedada (ver @font-face em /css/style.css, font-display: optional — anti-CLS). O Google CSS é só para Plus Jakarta Sans. -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20261023b">
+  <link rel="stylesheet" href="/css/style.css?v=20261024a">
   <style>
     :root {
       --wa-green: #25d366;
@@ -456,7 +456,7 @@
       <a href="/" class="btn-action btn-back">
         <span>← Voltar ao Acervo</span>
       </a>
-      <button onclick="window.print()" class="btn-action btn-print">
+      <button data-acao="imprimir" class="btn-action btn-print">
         <span>🖨️ Imprimir Cartaz Escolar</span>
       </button>
     </div>
@@ -482,7 +482,7 @@
         <!-- Cartão 1: Comunidade & Grupo de Leitura -->
         <div class="qr-card qr-card-comunidade">
           <div class="qr-frame">
-            <img id="cartaz-qr-comunidade" src="/api/comunidade/qrcode.svg" alt="QR Code da Comunidade WhatsApp Lino Livre" onerror="this.src='/materiais/lino-livre-qrcode.svg'">
+            <img id="cartaz-qr-comunidade" src="/api/comunidade/qrcode.svg" alt="QR Code da Comunidade WhatsApp Lino Livre" data-acao="fallbackImagem" data-fallback="/materiais/lino-livre-qrcode.svg" data-evento="error">
           </div>
           <h2 class="qr-card-title">💬 Comunidade de Leitores</h2>
           <div class="qr-card-role">Grupo "Lino, quero ler!"</div>
@@ -495,7 +495,7 @@
         <!-- Cartão 2: Canal Oficial de Notificações -->
         <div class="qr-card qr-card-canal">
           <div class="qr-frame">
-            <img id="cartaz-qr-canal" src="/api/canal/qrcode.svg" alt="QR Code do Canal WhatsApp Lino Livre" onerror="this.src='/materiais/lino-livre-canal-qrcode.svg'">
+            <img id="cartaz-qr-canal" src="/api/canal/qrcode.svg" alt="QR Code do Canal WhatsApp Lino Livre" data-acao="fallbackImagem" data-fallback="/materiais/lino-livre-canal-qrcode.svg" data-evento="error">
           </div>
           <h2 class="qr-card-title">📢 Canal Oficial de Avisos</h2>
           <div class="qr-card-role">Livros & Cursos Gratuitos</div>
@@ -570,6 +570,24 @@
       } catch (_) {}
     }
     carregarUrlsCartaz();
+
+    // Delegação mínima (esta página não carrega app.js): CSP sem 'unsafe-inline'
+    // exige que as acções venham de data-acao em vez de atributos onclick.
+    document.addEventListener('click', (ev) => {
+      const alvo = ev.target instanceof Element ? ev.target.closest('[data-acao]') : null;
+      if (!alvo) return;
+      if (alvo.dataset.acao === 'imprimir') {
+        ev.preventDefault();
+        window.print();
+      }
+    });
+    document.addEventListener('error', (ev) => {
+      const el = ev.target;
+      if (!el || !el.dataset || el.dataset.acao !== 'fallbackImagem') return;
+      if (el.dataset.fallbackAplicado === '1') return;
+      el.dataset.fallbackAplicado = '1';
+      el.src = el.dataset.fallback;
+    }, true);
   </script>
 </body>
 </html>

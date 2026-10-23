@@ -49,13 +49,13 @@ app.use((req, res, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'sha256-VObpZF2rrhL4LG40uRUH3yRXC/1nwGniYanKxkqAWxo=' 'sha256-keHLDO8UACnw+cRVVeKuRurHKeLrwqY0rMi7Sjqgzkc=' 'sha256-wZSMpQgLrgIlbRyynN5NCOpERrzb5ODoykQ0lbDTWnQ=' 'sha256-qOpPGAwL3XogEKhDdObnXr0bcx7NIZEs41a4ijt3hWM=' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: https:",
-      "connect-src 'self'",
+      "connect-src 'self' https://challenges.cloudflare.com",
       "media-src 'self' https:",
-      "frame-src 'self' https://www.youtube.com https://open.spotify.com",
+      "frame-src 'self' https://www.youtube.com https://open.spotify.com https://challenges.cloudflare.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -263,9 +263,16 @@ app.get('/.well-known/security.txt', (req, res) => {
   ].join('\n'));
 });
 
-// Fallback para SPA/Frontend
+// Fallback SPA restrito: apenas navegação de browser (Accept: text/html) e
+// caminhos sem extensão recebem o index. Tudo o resto devolve 404 real —
+// evita "soft 404" (200 para qualquer caminho), melhora SEO e não mascara sondas.
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  const aceitaHtml = String(req.get('accept') || '').includes('text/html');
+  const temExtensao = /\.[a-z0-9]{1,8}$/i.test(req.path);
+  if ((req.method === 'GET' || req.method === 'HEAD') && aceitaHtml && !temExtensao) {
+    return res.sendFile(path.join(__dirname, '../public/index.html'));
+  }
+  return res.status(404).json({ erro: 'Recurso não encontrado' });
 });
 
 // ==================== ERROR HANDLER ====================

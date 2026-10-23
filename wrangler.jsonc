@@ -57,6 +57,17 @@
   //   }
   // ],
 
+  // Rate limiting distribuído (opcional). O código detecta o binding
+  // RATE_LIMITER e, se existir, aplica o limite entre isolates/colos em vez do
+  // contador em memória. Requer wrangler >= 4.35. Descomente para activar:
+  // "ratelimits": [
+  //   {
+  //     "name": "RATE_LIMITER",
+  //     "namespace_id": "1001",
+  //     "simple": { "limit": 60, "period": 60 }
+  //   }
+  // ],
+
   // Non-secret environment variables
   "vars": {
     "ENVIRONMENT": "production",

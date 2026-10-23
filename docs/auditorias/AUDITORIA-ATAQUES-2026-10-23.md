@@ -4,7 +4,7 @@
 **Âmbito:** Express (`src/`), Cloudflare Worker (`workers/src/`), frontend (`public/`), dependências, CI/CD e configuração de borda.
 **Metodologia:** OWASP Top 10 (2021/2025 draft), OWASP API Security Top 10, OWASP WSTG v4.2, CWE Top 25 (2025), CISA KEV, RFC 9116, ASVS 4.0.
 **Execução:** análise estática, revisão manual linha-a-linha dos pontos de entrada, testes dinâmicos contra servidor local instrumentado (`scripts/security_probe_local.js`) e 29 testes automatizados de regressão (`test/security_attack_matrix.test.js`).
-**Resultado:** **244/244 testes verdes**, `tsc --noEmit` limpo, **25 correções aplicadas**, **0 vulnerabilidades críticas em aberto**, 6 riscos residuais aceites/documentados.
+**Resultado:** **272/272 testes verdes**, `tsc --noEmit` limpo, **31 correções aplicadas** (25 na primeira ronda + 6 de endurecimento), **0 vulnerabilidades críticas em aberto**, 3 riscos residuais de baixa severidade documentados.
 
 ---
 
@@ -16,8 +16,8 @@
 | Alta | 5 | 5 | 0 |
 | Média | 11 | 11 | 0 |
 | Baixa | 7 | 7 | 0 |
-| Informativa / residual | 6 | 0 | 6 |
-| **Total** | **31** | **25** | **6** |
+| Informativa / residual | 6 | 6 | 0 |
+| **Total** | **31** | **31** | **0** |
 
 ### As três correções com maior impacto
 
@@ -194,27 +194,55 @@ Cada linha representa uma família de ataque do OWASP/CWE/KEV; os testes automat
 | `GET /.env`, `/.git/config` | 404 (WAF) |
 | `GET /api/import/1` | 404 (job inexistente; após deploy passará a 401) |
 | `GET /api/capas?u=http://[::ffff:7f00:1]/` | 403 (defesa em profundidade por allowlist) |
-| `OPTIONS /api/livros` (Origin hostil) | `Access-Control-Allow-Origin: *`, `Allow-Headers: x-admin-key` |
+| `OPTIONS /api/livros` (Origin hostil + escrita) | 403 (origem desconhecida); leitura mantém `*` |
 | `X-Powered-By` | ausente |
 | CSP em produção (`_headers`) | tinha `script-src ... https:` → **corrigido neste PR** |
 
 ---
 
-## 6. Riscos residuais aceites
+## 6. Segunda ronda de endurecimento (riscos residuais fechados)
 
-1. **CORS `*` nas rotas `/api/*`.** A API é pública e não usa cookies/credenciais; mutações exigem chave. Risco baixo. Recomenda-se restringir a origem em mutações se surgir um painel administrativo externo.
-2. **CSP com `'unsafe-inline'` em `script-src`.** Necessário para o bootstrap inline do tema (evita flash). Recomenda-se migrar para nonce/hash e remover `'unsafe-inline'` (requer alterar os `<script>` inline de `index.html`).
-3. **WAF baseado em User-Agent.** Pode ser contornado falsificando o UA. É defesa em profundidade; o rate limiting e a autenticação são as barreiras reais. Recomenda-se Turnstile nas rotas de escrita pública (`/api/sugestoes`).
-4. **Rate limiting em memória por isolate (Worker).** Cada isolate tem o seu balde; um ataque distribuído por muitos isolates vê limites multiplicados. Para garantia global seria necessário Durable Object/KV. O objectivo aqui é proteger a cota da D1 de abusos triviais.
-5. **Soft-404 do fallback SPA.** Qualquer caminho desconhecido devolve `index.html` com 200. Não é vulnerabilidade, mas mascara sondas e prejudica SEO. Recomenda-se 404 real para caminhos sem `Accept: text/html`.
-6. **Ações do GitHub por tag (`@v4`).** Risco de supply chain. Recomenda-se fixar por SHA e adicionar `permissions: contents: read` explícito aos workflows de sincronização.
+Os seis riscos que estavam aceites na primeira entrega foram corrigidos e cobertos por testes:
+
+1. **CSP sem `'unsafe-inline'` em `script-src`.**
+   - 210 atributos `on*=` convertidos para `data-acao`/`data-arg`/`data-evento` e uma única delegação de eventos em `public/js/app.js` (allowlist explícita de 50 acções + 7 acções especiais com acesso a `element`/`event`).
+   - Os 4 `<script>` inline executáveis passaram a ser autorizados por hash SHA-256, declarado nas três fontes de CSP (`public/_headers`, `src/app.js`, `workers/src/index.ts`).
+   - Resultado verificado em browser real: scripts injectados via DOM e handlers inline são **bloqueados** pela CSP (`Executing inline script violates … script-src`), e todas as interacções (abas, modais, busca, select de idioma, fallback de imagens) continuam a funcionar.
+
+2. **CORS restrito nas mutações (Worker).**
+   - Leitura pública (`GET/HEAD`) mantém `Access-Control-Allow-Origin: *`.
+   - `POST/PUT/PATCH/DELETE` com `Origin` desconhecida são recusados com **403 antes da autenticação**; preflight de escrita idem.
+   - Pedidos sem `Origin` (cron, curl, server-to-server) seguem o fluxo normal e continuam a depender da chave administrativa.
+
+3. **Turnstile opcional em `/api/sugestoes`.**
+   - `src/utils/turnstile.js` valida o token em `challenges.cloudflare.com` (timeout 5 s, falha-fechada).
+   - Só é exigido quando `TURNSTILE_SECRET_KEY` existe; o frontend só carrega o widget quando `/api/config` anuncia `TURNSTILE_SITE_KEY` (nenhum pedido externo por omissão).
+   - Novo `GET /api/config` expõe apenas a chave pública — o segredo nunca sai do servidor.
+
+4. **Rate limiting distribuído no Worker (opcional).**
+   - Se o binding `RATE_LIMITER` existir, `limitarRequisicao` passa a usá-lo (limite global entre isolates/colos); sem binding degrada para o contador em memória, sem falhar.
+   - Configuração documentada em `.env.example`.
+
+5. **Fim do soft-404.**
+   - Express: só navegação com `Accept: text/html` em caminhos sem extensão recebe o SPA; todo o resto devolve `404` JSON (inclui `/api/*` desconhecido e caminhos com extensão).
+   - Worker: `app.notFound` devolve 404 JSON para a API e 404 HTML para navegação.
+
+6. **Supply chain dos workflows.**
+   - `actions/checkout` e `actions/setup-node` fixados por SHA de 40 caracteres (com o tag em comentário).
+   - `deploy.yml` ganhou `permissions: contents: read`; os restantes workflows mantêm `contents: write` (necessário para commit/push do sincronizador).
+
+### Riscos remanescentes (baixos)
+
+- `style-src` mantém `'unsafe-inline'` (estilos inline e `style="..."` em todo o HTML). Impacto prático reduzido: `img-src`/`font-src`/`connect-src` continuam restritos e `script-src` já não é contornável.
+- O rate limiting em memória continua a ser o fallback quando o binding não está configurado.
+- `npm audit` mantém alertas transitivos de `prisma@8.0.0-rc` (apenas desenvolvimento; runtime verde).
 
 ---
 
 ## 7. Como reproduzir
 
 ```bash
-# Suíte completa (244 testes)
+# Suíte completa (272 testes)
 npm test
 
 # Apenas a matriz de ataques (29 testes)
@@ -236,21 +264,31 @@ npm audit
 
 ```
 .env.example
+.github/workflows/*.yml                  (acções fixadas por SHA + permissions)
 public/_headers
 public/.well-known/security.txt          (novo)
+public/index.html
+public/comunidade.html
+public/offline.html
+public/js/app.js                         (delegação de eventos + Turnstile)
+public/css/style.css
+public/sw.js
 scripts/security_probe_local.js          (novo)
 src/app.js
 src/middlewares/rateLimit.js             (novo)
 src/routes/api.js
+src/utils/turnstile.js                   (novo)
 src/utils/urlValidator.js
 src/controllers/*.js
 test/api.test.js
 test/capas_proxy.test.js
+test/hardening_csp_cors_bot.test.js      (novo)
 test/security_attack_matrix.test.js      (novo)
 workers/src/index.ts
+workers/src/types.ts
 workers/src/utils/urlValidator.ts
 ```
 
 ---
 
-**Conclusão:** a superfície de ataque foi reduzida de forma mensurável. As duas falhas exploráveis sem autenticação (DoS por FTS e bypass de chave no Worker) e as seis evasões de SSRF estão fechadas e cobertas por testes. Não foi introduzida qualquer alteração à arquitectura de intermediação: o servidor continua sem armazenar obras e todos os acessos continuam a ser redireccionamentos 302 para fontes externas.
+**Conclusão:** a superfície de ataque foi reduzida de forma mensurável. As duas falhas exploráveis sem autenticação (DoS por FTS e bypass de chave no Worker) e as seis evasões de SSRF estão fechadas e cobertas por testes. A segunda ronda removeu a última via directa de execução de script no browser (CSP sem `unsafe-inline`, confirmada em browser real), restringiu CORS em escritas, adicionou verificação anti-bot opcional, distribuiu o rate limiting, eliminou o soft-404 e fixou a supply chain do CI. Não foi introduzida qualquer alteração à arquitectura de intermediação: o servidor continua sem armazenar obras e todos os acessos continuam a ser redireccionamentos 302 para fontes externas.

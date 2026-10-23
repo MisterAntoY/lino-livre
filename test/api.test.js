@@ -1785,7 +1785,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.ok(htmlCartaz.includes('Cartaz Escolar'), 'Deve conter identificação de Cartaz Escolar');
     assert.ok(htmlCartaz.includes('cartaz-qr-comunidade'), 'Deve conter QR Code da comunidade');
     assert.ok(htmlCartaz.includes('cartaz-qr-canal'), 'Deve conter QR Code do canal');
-    assert.ok(htmlCartaz.includes('window.print()'), 'Deve conter ação de impressão para folha A4');
+    assert.ok(htmlCartaz.includes('data-acao="imprimir"'), 'Deve conter ação de impressão para folha A4');
     assert.ok(htmlCartaz.includes('Livros livres, para todos.'), 'Deve exibir o slogan oficial');
 
     // 32.2 - Link para o cartaz na seção WhatsApp da página inicial
