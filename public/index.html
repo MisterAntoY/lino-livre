@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self';">
 
   <!-- ═══════════ SEO ═══════════ -->
   <title>Lino Livre — Biblioteca digital gratuita de livros de África e da lusofonia</title>
@@ -80,8 +80,10 @@
   
   <!-- ═══════════ Tipografia auto-hospedada (Lora — licença SIL OFL; zero dependência do Google; anti-CLS) ═══════════ -->
   <!-- font-display: optional garante que a Lora só é usada se estiver pronta na 1.ª pintura — nunca há troca de fonte a meio do carregamento. -->
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-latin-var-v20261023.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-italic-latin-var-v20261023.woff2" crossorigin>
+  <!-- As fontes chinesas (Noto Sans/Serif SC, ~150 KiB de @font-face) NÃO estão no <head>:
+       são injetadas por /js/i18n.js apenas quando o idioma efetivo é zh. -->
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-latin-var.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-italic-latin-var.woff2" crossorigin>
   
   <!-- Critical CSS (inlined for instant render) -->
   <style>
@@ -99,7 +101,7 @@
     .lang-switcher{position:relative}
     .lang-glove{flex-shrink:0}
     .lang-select{padding:.5rem 2.5rem .5rem .75rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.875rem;font-family:inherit;background:#fff;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;background-size:1rem;padding-right:2.5rem}
-    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:transform .15s ease,opacity .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
     .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
     .btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
     .btn-secondary{background:#f1f5f9;color:var(--text-main);border-color:var(--border)}
@@ -110,23 +112,34 @@
     .filter-section{padding:2rem 1.5rem 1rem 1.5rem;display:flex;flex-direction:column;gap:1.25rem}
     .search-bar{position:relative;max-width:600px;width:100%}
     .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
-    .search-bar input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.95rem;font-family:inherit;background:#fff;outline:none;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+    .search-bar input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:.95rem;font-family:inherit;background:#fff;outline:none;transition:border-color .15s ease,box-shadow .15s ease;box-shadow:0 1px 2px rgba(0,0,0,.03)}
     .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(51,65,85,.12)}
     .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
-    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:all .15s ease}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:transform .15s ease,opacity .15s ease}
     .pill:hover{background:#f1f5f9;color:var(--text-main)}
     .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
     .main-container{flex:1;padding:1rem 1.5rem 3rem 1.5rem}
     .books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
-    .book-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column;transition:all .25s ease}
+    .book-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column;transition:transform .25s ease,opacity .25s ease}
     .book-card:hover{transform:none;box-shadow:var(--shadow-hover);border-color:#cbd5e1}
     .book-cover-container{position:relative;width:100%;aspect-ratio:2/2.9;background:#e2e8f0;overflow:hidden;display:flex;align-items:center;justify-content:center}
     .book-cover{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;box-shadow:inset 4px 0 10px rgba(0,0,0,.15)}
     .loading{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--text-muted);font-size:1.125rem}
     /* Lora auto-hospedada (subconjunto latin; eixo de peso variável) — font-display:optional = zero CLS. O Noto SC (chinês) é injetado por /js/i18n.js apenas quando o idioma é zh. */
-    @font-face{font-family:'Lora';font-style:normal;font-weight:400 700;font-display:optional;src:url(/fonts/lora-latin-var-v20261023.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-    @font-face{font-family:'Lora';font-style:italic;font-weight:400 700;font-display:optional;src:url(/fonts/lora-italic-latin-var-v20261023.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+    @font-face{font-family:'Lora';font-style:normal;font-weight:400 700;font-display:optional;src:url(/fonts/lora-latin-var.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+    @font-face{font-family:'Lora';font-style:italic;font-weight:400 700;font-display:optional;src:url(/fonts/lora-italic-latin-var.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+    /* Herói/Placar: estilos críticos do elemento LCP (evita reflow/repaint quando o CSS completo chega) */
+    .goal-scoreboard-section{margin-top:1.25rem;margin-bottom:1.75rem}
+    .goal-scoreboard-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.85rem 2.25rem;position:relative;overflow:hidden}
+    .goal-header{display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem}
+    .goal-title-group{flex:1 1 500px}
+    .goal-title{font-size:1.85rem;font-weight:800;color:var(--text-main);margin:0 0 .45rem;line-height:1.25;letter-spacing:-.025em}
+    .goal-subtitle{font-size:.95rem;line-height:1.55;color:var(--text-main);margin:0;max-width:650px}
     .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
+    .pills-container{display:flex;gap:.5rem;flex-wrap:wrap}
+    .pill{border:1px solid var(--border);background:#fff;color:var(--text-muted);padding:.45rem 1rem;border-radius:4px;font-size:.825rem;font-weight:600;cursor:pointer;transition:transform .15s ease,opacity .15s ease}
+    .pill:hover{background:#f1f5f9;color:var(--text-main)}
+    .pill.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
     .reader-modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
     .reader-modal.theme-creme{background:rgba(15,23,42,.85);backdrop-filter:blur(8px)}
     .reader-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid rgba(148,163,184,.2)}
@@ -137,6 +150,15 @@
     .book-author{font-size:.875rem;color:var(--text-muted);margin:0}
     .badge-license{display:inline-block;padding:.25rem .625rem;border-radius:999px;font-size:.6875rem;font-weight:600;background:#eff6ff;color:var(--primary);border:1px solid #bfdbfe;width:fit-content}
     .book-synopsis{font-size:.8125rem;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+    .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;font-family:inherit;cursor:pointer;transition:transform .15s ease,opacity .15s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
+    .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+    .btn-secondary{background:#f1f5f9;color:var(--text-main);border-color:var(--border)}
+    .btn-secondary:hover{background:#e2e8f0}
+    .btn-outline{background:transparent;border-color:var(--border);color:var(--text-main)}
+    .btn-outline:hover{background:#f1f5f9}
+    .hidden{display:none!important}
     .visually-hidden,.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     @media (prefers-reduced-motion:reduce){*, *::before, *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
     :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
@@ -149,7 +171,7 @@
   
   <!-- Full CSS (render-blocking, 14 KB gzip): um único layout em vez de
        reflow completo ao trocar media="print" -> "all" no onload. -->
-  <link rel="stylesheet" href="/css/style.css?v=20261023b">
+  <link rel="stylesheet" href="/css/style.css?v=20261024">
   
   <!-- Service Worker for offline caching -->
   <script>
@@ -252,11 +274,11 @@
         <!-- btn-agendado: reserve a largura final do cabeçalho (visibility) em vez de display:none,
              para que a ativação via /api/comunidade e /api/canal não desloque os botões vizinhos (cls).
              app.js troca a classe e remove aria-hidden/tabindex quando os URLs chegam. -->
-        <a id="btn-header-comunidade" class="btn btn-whatsapp btn-agendado" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
+        <a id="btn-header-comunidade" class="btn btn-whatsapp btn-agendado" href="#" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.groupTitle" title="Entrar no grupo Lino Livre no WhatsApp">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.header.group">Grupo</span>
         </a>
-        <a id="btn-header-canal" class="btn btn-whatsapp-outline btn-agendado" href="https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.channelTitle" title="Seguir o canal Lino Livre no WhatsApp">
+        <a id="btn-header-canal" class="btn btn-whatsapp-outline btn-agendado" href="#" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1" data-i18n-title="ui.header.channelTitle" title="Seguir o canal Lino Livre no WhatsApp">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.header.channel">Canal</span>
         </a>
@@ -308,19 +330,19 @@
             <div class="goal-counter-box">
               <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
               <div class="counter-number-row">
-                <span class="counter-odometer" id="placar-total-livros">2 000</span>
+                <span class="counter-odometer" id="placar-total-livros">997</span>
                 <span class="counter-divider">/</span>
                 <span class="counter-target">10.000.000</span>
               </div>
-              <span class="counter-pct" id="placar-porcentagem">0.0200% da meta</span>
+              <span class="counter-pct" id="placar-porcentagem">0.0100% da meta</span>
             </div>
           </div>
         </div>
 
         <!-- Barra de Progresso Visual e Marcos Históricos -->
         <div class="goal-progress-wrapper">
-          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="2000" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="2.000 de 10.000.000 obras catalogadas" id="placar-progressbar-container">
-            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="width: 0.02%;"></div>
+          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="997" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="997 de 10.000.000 obras catalogadas" id="placar-progressbar-container">
+            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.01);"></div>
           </div>
           
           <!-- Marcos da Jornada / Milestones -->
@@ -329,14 +351,14 @@
               <span class="milestone-dot"></span>
               <span class="milestone-text">0</span>
             </div>
-            <div class="milestone-step reached" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
+            <div class="milestone-step active" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
               <span class="milestone-dot"></span>
               <span class="milestone-text">1.000</span>
+              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo marco</span>
             </div>
-            <div class="milestone-step active" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
+            <div class="milestone-step" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
               <span class="milestone-dot"></span>
               <span class="milestone-text">10.000</span>
-              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo marco</span>
             </div>
             <div class="milestone-step" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
               <span class="milestone-dot"></span>
@@ -359,7 +381,7 @@
             <div class="goal-stat-pill">
 
               <div>
-                <span class="stat-val" id="placar-stat-atual">2 000</span>
+                <span class="stat-val" id="placar-stat-atual">997</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
               </div>
             </div>
@@ -373,14 +395,14 @@
             <div class="goal-stat-pill">
 
               <div>
-                <span class="stat-val" id="placar-stat-faltam">9 998 000</span>
+                <span class="stat-val" id="placar-stat-faltam">9.999.003</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
               </div>
             </div>
             <div class="goal-stat-pill">
 
               <div>
-                <span class="stat-val" id="placar-stat-next-target">10.000</span>
+                <span class="stat-val" id="placar-stat-next-target">1.000</span>
                 <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
               </div>
             </div>
@@ -393,7 +415,7 @@
             <button class="btn btn-goal-share" onclick="app.compartilharMeta10M()">
               <span></span> <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
             </button>
-            <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
+            <a class="btn btn-goal-whatsapp hidden" id="btn-goal-comunidade" href="#" target="_blank" rel="noopener noreferrer">
               <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
               <span data-i18n="ui.goal.btnJoin">Comunidade</span>
             </a>
@@ -402,55 +424,37 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- DESTAQUES DA BIBLIOTECA: LIVROS MAIS POPULARES E MUITO PROCURADOS -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <section class="container destaques-section" id="secao-destaques">
-      <div class="destaques-card">
-        <div class="destaques-header">
-          <div class="destaques-title-group">
-            <div class="destaques-badge">
-              <span data-i18n="ui.books.highlightsBadge">⭐ Obras em Destaque • Mais Procuradas</span>
-            </div>
-            <h2 class="destaques-title" data-i18n="ui.books.highlightsTitle">🌟 Livros Mais Populares e Muito Procurados</h2>
-            <p class="destaques-subtitle" data-i18n="ui.books.highlightsSubtitle">Descubra as obras mais lidas da humanidade, grandes bestsellers internacionais e os clássicos imortais da literatura com leitura online e download gratuito imediato.</p>
-          </div>
-          <div class="destaques-actions">
-            <button class="btn btn-destaque-all" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')" data-i18n="ui.books.highlightsViewAll">
-              <span>Explorar Todos os 100+ Mais Lidos</span> <span>→</span>
-            </button>
-          </div>
+    <!-- Destaque: Coleção Digital Monumental de África -->
+    <section class="container">
+      <div class="africa-collection-banner">
+        <div class="africa-banner-header">
+          <span class="africa-badge"> Coleção Monumental de África</span>
+          <span class="africa-stats-badge">5 Idiomas • 46+ Obras Clássicas & Tradição Oral</span>
         </div>
-
-        <!-- Pílulas de Navegação dos Destaques -->
-        <div class="destaques-tabs-pills" id="pills-destaques-tipo">
-          <button class="pill-destaque-tab active" data-tipo="todos" onclick="app.trocarAbaDestaques('todos')" data-i18n="ui.books.highlightsAll">🌟 Mais Procurados do Mundo</button>
-          <button class="pill-destaque-tab" data-tipo="lusofonia" onclick="app.trocarAbaDestaques('lusofonia')" data-i18n="ui.books.highlightsClassics">📜 Clássicos Lusófonos</button>
-          <button class="pill-destaque-tab" data-tipo="africa" onclick="app.trocarAbaDestaques('africa')" data-i18n="ui.books.highlightsAfrica">🌍 Tesouros de África</button>
-          <button class="pill-destaque-tab" data-tipo="tech" onclick="app.trocarAbaDestaques('tech')" data-i18n="ui.books.highlightsTech">💻 Manuais de Tecnologia</button>
-        </div>
-
-        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
-        <div class="destaques-grid" id="grade-destaques">
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
+        <h2 data-i18n="ui.books.africaBannerTitle">O Maior Acervo de Livros Digitais de África</h2>
+        <p data-i18n="ui.books.africaBannerDesc">Obras-primas da literatura africana, contos da tradição oral ancestral, história das grandes civilizações e filosofia em 5 idiomas: Português, English, Français, Deutsch e 中文. Todos os livros possuem leitura online multi-capítulos sem necessidade de baixar arquivos pesados.</p>
+        <div class="africa-lang-pills">
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('pt')">Português</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('en')">English</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('fr')">Français</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('de')"> Deutsch</button>
+          <button class="pill-lang-btn" onclick="app.filtrarPorIdiomaLivro('zh')"> 中文</button>
+          <button class="pill-lang-btn pill-lang-reset" onclick="app.filtrarPorIdiomaLivro('')"> Ver Todos</button>
         </div>
       </div>
     </section>
 
-    <!-- Filtros e Busca com Anotações WebMCP para Agentes de IA -->
+    <!-- Filtros e Busca -->
     <section class="container filter-section">
-      <form id="form-busca-livros" role="search" toolname="buscar_livros" tooldescription="Pesquisar livros digitais no acervo aberto do Lino Livre por título da obra, autor, assunto ou tema" onsubmit="event.preventDefault(); app.buscarComDebounce();" class="search-bar-wrap">
+      <div class="search-bar-wrap">
         <div class="search-bar">
-          <input type="search" id="filtro-busca" name="q" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()" toolparamdescription="Termo de pesquisa para buscar no acervo aberto (título, autor ou tema)">
+          <input type="text" id="filtro-busca" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()">
         </div>
-        <button type="button" class="btn btn-federada" id="btn-busca-federada" onclick="app.alternarBuscaFederada()" title="Consultar catálogos globais em paralelo (Fase 4)">
+        <button class="btn btn-federada" id="btn-busca-federada" onclick="app.alternarBuscaFederada()" title="Consultar catálogos globais em paralelo (Fase 4)">
           <span class="fed-icon">🌐</span>
           <span data-i18n="ui.books.federatedSearch">Busca Global</span>
         </button>
-      </form>
+      </div>
 
       <!-- Resultados da Busca Federada Global (Fase 4 — motor distribuído RRF) -->
       <div id="painel-federada" class="federada-panel hidden">
@@ -549,10 +553,7 @@
     <!-- Catálogo de Livros -->
     <main class="container main-container">
       <div id="grade-livros" class="books-grid">
-        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
-        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
-        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
-        <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
+        <div class="loading" data-i18n="ui.books.loading">Carregando acervo digital...</div>
       </div>
 
       <!-- Paginação -->
@@ -573,9 +574,9 @@
         <p><span data-i18n="ui.courses.bannerDescBefore">Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas reunindo recursos do </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e da Fundação Bradesco.</span></p>
       </div>
 
-      <form id="form-busca-cursos" role="search" toolname="buscar_cursos" tooldescription="Pesquisar cursos online gratuitos, certificações abertas e formações de tecnologia e ciências" onsubmit="event.preventDefault(); app.buscarCursosComDebounce();" class="search-bar" style="margin-bottom: 1.25rem;">
-        <input type="search" id="filtro-busca-cursos" name="curso" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()" toolparamdescription="Termo de busca para cursos gratuitos (tecnologia, programação, idiomas, gestão ou ciências)">
-      </form>
+      <div class="search-bar" style="margin-bottom: 1.25rem;">
+        <input type="text" id="filtro-busca-cursos" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()">
+      </div>
 
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
@@ -583,57 +584,57 @@
           <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')" data-i18n="ui.courses.all">Todos</button>
           <button class="pill" data-filtro="OER Commons" onclick="app.filtrarCursosPorPlataforma('OER Commons')">🏛️ OER Commons</button>
           <button class="pill" data-filtro="OpenStax" onclick="app.filtrarCursosPorPlataforma('OpenStax')">📖 OpenStax (CC BY)</button>
-          <button class="pill" data-filtro="MIT" onclick="app.filtrarCursosPorPlataforma('MIT')"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ MIT OCW</button>
+          <button class="pill" data-filtro="MIT" onclick="app.filtrarCursosPorPlataforma('MIT')"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo"> 🏛️ MIT OCW</button>
           <button class="pill" data-filtro="PhET" onclick="app.filtrarCursosPorPlataforma('PhET')">🔬 PhET Simulações</button>
           <button class="pill" data-filtro="CK-12" onclick="app.filtrarCursosPorPlataforma('CK-12')">📐 CK-12 Foundation</button>
           <button class="pill" data-filtro="Khan Academy" onclick="app.filtrarCursosPorPlataforma('Khan Academy')">🟢 Khan Academy</button>
-          <button class="pill" data-filtro="Cursa" onclick="app.filtrarCursosPorPlataforma('Cursa')"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Cursa App (Cursos)</button>
-          <button class="pill" data-filtro="exercicios" onclick="app.filtrarCursosPorTipo('exercicios')"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 📝 Cursa Exercícios & Simulados</button>
-          <button class="pill" data-filtro="Harvard" onclick="app.filtrarCursosPorPlataforma('Harvard')"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Harvard Online (PLL)</button>
+          <button class="pill" data-filtro="Cursa" onclick="app.filtrarCursosPorPlataforma('Cursa')"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo"> 🎓 Cursa App (Cursos)</button>
+          <button class="pill" data-filtro="exercicios" onclick="app.filtrarCursosPorTipo('exercicios')"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo"> 📝 Cursa Exercícios & Simulados</button>
+          <button class="pill" data-filtro="Harvard" onclick="app.filtrarCursosPorPlataforma('Harvard')"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo"> 🏛️ Harvard Online (PLL)</button>
           <button class="pill" data-filtro="Stanford" onclick="app.filtrarCursosPorPlataforma('Stanford')">🌲 Stanford Online</button>
-          <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> DIO Bootcamps</button>
+          <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo"> DIO Bootcamps</button>
 
-          <button class="pill" data-filtro="Santander" onclick="app.filtrarCursosPorPlataforma('Santander')"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Santander Academy</button>
-          <button class="pill pill-youtube" data-filtro="Curso em Vídeo" onclick="app.filtrarCursosPorPlataforma('Curso em Vídeo')"><img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="pill-logo pill-logo-round" width="16" height="16" loading="lazy" decoding="async"> Curso em Vídeo (Guanabara)</button>
-          <button class="pill pill-youtube" data-filtro="Programação Web" onclick="app.filtrarCursosPorPlataforma('Programação Web')"><img src="/img/logos/youtube.svg" alt="Programação Web" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Programação Web</button>
-          <button class="pill pill-youtube" data-filtro="Fernanda Kipper" onclick="app.filtrarCursosPorPlataforma('Fernanda Kipper')"><img src="/img/logos/youtube.svg" alt="Fernanda Kipper" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Fernanda Kipper (Docker)</button>
-          <button class="pill pill-youtube" data-filtro="SegInfoBrasil" onclick="app.filtrarCursosPorPlataforma('SegInfoBrasil')"><img src="/img/logos/youtube.svg" alt="SegInfoBrasil" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> SegInfoBrasil (Redes)</button>
-          <button class="pill pill-youtube" data-filtro="Glaucia Lemos" onclick="app.filtrarCursosPorPlataforma('Glaucia Lemos')"><img src="/img/logos/youtube.svg" alt="Glaucia Lemos" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Glaucia Lemos (TS)</button>
-          <button class="pill pill-youtube" data-filtro="Gustavo Sacchi" onclick="app.filtrarCursosPorPlataforma('Gustavo Sacchi')"><img src="/img/logos/youtube.svg" alt="Gustavo Sacchi" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Gustavo Sacchi (LangChain)</button>
+          <button class="pill" data-filtro="Santander" onclick="app.filtrarCursosPorPlataforma('Santander')"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo"> Santander Academy</button>
+          <button class="pill pill-youtube" data-filtro="Curso em Vídeo" onclick="app.filtrarCursosPorPlataforma('Curso em Vídeo')"><img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="pill-logo pill-logo-round"> Curso em Vídeo (Guanabara)</button>
+          <button class="pill pill-youtube" data-filtro="Programação Web" onclick="app.filtrarCursosPorPlataforma('Programação Web')"><img src="/img/logos/youtube.svg" alt="Programação Web" class="pill-logo"> Programação Web</button>
+          <button class="pill pill-youtube" data-filtro="Fernanda Kipper" onclick="app.filtrarCursosPorPlataforma('Fernanda Kipper')"><img src="/img/logos/youtube.svg" alt="Fernanda Kipper" class="pill-logo"> Fernanda Kipper (Docker)</button>
+          <button class="pill pill-youtube" data-filtro="SegInfoBrasil" onclick="app.filtrarCursosPorPlataforma('SegInfoBrasil')"><img src="/img/logos/youtube.svg" alt="SegInfoBrasil" class="pill-logo"> SegInfoBrasil (Redes)</button>
+          <button class="pill pill-youtube" data-filtro="Glaucia Lemos" onclick="app.filtrarCursosPorPlataforma('Glaucia Lemos')"><img src="/img/logos/youtube.svg" alt="Glaucia Lemos" class="pill-logo"> Glaucia Lemos (TS)</button>
+          <button class="pill pill-youtube" data-filtro="Gustavo Sacchi" onclick="app.filtrarCursosPorPlataforma('Gustavo Sacchi')"><img src="/img/logos/youtube.svg" alt="Gustavo Sacchi" class="pill-logo"> Gustavo Sacchi (LangChain)</button>
           <button class="pill" data-filtro="Bora na Tech" onclick="app.filtrarCursosPorPlataforma('Bora na Tech')">🚀 Bora na Tech?</button>
           <button class="pill" data-filtro="Jornada do Dev" onclick="app.filtrarCursosPorPlataforma('Jornada do Dev')">🚀 Jornada do Dev</button>
           <button class="pill" data-filtro="Fluência AI" onclick="app.filtrarCursosPorPlataforma('Fluência AI')">🧠 Fluência AI</button>
           <button class="pill" data-filtro="Recode" onclick="app.filtrarCursosPorPlataforma('Recode')">🌐 Recode</button>
           <button class="pill" data-filtro="Code IoT" onclick="app.filtrarCursosPorPlataforma('Code IoT')">🤖 Code IoT (Samsung & USP)</button>
           <button class="pill" data-filtro="Aliança pela Educação (ABE)" onclick="app.filtrarCursosPorPlataforma('Aliança pela Educação (ABE)')">🎓 Aliança pela Educação (ABE)</button>
-          <button class="pill" data-filtro="KA Solution" onclick="app.filtrarCursosPorPlataforma('KA Solution')"><img src="/img/logos/kasolution.png" alt="KA Solution" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> KA Solution (Webinars & KAtrocinados)</button>
-          <button class="pill" data-filtro="Samsung Ocean" onclick="app.filtrarCursosPorPlataforma('Samsung Ocean')"><img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌊 Samsung Ocean (USP & UEA)</button>
-          <button class="pill" data-filtro="EBAC Online" onclick="app.filtrarCursosPorPlataforma('EBAC Online')"><img src="/img/logos/ebac.svg" alt="EBAC Online" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> EBAC Online (Cursos & Webinars)</button>
-          <button class="pill" data-filtro="Data Science Academy" onclick="app.filtrarCursosPorPlataforma('Data Science Academy')"><img src="/img/logos/dsa.png" alt="Data Science Academy" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Data Science Academy (DSA)</button>
-          <button class="pill" data-filtro="FIAP ON" onclick="app.filtrarCursosPorPlataforma('FIAP ON')"><img src="/img/logos/fiap.png" alt="FIAP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> FIAP ON</button>
-          <button class="pill" data-filtro="Eu Capacito" onclick="app.filtrarCursosPorPlataforma('Eu Capacito')"><img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Eu Capacito</button>
-          <button class="pill" data-filtro="IBM SkillsBuild" onclick="app.filtrarCursosPorPlataforma('IBM SkillsBuild')"><img src="/img/logos/ibm.svg" alt="IBM" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> IBM SkillsBuild</button>
-          <button class="pill" data-filtro="Cisco Networking Academy" onclick="app.filtrarCursosPorPlataforma('Cisco Networking Academy')"><img src="/img/logos/cisco.svg" alt="Cisco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cisco NetAcad</button>
-          <button class="pill" data-filtro="Escola do Trabalhador 4.0" onclick="app.filtrarCursosPorPlataforma('Escola do Trabalhador 4.0')"><img src="/img/logos/escoladotrabalhador.png" alt="Escola do Trabalhador" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Escola do Trabalhador 4.0</button>
-          <button class="pill" data-filtro="AWS Skill Builder" onclick="app.filtrarCursosPorPlataforma('AWS Skill Builder')"><img src="/img/logos/aws.svg" alt="AWS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> AWS Skill Builder</button>
-          <button class="pill" data-filtro="Microsoft Learn" onclick="app.filtrarCursosPorPlataforma('Microsoft Learn')"><img src="/img/logos/microsoft.svg" alt="Microsoft" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Microsoft Learn</button>
-          <button class="pill" data-filtro="freeCodeCamp" onclick="app.filtrarCursosPorPlataforma('freeCodeCamp')"><img src="/img/logos/freecodecamp.png" alt="freeCodeCamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> freeCodeCamp</button>
-          <button class="pill" data-filtro="Kultivi" onclick="app.filtrarCursosPorPlataforma('Kultivi')"><img src="/img/logos/kultivi.png" alt="Kultivi" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Kultivi</button>
-          <button class="pill" data-filtro="SENAI Play" onclick="app.filtrarCursosPorPlataforma('SENAI Play')"><img src="/img/logos/senai.png" alt="SENAI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> SENAI Play</button>
-          <button class="pill" data-filtro="Oracle Next Education" onclick="app.filtrarCursosPorPlataforma('Oracle Next Education')"><img src="/img/logos/oracle.svg" alt="Oracle ONE" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Oracle ONE</button>
-          <button class="pill" data-filtro="Generation Brasil" onclick="app.filtrarCursosPorPlataforma('Generation Brasil')"><img src="/img/logos/generation.png" alt="Generation" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Generation Brasil</button>
-          <button class="pill" data-filtro="WoMakersCode" onclick="app.filtrarCursosPorPlataforma('WoMakersCode')"><img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> WoMakersCode</button>
+          <button class="pill" data-filtro="KA Solution" onclick="app.filtrarCursosPorPlataforma('KA Solution')"><img src="/img/logos/kasolution.png" alt="KA Solution" class="pill-logo"> KA Solution (Webinars & KAtrocinados)</button>
+          <button class="pill" data-filtro="Samsung Ocean" onclick="app.filtrarCursosPorPlataforma('Samsung Ocean')"><img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="pill-logo"> 🌊 Samsung Ocean (USP & UEA)</button>
+          <button class="pill" data-filtro="EBAC Online" onclick="app.filtrarCursosPorPlataforma('EBAC Online')"><img src="/img/logos/ebac.svg" alt="EBAC Online" class="pill-logo"> EBAC Online (Cursos & Webinars)</button>
+          <button class="pill" data-filtro="Data Science Academy" onclick="app.filtrarCursosPorPlataforma('Data Science Academy')"><img src="/img/logos/dsa.png" alt="Data Science Academy" class="pill-logo"> Data Science Academy (DSA)</button>
+          <button class="pill" data-filtro="FIAP ON" onclick="app.filtrarCursosPorPlataforma('FIAP ON')"><img src="/img/logos/fiap.png" alt="FIAP" class="pill-logo"> FIAP ON</button>
+          <button class="pill" data-filtro="Eu Capacito" onclick="app.filtrarCursosPorPlataforma('Eu Capacito')"><img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="pill-logo"> Eu Capacito</button>
+          <button class="pill" data-filtro="IBM SkillsBuild" onclick="app.filtrarCursosPorPlataforma('IBM SkillsBuild')"><img src="/img/logos/ibm.svg" alt="IBM" class="pill-logo"> IBM SkillsBuild</button>
+          <button class="pill" data-filtro="Cisco Networking Academy" onclick="app.filtrarCursosPorPlataforma('Cisco Networking Academy')"><img src="/img/logos/cisco.svg" alt="Cisco" class="pill-logo"> Cisco NetAcad</button>
+          <button class="pill" data-filtro="Escola do Trabalhador 4.0" onclick="app.filtrarCursosPorPlataforma('Escola do Trabalhador 4.0')"><img src="/img/logos/escoladotrabalhador.png" alt="Escola do Trabalhador" class="pill-logo"> Escola do Trabalhador 4.0</button>
+          <button class="pill" data-filtro="AWS Skill Builder" onclick="app.filtrarCursosPorPlataforma('AWS Skill Builder')"><img src="/img/logos/aws.svg" alt="AWS" class="pill-logo"> AWS Skill Builder</button>
+          <button class="pill" data-filtro="Microsoft Learn" onclick="app.filtrarCursosPorPlataforma('Microsoft Learn')"><img src="/img/logos/microsoft.svg" alt="Microsoft" class="pill-logo"> Microsoft Learn</button>
+          <button class="pill" data-filtro="freeCodeCamp" onclick="app.filtrarCursosPorPlataforma('freeCodeCamp')"><img src="/img/logos/freecodecamp.png" alt="freeCodeCamp" class="pill-logo"> freeCodeCamp</button>
+          <button class="pill" data-filtro="Kultivi" onclick="app.filtrarCursosPorPlataforma('Kultivi')"><img src="/img/logos/kultivi.png" alt="Kultivi" class="pill-logo"> Kultivi</button>
+          <button class="pill" data-filtro="SENAI Play" onclick="app.filtrarCursosPorPlataforma('SENAI Play')"><img src="/img/logos/senai.png" alt="SENAI" class="pill-logo"> SENAI Play</button>
+          <button class="pill" data-filtro="Oracle Next Education" onclick="app.filtrarCursosPorPlataforma('Oracle Next Education')"><img src="/img/logos/oracle.svg" alt="Oracle ONE" class="pill-logo"> Oracle ONE</button>
+          <button class="pill" data-filtro="Generation Brasil" onclick="app.filtrarCursosPorPlataforma('Generation Brasil')"><img src="/img/logos/generation.png" alt="Generation" class="pill-logo"> Generation Brasil</button>
+          <button class="pill" data-filtro="WoMakersCode" onclick="app.filtrarCursosPorPlataforma('WoMakersCode')"><img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="pill-logo"> WoMakersCode</button>
           <button class="pill" data-filtro="openHPI" onclick="app.filtrarCursosPorPlataforma('openHPI')"> openHPI (Hasso-Plattner)</button>
-          <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube"><img src="/img/logos/youtube.svg" alt="YouTube" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> YouTube (Certificado)</button>
-          <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Fundação Bradesco (EV)</button>
-          <button class="pill" data-filtro="Escola Virtual de Governo" onclick="app.filtrarCursosPorPlataforma('Escola Virtual de Governo')"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ EV.G / ENAP (Governo)</button>
-          <button class="pill" data-filtro="Lumina" onclick="app.filtrarCursosPorPlataforma('Lumina')"><img src="/img/logos/lumina.svg" alt="Lumina" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Lumina (UFRGS)</button>
-          <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')"><img src="/img/logos/ifrs.svg" alt="IFRS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ IFRS (Moodle MOOC)</button>
-          <button class="pill" data-filtro="Google Ateliê Digital" onclick="app.filtrarCursosPorPlataforma('Google Ateliê Digital')"><img src="/img/logos/google.svg" alt="Google" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌐 Google Ateliê Digital</button>
-          <button class="pill" data-filtro="OpenBootcamp" onclick="app.filtrarCursosPorPlataforma('OpenBootcamp')"><img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 💻 OpenBootcamp / Kogno</button>
-          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
-          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')"><img src="/img/logos/usp.png" alt="USP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursos USP</button>
-          <button class="pill" data-filtro="Alura" onclick="app.filtrarCursosPorPlataforma('Alura')"><img src="/img/logos/alura.png" alt="Alura" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Alura Aberta</button>
+          <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube"><img src="/img/logos/youtube.svg" alt="YouTube" class="pill-logo"> YouTube (Certificado)</button>
+          <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo"> 🏛️ Fundação Bradesco (EV)</button>
+          <button class="pill" data-filtro="Escola Virtual de Governo" onclick="app.filtrarCursosPorPlataforma('Escola Virtual de Governo')"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo"> 🏛️ EV.G / ENAP (Governo)</button>
+          <button class="pill" data-filtro="Lumina" onclick="app.filtrarCursosPorPlataforma('Lumina')"><img src="/img/logos/lumina.svg" alt="Lumina" class="pill-logo"> 🎓 Lumina (UFRGS)</button>
+          <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')"><img src="/img/logos/ifrs.svg" alt="IFRS" class="pill-logo"> 🏛️ IFRS (Moodle MOOC)</button>
+          <button class="pill" data-filtro="Google Ateliê Digital" onclick="app.filtrarCursosPorPlataforma('Google Ateliê Digital')"><img src="/img/logos/google.svg" alt="Google" class="pill-logo"> 🌐 Google Ateliê Digital</button>
+          <button class="pill" data-filtro="OpenBootcamp" onclick="app.filtrarCursosPorPlataforma('OpenBootcamp')"><img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="pill-logo"> 💻 OpenBootcamp / Kogno</button>
+          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo"> Guia de TI</button>
+          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')"><img src="/img/logos/usp.png" alt="USP" class="pill-logo"> Cursos USP</button>
+          <button class="pill" data-filtro="Alura" onclick="app.filtrarCursosPorPlataforma('Alura')"><img src="/img/logos/alura.png" alt="Alura" class="pill-logo"> Alura Aberta</button>
           <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')" data-i18n="ui.courses.areaTech">Tecnologia Geral</button>
           <button class="pill" data-filtro="Gestão & Negócios" onclick="app.filtrarCursosPorArea('Gestão & Negócios')"> Gestão & Negócios</button>
           <button class="pill" data-filtro="Desenvolvimento Pessoal" onclick="app.filtrarCursosPorArea('Desenvolvimento Pessoal')"> Desenvolvimento Pessoal</button>
@@ -671,10 +672,10 @@
         <span class="filter-label" data-i18n="ui.roadmaps.filters">Filtros de Trilha:</span>
         <div class="pills-container" id="pills-roadmaps-origem">
           <button class="pill active" data-filtro="" onclick="app.filtrarRoadmapsPorOrigem('')" data-i18n="ui.roadmaps.all">Todos os Roadmaps</button>
-          <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Trilha Info (BR)</button>
-          <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Roadmap.sh (95 roadmaps)</button>
+          <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo"> Trilha Info (BR)</button>
+          <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo"> Roadmap.sh (95 roadmaps)</button>
           <button class="pill" data-filtro="Awesome Roadmaps" onclick="app.filtrarRoadmapsPorOrigem('Awesome Roadmaps')">⭐ Awesome Roadmaps (GitHub)</button>
-          <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
+          <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo"> Guia de TI</button>
           <button class="pill" data-filtro="TechGuide.sh" onclick="app.filtrarRoadmapsPorOrigem('TechGuide.sh')">🧭 TechGuide.sh (Alura)</button>
           <button class="pill" data-filtro="Bora na Tech" onclick="app.filtrarRoadmapsPorOrigem('Bora na Tech')">🚀 Bora na Tech?</button>
           <button class="pill" data-filtro="frontend" onclick="app.filtrarRoadmapsPorTermo('Frontend')"> Frontend</button>
@@ -762,7 +763,7 @@
       <div class="podcasts-grid">
         <article class="podcast-card">
           <div class="podcast-cover-box">
-            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80" alt="Lino Conversa" class="podcast-cover-img" width="400" height="190" loading="lazy" decoding="async">
+            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&auto=format&fit=crop&q=80" alt="Lino Conversa" class="podcast-cover-img" loading="lazy">
             <span class="podcast-category-badge"> Educação & Diálogos</span>
           </div>
           <div class="podcast-body">
@@ -777,7 +778,7 @@
 
         <article class="podcast-card">
           <div class="podcast-cover-box">
-            <img src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&auto=format&fit=crop&q=80" alt="Livro da Semana" class="podcast-cover-img" width="400" height="190" loading="lazy" decoding="async">
+            <img src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&auto=format&fit=crop&q=80" alt="Livro da Semana" class="podcast-cover-img" loading="lazy">
             <span class="podcast-category-badge"> Literatura & Crítica</span>
           </div>
           <div class="podcast-body">
@@ -792,7 +793,7 @@
 
         <article class="podcast-card">
           <div class="podcast-cover-box">
-            <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80" alt="Histórias ao Luar" class="podcast-cover-img" width="400" height="190" loading="lazy" decoding="async">
+            <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80" alt="Histórias ao Luar" class="podcast-cover-img" loading="lazy">
             <span class="podcast-category-badge"> Contos & Tradição Oral</span>
           </div>
           <div class="podcast-body">
@@ -807,7 +808,7 @@
 
         <article class="podcast-card">
           <div class="podcast-cover-box">
-            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80" alt="Dica Rápida" class="podcast-cover-img" width="400" height="190" loading="lazy" decoding="async">
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80" alt="Dica Rápida" class="podcast-cover-img" loading="lazy">
             <span class="podcast-category-badge"> Produtividade & Estudo</span>
           </div>
           <div class="podcast-body">
@@ -833,7 +834,7 @@
   </div>
 
   <!-- Comunidade WhatsApp: grupo e canal -->
-  <section id="secao-whatsapp" class="container whatsapp-section" aria-labelledby="whatsapp-titulo">
+  <section id="secao-whatsapp" class="container whatsapp-section hidden" aria-labelledby="whatsapp-titulo">
     <h2 id="whatsapp-titulo" class="whatsapp-section-title">
       <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
       <span data-i18n="ui.whatsapp.title">Junte-se ao Lino Livre no WhatsApp</span>
@@ -841,21 +842,21 @@
     <p class="whatsapp-section-subtitle" data-i18n="ui.whatsapp.subtitle">Peça livros, receba novidades e partilhe leituras com a comunidade escolar.</p>
 
     <div class="whatsapp-cards">
-      <div id="card-comunidade" class="whatsapp-card">
+      <div id="card-comunidade" class="whatsapp-card hidden">
         <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="ui.whatsapp.groupAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-grupo-whatsapp.svg'">
         <h3 data-i18n="ui.whatsapp.groupTitle"> Grupo Lino Livre</h3>
         <p data-i18n="ui.whatsapp.groupDesc">Converse, peça e recomende livros que quer ler.</p>
-        <a id="link-card-comunidade" class="btn btn-whatsapp" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
+        <a id="link-card-comunidade" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.whatsapp.groupBtn">Entrar no grupo</span>
         </a>
       </div>
 
-      <div id="card-canal" class="whatsapp-card">
+      <div id="card-canal" class="whatsapp-card hidden">
         <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="ui.whatsapp.channelAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-canal-whatsapp.svg'">
         <h3 data-i18n="ui.whatsapp.channelTitle"> Canal Livros e Cursos</h3>
         <p data-i18n="ui.whatsapp.channelDesc">Receba as novidades de livros e cursos gratuitos.</p>
-        <a id="link-card-canal" class="btn btn-whatsapp" href="https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X" target="_blank" rel="noopener noreferrer">
+        <a id="link-card-canal" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
           <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
           <span data-i18n="ui.whatsapp.channelBtn">Seguir o canal</span>
         </a>
@@ -896,11 +897,11 @@
       <div class="footer-col">
         <h4 class="footer-heading" data-i18n="ui.footer.headingExplore">Explorar Acervo</h4>
         <ul class="footer-nav-list">
-          <li><a href="#aba-livros" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books"> Livros Digitais</a></li>
-          <li><a href="#aba-cursos" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses"> Cursos Gratuitos</a></li>
-          <li><a href="#aba-roadmaps" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</a></li>
-          <li><a href="#aba-podcasts" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</a></li>
-          <li><a href="#aba-dashboard" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books"> Livros Digitais</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses"> Cursos Gratuitos</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</a></li>
+          <li><a href="javascript:void(0)" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</a></li>
         </ul>
       </div>
 
@@ -908,10 +909,10 @@
       <div class="footer-col">
         <h4 class="footer-heading" data-i18n="ui.footer.headingLegal">Jurídico & Diretrizes</h4>
         <ul class="footer-nav-list">
-          <li><a href="/legal.html#secao-missao" onclick="if(window.app){app.abrirModalLegal('termos');return false;}" data-i18n="ui.footer.terms"> Termos de Uso</a></li>
-          <li><a href="/legal.html#secao-isencao" onclick="if(window.app){app.abrirModalLegal('isencao');return false;}" data-i18n="ui.footer.disclaimer"> Isenção de Responsabilidade</a></li>
-          <li><a href="/legal.html#secao-direitos" onclick="if(window.app){app.abrirModalLegal('takedown');return false;}" data-i18n="ui.footer.dmca"> Direitos Autorais & DMCA</a></li>
-          <li><a href="/legal.html#secao-privacidade" onclick="if(window.app){app.abrirModalLegal('privacidade');return false;}" data-i18n="ui.footer.privacy"> Privacidade (LGPD/RGPD)</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('termos')" data-i18n="ui.footer.terms"> Termos de Uso</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('isencao')" data-i18n="ui.footer.disclaimer"> Isenção de Responsabilidade</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('takedown')" data-i18n="ui.footer.dmca"> Direitos Autorais & DMCA</a></li>
+          <li><a href="javascript:void(0)" onclick="app.abrirModalLegal('privacidade')" data-i18n="ui.footer.privacy"> Privacidade (LGPD/RGPD)</a></li>
           <li><a href="/creditos.html" target="_blank" rel="noopener noreferrer">📜 Créditos & Licenças ↗</a></li>
           <li><a href="/termos.html" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.fullTerms"> Página Legal Completa ↗</a></li>
         </ul>
@@ -994,7 +995,7 @@
           <button id="btn-toggle-painel" class="reader-action-btn" onclick="app.togglePainelAjustes()" data-i18n-title="ui.reader.settingsTitle" title="Ajustes de Leitura e Conforto">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </button>
-          <a id="btn-leitor-pdf" class="btn-pdf-header hidden" href="#leitor" target="_blank" rel="noopener noreferrer" title="Abrir Edição Oficial Completa (PDF)" data-i18n-title="ui.reader.officialPdf">
+          <a id="btn-leitor-pdf" class="btn-pdf-header hidden" target="_blank" rel="noopener noreferrer" title="Abrir Edição Oficial Completa (PDF)" data-i18n-title="ui.reader.officialPdf">
              <span class="btn-pdf-label" data-i18n="ui.reader.officialPdf">PDF Oficial</span>
           </a>
           <button class="reader-action-btn" onclick="app.fecharModais()" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor"></button>
@@ -1138,7 +1139,7 @@
           <!-- Coluna Esquerda: Capa e Metadados Rápidos -->
           <div class="book-details-cover-col">
             <div class="book-details-cover-wrap">
-              <img id="detalhes-capa" src="/capas/dom_casmurro.jpg" alt="Capa do Livro" class="book-details-cover" width="240" height="360" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
+              <img id="detalhes-capa" src="/capas/dom_casmurro.jpg" alt="Capa do Livro" class="book-details-cover" onerror="this.src='/capas/dom_casmurro.jpg'">
             </div>
             <div class="book-details-quick-meta">
               <div class="quick-meta-pill" id="detalhes-leituras-pill" title="Contagem de Leituras">
@@ -1377,7 +1378,7 @@
   <div id="toast" class="toast hidden"></div>
 
 
-  <script defer src="/js/i18n.js?v=20261023b"></script>
-  <script defer src="/js/app.js?v=20261023b"></script>
+  <script defer src="/js/i18n.js?v=20261024"></script>
+  <script defer src="/js/app.js?v=20261024"></script>
 </body>
 </html>

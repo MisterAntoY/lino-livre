@@ -94,13 +94,24 @@ const app = {
       this.verificarLinkDiretoLivro();
     });
 
+    // Caminho crítico: apenas o catálogo e o placar (ambos acima da dobra).
     await Promise.all([
       this.carregarDestaques(),
       this.carregarLivros(),
-      this.carregarPlacarMeta(),
-      this.carregarCategoriasSelect(),
-      this.verificarComunidadeECanal()
+      this.carregarPlacarMeta()
     ]);
+
+    // Tarefas secundárias (select do modal e links da comunidade) não são
+    // necessárias para a primeira pintura: executam no tempo ocioso.
+    const tarefasSecundarias = () => {
+      this.carregarCategoriasSelect();
+      this.verificarComunidadeECanal();
+    };
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(tarefasSecundarias, { timeout: 2500 });
+    } else {
+      setTimeout(tarefasSecundarias, 1200);
+    }
 
     this.verificarLinkDiretoLivro();
     this.registrarFerramentasWebMCP();
@@ -2854,7 +2865,8 @@ const app = {
 
     if (elBarra) {
       const visualWidth = Math.max(1.0, Math.min(100, (total / meta) * 100));
-      elBarra.style.width = `${visualWidth}%`;
+      // transform é composto pela GPU (sem layout/reflow); width não é.
+      elBarra.style.transform = `scaleX(${(visualWidth / 100).toFixed(5)})`;
     }
     const elContainer = document.getElementById('placar-progressbar-container');
     if (elContainer) {
