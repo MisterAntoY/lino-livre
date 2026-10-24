@@ -1869,6 +1869,7 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     const resAlquimista = await request(`/api/livros/${alquimista.id}`);
     assert.equal(resAlquimista.status, 200);
     assert.equal(resAlquimista.data.licenca, 'outro');
+    assert.equal(resAlquimista.data.fonte_slug, 'openlibrary', 'A fonte exibida deve corresponder ao catálogo da Open Library');
     assert.ok(
       !resAlquimista.data.links.some(l => l.formato === 'pdf' && l.url.includes('archive.org/download')),
       'O Alquimista não pode expor um PDF restrito do Internet Archive'

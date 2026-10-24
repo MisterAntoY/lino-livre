@@ -606,6 +606,7 @@ function seed(dbInstance = null) {
     'trilhainfo': fTrilha,
     'guiadeti': fGuiaDeTI,
     'gutenberg': fGutenberg,
+    'openlibrary': fOpenLib,
     'wikisource': fWikisource,
     'dominiopublico': fDomPub,
     'manual': fManual,
