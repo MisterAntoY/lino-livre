@@ -4356,7 +4356,7 @@ html[lang^="zh"] .course-title {
   border-radius: var(--radius-lg);
   padding: 1.75rem 2rem;
   box-shadow: var(--shadow-card);
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .destaques-header {
@@ -4422,7 +4422,7 @@ html[lang^="zh"] .course-title {
   padding: 0.65rem 1.25rem;
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -4453,7 +4453,7 @@ html[lang^="zh"] .course-title {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
 .pill-destaque-tab:hover {
@@ -4483,7 +4483,7 @@ html[lang^="zh"] .course-title {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
   cursor: pointer;
   position: relative;
   box-shadow: var(--shadow-card);
