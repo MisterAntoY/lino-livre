@@ -54,6 +54,16 @@ async function proxy(req, res) {
   }
 
   const alvo = new URL(destino);
+  // Forçar sempre protocolo seguro HTTPS
+  if (alvo.protocol === 'http:') {
+    alvo.protocol = 'https:';
+  }
+
+  // African Storybook tem certificado SSL expirado e ficheiros inexistentes na origem: redirecionar para capa padrão local segura
+  if (alvo.hostname.toLowerCase().includes('africanstorybook.org')) {
+    return res.redirect(302, '/capas/dom_casmurro.jpg');
+  }
+
   if (alvo.protocol !== 'https:' || !hostCapaPermitido(alvo.hostname)) {
     return res.status(403).json({ erro: 'Origem de capa não permitida' });
   }

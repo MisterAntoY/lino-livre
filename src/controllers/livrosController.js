@@ -19,6 +19,25 @@ function sanitizarFts5(termo) {
   return tokens.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
 }
 
+function normalizarCapaUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+  const trimmed = url.trim();
+  if (trimmed.toLowerCase().includes('africanstorybook.org')) return null;
+  if (trimmed.startsWith('http://')) {
+    return 'https://' + trimmed.slice(7);
+  }
+  return trimmed;
+}
+
+function normalizarUrlSegura(url) {
+  if (!url || typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http://')) {
+    return 'https://' + trimmed.slice(7);
+  }
+  return trimmed;
+}
+
 // Dimensões pequenas (fontes/categorias) em cache: evita LIKE e JOINs na tabela livros
 let cacheDimensoes = null;
 let cacheDimensoesEm = 0;
@@ -224,13 +243,18 @@ function listar(req, res) {
         linksPorLivro[link.livro_id].push({
           id: link.id,
           formato: link.formato,
-          url: link.url,
+          url: normalizarUrlSegura(link.url),
           tamanho_bytes: link.tamanho_bytes,
           link_externo: link.link_externo
         });
       }
       for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
         livro.links = linksPorLivro[livro.id] || [];
+      }
+    } else {
+      for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
       }
     }
 
@@ -269,7 +293,9 @@ function obterPorId(req, res) {
       return res.status(404).json({ erro: 'Livro não encontrado' });
     }
 
-    livro.links = db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').all(livro.id);
+    livro.capa_url = normalizarCapaUrl(livro.capa_url);
+    const linksBrutos = db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').all(livro.id);
+    livro.links = linksBrutos.map(lnk => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
 
     res.json(livro);
   } catch (err) {
@@ -298,7 +324,7 @@ function lerRedirect(req, res) {
 
     // Redirect 302 para a fonte externa após validação estrita
     if (link.url) {
-      const urlDestino = validarUrlRedirecionamento(link.url);
+      const urlDestino = normalizarUrlSegura(validarUrlRedirecionamento(link.url));
       return res.redirect(302, urlDestino);
     }
 
@@ -570,14 +596,19 @@ function destaques(req, res) {
         linksPorLivro[link.livro_id].push({
           id: link.id,
           formato: link.formato,
-          url: link.url,
+          url: normalizarUrlSegura(link.url),
           tamanho_bytes: link.tamanho_bytes,
           link_externo: link.link_externo
         });
       }
       for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
         livro.links = linksPorLivro[livro.id] || [];
         livro.destaque_badge = gerarDestaqueBadge(livro);
+      }
+    } else {
+      for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
       }
     }
 

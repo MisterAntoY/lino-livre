@@ -188,7 +188,12 @@ function metricas(req, res) {
       cursos_por_tipo: cursosPorTipo,
       cursos_por_plataforma: cursosPorPlataforma,
       cursos_por_area: cursosPorArea,
-      mais_lidos: maisLidos
+      mais_lidos: maisLidos.map(l => ({
+        ...l,
+        capa_url: (l.capa_url && !l.capa_url.toLowerCase().includes('africanstorybook.org'))
+          ? (l.capa_url.startsWith('http://') ? 'https://' + l.capa_url.slice(7) : l.capa_url)
+          : null
+      }))
     });
   } catch (err) {
     res.status(500).json({ erro: 'Erro ao carregar estatísticas do acervo: ' + err.message });

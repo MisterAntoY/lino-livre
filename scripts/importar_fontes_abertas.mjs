@@ -336,10 +336,16 @@ async function importarAsp(aplicar) {
     if (level) sinopse += (sinopse ? ' ' : '') + `Nível: ${level}.`;
     sinopse = sinopse.trim() || null;
 
+    // Higienização de capa e URL: African Storybook possui certificado expirado e capas 404 na origem
+    const capaNormalizada = (thumb && !thumb.toLowerCase().includes('africanstorybook.org'))
+      ? (thumb.startsWith('http://') ? 'https://' + thumb.slice(7) : thumb)
+      : null;
+    const urlLeituraSegura = url ? (url.startsWith('http://') ? 'https://' + url.slice(7) : url) : url;
+
     const ok = c.add({
       titulo, autor, ilustrador: artista || null, idioma: normalizarIdioma(lang),
-      licenca: mapearLicenca(lic), capaUrl: thumb || null,
-      sinopse, ano: null, urlLeitura: url, formato: 'html',
+      licenca: mapearLicenca(lic), capaUrl: capaNormalizada,
+      sinopse, ano: null, urlLeitura: urlLeituraSegura, formato: 'html',
       fonteIdExterno: `asp-${id}`,
     });
     if (!ok) ignorados++;

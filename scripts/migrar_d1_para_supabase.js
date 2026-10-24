@@ -80,7 +80,7 @@ const TABELAS = [
   { nome: 'autores', colunas: ['id', 'nome', 'nacionalidade', 'biografia', 'criado_em'] },
   {
     nome: 'livros',
-    lote: 200,
+    lote: 1000,
     colunas: [
       'id', 'titulo', 'subtitulo', 'isbn', 'ano_publicacao', 'idioma', 'sinopse',
       'capa_url', 'paginas', 'autor_id', 'categoria_id', 'fonte_id', 'fonte_id_externo',
@@ -89,7 +89,7 @@ const TABELAS = [
       'criado_em'
     ]
   },
-  { nome: 'links_livros', colunas: ['id', 'livro_id', 'formato', 'url', 'tamanho_bytes', 'link_externo'] },
+  { nome: 'links_livros', lote: 2500, colunas: ['id', 'livro_id', 'formato', 'url', 'tamanho_bytes', 'link_externo'] },
   { nome: 'cursos', colunas: ['id', 'titulo', 'tipo', 'area', 'plataforma', 'url', 'licenca', 'nivel', 'descricao', 'criado_em'] },
   { nome: 'podcasts_shows', colunas: ['id', 'titulo', 'slug', 'descricao', 'capa_url', 'spotify_url', 'spotify_uri', 'categoria', 'idioma', 'ativo', 'criado_em'] },
   { nome: 'podcasts_episodios', colunas: ['id', 'show_id', 'numero', 'titulo', 'slug', 'descricao', 'duracao_minutos', 'spotify_url', 'spotify_embed_url', 'audio_url', 'publicado_em', 'reproducoes', 'criado_em'] }

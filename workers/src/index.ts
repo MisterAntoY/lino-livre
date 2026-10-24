@@ -104,6 +104,25 @@ function timingSafeEqualStr(a: string, b: string): boolean {
   return diff === 0;
 }
 
+function normalizarCapaUrl(url: string | null | undefined): string | null {
+  if (!url || typeof url !== 'string') return null;
+  const trimmed = url.trim();
+  if (trimmed.toLowerCase().includes('africanstorybook.org')) return null;
+  if (trimmed.startsWith('http://')) {
+    return 'https://' + trimmed.slice(7);
+  }
+  return trimmed;
+}
+
+function normalizarUrlSegura(url: string | null | undefined): string {
+  if (!url || typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http://')) {
+    return 'https://' + trimmed.slice(7);
+  }
+  return trimmed;
+}
+
 // ────────────────────────────────────────────────────────────
 // Middleware de Autenticação Administrativa para Rotas de Escrita
 // ────────────────────────────────────────────────────────────
@@ -320,7 +339,10 @@ app.get('/api/dashboard', async (c) => {
       idiomas: doGrupo('idioma').map((r) => ({ idioma: r.chave, total: r.total })),
       areas: doGrupo('categoria').map((r) => ({ area: r.rotulo || r.chave, total: r.total })),
       fontes,
-      mais_lidos: maisLidosRes.results || []
+      mais_lidos: (maisLidosRes.results || []).map((l: any) => ({
+        ...l,
+        capa_url: normalizarCapaUrl(l.capa_url)
+      }))
     };
 
     cachedDashboard = { data: payload, timestamp: Date.now() };
@@ -768,14 +790,19 @@ app.get('/api/livros/destaques', async (c) => {
         linksPorLivro[link.livro_id].push({
           id: link.id,
           formato: link.formato,
-          url: link.url,
+          url: normalizarUrlSegura(link.url),
           tamanho_bytes: link.tamanho_bytes,
           link_externo: link.link_externo
         });
       }
       for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
         livro.links = linksPorLivro[livro.id] || [];
         livro.destaque_badge = gerarDestaqueBadge(livro);
+      }
+    } else {
+      for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
       }
     }
 
@@ -1010,10 +1037,18 @@ app.get('/api/livros', async (c) => {
       const linksPorLivro: Record<number, any[]> = {};
       for (const link of links) {
         if (!linksPorLivro[link.livro_id]) linksPorLivro[link.livro_id] = [];
-        linksPorLivro[link.livro_id].push(link);
+        linksPorLivro[link.livro_id].push({
+          ...link,
+          url: normalizarUrlSegura(link.url)
+        });
       }
       for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
         livro.links = linksPorLivro[livro.id] || [];
+      }
+    } else {
+      for (const livro of livros) {
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
       }
     }
 
@@ -1225,6 +1260,10 @@ app.get('/api/livros/:id', async (c) => {
       try {
         const livro = await repo.livro(id);
         if (!livro) return c.json({ erro: 'Livro não encontrado' }, 404);
+        livro.capa_url = normalizarCapaUrl(livro.capa_url);
+        if (Array.isArray(livro.links)) {
+          livro.links = livro.links.map((lnk: any) => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
+        }
         c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
         return c.json(livro);
       } catch (err) {
@@ -1248,7 +1287,9 @@ app.get('/api/livros/:id', async (c) => {
 
     if (!livro) return c.json({ erro: 'Livro não encontrado' }, 404);
 
-    livro.links = (await db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').bind(livro.id).all()).results;
+    livro.capa_url = normalizarCapaUrl(livro.capa_url);
+    const rawLinks = (await db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').bind(livro.id).all()).results as any[];
+    livro.links = rawLinks.map((lnk: any) => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
     c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
     return c.json(livro);
   } catch (err: any) {
@@ -1269,7 +1310,7 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
         c.executionCtx.waitUntil(repo.registrarLeitura(id));
 
         if (link.url && String(link.url).startsWith('http')) {
-          const urlSegura = validarUrlRedirecionamento(String(link.url));
+          const urlSegura = normalizarUrlSegura(validarUrlRedirecionamento(String(link.url)));
           return c.redirect(urlSegura, 302);
         }
         const conteudo = await repo.conteudoTexto(id);
@@ -1302,7 +1343,7 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
     );
 
     if (link.url && link.url.startsWith('http')) {
-      const urlSegura = validarUrlRedirecionamento(link.url);
+      const urlSegura = normalizarUrlSegura(validarUrlRedirecionamento(link.url));
       return c.redirect(urlSegura, 302);
     }
 
@@ -2109,6 +2150,12 @@ app.get('/api/capas', async (c) => {
   }
 
   const alvo = new URL(destino);
+  if (alvo.protocol === 'http:') {
+    alvo.protocol = 'https:';
+  }
+  if (alvo.hostname.toLowerCase().includes('africanstorybook.org')) {
+    return c.redirect('/capas/dom_casmurro.jpg', 302);
+  }
   if (alvo.protocol !== 'https:' || !hostCapaPermitido(alvo.hostname)) {
     return c.json({ erro: 'Origem de capa não permitida' }, 403);
   }
