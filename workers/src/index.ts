@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { cors } from 'hono/cors';
 import { Bindings } from './types';
 import { RepoSupabase, obterConfigSupabase, backendSupabase } from './supabase';
 import { generateQrCodeSvg } from './utils/qrcode';
@@ -11,8 +10,57 @@ import { edgeLoadBalancer } from './loadBalancer';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// Enable CORS
-app.use('/api/*', cors());
+// ────────────────────────────────────────────────────────────
+// CORS: leitura pública abrangente, mutações restritas.
+// A API de leitura é pública (metadados abertos), mas operações de escrita só
+// aceitam origens conhecidas. Pedidos sem Origin (curl, server-to-server,
+// cron) continuam permitidos — a autorização real é a chave administrativa.
+// ────────────────────────────────────────────────────────────
+const ORIGENS_PERMITIDAS = new Set([
+  'https://lino-livre.linolivre.workers.dev',
+  'https://linolivre.org',
+  'https://www.linolivre.org',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+]);
+
+app.use('/api/*', async (c, next) => {
+  const origin = c.req.header('origin');
+  const metodo = c.req.method.toUpperCase();
+  const mutacao = !['GET', 'HEAD', 'OPTIONS'].includes(metodo);
+  const origemConhecida = !!origin && ORIGENS_PERMITIDAS.has(origin);
+
+  if (origin && mutacao && !origemConhecida) {
+    return c.json({ erro: 'Origem não autorizada para operações de escrita' }, 403);
+  }
+
+  if (origemConhecida) {
+    c.header('Access-Control-Allow-Origin', origin!);
+    c.header('Vary', 'Origin');
+  } else if (!mutacao) {
+    // Só a leitura pública é exposta a qualquer origem. Escritas sem Origin
+    // (curl, cron, server-to-server) não recebem ACAO — não há browser envolvido.
+    c.header('Access-Control-Allow-Origin', '*');
+  }
+
+  if (metodo === 'OPTIONS') {
+    const pedido = (c.req.header('access-control-request-method') || '').toUpperCase();
+    const pedidoMutacao = !!pedido && !['GET', 'HEAD'].includes(pedido);
+    if (pedidoMutacao && !origemConhecida) {
+      return c.body(null, 403);
+    }
+    c.header('Access-Control-Allow-Methods', 'GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS');
+    const cabecalhos = ['Content-Type', 'Cache-Control', 'Pragma'];
+    if (origemConhecida) {
+      cabecalhos.push('x-admin-key', 'Authorization');
+    }
+    c.header('Access-Control-Allow-Headers', cabecalhos.join(', '));
+    c.header('Access-Control-Max-Age', '86400');
+    return c.body(null, 204);
+  }
+
+  await next();
+});
 
 // Cabeçalhos de segurança HTTP globais
 app.use('*', async (c, next) => {
@@ -22,18 +70,22 @@ app.use('*', async (c, next) => {
   c.header('Referrer-Policy', 'strict-origin-when-cross-origin');
   c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   c.header('Cross-Origin-Opener-Policy', 'same-origin');
+  c.header('Cross-Origin-Resource-Policy', 'cross-origin');
+  c.header('Origin-Agent-Cluster', '?1');
+  c.header('X-DNS-Prefetch-Control', 'off');
+  c.header('X-Permitted-Cross-Domain-Policies', 'none');
   c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   c.header(
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'sha256-VObpZF2rrhL4LG40uRUH3yRXC/1nwGniYanKxkqAWxo=' 'sha256-keHLDO8UACnw+cRVVeKuRurHKeLrwqY0rMi7Sjqgzkc=' 'sha256-wZSMpQgLrgIlbRyynN5NCOpERrzb5ODoykQ0lbDTWnQ=' 'sha256-qOpPGAwL3XogEKhDdObnXr0bcx7NIZEs41a4ijt3hWM=' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: https:",
-      "connect-src 'self'",
+      "connect-src 'self' https://challenges.cloudflare.com",
       "media-src 'self' https:",
-      "frame-src 'self' https://www.youtube.com https://open.spotify.com",
+      "frame-src 'self' https://www.youtube.com https://open.spotify.com https://challenges.cloudflare.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -62,6 +114,16 @@ app.use('*', async (c, next) => {
   await next();
 });
 
+// Rate limiting global por IP: leituras 300/min, escritas 30/min.
+// Aplicado antes das rotas e depois do WAF.
+app.use('/api/*', async (c, next) => {
+  const metodo = c.req.method.toUpperCase();
+  const escrita = metodo !== 'GET' && metodo !== 'HEAD' && metodo !== 'OPTIONS';
+  const bloqueio = await limitarRequisicao(c, escrita ? 'api-write' : 'api-read', escrita ? 30 : 300);
+  if (bloqueio) return bloqueio;
+  await next();
+});
+
 // Cache de borda para leituras públicas. Registado antes das rotas para
 // envolver os handlers (o Cache API evita invocações e leituras na D1).
 app.use('/api/dashboard', cacheDeBorda);
@@ -82,24 +144,40 @@ const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-
  * Neutraliza caracteres especiais e operadores (AND, OR, NOT, NEAR, aspas, dois pontos, asteriscos, parênteses)
  * evitando exceções de sintaxe e ataques de DoS via busca.
  */
+// Limites anti-DoS do FTS5: cada token vira uma consulta de prefixo. Sem teto,
+// um pedido de 21 KB (4000 tokens) bloqueava o processamento.
+const FTS_MAX_CARACTERES = 120;
+const FTS_MAX_TERMOS = 8;
+
 function sanitizarFts5(termo: string | undefined | null): string | null {
   if (!termo || typeof termo !== 'string') return null;
   const tokens = termo
+    .slice(0, FTS_MAX_CARACTERES)
     .replace(/[^\p{L}\p{N}\s-]/gu, ' ')
     .trim()
     .split(/\s+/)
     .filter(Boolean);
-  if (tokens.length === 0) return null;
-  return tokens.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
+  const unicos = [...new Set(tokens)].slice(0, FTS_MAX_TERMOS);
+  if (unicos.length === 0) return null;
+  return unicos.map((t) => `"${t.replace(/"/g, '""')}"*`).join(' ');
+}
+
+/**
+ * Escapa os metacaracteres de LIKE. Sem isto, `busca=%a%b%c...` transforma o
+ * filtro num varrimento com múltiplos wildcards (DoS de CPU na D1).
+ */
+function escaparLike(valor: any): string {
+  return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
 }
 
 function timingSafeEqualStr(a: string, b: string): boolean {
-  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) {
-    return false;
-  }
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  // Comparação de comprimento variável sem saída antecipada (evita revelar o
+  // tamanho da chave por temporização).
+  const max = Math.max(a.length, b.length);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < max; i++) {
+    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
   }
   return diff === 0;
 }
@@ -127,7 +205,10 @@ function normalizarUrlSegura(url: string | null | undefined): string {
 // Middleware de Autenticação Administrativa para Rotas de Escrita
 // ────────────────────────────────────────────────────────────
 async function verificarAdminWorker(c: any, next: any) {
-  const adminKey = c.env.ADMIN_API_KEY || (c.env.ENVIRONMENT === 'production' ? null : 'lino-admin-dev-key');
+  // Respostas administrativas nunca podem ser guardadas em caches
+  // intermédios — nem as de erro (401), que também revelam a existência da rota.
+  c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  const adminKey = c.env.ADMIN_API_KEY || null;
   const headerKey = c.req.header('x-admin-key');
   const authHeader = c.req.header('authorization');
   let bearerToken: string | undefined;
@@ -141,6 +222,89 @@ async function verificarAdminWorker(c: any, next: any) {
   }
 
   await next();
+}
+
+// ────────────────────────────────────────────────────────────
+// Rate limiting leve por isolate (token bucket em memória)
+// Protege a cota de escrita da D1 (100k linhas/dia no plano gratuito) e
+// os endpoints com fan-out/egress (proxy de capas e busca federada).
+// A chave é o IP real visto pela Cloudflare (CF-Connecting-IP), que o cliente
+// não consegue forjar atrás da CDN.
+// ────────────────────────────────────────────────────────────
+const LIMITES_MEMORIA = new Map<string, { count: number; resetAt: number }>();
+const LIMITE_MAX_ENTRADAS = 10_000;
+
+function resposta429(c: any, retrySegundos: number): any {
+  return c.json(
+    { erro: 'Demasiadas requisições. Tente novamente em instantes.', retry_after_s: retrySegundos },
+    429,
+    { 'Retry-After': String(retrySegundos) }
+  );
+}
+
+async function limitarRequisicao(c: any, escopo: string, max: number, janelaMs = 60_000): Promise<any | null> {
+  // CF-Connecting-IP é injetado pela Cloudflare e não pode ser forjado pelo
+  // cliente. Não usar X-Real-IP: é um cabeçalho arbitrário e permitiria
+  // contornar o limite quando o Worker é servido através de outro proxy.
+  const ip = c.req.header('cf-connecting-ip') || 'desconhecido';
+  const chave = `${escopo}:${ip}`;
+
+  // 1) Binding nativo da Cloudflare (se configurado): limite distribuído entre
+  // isolates e colos. O limite numérico é definido no wrangler.jsonc.
+  const binding = c.env?.RATE_LIMITER;
+  if (binding && typeof binding.limit === 'function') {
+    try {
+      const resultado = await binding.limit({ key: chave });
+      if (resultado && resultado.success === false) {
+        return resposta429(c, Math.ceil(janelaMs / 1000));
+      }
+      return null;
+    } catch {
+      // Binding indisponível: degrada para o contador em memória.
+    }
+  }
+
+  const agora = Date.now();
+
+  if (LIMITES_MEMORIA.size > LIMITE_MAX_ENTRADAS) {
+    for (const [k, v] of LIMITES_MEMORIA) {
+      if (agora > v.resetAt) LIMITES_MEMORIA.delete(k);
+    }
+    if (LIMITES_MEMORIA.size > LIMITE_MAX_ENTRADAS) LIMITES_MEMORIA.clear();
+  }
+
+  const entrada = LIMITES_MEMORIA.get(chave);
+  if (!entrada || agora > entrada.resetAt) {
+    LIMITES_MEMORIA.set(chave, { count: 1, resetAt: agora + janelaMs });
+    return null;
+  }
+
+  entrada.count++;
+  if (entrada.count > max) {
+    return resposta429(c, Math.max(1, Math.ceil((entrada.resetAt - agora) / 1000)));
+  }
+  return null;
+}
+
+// Anti-bot opcional (Turnstile). Sem segredo configurado não há verificação;
+// com segredo, o token é obrigatório (falha fechada).
+async function verificarTurnstileWorker(c: any, token: string | undefined): Promise<boolean> {
+  const secret = c.env?.TURNSTILE_SECRET_KEY;
+  if (!secret) return true;
+  if (!token || typeof token !== 'string' || token.length > 2048) return false;
+  try {
+    const corpo = new URLSearchParams({ secret, response: token });
+    const ip = c.req.header('cf-connecting-ip');
+    if (ip) corpo.set('remoteip', ip);
+    const resposta = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: corpo
+    });
+    const dados: any = await resposta.json().catch(() => null);
+    return dados?.success === true;
+  } catch {
+    return false;
+  }
 }
 
 // Cache em memória para estatísticas de dashboard para economizar cotas de leitura da D1
@@ -254,7 +418,7 @@ app.get('/api/loadbalancer/status', (c) => {
 
 // 1. Dashboard de Acervo e Leituras
 app.get('/api/dashboard', async (c) => {
-  const adminKey = c.env.ADMIN_API_KEY || (c.env.ENVIRONMENT === 'production' ? null : 'lino-admin-dev-key');
+  const adminKey = c.env.ADMIN_API_KEY || null;
   const headerKey = c.req.header('x-admin-key');
   const isAdmin = !!(adminKey && headerKey && timingSafeEqualStr(headerKey, adminKey));
   const noCache = isAdmin && (c.req.header('cache-control')?.includes('no-cache') || c.req.header('pragma')?.includes('no-cache'));
@@ -403,7 +567,7 @@ app.get('/api/categorias', async (c) => {
     return c.json(categorias);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao buscar categorias: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar categorias' }, 500);
   }
 });
 
@@ -415,7 +579,7 @@ app.get('/api/categorias/:id', async (c) => {
     if (!categoria) return c.json({ erro: 'Categoria não encontrada' }, 404);
     return c.json(categoria);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar categoria' }, 500);
   }
 });
 
@@ -432,7 +596,7 @@ app.post('/api/categorias', verificarAdminWorker, async (c) => {
     if (err.message?.includes('UNIQUE')) {
       return c.json({ erro: 'Já existe uma categoria com este nome' }, 400);
     }
-    return c.json({ erro: 'Erro ao cadastrar categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar categoria' }, 500);
   }
 });
 
@@ -452,7 +616,7 @@ app.put('/api/categorias/:id', verificarAdminWorker, async (c) => {
     if (err.message?.includes('UNIQUE')) {
       return c.json({ erro: 'Já existe uma categoria com este nome' }, 400);
     }
-    return c.json({ erro: 'Erro ao atualizar categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao atualizar categoria' }, 500);
   }
 });
 
@@ -464,7 +628,7 @@ app.delete('/api/categorias/:id', verificarAdminWorker, async (c) => {
     if (res.meta.changes === 0) return c.json({ erro: 'Categoria não encontrada' }, 404);
     return c.json({ mensagem: 'Categoria removida com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover categoria: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover categoria' }, 500);
   }
 });
 
@@ -493,8 +657,8 @@ app.get('/api/autores', async (c) => {
       query += ' WHERE a.nome = ? COLLATE NOCASE';
       params.push(nomeExato);
     } else if (busca) {
-      query += ' WHERE a.nome LIKE ?';
-      params.push(`%${busca}%`);
+      query += " WHERE a.nome LIKE ? ESCAPE '\\'";
+      params.push(`%${escaparLike(busca)}%`);
     }
 
     query += ' ORDER BY a.nome ASC';
@@ -502,9 +666,9 @@ app.get('/api/autores', async (c) => {
     // Limite por omissão: sem ele, a rota devolvia os ~37.919 autores numa
     // só resposta (dezenas de milhares de linhas lidas). A paginação
     // (?limit / ?page) continua disponível para quem precisar de mais.
-    const limit = Math.min(Math.max(parseInt(limitParam || '500', 10), 1), 500);
+    const limit = Math.min(Math.max(parseInt(limitParam || '500', 10) || 500, 1), 500);
     if (limitParam || pageParam) {
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -531,7 +695,7 @@ app.get('/api/autores', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(autores);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar autores: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar autores' }, 500);
   }
 });
 
@@ -545,7 +709,7 @@ app.get('/api/autores/:id', async (c) => {
     const livros = (await db.prepare('SELECT id, titulo, ano_publicacao FROM livros WHERE autor_id = ?').bind(id).all()).results;
     return c.json({ ...autor, livros });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar autor' }, 500);
   }
 });
 
@@ -562,7 +726,7 @@ app.post('/api/autores', verificarAdminWorker, async (c) => {
     const novo = await db.prepare('SELECT * FROM autores WHERE id = ?').bind(res.meta.last_row_id).first();
     return c.json(novo, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao cadastrar autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar autor' }, 500);
   }
 });
 
@@ -581,7 +745,7 @@ app.put('/api/autores/:id', verificarAdminWorker, async (c) => {
     const atualizado = await db.prepare('SELECT * FROM autores WHERE id = ?').bind(id).first();
     return c.json(atualizado);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao atualizar autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao atualizar autor' }, 500);
   }
 });
 
@@ -593,7 +757,7 @@ app.delete('/api/autores/:id', verificarAdminWorker, async (c) => {
     if (res.meta.changes === 0) return c.json({ erro: 'Autor não encontrado' }, 404);
     return c.json({ mensagem: 'Autor removido com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover autor: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover autor' }, 500);
   }
 });
 
@@ -814,7 +978,8 @@ app.get('/api/livros/destaques', async (c) => {
       data: livros
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao obter livros em destaque: ' + err.message }, 500);
+    console.error('Erro ao obter livros em destaque:', err);
+    return c.json({ erro: 'Erro ao obter livros em destaque' }, 500);
   }
 });
 
@@ -1293,11 +1458,16 @@ app.get('/api/livros/:id', async (c) => {
     c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
     return c.json(livro);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao carregar livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao carregar livro' }, 500);
   }
 });
 
 app.get('/api/livros/:id/ler/:linkId', async (c) => {
+  // Cada leitura incrementa `leituras` na D1: limitar para não esgotar a cota
+  // de escrita gratuita com pedidos repetidos (o contador é analítico).
+  const bloqueioLeitura = await limitarRequisicao(c, 'leitura', 60);
+  if (bloqueioLeitura) return bloqueioLeitura;
+
   try {
     const id = c.req.param('id');
     const linkId = c.req.param('linkId');
@@ -1353,7 +1523,7 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
       conteudo_texto: link.conteudo_texto
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao processar leitura: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao processar leitura' }, 500);
   }
 });
 
@@ -1373,6 +1543,13 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
     if (!licenca || !LICENCAS_VALIDAS.includes(licenca)) {
       return c.json({ 
         erro: `Licença inválida ou obrigatória. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` 
+      }, 400);
+    }
+
+    // Regra inviolável (AGENTS.md §1.4): texto integral só para domínio público.
+    if (conteudo_texto && String(conteudo_texto).trim() && licenca !== 'dominio-publico') {
+      return c.json({
+        erro: 'O texto integral (conteudo_texto) só é permitido para obras em domínio público. Use licenca="dominio-publico" ou disponibilize apenas metadados e o link externo.'
       }, 400);
     }
 
@@ -1436,7 +1613,7 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
 
     return c.json(novo, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao cadastrar livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar livro' }, 500);
   }
 });
 
@@ -1450,13 +1627,21 @@ app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
     } = body;
 
     const db = c.env.DB;
-    const livroAtual = await db.prepare('SELECT id FROM livros WHERE id = ?').bind(id).first();
+    const livroAtual = await db.prepare('SELECT id, licenca FROM livros WHERE id = ?').bind(id).first();
     if (!livroAtual) return c.json({ erro: 'Livro não encontrado' }, 404);
 
     if (!titulo || !titulo.trim()) return c.json({ erro: 'O título do livro é obrigatório' }, 400);
 
     if (licenca && !LICENCAS_VALIDAS.includes(licenca)) {
       return c.json({ erro: `Licença inválida. Valores aceitos: ${LICENCAS_VALIDAS.join(', ')}` }, 400);
+    }
+
+    // Regra inviolável (AGENTS.md §1.4): manter a licença coerente com o texto.
+    const licencaEfetiva = licenca || (livroAtual as any).licenca;
+    if (conteudo_texto !== undefined && conteudo_texto !== null && String(conteudo_texto).trim() && licencaEfetiva !== 'dominio-publico') {
+      return c.json({
+        erro: 'O texto integral (conteudo_texto) só é permitido para obras em domínio público (licenca="dominio-publico").'
+      }, 400);
     }
 
     try {
@@ -1496,7 +1681,7 @@ app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
     const atualizado = await db.prepare('SELECT * FROM livros WHERE id = ?').bind(id).first();
     return c.json(atualizado);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao atualizar livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao atualizar livro' }, 500);
   }
 });
 
@@ -1509,7 +1694,7 @@ app.delete('/api/livros/:id', verificarAdminWorker, async (c) => {
     await registrarMutacaoAcervo(db);
     return c.json({ mensagem: 'Livro e links removidos com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover livro: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover livro' }, 500);
   }
 });
 
@@ -1540,7 +1725,7 @@ app.get('/api/fontes', async (c) => {
     return c.json(fontes);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao listar fontes: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar fontes' }, 500);
   }
 });
 
@@ -1578,13 +1763,17 @@ app.post('/api/import', verificarAdminWorker, async (c) => {
       query: termoBusca
     }, 202);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao iniciar importação: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao iniciar importação' }, 500);
   }
 });
 
-app.get('/api/import/:id', async (c) => {
+app.get('/api/import/:id', verificarAdminWorker, async (c) => {
   try {
-    const id = c.req.param('id');
+    c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    const id = parseInt(c.req.param('id'), 10);
+    if (!Number.isInteger(id) || id <= 0) {
+      return c.json({ erro: 'ID de importação inválido' }, 400);
+    }
     const db = c.env.DB;
     const job = await db.prepare(`
       SELECT j.*, f.slug AS fonte_slug, f.nome AS fonte_nome
@@ -1596,14 +1785,27 @@ app.get('/api/import/:id', async (c) => {
     if (!job) return c.json({ erro: 'Job de importação não encontrado' }, 404);
     return c.json(job);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao consultar status da importação: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao consultar status da importação' }, 500);
   }
 });
 
 // 5.5 Sugestões da Comunidade (Moderação Pública)
+app.get('/api/config', (c) => {
+  c.header('Cache-Control', 'public, max-age=300');
+  return c.json({ turnstile_site_key: c.env.TURNSTILE_SITE_KEY || null });
+});
+
 app.post('/api/sugestoes', async (c) => {
+  const bloqueio = await limitarRequisicao(c, 'sugestoes', 5);
+  if (bloqueio) return bloqueio;
+
   try {
-    const body = await c.req.json<any>();
+    let body: any;
+    try {
+      body = await c.req.json<any>();
+    } catch {
+      return c.json({ erro: 'Corpo JSON inválido' }, 400);
+    }
     const { titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato, url_link, capa_url, sinopse } = body || {};
 
     if (!titulo || typeof titulo !== 'string' || titulo.trim().length < 2) {
@@ -1618,8 +1820,31 @@ app.post('/api/sugestoes', async (c) => {
     try {
       urlValida = validarUrlRedirecionamento(url_link);
     } catch (err: any) {
-      return c.json({ erro: 'URL inválida ou não autorizada: ' + err.message }, 400);
+      return c.json({ erro: 'URL inválida ou não autorizada' }, 400);
     }
+
+    let capaValida: string | null = null;
+    if (capa_url) {
+      try {
+        capaValida = validarUrlRedirecionamento(String(capa_url).slice(0, 500));
+      } catch {
+        return c.json({ erro: 'URL da capa inválida ou não autorizada' }, 400);
+      }
+    }
+
+    if (!(await verificarTurnstileWorker(c, body?.turnstile_token))) {
+      return c.json({ erro: 'Verificação anti-bot falhou. Recarregue a página e tente novamente.' }, 403);
+    }
+
+    const licencaFinal = LICENCAS_VALIDAS.includes(licenca) ? licenca : 'outro';
+    const formatosValidos = ['pdf', 'epub', 'txt', 'html', 'mp3', 'mp4', 'outro'];
+    const formatoFinal = formatosValidos.includes(String(formato).toLowerCase())
+      ? String(formato).toLowerCase()
+      : 'outro';
+    const anoNum = parseInt(ano_publicacao, 10);
+    const anoFinal = Number.isInteger(anoNum) && anoNum > 0 && anoNum <= 2100 ? anoNum : null;
+    const categoriaNum = parseInt(categoria_id, 10);
+    const categoriaFinal = Number.isInteger(categoriaNum) && categoriaNum > 0 ? categoriaNum : null;
 
     const db = c.env.DB;
     const res = await db.prepare(`
@@ -1630,12 +1855,12 @@ app.post('/api/sugestoes', async (c) => {
     `).bind(
       titulo.trim().slice(0, 250),
       autor_nome ? String(autor_nome).trim().slice(0, 150) : null,
-      ano_publicacao ? parseInt(ano_publicacao, 10) : null,
-      categoria_id ? parseInt(categoria_id, 10) : null,
-      licenca || 'outro',
-      formato || 'html',
+      anoFinal,
+      categoriaFinal,
+      licencaFinal,
+      formatoFinal,
       urlValida,
-      capa_url ? String(capa_url).trim().slice(0, 500) : null,
+      capaValida,
       sinopse ? String(sinopse).trim().slice(0, 1000) : null
     ).run();
 
@@ -1645,18 +1870,19 @@ app.post('/api/sugestoes', async (c) => {
       id: res.meta?.last_row_id
     }, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao processar sugestão: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao processar sugestão' }, 500);
   }
 });
 
 app.get('/api/sugestoes', verificarAdminWorker, async (c) => {
   try {
+    c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     const status = c.req.query('status') || 'pendente';
     const db = c.env.DB;
     const sugestoes = (await db.prepare('SELECT * FROM sugestoes WHERE status = ? ORDER BY criado_em DESC LIMIT 50').bind(status).all()).results;
     return c.json(sugestoes);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar sugestões: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar sugestões' }, 500);
   }
 });
 
@@ -1701,8 +1927,8 @@ app.get('/api/cursos', async (c) => {
       params.push(nivel);
     }
     if (plataforma) {
-      query += ' AND plataforma LIKE ?';
-      params.push(`%${plataforma}%`);
+      query += " AND plataforma LIKE ? ESCAPE '\\'";
+      params.push(`%${escaparLike(plataforma)}%`);
     } else if (fonte && (fonte.toLowerCase() === 'guiadeti' || fonte.toLowerCase() === 'guia de ti')) {
       query += ' AND plataforma LIKE ?';
       params.push('%Guia de TI%');
@@ -1716,8 +1942,8 @@ app.get('/api/cursos', async (c) => {
       params.push('%certifica%', '%certifica%');
     }
     if (busca && busca.trim()) {
-      const termo = `%${busca.trim()}%`;
-      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      const termo = `%${escaparLike(busca.trim())}%`;
+      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
       params.push(termo, termo, termo);
     }
 
@@ -1726,8 +1952,8 @@ app.get('/api/cursos', async (c) => {
     const limitParam = filtros.limit || filtros.limite;
     const pageParam = filtros.page || filtros.pagina;
     if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -1738,7 +1964,7 @@ app.get('/api/cursos', async (c) => {
     return c.json(cursos);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao buscar cursos: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar cursos' }, 500);
   }
 });
 
@@ -1762,16 +1988,16 @@ app.get('/api/roadmaps', async (c) => {
     const params: any[] = [];
 
     if (plataforma) {
-      query += ' AND plataforma LIKE ?';
-      params.push(`%${plataforma}%`);
+      query += " AND plataforma LIKE ? ESCAPE '\\'";
+      params.push(`%${escaparLike(plataforma)}%`);
     }
     if (area) {
       query += ' AND area = ?';
       params.push(area);
     }
     if (busca && busca.trim()) {
-      const termo = `%${busca.trim()}%`;
-      query += ' AND (titulo LIKE ? OR descricao LIKE ? OR plataforma LIKE ?)';
+      const termo = `%${escaparLike(busca.trim())}%`;
+      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
       params.push(termo, termo, termo);
     }
 
@@ -1780,8 +2006,8 @@ app.get('/api/roadmaps', async (c) => {
     const limitParam = filtros.limit || filtros.limite;
     const pageParam = filtros.page || filtros.pagina;
     if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10), 1), 500);
-      const page = Math.max(parseInt(pageParam || '1', 10), 1);
+      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
       const offset = (page - 1) * limit;
       query += ' LIMIT ? OFFSET ?';
       params.push(limit, offset);
@@ -1792,7 +2018,7 @@ app.get('/api/roadmaps', async (c) => {
     return c.json(roadmaps);
   } catch (err: any) {
     if (ehErroDeCota(err)) return respostaDegradada(c);
-    return c.json({ erro: 'Erro ao buscar roadmaps: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar roadmaps' }, 500);
   }
 });
 
@@ -1815,7 +2041,7 @@ app.get('/api/cursos/:id', async (c) => {
     if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
     return c.json(curso);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao carregar curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao carregar curso' }, 500);
   }
 });
 
@@ -1843,7 +2069,7 @@ app.get('/api/cursos/:id/acessar', async (c) => {
     const urlSegura = validarUrlRedirecionamento(curso.url);
     return c.redirect(urlSegura, 302);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao redirecionar para o curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao redirecionar para o curso' }, 500);
   }
 });
 
@@ -1858,7 +2084,8 @@ app.post('/api/cursos', verificarAdminWorker, async (c) => {
     try {
       urlValida = validarUrlRedirecionamento(url);
     } catch (err: any) {
-      return c.json({ erro: 'URL do curso inválida ou não autorizada: ' + err.message }, 400);
+      console.error('URL de curso inválida:', err?.message);
+      return c.json({ erro: 'URL do curso inválida ou não autorizada' }, 400);
     }
 
     const db = c.env.DB;
@@ -1873,7 +2100,7 @@ app.post('/api/cursos', verificarAdminWorker, async (c) => {
     const novo = await db.prepare('SELECT * FROM cursos WHERE id = ?').bind(res.meta.last_row_id).first();
     return c.json(novo, 201);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao cadastrar curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao cadastrar curso' }, 500);
   }
 });
 
@@ -1885,7 +2112,7 @@ app.delete('/api/cursos/:id', verificarAdminWorker, async (c) => {
     if (res.meta.changes === 0) return c.json({ erro: 'Curso não encontrado' }, 404);
     return c.json({ mensagem: 'Curso removido com sucesso' });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao remover curso: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao remover curso' }, 500);
   }
 });
 
@@ -1912,7 +2139,7 @@ app.get('/api/dicas', (c) => {
 
     return c.json(resultados);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar dicas de estudo: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar dicas de estudo' }, 500);
   }
 });
 
@@ -1923,7 +2150,7 @@ app.get('/api/dicas/:id', (c) => {
     if (!dica) return c.json({ erro: 'Dica não encontrada' }, 404);
     return c.json(dica);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao buscar dica: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar dica' }, 500);
   }
 });
 
@@ -1948,7 +2175,7 @@ app.get('/api/comunidade/qrcode.svg', async (c) => {
       'Cache-Control': 'public, max-age=86400'
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao gerar QR code: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao gerar QR code' }, 500);
   }
 });
 
@@ -1969,7 +2196,7 @@ app.get('/api/canal/qrcode.svg', async (c) => {
       'Cache-Control': 'public, max-age=86400'
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao gerar QR code: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao gerar QR code' }, 500);
   }
 });
 
@@ -1997,13 +2224,13 @@ app.get('/api/podcasts', async (c) => {
     const params: any[] = [];
 
     if (categoria && categoria.trim()) {
-      query += ` AND s.categoria LIKE ?`;
-      params.push(`%${categoria.trim()}%`);
+      query += ` AND s.categoria LIKE ? ESCAPE '\\'`;
+      params.push(`%${escaparLike(categoria.trim())}%`);
     }
 
     if (busca && busca.trim()) {
-      query += ` AND (s.titulo LIKE ? OR s.descricao LIKE ?)`;
-      const term = `%${busca.trim()}%`;
+      query += ` AND (s.titulo LIKE ? ESCAPE '\\' OR s.descricao LIKE ? ESCAPE '\\')`;
+      const term = `%${escaparLike(busca.trim())}%`;
       params.push(term, term);
     }
 
@@ -2012,7 +2239,7 @@ app.get('/api/podcasts', async (c) => {
     const result = await c.env.DB.prepare(query).bind(...params).all();
     return c.json(result.results || []);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar podcasts: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar podcasts' }, 500);
   }
 });
 
@@ -2041,7 +2268,7 @@ app.get('/api/podcasts/episodios/recentes', async (c) => {
     const result = await c.env.DB.prepare(query).all();
     return c.json(result.results || []);
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao listar episódios recentes: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar episódios recentes' }, 500);
   }
 });
 
@@ -2084,13 +2311,21 @@ app.get('/api/podcasts/:slugOuId', async (c) => {
       episodios: episodios.results || []
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao obter podcast: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao obter podcast' }, 500);
   }
 });
 
 app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
+  // Contador público mas com escrita na D1: limitado para não esgotar a cota
+  // de escrita gratuita (100k linhas/dia) com pedidos repetidos.
+  const bloqueio = await limitarRequisicao(c, 'ouvir', 20);
+  if (bloqueio) return bloqueio;
+
   try {
     const id = parseInt(c.req.param('id'), 10);
+    if (!Number.isInteger(id) || id <= 0) {
+      return c.json({ erro: 'ID do episódio inválido' }, 400);
+    }
     const repo = repoSupabase(c);
     if (repo) {
       try {
@@ -2106,7 +2341,7 @@ app.post('/api/podcasts/episodios/:id/ouvir', async (c) => {
     ).bind(id).run();
     return c.json({ sucesso: true, id });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao registar reprodução: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao registar reprodução' }, 500);
   }
 });
 
@@ -2131,13 +2366,21 @@ const HOSTS_CAPAS_PERMITIDOS = [
 
 const CAPA_CACHE_CONTROL = 'public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=604800';
 const CAPA_TAMANHO_MAXIMO = 5 * 1024 * 1024;
+const CAPA_MAX_REDIRECTS = 3;
+const TIPOS_IMAGEM_PERMITIDOS = new Set([
+  'image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/avif', 'image/gif'
+]);
+const STATUS_REDIRECT = new Set([301, 302, 303, 307, 308]);
 
 function hostCapaPermitido(hostname: string): boolean {
-  const host = String(hostname || '').toLowerCase();
+  const host = String(hostname || '').toLowerCase().replace(/\.$/, '');
   return HOSTS_CAPAS_PERMITIDOS.some((base) => host === base || host.endsWith(`.${base}`));
 }
 
 app.get('/api/capas', async (c) => {
+  const bloqueioCapa = await limitarRequisicao(c, 'capas', 60);
+  if (bloqueioCapa) return bloqueioCapa;
+
   const bruto = String(c.req.query('u') || '').trim();
   if (!bruto) return c.json({ erro: 'Parâmetro "u" (URL da capa) é obrigatório' }, 400);
   if (bruto.length > 1000) return c.json({ erro: 'URL de capa demasiado longa' }, 400);
@@ -2168,38 +2411,69 @@ app.get('/api/capas', async (c) => {
   const emCache = await cache.match(chave);
   if (emCache) return emCache;
 
-  let origem: Response;
-  try {
-    origem = await fetch(alvo.href, {
-      redirect: 'follow',
-      headers: {
-        Accept: 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
-        'User-Agent': 'LinoLivre-CoverProxy/1.0 (+https://lino-livre.linolivre.workers.dev)'
-      },
-      cf: { cacheEverything: true, cacheTtl: 2592000 }
-    });
-  } catch {
-    return c.json({ erro: 'Não foi possível obter a capa na origem' }, 502);
+  // Segue redirecionamentos MANUALMENTE: cada salto é revalidado antes de ser
+  // pedido, impedindo o pivô SSRF (302 da origem permitida para 169.254.169.254).
+  let atual = alvo.href;
+  let origem: Response | null = null;
+
+  for (let salto = 0; salto <= CAPA_MAX_REDIRECTS; salto++) {
+    let resposta: Response;
+    try {
+      resposta = await fetch(atual, {
+        redirect: 'manual',
+        headers: {
+          Accept: 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
+          'User-Agent': 'LinoLivre-CoverProxy/1.0 (+https://lino-livre.linolivre.workers.dev)'
+        },
+        cf: { cacheEverything: true, cacheTtl: 2592000 }
+      });
+    } catch {
+      return c.json({ erro: 'Não foi possível obter a capa na origem' }, 502);
+    }
+
+    if (STATUS_REDIRECT.has(resposta.status)) {
+      const location = resposta.headers.get('location');
+      try { await resposta.body?.cancel(); } catch { /* ignorado */ }
+      if (!location) {
+        return c.json({ erro: 'Redirecionamento inválido na origem' }, 502);
+      }
+      let proximo: URL;
+      try {
+        proximo = new URL(location, atual);
+        if (proximo.protocol !== 'https:' || !hostCapaPermitido(proximo.hostname)) {
+          throw new Error('origem não permitida');
+        }
+        validarUrlRedirecionamento(proximo.href);
+      } catch {
+        return c.json({ erro: 'Redirecionamento de capa não permitido' }, 403);
+      }
+      atual = proximo.href;
+      continue;
+    }
+
+    origem = resposta;
+    break;
+  }
+
+  if (!origem) {
+    return c.json({ erro: 'Demasiados redirecionamentos na origem da capa' }, 502);
   }
 
   if (!origem.ok || !origem.body) {
     return c.json({ erro: 'Origem da capa indisponível' }, 502);
   }
 
-  // Revalida o destino final para bloquear redirecionamentos para a rede interna (SSRF).
-  try {
-    validarUrlRedirecionamento(origem.url);
-  } catch {
-    return c.json({ erro: 'Redirecionamento de capa não permitido' }, 403);
-  }
-
-  const tipo = String(origem.headers.get('content-type') || '').toLowerCase();
-  if (!tipo.startsWith('image/')) {
-    return c.json({ erro: 'O conteúdo remoto não é uma imagem' }, 415);
+  // Apenas imagens raster. SVG é um documento executável: servido da nossa
+  // origem permitiria XSS armazenado (script inline com a CSP da aplicação).
+  const tipo = String(origem.headers.get('content-type') || '').toLowerCase().split(';')[0].trim();
+  if (!TIPOS_IMAGEM_PERMITIDOS.has(tipo)) {
+    try { await origem.body.cancel(); } catch { /* ignorado */ }
+    return c.json({ erro: 'O conteúdo remoto não é uma imagem suportada' }, 415);
   }
 
   const tamanho = Number(origem.headers.get('content-length') || '0');
   if (Number.isFinite(tamanho) && tamanho > CAPA_TAMANHO_MAXIMO) {
+    try { await origem.body.cancel(); } catch { /* ignorado */ }
     return c.json({ erro: 'Imagem acima do limite permitido' }, 413);
   }
 
@@ -2209,6 +2483,7 @@ app.get('/api/capas', async (c) => {
       'Content-Type': tipo,
       'Cache-Control': CAPA_CACHE_CONTROL,
       'X-Content-Type-Options': 'nosniff',
+      'Content-Security-Policy': "default-src 'none'; sandbox",
       'Cross-Origin-Resource-Policy': 'cross-origin',
       'Access-Control-Allow-Origin': '*'
     }
@@ -2224,7 +2499,10 @@ app.get('/api/capas', async (c) => {
 // resultados num ranking único. Apenas METADADOS (zero armazenamento).
 // ═══════════════════════════════════════════════════════════════════════════
 app.get('/api/busca/federada', async (c) => {
-  const q = String(c.req.query('q') ?? c.req.query('busca') ?? '').trim();
+  const bloqueioBusca = await limitarRequisicao(c, 'busca-federada', 20);
+  if (bloqueioBusca) return bloqueioBusca;
+
+  const q = String(c.req.query('q') ?? c.req.query('busca') ?? '').trim().slice(0, 120);
   if (!q) {
     return c.json({ erro: 'Parâmetro "q" (termo de busca) é obrigatório' }, 400);
   }
@@ -2268,7 +2546,7 @@ app.get('/api/busca/federada', async (c) => {
       k: 60
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro na busca federada: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro na busca federada' }, 500);
   }
 });
 
@@ -2389,6 +2667,36 @@ const servirAiCatalogWorker = async (c: any) => {
 app.get('/.well-known/ai-catalog.json', servirAiCatalogWorker);
 app.get('/ai-catalog.json', servirAiCatalogWorker);
 
+// Divulgação responsável de vulnerabilidades (RFC 9116). O runtime de Assets
+// não serve ficheiros em diretórios ocultos por omissão, pelo que a rota tem
+// de existir explicitamente no Worker (em produção respondia 404).
+const SECURITY_TXT = [
+  'Contact: mailto:bv6alblu6@mozmail.com',
+  'Expires: 2027-10-23T00:00:00.000Z',
+  'Preferred-Languages: pt, en',
+  'Canonical: https://lino-livre.linolivre.workers.dev/.well-known/security.txt',
+  'Policy: https://lino-livre.linolivre.workers.dev/legal',
+  ''
+].join('\n');
+
+app.get('/.well-known/security.txt', async (c) => {
+  if (c.env.ASSETS) {
+    try {
+      const res = await c.env.ASSETS.fetch(c.req.raw);
+      if (res.ok) {
+        const newRes = new Response(res.body, res);
+        newRes.headers.set('Content-Type', 'text/plain; charset=utf-8');
+        newRes.headers.set('Cache-Control', 'public, max-age=86400');
+        return newRes;
+      }
+    } catch { /* usa o conteúdo embutido */ }
+  }
+  return c.text(SECURITY_TXT, 200, {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'public, max-age=86400'
+  });
+});
+
 // Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade
 app.get('/api/legal', (c) => {
   return c.json({
@@ -2506,7 +2814,7 @@ app.get('/api/creditos', async (c) => {
       }
     });
   } catch (err: any) {
-    return c.json({ erro: 'Erro ao obter créditos e conformidade: ' + err.message }, 500);
+    console.error('[worker]', err); return c.json({ erro: 'Erro ao obter créditos e conformidade' }, 500);
   }
 });
 
@@ -2644,6 +2952,24 @@ async function recomputarEstatisticas(db: D1Database, force: boolean = false): P
 export function _limparCacheDashboard() {
   cachedDashboard = null;
 }
+
+// 404 real (sem "soft 404"): a API devolve JSON; a navegação recebe HTML 404.
+// O site usa routing por hash, portanto nenhum caminho desconhecido deve
+// devolver 200 com a página inicial (mascarava sondas e prejudicava o SEO).
+app.notFound((c) => {
+  c.header('Cache-Control', 'no-store');
+  const aceitaHtml = String(c.req.header('accept') || '').includes('text/html');
+  if (c.req.path.startsWith('/api/') || !aceitaHtml) {
+    return c.json({ erro: 'Recurso não encontrado' }, 404);
+  }
+  return c.html(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>404 — Página não encontrada | Lino Livre</title>
+<meta name="robots" content="noindex">
+<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center;padding:24px}a{color:#34d399}</style>
+</head><body><main><h1>404</h1><p>Esta página não existe no Lino Livre.</p>
+<p><a href="/">Voltar ao acervo de livros livres</a></p></main></body></html>`, 404);
+});
 
 export { app };
 

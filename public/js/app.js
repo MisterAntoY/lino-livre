@@ -576,7 +576,7 @@ const app = {
           </div>
         `;
         botoesAcaoHtml = `
-          <button class="btn btn-primary" onclick="app.abrirLeitorOuLink(${l.id})" aria-label="${this.escape(t('books.readOnline'))}: ${this.escape(l.titulo)}">
+          <button class="btn btn-primary" data-acao="abrirLeitorOuLink" data-arg="${l.id}" aria-label="${this.escape(t('books.readOnline'))}: ${this.escape(l.titulo)}">
             ${t('books.readOnline')}
           </button>
           ${pdfLink ? `
@@ -614,13 +614,13 @@ const app = {
 
       return `
         <article class="book-card ${isAfrica ? 'book-card-africa' : ''}">
-          <div class="book-cover-container" onclick="app.abrirDetalhesLivro(${l.id})" style="cursor:pointer;" title="Ver detalhes da obra e formatos">
-            <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
+          <div class="book-cover-container" data-acao="abrirDetalhesLivro" data-arg="${l.id}" style="cursor:pointer;" title="Ver detalhes da obra e formatos">
+            <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
             <span class="badge-format">${flagLabel}</span>
           </div>
 
           <div class="book-details">
-            <h3 class="book-title" onclick="app.abrirDetalhesLivro(${l.id})" style="cursor:pointer;" title="Ver detalhes da obra e formatos">${this.escape(l.titulo)}</h3>
+            <h3 class="book-title" data-acao="abrirDetalhesLivro" data-arg="${l.id}" style="cursor:pointer;" title="Ver detalhes da obra e formatos">${this.escape(l.titulo)}</h3>
             <p class="book-author">${this.escape(l.autor_nome || t('books.defaultAuthor'))} ${l.ano_publicacao ? `• ${l.ano_publicacao}` : ''}</p>
             <div>
               <span class="book-lang-badge lang-${rawLang}">${flagLabel}</span>
@@ -644,7 +644,7 @@ const app = {
 
             <div class="book-actions">
               ${botoesAcaoHtml}
-              <button class="btn btn-outline" onclick="app.abrirDetalhesLivro(${l.id})" aria-label="Detalhes da obra ${this.escape(l.titulo)}" title="Ver sinopse e formatos para baixar">
+              <button class="btn btn-outline" data-acao="abrirDetalhesLivro" data-arg="${l.id}" aria-label="Detalhes da obra ${this.escape(l.titulo)}" title="Ver sinopse e formatos para baixar">
                 ℹ Detalhes
               </button>
             </div>
@@ -713,22 +713,22 @@ const app = {
       let btnLer = '';
       if (mainLink) {
         btnLer = `
-          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${mainLink.id}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" aria-label="Ler ${this.escape(l.titulo)}" title="Acessar obra imediatamente">
+          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${mainLink.id}" target="_blank" rel="noopener noreferrer" data-stop="1" aria-label="Ler ${this.escape(l.titulo)}" title="Acessar obra imediatamente">
             📖 Ler Agora
           </a>
         `;
       } else {
         btnLer = `
-          <button class="btn btn-primary" onclick="event.stopPropagation(); app.abrirDetalhesLivro(${l.id});">
+          <button class="btn btn-primary" data-acao="abrirDetalhesLivro" data-arg="${l.id}" data-stop="1">
             📖 Ler Agora
           </button>
         `;
       }
 
       return `
-        <article class="destaque-book-card" onclick="app.abrirDetalhesLivro(${l.id})" title="${this.escape(l.titulo)} — Clique para ver detalhes">
+        <article class="destaque-book-card" data-acao="abrirDetalhesLivro" data-arg="${l.id}" title="${this.escape(l.titulo)} — Clique para ver detalhes">
           <div class="destaque-cover-wrap">
-            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
+            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
             <span class="destaque-badge-tag">${this.escape(badgeText)}</span>
           </div>
           <div class="destaque-info">
@@ -740,7 +740,7 @@ const app = {
             </div>
             <div class="destaque-card-actions">
               ${btnLer}
-              <button class="btn btn-outline" onclick="event.stopPropagation(); app.abrirDetalhesLivro(${l.id})" aria-label="Detalhes de ${this.escape(l.titulo)}" title="Ver detalhes completos da obra">
+              <button class="btn btn-outline" data-acao="abrirDetalhesLivro" data-arg="${l.id}" data-stop="1" aria-label="Detalhes de ${this.escape(l.titulo)}" title="Ver detalhes completos da obra">
                 ℹ Detalhes
               </button>
             </div>
@@ -2455,6 +2455,54 @@ const app = {
   // ==================== ADICIONAR NOVO LIVRO ====================
   abrirModalNovoLivro() {
     document.getElementById('modal-novo-livro').classList.remove('hidden');
+    // Anti-bot opcional: só carrega se o servidor tiver TURNSTILE_SITE_KEY.
+    this.carregarTurnstile();
+  },
+
+  /**
+   * Carrega o widget Turnstile apenas quando o backend o anuncia em /api/config.
+   * Sem chave configurada nada é carregado (zero pedidos externos, zero CSP extra).
+   */
+  async carregarTurnstile() {
+    if (this._turnstileCarregado) return;
+    this._turnstileCarregado = true;
+    try {
+      const res = await fetch('/api/config', { headers: { Accept: 'application/json' } });
+      if (!res.ok) return;
+      const cfg = await res.json();
+      if (!cfg || !cfg.turnstile_site_key) return;
+
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        script.async = true;
+        script.defer = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+
+      const contentor = document.getElementById('turnstile-widget');
+      if (contentor && window.turnstile) {
+        contentor.hidden = false;
+        this._turnstileSiteKey = cfg.turnstile_site_key;
+        this._turnstileWidgetId = window.turnstile.render(contentor, {
+          sitekey: cfg.turnstile_site_key,
+          theme: 'auto'
+        });
+      }
+    } catch (_) {
+      // Falha de rede/CSP: o servidor continua a ser a autoridade final.
+    }
+  },
+
+  turnstileToken() {
+    if (!window.turnstile || this._turnstileWidgetId == null) return undefined;
+    try {
+      return window.turnstile.getResponse(this._turnstileWidgetId) || undefined;
+    } catch (_) {
+      return undefined;
+    }
   },
 
   fecharModais() {
@@ -2664,12 +2712,16 @@ const app = {
             formato: formato || 'html',
             url_link: urlLink,
             capa_url: capaUrl || null,
-            sinopse: sinopse || null
+            sinopse: sinopse || null,
+            turnstile_token: this.turnstileToken()
           })
         });
         const dataSugestao = await resSugestao.json();
         if (!resSugestao.ok) throw new Error(dataSugestao.erro || 'Erro ao enviar sugestão');
 
+        if (window.turnstile && this._turnstileWidgetId != null) {
+          try { window.turnstile.reset(this._turnstileWidgetId); } catch (_) {}
+        }
         this.mostrarToast('Obrigado! A sua sugestão de obra aberta foi enviada para moderação e verificação de licença.');
         this.fecharModais();
         e.target.reset();
@@ -3056,3 +3108,130 @@ window.app = app;
 window.addEventListener('DOMContentLoaded', () => {
   app.init();
 });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DELEGAÇÃO DE EVENTOS — CSP sem 'unsafe-inline'
+//
+// Todo o HTML declara a intenção em `data-acao` / `data-arg`, em vez de usar
+// atributos `onclick="..."` (que exigiriam 'unsafe-inline' na CSP e são um
+// vector clássico de XSS). Este bloco é a única ponte entre o DOM e `app`.
+// ═══════════════════════════════════════════════════════════════════════════
+const ACOES_PERMITIDAS = new Set([
+  'abrirDetalhesLivro',
+  'abrirLeitorDoModal',
+  'abrirLeitorOuLink',
+  'abrirModalLegal',
+  'abrirModalNovoLivro',
+  'ajustarBrilho',
+  'alterarFonte',
+  'alterarVelocidadeAudio',
+  'alternarBuscaFederada',
+  'alternarPlayAudio',
+  'ativarModoAudio',
+  'ativarModoTexto',
+  'buscarComDebounce',
+  'buscarCursosComDebounce',
+  'buscarDicasComDebounce',
+  'buscarRoadmapsComDebounce',
+  'capituloAnterior',
+  'compartilharLivroAtual',
+  'compartilharMeta10M',
+  'fallbackImagem',
+  'fecharModais',
+  'filtrarCursosPorArea',
+  'filtrarCursosPorFonte',
+  'filtrarCursosPorPlataforma',
+  'filtrarCursosPorTipo',
+  'filtrarCursosYouTube',
+  'filtrarDicasPorCategoria',
+  'filtrarPorCategoria',
+  'filtrarPorFonteLivro',
+  'filtrarPorFormato',
+  'filtrarPorIdiomaLivro',
+  'filtrarPorLicenca',
+  'filtrarRoadmapsPorOrigem',
+  'filtrarRoadmapsPorTermo',
+  'imprimir',
+  'instalarPwa',
+  'mudarAlinhamento',
+  'mudarCapituloPeloSelect',
+  'mudarTemaPapel',
+  'paginaAnterior',
+  'pararAudio',
+  'proximaPagina',
+  'proximoCapitulo',
+  'recarregar',
+  'salvarNovoLivro',
+  'togglePainelAjustes',
+  'trocarAba',
+  'trocarAbaDestaques',
+  'trocarAbaLegal',
+  'trocarIdioma',
+]);
+
+// Acções que precisam de acesso ao elemento/evento (não apenas ao argumento).
+const ACOES_ESPECIAIS = {
+  imprimir() { window.print(); },
+  recarregar() { window.location.reload(); },
+  ajustarBrilho(_arg, el) { app.ajustarBrilho(el.value); },
+  mudarCapituloPeloSelect(_arg, el) { app.mudarCapituloPeloSelect(el.value); },
+  trocarIdioma(_arg, el) { app.trocarIdioma(el.value); },
+  alterarVelocidadeAudio(arg, el) { app.alterarVelocidadeAudio(Number(arg), el); },
+  salvarNovoLivro(_arg, _el, ev) { app.salvarNovoLivro(ev); }
+};
+
+function executarAcaoDelegada(el, ev) {
+  const acao = el.dataset.acao;
+  if (!acao || !ACOES_PERMITIDAS.has(acao)) return;
+  if (el.dataset.stop === '1') ev.stopPropagation();
+
+  const especial = ACOES_ESPECIAIS[acao];
+  if (especial) {
+    especial(el.dataset.arg, el, ev);
+    return;
+  }
+
+  const fn = app[acao];
+  if (typeof fn !== 'function') return;
+
+  const arg = el.dataset.arg;
+  let valor = arg;
+  if (el.dataset.leValor === '1') {
+    valor = el.value;
+  } else if (typeof arg === 'string' && /^-?\d+(\.\d+)?$/.test(arg)) {
+    valor = Number(arg);
+  }
+  fn.call(app, valor, el, ev);
+}
+
+document.addEventListener('click', (ev) => {
+  const alvo = ev.target instanceof Element ? ev.target.closest('[data-acao],[data-stop]') : null;
+  if (!alvo) return;
+  if ((alvo.dataset.evento || 'click') !== 'click') return;
+  if (alvo.tagName === 'A' && alvo.getAttribute('href') === '#') ev.preventDefault();
+  if (alvo.dataset.acao) executarAcaoDelegada(alvo, ev);
+});
+
+['change', 'input'].forEach((tipo) => {
+  document.addEventListener(tipo, (ev) => {
+    const alvo = ev.target instanceof Element ? ev.target.closest('[data-acao]') : null;
+    if (!alvo || alvo.dataset.evento !== tipo) return;
+    executarAcaoDelegada(alvo, ev);
+  });
+});
+
+document.addEventListener('submit', (ev) => {
+  const alvo = ev.target instanceof Element ? ev.target.closest('[data-acao]') : null;
+  if (!alvo || alvo.dataset.evento !== 'submit') return;
+  ev.preventDefault();
+  executarAcaoDelegada(alvo, ev);
+});
+
+// Fallback de imagens quebradas (substitui os antigos handlers error inline)
+document.addEventListener('error', (ev) => {
+  const el = ev.target;
+  if (!el || !el.dataset || el.dataset.acao !== 'fallbackImagem') return;
+  if (el.dataset.fallbackAplicado === '1') return;
+  el.dataset.fallbackAplicado = '1';
+  el.src = el.dataset.fallback;
+}, true);

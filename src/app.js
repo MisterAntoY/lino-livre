@@ -9,11 +9,22 @@ if (typeof process.loadEnvFile === 'function') {
 }
 
 const apiRoutes = require('./routes/api');
+const { criarRateLimit } = require('./middlewares/rateLimit');
 
 const app = express();
 
-// Desconfia de proxies (X-Forwarded-For) para rate limiting correcto
-app.set('trust proxy', 1);
+// Não expor a tecnologia do servidor (fingerprinting).
+app.disable('x-powered-by');
+
+// Só confia em X-Forwarded-For quando existe um proxy explicitamente
+// configurado. Com um valor por omissão, qualquer cliente conseguia forjar o
+// IP e contornar o rate limiting (CWE-348 / CVE-2026-90711).
+const TRUST_PROXY = process.env.TRUST_PROXY;
+if (TRUST_PROXY) {
+  app.set('trust proxy', /^\d+$/.test(TRUST_PROXY) ? Number(TRUST_PROXY) : TRUST_PROXY);
+} else {
+  app.set('trust proxy', false);
+}
 
 // Compressão HTTP (Gzip/Deflate) para economizar dados móveis
 app.use(compression());
@@ -38,13 +49,13 @@ app.use((req, res, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'sha256-VObpZF2rrhL4LG40uRUH3yRXC/1nwGniYanKxkqAWxo=' 'sha256-keHLDO8UACnw+cRVVeKuRurHKeLrwqY0rMi7Sjqgzkc=' 'sha256-wZSMpQgLrgIlbRyynN5NCOpERrzb5ODoykQ0lbDTWnQ=' 'sha256-qOpPGAwL3XogEKhDdObnXr0bcx7NIZEs41a4ijt3hWM=' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: https:",
-      "connect-src 'self'",
+      "connect-src 'self' https://challenges.cloudflare.com",
       "media-src 'self' https:",
-      "frame-src 'self' https://www.youtube.com https://open.spotify.com",
+      "frame-src 'self' https://www.youtube.com https://open.spotify.com https://challenges.cloudflare.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -70,68 +81,63 @@ app.use((req, res, next) => {
   if (SCANNERS_RE.test(ua)) {
     return res.status(403).json({ erro: 'Acesso bloqueado por política de segurança (WAF).' });
   }
-  if (PROBE_PATHS_RE.test(req.path)) {
+  if (PROBE_PATHS_RE.test(caminhoDecodificado(req.path))) {
     return res.status(404).send('Not Found');
   }
   next();
 });
 
-// ==================== RATE LIMITING (in-memory) ====================
-const rateLimitStore = new Map();
-// Nos testes de integração não limitamos pedidos: o suite faz dezenas de
-// escritas no mesmo caminho e o limite tornaria os resultados instáveis.
-const RATE_LIMIT_ATIVO = process.env.NODE_ENV !== 'test';
-
-function rateLimit({ windowMs = 60_000, max = 120, message = 'Demasiadas requisições. Tente novamente em instantes.' } = {}) {
-  return (req, res, next) => {
-    if (!RATE_LIMIT_ATIVO || process.env.NODE_ENV === 'test') return next();
-    const ip = req.ip || req.socket?.remoteAddress || 'desconhecido';
-    const key = `${ip}:${req.baseUrl}${req.path}`;
-    const now = Date.now();
-    const entry = rateLimitStore.get(key);
-
-    if (!entry || now > entry.resetAt) {
-      rateLimitStore.set(key, { count: 1, resetAt: now + windowMs });
-    } else {
-      entry.count++;
-      if (entry.count > max) {
-        const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
-        res.setHeader('Retry-After', String(retryAfter));
-        res.setHeader('X-RateLimit-Limit', String(max));
-        res.setHeader('X-RateLimit-Remaining', '0');
-        return res.status(429).json({ erro: message, retry_after_s: retryAfter });
-      }
-    }
-
-    // Limpeza periódica do store
-    if (rateLimitStore.size > 5000) {
-      for (const [k, v] of rateLimitStore) {
-        if (now > v.resetAt) rateLimitStore.delete(k);
-      }
-    }
-
-    next();
-  };
-}
-
-// Rate limit global (API)
-app.use('/api', (req, res, next) => {
-  if (process.env.NODE_ENV === 'test') return next();
-  return rateLimit({ windowMs: 60_000, max: 300 })(req, res, next);
+// ==================== RATE LIMITING ====================
+// Instâncias criadas uma única vez (não por pedido) e com teto de memória.
+const limitadorApi = criarRateLimit({
+  windowMs: 60_000, max: 300, escopo: 'api',
+  message: 'Demasiadas requisições. Tente novamente em instantes.'
+});
+const limitadorEscrita = criarRateLimit({
+  windowMs: 60_000, max: 30, escopo: 'api-escrita',
+  message: 'Limite de escritas excedido. Tente novamente em instantes.'
+});
+// Endpoints caros: proxy de imagens (memória/egress) e busca federada (fan-out).
+const limitadorCapas = criarRateLimit({
+  windowMs: 60_000, max: 60, escopo: 'capas',
+  message: 'Limite de pedidos de capa excedido. Tente novamente em instantes.'
+});
+const limitadorFederada = criarRateLimit({
+  windowMs: 60_000, max: 20, escopo: 'busca-federada',
+  message: 'Limite de buscas federadas excedido. Tente novamente em instantes.'
+});
+const limitadorSugestoes = criarRateLimit({
+  windowMs: 60_000, max: 5, escopo: 'sugestoes',
+  message: 'Limite de sugestões excedido. Tente novamente mais tarde.'
+});
+const limitadorReproducao = criarRateLimit({
+  windowMs: 60_000, max: 20, escopo: 'reproducao',
+  message: 'Limite de registos de reprodução excedido.'
+});
+// Cada leitura redireccionada incrementa o contador `leituras` (escrita).
+const limitadorLeitura = criarRateLimit({
+  windowMs: 60_000, max: 60, escopo: 'leitura',
+  message: 'Limite de aberturas de obra excedido. Tente novamente em instantes.'
 });
 
-// Rate limit mais agressivo para operações de escrita
+app.use('/api', limitadorApi);
 app.use('/api', (req, res, next) => {
-  if (process.env.NODE_ENV === 'test') return next();
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
-    return rateLimit({ windowMs: 60_000, max: 30, message: 'Limite de escritas excedido. Tente novamente em instantes.' })(req, res, next);
+    return limitadorEscrita(req, res, next);
   }
   next();
 });
+app.use('/api/capas', limitadorCapas);
+app.use('/api/busca/federada', limitadorFederada);
+app.use('/api/sugestoes', limitadorSugestoes);
+app.use('/api/podcasts/episodios/:id/ouvir', limitadorReproducao);
+app.use('/api/livros/:id/ler/:linkId', limitadorLeitura);
 
 // ==================== PAYLOAD LIMITS ====================
+// A API só aceita JSON; `extended: false` evita o parser de objetos aninhados
+// do qs (superfície de prototype pollution) e `parameterLimit` limita o custo.
 app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+app.use(express.urlencoded({ extended: false, limit: '1mb', parameterLimit: 100 }));
 
 // ==================== ROTAS PWA & SERVICE WORKER ====================
 app.get('/sw.js', (req, res) => {
@@ -176,9 +182,53 @@ app.get('/ai-catalog.json', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/ai-catalog.json'));
 });
 
+// ==================== ZERO ARMAZENAMENTO DE OBRAS ====================
+// Mesmo que alguém (agente, script, PR) coloque um ficheiro de livro em
+// `public/`, ele nunca é servido. O acesso a obras é sempre por 302 externo.
+// As rotas explícitas acima (llms*.txt, robots.txt, ads.txt, .well-known) são
+// registadas antes deste guard e continuam acessíveis.
+const ARQUIVOS_NUNCA_SERVIDOS = /\.(pdf|epub|mobi|azw3?|mp3|mp4|wav|ogg|flac|txt)$/i;
+
+/**
+ * Decodifica o caminho antes de o inspecionar. O `express.static` descodifica
+ * `%2e` e serve o ficheiro real; sem esta normalização, `/obra%2Epdf`
+ * contornava o guard de "zero armazenamento" (CWE-180 / bypass de validação).
+ * Descodifica no máximo 3 vezes para apanhar dupla/tripla codificação.
+ */
+function caminhoDecodificado(caminho) {
+  let atual = String(caminho || '');
+  for (let i = 0; i < 3; i++) {
+    let proximo;
+    try {
+      proximo = decodeURIComponent(atual);
+    } catch (_) {
+      break;
+    }
+    if (proximo === atual) break;
+    atual = proximo;
+  }
+  return atual.replace(/\\/g, '/');
+}
+
+app.use((req, res, next) => {
+  const caminho = caminhoDecodificado(req.path);
+  // Metadados de segurança e ficheiros de política não são obras.
+  if (caminho.startsWith('/.well-known/') || caminho === '/robots.txt' || caminho === '/ads.txt') {
+    return next();
+  }
+  if (ARQUIVOS_NUNCA_SERVIDOS.test(caminho)) {
+    return res.status(404).json({
+      erro: 'O Lino Livre não armazena nem serve ficheiros de obras. Utilize o link de redirecionamento para a fonte externa.'
+    });
+  }
+  next();
+});
+
 // ==================== ESTÁTICOS COM CACHE ====================
+// `dotfiles: 'ignore'`: ficheiros ocultos em public/ nunca são servidos por
+// acidente. Os ficheiros de /.well-known/ têm rotas explícitas acima.
 app.use(express.static(path.join(__dirname, '../public'), {
-  dotfiles: 'allow',
+  dotfiles: 'ignore',
   maxAge: '1d',
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('sw.js')) {
@@ -213,12 +263,6 @@ app.use('/api', (req, res) => {
   res.status(404).json({ erro: 'Endpoint da API não encontrado' });
 });
 
-// ==================== ERROR HANDLER ====================
-app.use((err, req, res, next) => {
-  console.error('[erro]', err.message);
-  res.status(err.status || 500).json({ erro: 'Erro interno do servidor' });
-});
-
 // Páginas Públicas Institucionais & Compliance
 app.get('/creditos', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/creditos.html'));
@@ -233,9 +277,37 @@ app.get('/comunidade', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/comunidade.html'));
 });
 
-// Fallback para SPA/Frontend
+// Divulgação responsável de vulnerabilidades (RFC 9116)
+app.get('/.well-known/security.txt', (req, res) => {
+  res.type('text/plain').send([
+    'Contact: mailto:bv6alblu6@mozmail.com',
+    'Expires: 2027-10-23T00:00:00.000Z',
+    'Preferred-Languages: pt, en',
+    'Canonical: https://lino-livre.linolivre.workers.dev/.well-known/security.txt',
+    'Policy: https://lino-livre.linolivre.workers.dev/legal',
+    ''
+  ].join('\n'));
+});
+
+// Fallback SPA restrito: apenas navegação de browser (Accept: text/html) e
+// caminhos sem extensão recebem o index. Tudo o resto devolve 404 real —
+// evita "soft 404" (200 para qualquer caminho), melhora SEO e não mascara sondas.
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  const aceitaHtml = String(req.get('accept') || '').includes('text/html');
+  const temExtensao = /\.[a-z0-9]{1,8}$/i.test(req.path);
+  if ((req.method === 'GET' || req.method === 'HEAD') && aceitaHtml && !temExtensao) {
+    return res.sendFile(path.join(__dirname, '../public/index.html'));
+  }
+  return res.status(404).json({ erro: 'Recurso não encontrado' });
+});
+
+// ==================== ERROR HANDLER ====================
+// Registado no fim da pilha para apanhar erros de todas as rotas. Nunca
+// devolve stack traces ao cliente.
+app.use((err, req, res, next) => {
+  console.error('[erro]', err.stack || err.message);
+  if (res.headersSent) return next(err);
+  res.status(err.status || 500).json({ erro: 'Erro interno do servidor' });
 });
 
 module.exports = app;

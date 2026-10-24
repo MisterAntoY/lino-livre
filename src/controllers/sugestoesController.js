@@ -4,11 +4,15 @@
  */
 const { getDatabase } = require('../database');
 const { verificarUrlConformidade, validarUrlRedirecionamento } = require('../utils/urlValidator');
+const { verificarTurnstile } = require('../utils/turnstile');
+
+const LICENCAS_SUGERIVEIS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
+const FORMATOS_SUGERIVEIS = ['pdf', 'epub', 'txt', 'html', 'mp3', 'mp4', 'outro'];
 
 const sugestoesController = {
-  criar(req, res) {
+  async criar(req, res) {
     try {
-      const { titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato, url_link, capa_url, sinopse } = req.body;
+      const { titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato, url_link, capa_url, sinopse } = req.body || {};
 
       if (!titulo || typeof titulo !== 'string' || titulo.trim().length < 2) {
         return res.status(400).json({ erro: 'Título da obra é obrigatório' });
@@ -23,8 +27,37 @@ const sugestoesController = {
       try {
         urlValida = validarUrlRedirecionamento(url_link);
       } catch (err) {
-        return res.status(400).json({ erro: 'URL inválida: ' + err.message });
+        return res.status(400).json({ erro: 'URL inválida ou não autorizada' });
       }
+
+      // Anti-bot opcional (Turnstile): só exige token se o servidor tiver a
+      // chave secreta configurada. Nunca falha "aberto" por omissão de chave.
+      const antiBot = await verificarTurnstile({
+        token: req.body?.turnstile_token,
+        ip: req.ip,
+        secret: process.env.TURNSTILE_SECRET_KEY
+      });
+      if (!antiBot.ok) {
+        return res.status(403).json({
+          erro: 'Verificação anti-bot falhou. Recarregue a página e tente novamente.'
+        });
+      }
+
+      // A capa também é um URL externo: sem validação poderia apontar para a
+      // rede interna (e ser posteriormente buscada por proxies/ferramentas).
+      let capaValida = null;
+      if (capa_url) {
+        try {
+          capaValida = validarUrlRedirecionamento(String(capa_url).slice(0, 500));
+        } catch (_) {
+          return res.status(400).json({ erro: 'URL da capa inválida ou não autorizada' });
+        }
+      }
+
+      const licencaFinal = LICENCAS_SUGERIVEIS.includes(licenca) ? licenca : 'outro';
+      const formatoFinal = FORMATOS_SUGERIVEIS.includes(String(formato).toLowerCase())
+        ? String(formato).toLowerCase()
+        : 'outro';
 
       const db = getDatabase();
       const stmt = db.prepare(`
@@ -34,15 +67,20 @@ const sugestoesController = {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')
       `);
 
+      const anoNum = parseInt(ano_publicacao, 10);
+      const anoFinal = Number.isInteger(anoNum) && anoNum > 0 && anoNum <= 2100 ? anoNum : null;
+      const categoriaNum = parseInt(categoria_id, 10);
+      const categoriaFinal = Number.isInteger(categoriaNum) && categoriaNum > 0 ? categoriaNum : null;
+
       const resultado = stmt.run(
         titulo.trim().slice(0, 250),
         autor_nome ? String(autor_nome).trim().slice(0, 150) : null,
-        ano_publicacao ? parseInt(ano_publicacao, 10) : null,
-        categoria_id ? parseInt(categoria_id, 10) : null,
-        licenca || 'outro',
-        formato || 'html',
+        anoFinal,
+        categoriaFinal,
+        licencaFinal,
+        formatoFinal,
         urlValida,
-        capa_url ? String(capa_url).trim().slice(0, 500) : null,
+        capaValida,
         sinopse ? String(sinopse).trim().slice(0, 1000) : null
       );
 
@@ -64,7 +102,8 @@ const sugestoesController = {
       const sugestoes = db.prepare('SELECT * FROM sugestoes WHERE status = ? ORDER BY criado_em DESC LIMIT 50').all(status);
       return res.json(sugestoes);
     } catch (err) {
-      return res.status(500).json({ erro: 'Erro ao listar sugestões: ' + err.message });
+      console.error('[sugestoesController]', err);
+      return res.status(500).json({ erro: 'Erro ao listar sugestões' });
     }
   }
 };

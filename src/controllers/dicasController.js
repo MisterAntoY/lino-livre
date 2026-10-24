@@ -22,7 +22,8 @@ function listar(req, res) {
 
     res.json(resultados);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao listar dicas de estudo: ' + err.message });
+    console.error('[dicasController]', err);
+    res.status(500).json({ erro: 'Erro ao listar dicas de estudo' });
   }
 }
 
@@ -35,7 +36,8 @@ function obterPorId(req, res) {
     }
     res.json(dica);
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao buscar dica: ' + err.message });
+    console.error('[dicasController]', err);
+    res.status(500).json({ erro: 'Erro ao buscar dica' });
   }
 }
 

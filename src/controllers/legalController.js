@@ -113,7 +113,8 @@ exports.obterCreditos = (req, res) => {
       }
     });
   } catch (err) {
-    return res.status(500).json({ erro: 'Erro ao obter créditos e conformidade: ' + err.message });
+    console.error('[legalController]', err);
+    return res.status(500).json({ erro: 'Erro ao obter créditos e conformidade' });
   }
 };
 

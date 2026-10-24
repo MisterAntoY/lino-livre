@@ -15,4 +15,12 @@ export interface Bindings {
   SUPABASE_URL?: string;
   /** Chave service_role — apenas no servidor/Worker, nunca no frontend. */
   SUPABASE_SERVICE_ROLE_KEY?: string;
+  /** Turnstile (opcional): só há verificação anti-bot se o segredo existir. */
+  TURNSTILE_SECRET_KEY?: string;
+  TURNSTILE_SITE_KEY?: string;
+  /**
+   * Rate Limiting binding da Cloudflare (opcional). Quando presente, o limite
+   * é aplicado de forma distribuída em vez de ser só por isolate.
+   */
+  RATE_LIMITER?: { limit: (opcoes: { key: string }) => Promise<{ success: boolean }> };
 }

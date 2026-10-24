@@ -3,6 +3,14 @@ const router = express.Router();
 
 const { verificarAdmin } = require('../middlewares/auth');
 
+// Respostas administrativas/privadas nunca devem ser guardadas em caches
+// intermédios (proxies, CDN, browser) nem no histórico partilhado.
+function semCache(req, res, next) {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  next();
+}
+
 const dashboardController = require('../controllers/dashboardController');
 const categoriasController = require('../controllers/categoriasController');
 const autoresController = require('../controllers/autoresController');
@@ -10,6 +18,14 @@ const livrosController = require('../controllers/livrosController');
 const fontesController = require('../controllers/fontesController');
 const cursosController = require('../controllers/cursosController');
 const comunidadeController = require('../controllers/comunidadeController');
+
+// 0. Configuração pública do frontend (apenas valores públicos, nunca segredos)
+router.get('/config', (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=300');
+  res.json({
+    turnstile_site_key: process.env.TURNSTILE_SITE_KEY || null
+  });
+});
 
 // 1. Dashboard de Acervo e Leituras
 router.get('/dashboard', dashboardController.metricas);
@@ -40,7 +56,7 @@ router.delete('/livros/:id', verificarAdmin, livrosController.remover);
 // 5. Fontes Abertas & Importações Assíncronas
 router.get('/fontes', fontesController.listar);
 router.post('/import', verificarAdmin, fontesController.iniciarImportacao);
-router.get('/import/:id', fontesController.obterStatusImportacao);
+router.get('/import/:id', verificarAdmin, semCache, fontesController.obterStatusImportacao);
 
 // 6. Cursos Livres e Gratuitos
 router.get('/cursos', cursosController.listar);
@@ -82,7 +98,7 @@ router.get('/creditos', legalController.obterCreditos);
 // 10. Sugestões da Comunidade (Fila de Moderação)
 const sugestoesController = require('../controllers/sugestoesController');
 router.post('/sugestoes', sugestoesController.criar);
-router.get('/sugestoes', verificarAdmin, sugestoesController.listar);
+router.get('/sugestoes', verificarAdmin, semCache, sugestoesController.listar);
 
 // 11. Busca Federada Global (Fase 4 — motor distribuído com RRF)
 const buscaFederadaController = require('../controllers/buscaFederadaController');

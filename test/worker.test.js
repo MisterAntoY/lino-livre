@@ -1271,5 +1271,46 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       const json2 = await res2.json();
       assert.equal(json2.name, 'Lino Livre');
     });
+    test('13.4 - GET /.well-known/security.txt responde 200 (RFC 9116) sem depender de ficheiros ocultos', async () => {
+      const res = await workerRequest('/.well-known/security.txt', { method: 'GET' });
+      assert.equal(res.status, 200);
+      const text = await res.text();
+      assert.match(text, /^Contact: mailto:/m);
+      assert.match(text, /^Expires: \d{4}-\d{2}-\d{2}T/m);
+      assert.match(res.headers.get('content-type') || '', /text\/plain/);
+    });
+  });
+  describe('Cenário 14: Robustez de parâmetros e cache de respostas administrativas', () => {
+    test('14.1 - limit não numérico não gera 500 em autores/cursos/roadmaps', async () => {
+      for (const rota of ['/api/autores?limit=abc', '/api/cursos?limit=abc', '/api/roadmaps?limit=abc']) {
+        const res = await workerRequest(rota, { method: 'GET' });
+        assert.notEqual(res.status, 500, `${rota} devolveu ${res.status}`);
+      }
+    });
+
+    test('14.2 - GET /api/sugestoes sem chave responde 401 com Cache-Control: no-store', async () => {
+      const res = await workerRequest('/api/sugestoes', { method: 'GET' }, { DB: createMockD1() });
+      assert.equal(res.status, 401);
+      assert.match(res.headers.get('cache-control') || '', /no-store/);
+    });
+
+    test('14.3 - busca de autores escapa wildcards de LIKE', async () => {
+      let sqlBusca = '';
+      let paramsBusca = [];
+      const db = createMockD1({
+        firstHandler: async (sql) => (sql.includes('sqlite_master') ? null : null),
+        allHandler: async (sql, params) => {
+          if (sql.includes('FROM autores')) {
+            sqlBusca = sql;
+            paramsBusca = params;
+          }
+          return { results: [] };
+        }
+      });
+      const res = await workerRequest('/api/autores?busca=%25', { method: 'GET' }, { DB: db });
+      assert.equal(res.status, 200);
+      assert.match(sqlBusca, /ESCAPE/);
+      assert.equal(paramsBusca[0], '%\\%%');
+    });
   });
 });

@@ -7,7 +7,7 @@
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
-const CACHE_VERSION = 'v20261024perf';
+const CACHE_VERSION = 'v20261024a';
 const CORE_CACHE = `linolivre-core-${CACHE_VERSION}`;
 const API_CACHE = `linolivre-api-${CACHE_VERSION}`;
 const IMAGE_CACHE = `linolivre-images-v1`;

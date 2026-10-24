@@ -156,7 +156,7 @@
   
   <!-- Full CSS (render-blocking, 14 KB gzip): um único layout em vez de
        reflow completo ao trocar media="print" -> "all" no onload. -->
-  <link rel="stylesheet" href="/css/style.css?v=20261023b">
+  <link rel="stylesheet" href="/css/style.css?v=20261024a">
   
   <!-- Service Worker for offline caching -->
   <script>
@@ -245,7 +245,7 @@
       <div class="header-actions">
         <div class="lang-switcher">
           <svg class="lang-globe" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          <select id="seletor-idioma" class="lang-select" onchange="app.trocarIdioma(this.value)" data-i18n-aria="ui.langLabel" aria-label="Idioma do site">
+          <select id="seletor-idioma" class="lang-select" data-acao="trocarIdioma" data-le-valor="1" data-evento="change" data-i18n-aria="ui.langLabel" aria-label="Idioma do site">
             <!-- Etiquetas exatamente iguais a LABELS_PADRAO em /js/i18n.js: o montarSeletor() reconstrói
                  as opções após o arranque e qualquer diferença mudaria a largura do seletor (cls). -->
             <option value="pt">Português (Angola)</option>
@@ -271,10 +271,10 @@
         <a id="btn-header-kofi" class="btn btn-kofi" href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" title="Apoiar o Lino Livre no Ko-fi">
            <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
         </a>
-        <button id="btn-instalar-app" class="btn btn-pwa-install hidden" onclick="app.instalarPwa()" data-i18n-title="ui.pwa.installTitle" title="Instalar aplicativo Lino Livre no telemóvel">
+        <button id="btn-instalar-app" class="btn btn-pwa-install hidden" data-acao="instalarPwa" data-i18n-title="ui.pwa.installTitle" title="Instalar aplicativo Lino Livre no telemóvel">
           <span>📲</span> <span data-i18n="ui.pwa.installBtn">Instalar App</span>
         </button>
-        <button class="btn btn-outline" onclick="app.abrirModalNovoLivro()" data-i18n="ui.header.addBook">+ Adicionar Livro</button>
+        <button class="btn btn-outline" data-acao="abrirModalNovoLivro" data-i18n="ui.header.addBook">+ Adicionar Livro</button>
       </div>
     </div>
   </header>
@@ -290,12 +290,12 @@
   <!-- Navegação Principal por Abas -->
   <nav class="container nav-tabs-section">
     <div class="nav-tabs">
-      <button class="tab-btn active" id="tab-btn-livros" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books"> Livros Digitais</button>
-      <button class="tab-btn" id="tab-btn-cursos" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses"> Cursos Gratuitos</button>
-      <button class="tab-btn" id="tab-btn-roadmaps" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</button>
-      <button class="tab-btn" id="tab-btn-podcasts" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</button>
-      <button class="tab-btn" id="tab-btn-dicas" onclick="app.trocarAba('dicas')" data-i18n="ui.tabs.tips"> Dicas & Ferramentas</button>
-      <button class="tab-btn" id="tab-btn-dashboard" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</button>
+      <button class="tab-btn active" id="tab-btn-livros" data-acao="trocarAba" data-arg="livros" data-i18n="ui.tabs.books"> Livros Digitais</button>
+      <button class="tab-btn" id="tab-btn-cursos" data-acao="trocarAba" data-arg="cursos" data-i18n="ui.tabs.courses"> Cursos Gratuitos</button>
+      <button class="tab-btn" id="tab-btn-roadmaps" data-acao="trocarAba" data-arg="roadmaps" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</button>
+      <button class="tab-btn" id="tab-btn-podcasts" data-acao="trocarAba" data-arg="podcasts" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</button>
+      <button class="tab-btn" id="tab-btn-dicas" data-acao="trocarAba" data-arg="dicas" data-i18n="ui.tabs.tips"> Dicas & Ferramentas</button>
+      <button class="tab-btn" id="tab-btn-dashboard" data-acao="trocarAba" data-arg="dashboard" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</button>
     </div>
   </nav>
 
@@ -395,10 +395,10 @@
           </div>
 
           <div class="goal-actions">
-            <button class="btn btn-goal-contrib" onclick="app.abrirModalNovoLivro()">
+            <button class="btn btn-goal-contrib" data-acao="abrirModalNovoLivro">
               <span>+</span> <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
             </button>
-            <button class="btn btn-goal-share" onclick="app.compartilharMeta10M()">
+            <button class="btn btn-goal-share" data-acao="compartilharMeta10M">
               <span></span> <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
             </button>
             <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
@@ -424,7 +424,7 @@
             <p class="destaques-subtitle" data-i18n="ui.books.highlightsSubtitle">Descubra as obras mais lidas da humanidade, grandes bestsellers internacionais e os clássicos imortais da literatura com leitura online e download gratuito imediato.</p>
           </div>
           <div class="destaques-actions">
-            <button class="btn btn-destaque-all" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')" data-i18n="ui.books.highlightsViewAll">
+            <button class="btn btn-destaque-all" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.highlightsViewAll">
               <span>Explorar Todos os 100+ Mais Lidos</span> <span>→</span>
             </button>
           </div>
@@ -432,10 +432,10 @@
 
         <!-- Pílulas de Navegação dos Destaques -->
         <div class="destaques-tabs-pills" id="pills-destaques-tipo">
-          <button class="pill-destaque-tab active" data-tipo="todos" onclick="app.trocarAbaDestaques('todos')" data-i18n="ui.books.highlightsAll">🌟 Mais Procurados do Mundo</button>
-          <button class="pill-destaque-tab" data-tipo="lusofonia" onclick="app.trocarAbaDestaques('lusofonia')" data-i18n="ui.books.highlightsClassics">📜 Clássicos Lusófonos</button>
-          <button class="pill-destaque-tab" data-tipo="africa" onclick="app.trocarAbaDestaques('africa')" data-i18n="ui.books.highlightsAfrica">🌍 Tesouros de África</button>
-          <button class="pill-destaque-tab" data-tipo="tech" onclick="app.trocarAbaDestaques('tech')" data-i18n="ui.books.highlightsTech">💻 Manuais de Tecnologia</button>
+          <button class="pill-destaque-tab active" data-tipo="todos" data-acao="trocarAbaDestaques" data-arg="todos" data-i18n="ui.books.highlightsAll">🌟 Mais Procurados do Mundo</button>
+          <button class="pill-destaque-tab" data-tipo="lusofonia" data-acao="trocarAbaDestaques" data-arg="lusofonia" data-i18n="ui.books.highlightsClassics">📜 Clássicos Lusófonos</button>
+          <button class="pill-destaque-tab" data-tipo="africa" data-acao="trocarAbaDestaques" data-arg="africa" data-i18n="ui.books.highlightsAfrica">🌍 Tesouros de África</button>
+          <button class="pill-destaque-tab" data-tipo="tech" data-acao="trocarAbaDestaques" data-arg="tech" data-i18n="ui.books.highlightsTech">💻 Manuais de Tecnologia</button>
         </div>
 
         <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
@@ -450,11 +450,11 @@
 
     <!-- Filtros e Busca com Anotações WebMCP para Agentes de IA -->
     <section class="container filter-section">
-      <form id="form-busca-livros" role="search" toolname="buscar_livros" tooldescription="Pesquisar livros digitais no acervo aberto do Lino Livre por título da obra, autor, assunto ou tema" onsubmit="event.preventDefault(); app.buscarComDebounce();" class="search-bar-wrap">
+      <form id="form-busca-livros" role="search" toolname="buscar_livros" tooldescription="Pesquisar livros digitais no acervo aberto do Lino Livre por título da obra, autor, assunto ou tema" data-acao="buscarComDebounce" data-evento="submit" class="search-bar-wrap">
         <div class="search-bar">
-          <input type="search" id="filtro-busca" name="q" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" oninput="app.buscarComDebounce()" toolparamdescription="Termo de pesquisa para buscar no acervo aberto (título, autor ou tema)">
+          <input type="search" id="filtro-busca" name="q" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" data-acao="buscarComDebounce" data-evento="input" toolparamdescription="Termo de pesquisa para buscar no acervo aberto (título, autor ou tema)">
         </div>
-        <button type="button" class="btn btn-federada" id="btn-busca-federada" onclick="app.alternarBuscaFederada()" title="Consultar catálogos globais em paralelo (Fase 4)">
+        <button type="button" class="btn btn-federada" id="btn-busca-federada" data-acao="alternarBuscaFederada" title="Consultar catálogos globais em paralelo (Fase 4)">
           <span class="fed-icon">🌐</span>
           <span data-i18n="ui.books.federatedSearch">Busca Global</span>
         </button>
@@ -473,13 +473,13 @@
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.books.languageFilter">Idioma:</span>
         <div class="pills-container" id="pills-idiomas-livros">
-          <button class="pill active" data-lang="" onclick="app.filtrarPorIdiomaLivro('')" data-i18n="ui.books.allLanguages">Todos os Idiomas</button>
-          <button class="pill" data-lang="pt" onclick="app.filtrarPorIdiomaLivro('pt')"> Português</button>
-          <button class="pill" data-lang="en" onclick="app.filtrarPorIdiomaLivro('en')"> English</button>
-          <button class="pill" data-lang="es" onclick="app.filtrarPorIdiomaLivro('es')"> Español</button>
-          <button class="pill" data-lang="fr" onclick="app.filtrarPorIdiomaLivro('fr')"> Français</button>
-          <button class="pill" data-lang="de" onclick="app.filtrarPorIdiomaLivro('de')"> Deutsch</button>
-          <button class="pill" data-lang="zh" onclick="app.filtrarPorIdiomaLivro('zh')"> 中文</button>
+          <button class="pill active" data-lang="" data-acao="filtrarPorIdiomaLivro" data-arg="" data-i18n="ui.books.allLanguages">Todos os Idiomas</button>
+          <button class="pill" data-lang="pt" data-acao="filtrarPorIdiomaLivro" data-arg="pt"> Português</button>
+          <button class="pill" data-lang="en" data-acao="filtrarPorIdiomaLivro" data-arg="en"> English</button>
+          <button class="pill" data-lang="es" data-acao="filtrarPorIdiomaLivro" data-arg="es"> Español</button>
+          <button class="pill" data-lang="fr" data-acao="filtrarPorIdiomaLivro" data-arg="fr"> Français</button>
+          <button class="pill" data-lang="de" data-acao="filtrarPorIdiomaLivro" data-arg="de"> Deutsch</button>
+          <button class="pill" data-lang="zh" data-acao="filtrarPorIdiomaLivro" data-arg="zh"> 中文</button>
         </div>
       </div>
 
@@ -487,27 +487,27 @@
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.books.categories">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
-          <button class="pill active" data-categoria="" onclick="app.filtrarPorCategoria('')" data-i18n="ui.books.all">Todas</button>
-          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" onclick="app.filtrarPorCategoria('🌟 Mais Lidos do Mundo')" data-i18n="ui.books.catTop100">🌟 Os 100 Mais Lidos do Mundo</button>
-          <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" onclick="app.filtrarPorCategoria('Autores Lusófonos Clássicos')">📜 Autores Lusófonos Clássicos</button>
-          <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" onclick="app.filtrarPorCategoria('Literatura Angolana')">🇦🇴 Literatura Angolana</button>
-          <button class="pill highlight-pill-africa" data-categoria="🎓 Teses & Trabalhos Universitários (UAN)" onclick="app.filtrarPorCategoria('🎓 Teses & Trabalhos Universitários (UAN)')">🎓 Teses & Trabalhos UAN</button>
-          <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" onclick="app.filtrarPorCategoria('Literatura Africana Lusófona')">🇨🇻 Literatura Africana Lusófona</button>
-          <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" onclick="app.filtrarPorCategoria('Poesia Africana')">🇲🇿 Poesia Africana</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" onclick="app.filtrarPorCategoria('🌍 Literatura & Vozes de África')">🌍 Literatura & Vozes de África</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Contos & Tradição Oral Africana" onclick="app.filtrarPorCategoria('🌍 Contos & Tradição Oral Africana')">🌍 Contos & Tradição Oral</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 História & Sociedade Africana" onclick="app.filtrarPorCategoria('🌍 História & Sociedade Africana')">🌍 História de África</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Filosofia & Pensamento Africano" onclick="app.filtrarPorCategoria('🌍 Filosofia & Pensamento Africano')">🌍 Filosofia Africana</button>
-          <button class="pill" data-categoria="Clássicos Brasileiros" onclick="app.filtrarPorCategoria('Clássicos Brasileiros')" data-i18n="ui.books.catClassics">Clássicos Brasileiros</button>
-          <button class="pill" data-categoria="Romance & Crônicas" onclick="app.filtrarPorCategoria('Romance & Crônicas')" data-i18n="ui.books.catRomance">Romances</button>
-          <button class="pill" data-categoria="Teatro & Poesia" onclick="app.filtrarPorCategoria('Teatro & Poesia')" data-i18n="ui.books.catPoetry">Poesia</button>
-          <button class="pill" data-categoria="Romance Indianista" onclick="app.filtrarPorCategoria('Romance Indianista')">Romance Indianista</button>
-          <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" onclick="app.filtrarPorCategoria('Apoio Pedagógico & Filosofia')" data-i18n="ui.books.catEssays">Didáticos & Ensaios</button>
-          <button class="pill" data-categoria="Arquitetura & Engenharia de Software" onclick="app.filtrarPorCategoria('Arquitetura & Engenharia de Software')"> Arquitetura & Engenharia</button>
-          <button class="pill" data-categoria="Desenvolvimento Web & Mobile" onclick="app.filtrarPorCategoria('Desenvolvimento Web & Mobile')"> Web & Mobile</button>
-          <button class="pill" data-categoria="DevOps, Cloud & Infraestrutura" onclick="app.filtrarPorCategoria('DevOps, Cloud & Infraestrutura')"> DevOps & Nuvem</button>
-          <button class="pill" data-categoria="Ciência de Dados & Inteligência Artificial" onclick="app.filtrarPorCategoria('Ciência de Dados & Inteligência Artificial')"> Dados & IA</button>
-          <button class="pill" data-categoria="Metodologias Ágeis & Carreira Tech" onclick="app.filtrarPorCategoria('Metodologias Ágeis & Carreira Tech')"> Ágil & Carreira</button>
+          <button class="pill active" data-categoria="" data-acao="filtrarPorCategoria" data-arg="" data-i18n="ui.books.all">Todas</button>
+          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.catTop100">🌟 Os 100 Mais Lidos do Mundo</button>
+          <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" data-acao="filtrarPorCategoria" data-arg="Autores Lusófonos Clássicos">📜 Autores Lusófonos Clássicos</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" data-acao="filtrarPorCategoria" data-arg="Literatura Angolana">🇦🇴 Literatura Angolana</button>
+          <button class="pill highlight-pill-africa" data-categoria="🎓 Teses & Trabalhos Universitários (UAN)" data-acao="filtrarPorCategoria" data-arg="🎓 Teses &amp; Trabalhos Universitários (UAN)">🎓 Teses & Trabalhos UAN</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" data-acao="filtrarPorCategoria" data-arg="Literatura Africana Lusófona">🇨🇻 Literatura Africana Lusófona</button>
+          <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" data-acao="filtrarPorCategoria" data-arg="Poesia Africana">🇲🇿 Poesia Africana</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" data-acao="filtrarPorCategoria" data-arg="🌍 Literatura &amp; Vozes de África">🌍 Literatura & Vozes de África</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Contos & Tradição Oral Africana" data-acao="filtrarPorCategoria" data-arg="🌍 Contos &amp; Tradição Oral Africana">🌍 Contos & Tradição Oral</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 História & Sociedade Africana" data-acao="filtrarPorCategoria" data-arg="🌍 História &amp; Sociedade Africana">🌍 História de África</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Filosofia & Pensamento Africano" data-acao="filtrarPorCategoria" data-arg="🌍 Filosofia &amp; Pensamento Africano">🌍 Filosofia Africana</button>
+          <button class="pill" data-categoria="Clássicos Brasileiros" data-acao="filtrarPorCategoria" data-arg="Clássicos Brasileiros" data-i18n="ui.books.catClassics">Clássicos Brasileiros</button>
+          <button class="pill" data-categoria="Romance & Crônicas" data-acao="filtrarPorCategoria" data-arg="Romance &amp; Crônicas" data-i18n="ui.books.catRomance">Romances</button>
+          <button class="pill" data-categoria="Teatro & Poesia" data-acao="filtrarPorCategoria" data-arg="Teatro &amp; Poesia" data-i18n="ui.books.catPoetry">Poesia</button>
+          <button class="pill" data-categoria="Romance Indianista" data-acao="filtrarPorCategoria" data-arg="Romance Indianista">Romance Indianista</button>
+          <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" data-acao="filtrarPorCategoria" data-arg="Apoio Pedagógico &amp; Filosofia" data-i18n="ui.books.catEssays">Didáticos & Ensaios</button>
+          <button class="pill" data-categoria="Arquitetura & Engenharia de Software" data-acao="filtrarPorCategoria" data-arg="Arquitetura &amp; Engenharia de Software"> Arquitetura & Engenharia</button>
+          <button class="pill" data-categoria="Desenvolvimento Web & Mobile" data-acao="filtrarPorCategoria" data-arg="Desenvolvimento Web &amp; Mobile"> Web & Mobile</button>
+          <button class="pill" data-categoria="DevOps, Cloud & Infraestrutura" data-acao="filtrarPorCategoria" data-arg="DevOps, Cloud &amp; Infraestrutura"> DevOps & Nuvem</button>
+          <button class="pill" data-categoria="Ciência de Dados & Inteligência Artificial" data-acao="filtrarPorCategoria" data-arg="Ciência de Dados &amp; Inteligência Artificial"> Dados & IA</button>
+          <button class="pill" data-categoria="Metodologias Ágeis & Carreira Tech" data-acao="filtrarPorCategoria" data-arg="Metodologias Ágeis &amp; Carreira Tech"> Ágil & Carreira</button>
         </div>
       </div>
 
@@ -515,15 +515,15 @@
       <div class="filter-row">
         <span class="filter-label">Fonte / Acervo:</span>
         <div class="pills-container" id="pills-fontes">
-          <button class="pill active" data-fonte="" onclick="app.filtrarPorFonteLivro('')">Todos os Acervos</button>
-          <button class="pill highlight-pill-africa" data-fonte="uan-tfc" onclick="app.filtrarPorFonteLivro('uan-tfc')">🇦🇴 UAN Repositório TFC</button>
-          <button class="pill" data-fonte="dominiopublico" onclick="app.filtrarPorFonteLivro('dominiopublico')">🏛️ Domínio Público & África</button>
-          <button class="pill" data-fonte="gutenberg" onclick="app.filtrarPorFonteLivro('gutenberg')">🌐 Project Gutenberg</button>
-          <button class="pill" data-fonte="github-bibliotecadev" onclick="app.filtrarPorFonteLivro('github-bibliotecadev')">📂 BibliotecaDev</button>
-          <button class="pill" data-fonte="github-italocamilo" onclick="app.filtrarPorFonteLivro('github-italocamilo')">📂 Books Tech / italocamil0</button>
-          <button class="pill" data-fonte="github-freebooks-es" onclick="app.filtrarPorFonteLivro('github-freebooks-es')">🇪🇸 Free Programming Books ES</button>
-          <button class="pill" data-fonte="rheinwerk-openbook" onclick="app.filtrarPorFonteLivro('rheinwerk-openbook')">🇩🇪 Rheinwerk Openbooks</button>
-          <button class="pill" data-fonte="github-freebooks-de" onclick="app.filtrarPorFonteLivro('github-freebooks-de')">🇩🇪 Free Programming Books DE</button>
+          <button class="pill active" data-fonte="" data-acao="filtrarPorFonteLivro" data-arg="">Todos os Acervos</button>
+          <button class="pill highlight-pill-africa" data-fonte="uan-tfc" data-acao="filtrarPorFonteLivro" data-arg="uan-tfc">🇦🇴 UAN Repositório TFC</button>
+          <button class="pill" data-fonte="dominiopublico" data-acao="filtrarPorFonteLivro" data-arg="dominiopublico">🏛️ Domínio Público & África</button>
+          <button class="pill" data-fonte="gutenberg" data-acao="filtrarPorFonteLivro" data-arg="gutenberg">🌐 Project Gutenberg</button>
+          <button class="pill" data-fonte="github-bibliotecadev" data-acao="filtrarPorFonteLivro" data-arg="github-bibliotecadev">📂 BibliotecaDev</button>
+          <button class="pill" data-fonte="github-italocamilo" data-acao="filtrarPorFonteLivro" data-arg="github-italocamilo">📂 Books Tech / italocamil0</button>
+          <button class="pill" data-fonte="github-freebooks-es" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-es">🇪🇸 Free Programming Books ES</button>
+          <button class="pill" data-fonte="rheinwerk-openbook" data-acao="filtrarPorFonteLivro" data-arg="rheinwerk-openbook">🇩🇪 Rheinwerk Openbooks</button>
+          <button class="pill" data-fonte="github-freebooks-de" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-de">🇩🇪 Free Programming Books DE</button>
         </div>
       </div>
 
@@ -531,11 +531,11 @@
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.books.format">Formato:</span>
         <div class="pills-container" id="pills-formatos">
-          <button class="pill active" data-formato="" onclick="app.filtrarPorFormato('')" data-i18n="ui.books.allFormats">Todos</button>
-          <button class="pill" data-formato="pdf" onclick="app.filtrarPorFormato('pdf')">PDF</button>
-          <button class="pill" data-formato="epub" onclick="app.filtrarPorFormato('epub')">EPUB</button>
-          <button class="pill" data-formato="html" onclick="app.filtrarPorFormato('html')" data-i18n="ui.books.webFormat">Web / HTML</button>
-          <button class="pill" data-formato="txt" onclick="app.filtrarPorFormato('txt')">TXT</button>
+          <button class="pill active" data-formato="" data-acao="filtrarPorFormato" data-arg="" data-i18n="ui.books.allFormats">Todos</button>
+          <button class="pill" data-formato="pdf" data-acao="filtrarPorFormato" data-arg="pdf">PDF</button>
+          <button class="pill" data-formato="epub" data-acao="filtrarPorFormato" data-arg="epub">EPUB</button>
+          <button class="pill" data-formato="html" data-acao="filtrarPorFormato" data-arg="html" data-i18n="ui.books.webFormat">Web / HTML</button>
+          <button class="pill" data-formato="txt" data-acao="filtrarPorFormato" data-arg="txt">TXT</button>
         </div>
       </div>
 
@@ -543,13 +543,13 @@
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.books.licenseFilter">Licença:</span>
         <div class="pills-container" id="pills-licencas">
-          <button class="pill active" data-licenca="" onclick="app.filtrarPorLicenca('')" data-i18n="ui.books.allLicenses">Todas as Licenças</button>
-          <button class="pill" data-licenca="dominio-publico" onclick="app.filtrarPorLicenca('dominio-publico')" data-i18n="ui.licenses.dominio-publico">Domínio Público</button>
-          <button class="pill" data-licenca="cc0" onclick="app.filtrarPorLicenca('cc0')" data-i18n="ui.licenses.cc0">CC0 (Dedicação Pública)</button>
-          <button class="pill" data-licenca="cc-by" onclick="app.filtrarPorLicenca('cc-by')" data-i18n="ui.licenses.cc-by">CC BY (Atribuição)</button>
-          <button class="pill" data-licenca="cc-by-sa" onclick="app.filtrarPorLicenca('cc-by-sa')" data-i18n="ui.licenses.cc-by-sa">CC BY-SA</button>
-          <button class="pill" data-licenca="cc-by-nc" onclick="app.filtrarPorLicenca('cc-by-nc')" data-i18n="ui.licenses.cc-by-nc">CC BY-NC</button>
-          <button class="pill" data-licenca="outro" onclick="app.filtrarPorLicenca('outro')" data-i18n="ui.licenses.outro">Acesso Aberto / Outro</button>
+          <button class="pill active" data-licenca="" data-acao="filtrarPorLicenca" data-arg="" data-i18n="ui.books.allLicenses">Todas as Licenças</button>
+          <button class="pill" data-licenca="dominio-publico" data-acao="filtrarPorLicenca" data-arg="dominio-publico" data-i18n="ui.licenses.dominio-publico">Domínio Público</button>
+          <button class="pill" data-licenca="cc0" data-acao="filtrarPorLicenca" data-arg="cc0" data-i18n="ui.licenses.cc0">CC0 (Dedicação Pública)</button>
+          <button class="pill" data-licenca="cc-by" data-acao="filtrarPorLicenca" data-arg="cc-by" data-i18n="ui.licenses.cc-by">CC BY (Atribuição)</button>
+          <button class="pill" data-licenca="cc-by-sa" data-acao="filtrarPorLicenca" data-arg="cc-by-sa" data-i18n="ui.licenses.cc-by-sa">CC BY-SA</button>
+          <button class="pill" data-licenca="cc-by-nc" data-acao="filtrarPorLicenca" data-arg="cc-by-nc" data-i18n="ui.licenses.cc-by-nc">CC BY-NC</button>
+          <button class="pill" data-licenca="outro" data-acao="filtrarPorLicenca" data-arg="outro" data-i18n="ui.licenses.outro">Acesso Aberto / Outro</button>
         </div>
       </div>
     </section>
@@ -565,9 +565,9 @@
 
       <!-- Paginação -->
       <div id="paginacao" class="pagination-container hidden">
-        <button id="btn-pag-ant" class="btn btn-secondary btn-sm" onclick="app.paginaAnterior()" data-i18n="ui.books.prev">← Anterior</button>
+        <button id="btn-pag-ant" class="btn btn-secondary btn-sm" data-acao="paginaAnterior" data-i18n="ui.books.prev">← Anterior</button>
         <span id="texto-paginacao" class="pagination-info" data-i18n="ui.books.pageOf">Página 1 de 1</span>
-        <button id="btn-pag-prox" class="btn btn-secondary btn-sm" onclick="app.proximaPagina()" data-i18n="ui.books.next">Próxima →</button>
+        <button id="btn-pag-prox" class="btn btn-secondary btn-sm" data-acao="proximaPagina" data-i18n="ui.books.next">Próxima →</button>
       </div>
     </main>
   </div>
@@ -581,76 +581,76 @@
         <p><span data-i18n="ui.courses.bannerDescBefore">Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas reunindo recursos do </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e da Fundação Bradesco.</span></p>
       </div>
 
-      <form id="form-busca-cursos" role="search" toolname="buscar_cursos" tooldescription="Pesquisar cursos online gratuitos, certificações abertas e formações de tecnologia e ciências" onsubmit="event.preventDefault(); app.buscarCursosComDebounce();" class="search-bar" style="margin-bottom: 1.25rem;">
-        <input type="search" id="filtro-busca-cursos" name="curso" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" oninput="app.buscarCursosComDebounce()" toolparamdescription="Termo de busca para cursos gratuitos (tecnologia, programação, idiomas, gestão ou ciências)">
+      <form id="form-busca-cursos" role="search" toolname="buscar_cursos" tooldescription="Pesquisar cursos online gratuitos, certificações abertas e formações de tecnologia e ciências" data-acao="buscarCursosComDebounce" data-evento="submit" class="search-bar" style="margin-bottom: 1.25rem;">
+        <input type="search" id="filtro-busca-cursos" name="curso" placeholder="Pesquisar cursos e tecnologias (Python, DevOps, IA, Power BI, Linux...)..." data-i18n-ph="ui.courses.searchPlaceholder" data-acao="buscarCursosComDebounce" data-evento="input" toolparamdescription="Termo de busca para cursos gratuitos (tecnologia, programação, idiomas, gestão ou ciências)">
       </form>
 
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
-          <button class="pill active" data-filtro="" onclick="app.filtrarCursosPorArea('')" data-i18n="ui.courses.all">Todos</button>
-          <button class="pill" data-filtro="OER Commons" onclick="app.filtrarCursosPorPlataforma('OER Commons')">🏛️ OER Commons</button>
-          <button class="pill" data-filtro="OpenStax" onclick="app.filtrarCursosPorPlataforma('OpenStax')">📖 OpenStax (CC BY)</button>
-          <button class="pill" data-filtro="MIT" onclick="app.filtrarCursosPorPlataforma('MIT')"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ MIT OCW</button>
-          <button class="pill" data-filtro="PhET" onclick="app.filtrarCursosPorPlataforma('PhET')">🔬 PhET Simulações</button>
-          <button class="pill" data-filtro="CK-12" onclick="app.filtrarCursosPorPlataforma('CK-12')">📐 CK-12 Foundation</button>
-          <button class="pill" data-filtro="Khan Academy" onclick="app.filtrarCursosPorPlataforma('Khan Academy')">🟢 Khan Academy</button>
-          <button class="pill" data-filtro="Cursa" onclick="app.filtrarCursosPorPlataforma('Cursa')"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Cursa App (Cursos)</button>
-          <button class="pill" data-filtro="exercicios" onclick="app.filtrarCursosPorTipo('exercicios')"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 📝 Cursa Exercícios & Simulados</button>
-          <button class="pill" data-filtro="Harvard" onclick="app.filtrarCursosPorPlataforma('Harvard')"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Harvard Online (PLL)</button>
-          <button class="pill" data-filtro="Stanford" onclick="app.filtrarCursosPorPlataforma('Stanford')">🌲 Stanford Online</button>
-          <button class="pill" data-filtro="DIO" onclick="app.filtrarCursosPorPlataforma('DIO')"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> DIO Bootcamps</button>
+          <button class="pill active" data-filtro="" data-acao="filtrarCursosPorArea" data-arg="" data-i18n="ui.courses.all">Todos</button>
+          <button class="pill" data-filtro="OER Commons" data-acao="filtrarCursosPorPlataforma" data-arg="OER Commons">🏛️ OER Commons</button>
+          <button class="pill" data-filtro="OpenStax" data-acao="filtrarCursosPorPlataforma" data-arg="OpenStax">📖 OpenStax (CC BY)</button>
+          <button class="pill" data-filtro="MIT" data-acao="filtrarCursosPorPlataforma" data-arg="MIT"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ MIT OCW</button>
+          <button class="pill" data-filtro="PhET" data-acao="filtrarCursosPorPlataforma" data-arg="PhET">🔬 PhET Simulações</button>
+          <button class="pill" data-filtro="CK-12" data-acao="filtrarCursosPorPlataforma" data-arg="CK-12">📐 CK-12 Foundation</button>
+          <button class="pill" data-filtro="Khan Academy" data-acao="filtrarCursosPorPlataforma" data-arg="Khan Academy">🟢 Khan Academy</button>
+          <button class="pill" data-filtro="Cursa" data-acao="filtrarCursosPorPlataforma" data-arg="Cursa"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Cursa App (Cursos)</button>
+          <button class="pill" data-filtro="exercicios" data-acao="filtrarCursosPorTipo" data-arg="exercicios"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 📝 Cursa Exercícios & Simulados</button>
+          <button class="pill" data-filtro="Harvard" data-acao="filtrarCursosPorPlataforma" data-arg="Harvard"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Harvard Online (PLL)</button>
+          <button class="pill" data-filtro="Stanford" data-acao="filtrarCursosPorPlataforma" data-arg="Stanford">🌲 Stanford Online</button>
+          <button class="pill" data-filtro="DIO" data-acao="filtrarCursosPorPlataforma" data-arg="DIO"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> DIO Bootcamps</button>
 
-          <button class="pill" data-filtro="Santander" onclick="app.filtrarCursosPorPlataforma('Santander')"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Santander Academy</button>
-          <button class="pill pill-youtube" data-filtro="Curso em Vídeo" onclick="app.filtrarCursosPorPlataforma('Curso em Vídeo')"><img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="pill-logo pill-logo-round" width="16" height="16" loading="lazy" decoding="async"> Curso em Vídeo (Guanabara)</button>
-          <button class="pill pill-youtube" data-filtro="Programação Web" onclick="app.filtrarCursosPorPlataforma('Programação Web')"><img src="/img/logos/youtube.svg" alt="Programação Web" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Programação Web</button>
-          <button class="pill pill-youtube" data-filtro="Fernanda Kipper" onclick="app.filtrarCursosPorPlataforma('Fernanda Kipper')"><img src="/img/logos/youtube.svg" alt="Fernanda Kipper" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Fernanda Kipper (Docker)</button>
-          <button class="pill pill-youtube" data-filtro="SegInfoBrasil" onclick="app.filtrarCursosPorPlataforma('SegInfoBrasil')"><img src="/img/logos/youtube.svg" alt="SegInfoBrasil" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> SegInfoBrasil (Redes)</button>
-          <button class="pill pill-youtube" data-filtro="Glaucia Lemos" onclick="app.filtrarCursosPorPlataforma('Glaucia Lemos')"><img src="/img/logos/youtube.svg" alt="Glaucia Lemos" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Glaucia Lemos (TS)</button>
-          <button class="pill pill-youtube" data-filtro="Gustavo Sacchi" onclick="app.filtrarCursosPorPlataforma('Gustavo Sacchi')"><img src="/img/logos/youtube.svg" alt="Gustavo Sacchi" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Gustavo Sacchi (LangChain)</button>
-          <button class="pill" data-filtro="Bora na Tech" onclick="app.filtrarCursosPorPlataforma('Bora na Tech')">🚀 Bora na Tech?</button>
-          <button class="pill" data-filtro="Jornada do Dev" onclick="app.filtrarCursosPorPlataforma('Jornada do Dev')">🚀 Jornada do Dev</button>
-          <button class="pill" data-filtro="Fluência AI" onclick="app.filtrarCursosPorPlataforma('Fluência AI')">🧠 Fluência AI</button>
-          <button class="pill" data-filtro="Recode" onclick="app.filtrarCursosPorPlataforma('Recode')">🌐 Recode</button>
-          <button class="pill" data-filtro="Code IoT" onclick="app.filtrarCursosPorPlataforma('Code IoT')">🤖 Code IoT (Samsung & USP)</button>
-          <button class="pill" data-filtro="Aliança pela Educação (ABE)" onclick="app.filtrarCursosPorPlataforma('Aliança pela Educação (ABE)')">🎓 Aliança pela Educação (ABE)</button>
-          <button class="pill" data-filtro="KA Solution" onclick="app.filtrarCursosPorPlataforma('KA Solution')"><img src="/img/logos/kasolution.png" alt="KA Solution" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> KA Solution (Webinars & KAtrocinados)</button>
-          <button class="pill" data-filtro="Samsung Ocean" onclick="app.filtrarCursosPorPlataforma('Samsung Ocean')"><img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌊 Samsung Ocean (USP & UEA)</button>
-          <button class="pill" data-filtro="EBAC Online" onclick="app.filtrarCursosPorPlataforma('EBAC Online')"><img src="/img/logos/ebac.svg" alt="EBAC Online" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> EBAC Online (Cursos & Webinars)</button>
-          <button class="pill" data-filtro="Data Science Academy" onclick="app.filtrarCursosPorPlataforma('Data Science Academy')"><img src="/img/logos/dsa.png" alt="Data Science Academy" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Data Science Academy (DSA)</button>
-          <button class="pill" data-filtro="FIAP ON" onclick="app.filtrarCursosPorPlataforma('FIAP ON')"><img src="/img/logos/fiap.png" alt="FIAP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> FIAP ON</button>
-          <button class="pill" data-filtro="Eu Capacito" onclick="app.filtrarCursosPorPlataforma('Eu Capacito')"><img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Eu Capacito</button>
-          <button class="pill" data-filtro="IBM SkillsBuild" onclick="app.filtrarCursosPorPlataforma('IBM SkillsBuild')"><img src="/img/logos/ibm.svg" alt="IBM" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> IBM SkillsBuild</button>
-          <button class="pill" data-filtro="Cisco Networking Academy" onclick="app.filtrarCursosPorPlataforma('Cisco Networking Academy')"><img src="/img/logos/cisco.svg" alt="Cisco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cisco NetAcad</button>
-          <button class="pill" data-filtro="Escola do Trabalhador 4.0" onclick="app.filtrarCursosPorPlataforma('Escola do Trabalhador 4.0')"><img src="/img/logos/escoladotrabalhador.png" alt="Escola do Trabalhador" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Escola do Trabalhador 4.0</button>
-          <button class="pill" data-filtro="AWS Skill Builder" onclick="app.filtrarCursosPorPlataforma('AWS Skill Builder')"><img src="/img/logos/aws.svg" alt="AWS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> AWS Skill Builder</button>
-          <button class="pill" data-filtro="Microsoft Learn" onclick="app.filtrarCursosPorPlataforma('Microsoft Learn')"><img src="/img/logos/microsoft.svg" alt="Microsoft" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Microsoft Learn</button>
-          <button class="pill" data-filtro="freeCodeCamp" onclick="app.filtrarCursosPorPlataforma('freeCodeCamp')"><img src="/img/logos/freecodecamp.png" alt="freeCodeCamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> freeCodeCamp</button>
-          <button class="pill" data-filtro="Kultivi" onclick="app.filtrarCursosPorPlataforma('Kultivi')"><img src="/img/logos/kultivi.png" alt="Kultivi" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Kultivi</button>
-          <button class="pill" data-filtro="SENAI Play" onclick="app.filtrarCursosPorPlataforma('SENAI Play')"><img src="/img/logos/senai.png" alt="SENAI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> SENAI Play</button>
-          <button class="pill" data-filtro="Oracle Next Education" onclick="app.filtrarCursosPorPlataforma('Oracle Next Education')"><img src="/img/logos/oracle.svg" alt="Oracle ONE" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Oracle ONE</button>
-          <button class="pill" data-filtro="Generation Brasil" onclick="app.filtrarCursosPorPlataforma('Generation Brasil')"><img src="/img/logos/generation.png" alt="Generation" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Generation Brasil</button>
-          <button class="pill" data-filtro="WoMakersCode" onclick="app.filtrarCursosPorPlataforma('WoMakersCode')"><img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> WoMakersCode</button>
-          <button class="pill" data-filtro="openHPI" onclick="app.filtrarCursosPorPlataforma('openHPI')"> openHPI (Hasso-Plattner)</button>
-          <button class="pill pill-youtube" data-filtro="youtube" onclick="app.filtrarCursosYouTube()" data-i18n="ui.courses.youtube"><img src="/img/logos/youtube.svg" alt="YouTube" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> YouTube (Certificado)</button>
-          <button class="pill" data-filtro="Fundação Bradesco" onclick="app.filtrarCursosPorPlataforma('Fundação Bradesco')"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Fundação Bradesco (EV)</button>
-          <button class="pill" data-filtro="Escola Virtual de Governo" onclick="app.filtrarCursosPorPlataforma('Escola Virtual de Governo')"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ EV.G / ENAP (Governo)</button>
-          <button class="pill" data-filtro="Lumina" onclick="app.filtrarCursosPorPlataforma('Lumina')"><img src="/img/logos/lumina.svg" alt="Lumina" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Lumina (UFRGS)</button>
-          <button class="pill" data-filtro="IFRS" onclick="app.filtrarCursosPorPlataforma('IFRS')"><img src="/img/logos/ifrs.svg" alt="IFRS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ IFRS (Moodle MOOC)</button>
-          <button class="pill" data-filtro="Google Ateliê Digital" onclick="app.filtrarCursosPorPlataforma('Google Ateliê Digital')"><img src="/img/logos/google.svg" alt="Google" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌐 Google Ateliê Digital</button>
-          <button class="pill" data-filtro="OpenBootcamp" onclick="app.filtrarCursosPorPlataforma('OpenBootcamp')"><img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 💻 OpenBootcamp / Kogno</button>
-          <button class="pill pill-guiadeti" data-filtro="guiadeti" onclick="app.filtrarCursosPorFonte('Guia de TI')" data-i18n="ui.courses.guiadeti"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
-          <button class="pill" data-filtro="USP" onclick="app.filtrarCursosPorPlataforma('USP')"><img src="/img/logos/usp.png" alt="USP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursos USP</button>
-          <button class="pill" data-filtro="Alura" onclick="app.filtrarCursosPorPlataforma('Alura')"><img src="/img/logos/alura.png" alt="Alura" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Alura Aberta</button>
-          <button class="pill" data-filtro="Tecnologia" onclick="app.filtrarCursosPorArea('Tecnologia')" data-i18n="ui.courses.areaTech">Tecnologia Geral</button>
-          <button class="pill" data-filtro="Gestão & Negócios" onclick="app.filtrarCursosPorArea('Gestão & Negócios')"> Gestão & Negócios</button>
-          <button class="pill" data-filtro="Desenvolvimento Pessoal" onclick="app.filtrarCursosPorArea('Desenvolvimento Pessoal')"> Desenvolvimento Pessoal</button>
-          <button class="pill" data-filtro="Educação & Pedagogia" onclick="app.filtrarCursosPorArea('Educação & Pedagogia')"> Educação & Pedagogia</button>
-          <button class="pill" data-filtro="Ciências Exatas" onclick="app.filtrarCursosPorArea('Ciências Exatas')" data-i18n="ui.courses.areaExact">Ciências Exatas</button>
-          <button class="pill" data-filtro="Matemática" onclick="app.filtrarCursosPorArea('Matemática')" data-i18n="ui.courses.areaMath">Matemática</button>
-          <button class="pill" data-filtro="Ciências Biológicas" onclick="app.filtrarCursosPorArea('Ciências Biológicas')" data-i18n="ui.courses.areaBio">Biológicas</button>
-          <button class="pill" data-filtro="Ciências Humanas" onclick="app.filtrarCursosPorArea('Ciências Humanas')" data-i18n="ui.courses.areaHuman">Humanas</button>
-          <button class="pill" data-filtro="Linguagens" onclick="app.filtrarCursosPorArea('Linguagens')" data-i18n="ui.courses.areaLang">Linguagens</button>
+          <button class="pill" data-filtro="Santander" data-acao="filtrarCursosPorPlataforma" data-arg="Santander"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Santander Academy</button>
+          <button class="pill pill-youtube" data-filtro="Curso em Vídeo" data-acao="filtrarCursosPorPlataforma" data-arg="Curso em Vídeo"><img src="/img/logos/cursoemvideo.jpg" alt="Curso em Vídeo" class="pill-logo pill-logo-round" width="16" height="16" loading="lazy" decoding="async"> Curso em Vídeo (Guanabara)</button>
+          <button class="pill pill-youtube" data-filtro="Programação Web" data-acao="filtrarCursosPorPlataforma" data-arg="Programação Web"><img src="/img/logos/youtube.svg" alt="Programação Web" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Programação Web</button>
+          <button class="pill pill-youtube" data-filtro="Fernanda Kipper" data-acao="filtrarCursosPorPlataforma" data-arg="Fernanda Kipper"><img src="/img/logos/youtube.svg" alt="Fernanda Kipper" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Fernanda Kipper (Docker)</button>
+          <button class="pill pill-youtube" data-filtro="SegInfoBrasil" data-acao="filtrarCursosPorPlataforma" data-arg="SegInfoBrasil"><img src="/img/logos/youtube.svg" alt="SegInfoBrasil" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> SegInfoBrasil (Redes)</button>
+          <button class="pill pill-youtube" data-filtro="Glaucia Lemos" data-acao="filtrarCursosPorPlataforma" data-arg="Glaucia Lemos"><img src="/img/logos/youtube.svg" alt="Glaucia Lemos" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Glaucia Lemos (TS)</button>
+          <button class="pill pill-youtube" data-filtro="Gustavo Sacchi" data-acao="filtrarCursosPorPlataforma" data-arg="Gustavo Sacchi"><img src="/img/logos/youtube.svg" alt="Gustavo Sacchi" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Gustavo Sacchi (LangChain)</button>
+          <button class="pill" data-filtro="Bora na Tech" data-acao="filtrarCursosPorPlataforma" data-arg="Bora na Tech">🚀 Bora na Tech?</button>
+          <button class="pill" data-filtro="Jornada do Dev" data-acao="filtrarCursosPorPlataforma" data-arg="Jornada do Dev">🚀 Jornada do Dev</button>
+          <button class="pill" data-filtro="Fluência AI" data-acao="filtrarCursosPorPlataforma" data-arg="Fluência AI">🧠 Fluência AI</button>
+          <button class="pill" data-filtro="Recode" data-acao="filtrarCursosPorPlataforma" data-arg="Recode">🌐 Recode</button>
+          <button class="pill" data-filtro="Code IoT" data-acao="filtrarCursosPorPlataforma" data-arg="Code IoT">🤖 Code IoT (Samsung & USP)</button>
+          <button class="pill" data-filtro="Aliança pela Educação (ABE)" data-acao="filtrarCursosPorPlataforma" data-arg="Aliança pela Educação (ABE)">🎓 Aliança pela Educação (ABE)</button>
+          <button class="pill" data-filtro="KA Solution" data-acao="filtrarCursosPorPlataforma" data-arg="KA Solution"><img src="/img/logos/kasolution.png" alt="KA Solution" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> KA Solution (Webinars & KAtrocinados)</button>
+          <button class="pill" data-filtro="Samsung Ocean" data-acao="filtrarCursosPorPlataforma" data-arg="Samsung Ocean"><img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌊 Samsung Ocean (USP & UEA)</button>
+          <button class="pill" data-filtro="EBAC Online" data-acao="filtrarCursosPorPlataforma" data-arg="EBAC Online"><img src="/img/logos/ebac.svg" alt="EBAC Online" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> EBAC Online (Cursos & Webinars)</button>
+          <button class="pill" data-filtro="Data Science Academy" data-acao="filtrarCursosPorPlataforma" data-arg="Data Science Academy"><img src="/img/logos/dsa.png" alt="Data Science Academy" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Data Science Academy (DSA)</button>
+          <button class="pill" data-filtro="FIAP ON" data-acao="filtrarCursosPorPlataforma" data-arg="FIAP ON"><img src="/img/logos/fiap.png" alt="FIAP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> FIAP ON</button>
+          <button class="pill" data-filtro="Eu Capacito" data-acao="filtrarCursosPorPlataforma" data-arg="Eu Capacito"><img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Eu Capacito</button>
+          <button class="pill" data-filtro="IBM SkillsBuild" data-acao="filtrarCursosPorPlataforma" data-arg="IBM SkillsBuild"><img src="/img/logos/ibm.svg" alt="IBM" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> IBM SkillsBuild</button>
+          <button class="pill" data-filtro="Cisco Networking Academy" data-acao="filtrarCursosPorPlataforma" data-arg="Cisco Networking Academy"><img src="/img/logos/cisco.svg" alt="Cisco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cisco NetAcad</button>
+          <button class="pill" data-filtro="Escola do Trabalhador 4.0" data-acao="filtrarCursosPorPlataforma" data-arg="Escola do Trabalhador 4.0"><img src="/img/logos/escoladotrabalhador.png" alt="Escola do Trabalhador" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Escola do Trabalhador 4.0</button>
+          <button class="pill" data-filtro="AWS Skill Builder" data-acao="filtrarCursosPorPlataforma" data-arg="AWS Skill Builder"><img src="/img/logos/aws.svg" alt="AWS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> AWS Skill Builder</button>
+          <button class="pill" data-filtro="Microsoft Learn" data-acao="filtrarCursosPorPlataforma" data-arg="Microsoft Learn"><img src="/img/logos/microsoft.svg" alt="Microsoft" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Microsoft Learn</button>
+          <button class="pill" data-filtro="freeCodeCamp" data-acao="filtrarCursosPorPlataforma" data-arg="freeCodeCamp"><img src="/img/logos/freecodecamp.png" alt="freeCodeCamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> freeCodeCamp</button>
+          <button class="pill" data-filtro="Kultivi" data-acao="filtrarCursosPorPlataforma" data-arg="Kultivi"><img src="/img/logos/kultivi.png" alt="Kultivi" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Kultivi</button>
+          <button class="pill" data-filtro="SENAI Play" data-acao="filtrarCursosPorPlataforma" data-arg="SENAI Play"><img src="/img/logos/senai.png" alt="SENAI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> SENAI Play</button>
+          <button class="pill" data-filtro="Oracle Next Education" data-acao="filtrarCursosPorPlataforma" data-arg="Oracle Next Education"><img src="/img/logos/oracle.svg" alt="Oracle ONE" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Oracle ONE</button>
+          <button class="pill" data-filtro="Generation Brasil" data-acao="filtrarCursosPorPlataforma" data-arg="Generation Brasil"><img src="/img/logos/generation.png" alt="Generation" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Generation Brasil</button>
+          <button class="pill" data-filtro="WoMakersCode" data-acao="filtrarCursosPorPlataforma" data-arg="WoMakersCode"><img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> WoMakersCode</button>
+          <button class="pill" data-filtro="openHPI" data-acao="filtrarCursosPorPlataforma" data-arg="openHPI"> openHPI (Hasso-Plattner)</button>
+          <button class="pill pill-youtube" data-filtro="youtube" data-acao="filtrarCursosYouTube" data-i18n="ui.courses.youtube"><img src="/img/logos/youtube.svg" alt="YouTube" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> YouTube (Certificado)</button>
+          <button class="pill" data-filtro="Fundação Bradesco" data-acao="filtrarCursosPorPlataforma" data-arg="Fundação Bradesco"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Fundação Bradesco (EV)</button>
+          <button class="pill" data-filtro="Escola Virtual de Governo" data-acao="filtrarCursosPorPlataforma" data-arg="Escola Virtual de Governo"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ EV.G / ENAP (Governo)</button>
+          <button class="pill" data-filtro="Lumina" data-acao="filtrarCursosPorPlataforma" data-arg="Lumina"><img src="/img/logos/lumina.svg" alt="Lumina" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Lumina (UFRGS)</button>
+          <button class="pill" data-filtro="IFRS" data-acao="filtrarCursosPorPlataforma" data-arg="IFRS"><img src="/img/logos/ifrs.svg" alt="IFRS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ IFRS (Moodle MOOC)</button>
+          <button class="pill" data-filtro="Google Ateliê Digital" data-acao="filtrarCursosPorPlataforma" data-arg="Google Ateliê Digital"><img src="/img/logos/google.svg" alt="Google" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌐 Google Ateliê Digital</button>
+          <button class="pill" data-filtro="OpenBootcamp" data-acao="filtrarCursosPorPlataforma" data-arg="OpenBootcamp"><img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 💻 OpenBootcamp / Kogno</button>
+          <button class="pill pill-guiadeti" data-filtro="guiadeti" data-acao="filtrarCursosPorFonte" data-arg="Guia de TI" data-i18n="ui.courses.guiadeti"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
+          <button class="pill" data-filtro="USP" data-acao="filtrarCursosPorPlataforma" data-arg="USP"><img src="/img/logos/usp.png" alt="USP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursos USP</button>
+          <button class="pill" data-filtro="Alura" data-acao="filtrarCursosPorPlataforma" data-arg="Alura"><img src="/img/logos/alura.png" alt="Alura" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Alura Aberta</button>
+          <button class="pill" data-filtro="Tecnologia" data-acao="filtrarCursosPorArea" data-arg="Tecnologia" data-i18n="ui.courses.areaTech">Tecnologia Geral</button>
+          <button class="pill" data-filtro="Gestão & Negócios" data-acao="filtrarCursosPorArea" data-arg="Gestão &amp; Negócios"> Gestão & Negócios</button>
+          <button class="pill" data-filtro="Desenvolvimento Pessoal" data-acao="filtrarCursosPorArea" data-arg="Desenvolvimento Pessoal"> Desenvolvimento Pessoal</button>
+          <button class="pill" data-filtro="Educação & Pedagogia" data-acao="filtrarCursosPorArea" data-arg="Educação &amp; Pedagogia"> Educação & Pedagogia</button>
+          <button class="pill" data-filtro="Ciências Exatas" data-acao="filtrarCursosPorArea" data-arg="Ciências Exatas" data-i18n="ui.courses.areaExact">Ciências Exatas</button>
+          <button class="pill" data-filtro="Matemática" data-acao="filtrarCursosPorArea" data-arg="Matemática" data-i18n="ui.courses.areaMath">Matemática</button>
+          <button class="pill" data-filtro="Ciências Biológicas" data-acao="filtrarCursosPorArea" data-arg="Ciências Biológicas" data-i18n="ui.courses.areaBio">Biológicas</button>
+          <button class="pill" data-filtro="Ciências Humanas" data-acao="filtrarCursosPorArea" data-arg="Ciências Humanas" data-i18n="ui.courses.areaHuman">Humanas</button>
+          <button class="pill" data-filtro="Linguagens" data-acao="filtrarCursosPorArea" data-arg="Linguagens" data-i18n="ui.courses.areaLang">Linguagens</button>
         </div>
       </div>
     </section>
@@ -672,23 +672,23 @@
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
-        <input type="text" id="filtro-busca-roadmaps" placeholder="Pesquisar roadmaps (Frontend, Backend, DevOps, IA, React, QA, Python...)..." data-i18n-ph="ui.roadmaps.searchPlaceholder" oninput="app.buscarRoadmapsComDebounce()">
+        <input type="text" id="filtro-busca-roadmaps" placeholder="Pesquisar roadmaps (Frontend, Backend, DevOps, IA, React, QA, Python...)..." data-i18n-ph="ui.roadmaps.searchPlaceholder" data-acao="buscarRoadmapsComDebounce" data-evento="input">
       </div>
 
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.roadmaps.filters">Filtros de Trilha:</span>
         <div class="pills-container" id="pills-roadmaps-origem">
-          <button class="pill active" data-filtro="" onclick="app.filtrarRoadmapsPorOrigem('')" data-i18n="ui.roadmaps.all">Todos os Roadmaps</button>
-          <button class="pill pill-trilha" data-filtro="Trilha Info" onclick="app.filtrarRoadmapsPorOrigem('Trilha Info')"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Trilha Info (BR)</button>
-          <button class="pill" data-filtro="Roadmap.sh" onclick="app.filtrarRoadmapsPorOrigem('Roadmap.sh')"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Roadmap.sh (95 roadmaps)</button>
-          <button class="pill" data-filtro="Awesome Roadmaps" onclick="app.filtrarRoadmapsPorOrigem('Awesome Roadmaps')">⭐ Awesome Roadmaps (GitHub)</button>
-          <button class="pill pill-guiadeti" data-filtro="Guia de TI" onclick="app.filtrarRoadmapsPorOrigem('Guia de TI')"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
-          <button class="pill" data-filtro="TechGuide.sh" onclick="app.filtrarRoadmapsPorOrigem('TechGuide.sh')">🧭 TechGuide.sh (Alura)</button>
-          <button class="pill" data-filtro="Bora na Tech" onclick="app.filtrarRoadmapsPorOrigem('Bora na Tech')">🚀 Bora na Tech?</button>
-          <button class="pill" data-filtro="frontend" onclick="app.filtrarRoadmapsPorTermo('Frontend')"> Frontend</button>
-          <button class="pill" data-filtro="backend" onclick="app.filtrarRoadmapsPorTermo('Backend')"> Backend</button>
-          <button class="pill" data-filtro="devops" onclick="app.filtrarRoadmapsPorTermo('DevOps')"> DevOps & Cloud</button>
-          <button class="pill" data-filtro="dados" onclick="app.filtrarRoadmapsPorTermo('Dados')"> IA & Dados</button>
+          <button class="pill active" data-filtro="" data-acao="filtrarRoadmapsPorOrigem" data-arg="" data-i18n="ui.roadmaps.all">Todos os Roadmaps</button>
+          <button class="pill pill-trilha" data-filtro="Trilha Info" data-acao="filtrarRoadmapsPorOrigem" data-arg="Trilha Info"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Trilha Info (BR)</button>
+          <button class="pill" data-filtro="Roadmap.sh" data-acao="filtrarRoadmapsPorOrigem" data-arg="Roadmap.sh"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Roadmap.sh (95 roadmaps)</button>
+          <button class="pill" data-filtro="Awesome Roadmaps" data-acao="filtrarRoadmapsPorOrigem" data-arg="Awesome Roadmaps">⭐ Awesome Roadmaps (GitHub)</button>
+          <button class="pill pill-guiadeti" data-filtro="Guia de TI" data-acao="filtrarRoadmapsPorOrigem" data-arg="Guia de TI"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
+          <button class="pill" data-filtro="TechGuide.sh" data-acao="filtrarRoadmapsPorOrigem" data-arg="TechGuide.sh">🧭 TechGuide.sh (Alura)</button>
+          <button class="pill" data-filtro="Bora na Tech" data-acao="filtrarRoadmapsPorOrigem" data-arg="Bora na Tech">🚀 Bora na Tech?</button>
+          <button class="pill" data-filtro="frontend" data-acao="filtrarRoadmapsPorTermo" data-arg="Frontend"> Frontend</button>
+          <button class="pill" data-filtro="backend" data-acao="filtrarRoadmapsPorTermo" data-arg="Backend"> Backend</button>
+          <button class="pill" data-filtro="devops" data-acao="filtrarRoadmapsPorTermo" data-arg="DevOps"> DevOps & Cloud</button>
+          <button class="pill" data-filtro="dados" data-acao="filtrarRoadmapsPorTermo" data-arg="Dados"> IA & Dados</button>
         </div>
       </div>
     </section>
@@ -710,21 +710,21 @@
       </div>
 
       <div class="search-bar" style="margin-bottom: 1.25rem;">
-        <input type="text" id="filtro-busca-dicas" placeholder="Pesquisar dicas e ferramentas (Pomodoro, Anki, Obsidian, Zotero, LaTeX, Gramática...)..." data-i18n-ph="ui.tips.searchPlaceholder" oninput="app.buscarDicasComDebounce()">
+        <input type="text" id="filtro-busca-dicas" placeholder="Pesquisar dicas e ferramentas (Pomodoro, Anki, Obsidian, Zotero, LaTeX, Gramática...)..." data-i18n-ph="ui.tips.searchPlaceholder" data-acao="buscarDicasComDebounce" data-evento="input">
       </div>
 
       <div class="filter-row">
         <span class="filter-label" data-i18n="ui.tips.filters">Categorias de Dicas:</span>
         <div class="pills-container" id="pills-dicas-cat">
-          <button class="pill active" data-cat="" onclick="app.filtrarDicasPorCategoria('')" data-i18n="ui.tips.all">Todas as Dicas</button>
-          <button class="pill highlight-pill-africa" data-cat="angola" onclick="app.filtrarDicasPorCategoria('angola')">🇦🇴 Repositórios de Angola (ADM)</button>
-          <button class="pill highlight-pill-gold" data-cat="habitos" onclick="app.filtrarDicasPorCategoria('habitos')">⚡ Hábitos Atômicos (James Clear)</button>
-          <button class="pill" data-cat="estudo" onclick="app.filtrarDicasPorCategoria('estudo')">🧠 Técnicas de Estudo & Foco</button>
-          <button class="pill" data-cat="organizacao" onclick="app.filtrarDicasPorCategoria('organizacao')">📓 Organização & Notas</button>
-          <button class="pill" data-cat="escrita" onclick="app.filtrarDicasPorCategoria('escrita')">✍️ Escrita & Revisão</button>
-          <button class="pill" data-cat="idiomas" onclick="app.filtrarDicasPorCategoria('idiomas')">🗣️ Idiomas & Dicionários</button>
-          <button class="pill" data-cat="criacao" onclick="app.filtrarDicasPorCategoria('criacao')">🎨 Mídia Livre & Criação</button>
-          <button class="pill" data-cat="carreira" onclick="app.filtrarDicasPorCategoria('carreira')">💼 Carreira & Apoio</button>
+          <button class="pill active" data-cat="" data-acao="filtrarDicasPorCategoria" data-arg="" data-i18n="ui.tips.all">Todas as Dicas</button>
+          <button class="pill highlight-pill-africa" data-cat="angola" data-acao="filtrarDicasPorCategoria" data-arg="angola">🇦🇴 Repositórios de Angola (ADM)</button>
+          <button class="pill highlight-pill-gold" data-cat="habitos" data-acao="filtrarDicasPorCategoria" data-arg="habitos">⚡ Hábitos Atômicos (James Clear)</button>
+          <button class="pill" data-cat="estudo" data-acao="filtrarDicasPorCategoria" data-arg="estudo">🧠 Técnicas de Estudo & Foco</button>
+          <button class="pill" data-cat="organizacao" data-acao="filtrarDicasPorCategoria" data-arg="organizacao">📓 Organização & Notas</button>
+          <button class="pill" data-cat="escrita" data-acao="filtrarDicasPorCategoria" data-arg="escrita">✍️ Escrita & Revisão</button>
+          <button class="pill" data-cat="idiomas" data-acao="filtrarDicasPorCategoria" data-arg="idiomas">🗣️ Idiomas & Dicionários</button>
+          <button class="pill" data-cat="criacao" data-acao="filtrarDicasPorCategoria" data-arg="criacao">🎨 Mídia Livre & Criação</button>
+          <button class="pill" data-cat="carreira" data-acao="filtrarDicasPorCategoria" data-arg="carreira">💼 Carreira & Apoio</button>
         </div>
       </div>
     </section>
@@ -850,7 +850,7 @@
 
     <div class="whatsapp-cards">
       <div id="card-comunidade" class="whatsapp-card">
-        <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="ui.whatsapp.groupAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-grupo-whatsapp.svg'">
+        <img id="qr-comunidade" class="whatsapp-qr" src="/api/comunidade/qrcode.svg" alt="QR code da comunidade WhatsApp Lino Livre" data-i18n-alt="ui.whatsapp.groupAlt" width="160" height="160" loading="lazy" data-acao="fallbackImagem" data-fallback="/img/qr-grupo-whatsapp.svg" data-evento="error">
         <h3 data-i18n="ui.whatsapp.groupTitle"> Grupo Lino Livre</h3>
         <p data-i18n="ui.whatsapp.groupDesc">Converse, peça e recomende livros que quer ler.</p>
         <a id="link-card-comunidade" class="btn btn-whatsapp" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
@@ -860,7 +860,7 @@
       </div>
 
       <div id="card-canal" class="whatsapp-card">
-        <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="ui.whatsapp.channelAlt" width="160" height="160" loading="lazy" onerror="this.src='/img/qr-canal-whatsapp.svg'">
+        <img id="qr-canal" class="whatsapp-qr" src="/api/canal/qrcode.svg" alt="QR code do canal Livros e Cursos Lino Livre" data-i18n-alt="ui.whatsapp.channelAlt" width="160" height="160" loading="lazy" data-acao="fallbackImagem" data-fallback="/img/qr-canal-whatsapp.svg" data-evento="error">
         <h3 data-i18n="ui.whatsapp.channelTitle"> Canal Livros e Cursos</h3>
         <p data-i18n="ui.whatsapp.channelDesc">Receba as novidades de livros e cursos gratuitos.</p>
         <a id="link-card-canal" class="btn btn-whatsapp" href="https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X" target="_blank" rel="noopener noreferrer">
@@ -904,11 +904,11 @@
       <div class="footer-col">
         <h4 class="footer-heading" data-i18n="ui.footer.headingExplore">Explorar Acervo</h4>
         <ul class="footer-nav-list">
-          <li><a href="#aba-livros" onclick="app.trocarAba('livros')" data-i18n="ui.tabs.books"> Livros Digitais</a></li>
-          <li><a href="#aba-cursos" onclick="app.trocarAba('cursos')" data-i18n="ui.tabs.courses"> Cursos Gratuitos</a></li>
-          <li><a href="#aba-roadmaps" onclick="app.trocarAba('roadmaps')" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</a></li>
-          <li><a href="#aba-podcasts" onclick="app.trocarAba('podcasts')" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</a></li>
-          <li><a href="#aba-dashboard" onclick="app.trocarAba('dashboard')" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</a></li>
+          <li><a href="#aba-livros" data-acao="trocarAba" data-arg="livros" data-i18n="ui.tabs.books"> Livros Digitais</a></li>
+          <li><a href="#aba-cursos" data-acao="trocarAba" data-arg="cursos" data-i18n="ui.tabs.courses"> Cursos Gratuitos</a></li>
+          <li><a href="#aba-roadmaps" data-acao="trocarAba" data-arg="roadmaps" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</a></li>
+          <li><a href="#aba-podcasts" data-acao="trocarAba" data-arg="podcasts" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</a></li>
+          <li><a href="#aba-dashboard" data-acao="trocarAba" data-arg="dashboard" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</a></li>
         </ul>
       </div>
 
@@ -916,10 +916,10 @@
       <div class="footer-col">
         <h4 class="footer-heading" data-i18n="ui.footer.headingLegal">Jurídico & Diretrizes</h4>
         <ul class="footer-nav-list">
-          <li><a href="/legal.html#secao-missao" onclick="if(window.app){app.abrirModalLegal('termos');return false;}" data-i18n="ui.footer.terms"> Termos de Uso</a></li>
-          <li><a href="/legal.html#secao-isencao" onclick="if(window.app){app.abrirModalLegal('isencao');return false;}" data-i18n="ui.footer.disclaimer"> Isenção de Responsabilidade</a></li>
-          <li><a href="/legal.html#secao-direitos" onclick="if(window.app){app.abrirModalLegal('takedown');return false;}" data-i18n="ui.footer.dmca"> Direitos Autorais & DMCA</a></li>
-          <li><a href="/legal.html#secao-privacidade" onclick="if(window.app){app.abrirModalLegal('privacidade');return false;}" data-i18n="ui.footer.privacy"> Privacidade (LGPD/RGPD)</a></li>
+          <li><a href="/legal.html#secao-missao" data-acao="abrirModalLegal" data-arg="termos" data-i18n="ui.footer.terms"> Termos de Uso</a></li>
+          <li><a href="/legal.html#secao-isencao" data-acao="abrirModalLegal" data-arg="isencao" data-i18n="ui.footer.disclaimer"> Isenção de Responsabilidade</a></li>
+          <li><a href="/legal.html#secao-direitos" data-acao="abrirModalLegal" data-arg="takedown" data-i18n="ui.footer.dmca"> Direitos Autorais & DMCA</a></li>
+          <li><a href="/legal.html#secao-privacidade" data-acao="abrirModalLegal" data-arg="privacidade" data-i18n="ui.footer.privacy"> Privacidade (LGPD/RGPD)</a></li>
           <li><a href="/creditos.html" target="_blank" rel="noopener noreferrer">📜 Créditos & Licenças ↗</a></li>
           <li><a href="/termos.html" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.fullTerms"> Página Legal Completa ↗</a></li>
         </ul>
@@ -976,7 +976,7 @@
       
       <!-- Barra Superior do Leitor -->
       <div class="reader-header">
-        <button class="reader-btn-back" onclick="app.fecharModais()" data-i18n-title="ui.reader.backTitle" title="Voltar ao Catálogo">
+        <button class="reader-btn-back" data-acao="fecharModais" data-i18n-title="ui.reader.backTitle" title="Voltar ao Catálogo">
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           <span class="btn-back-text" data-i18n="ui.reader.back">Voltar</span>
         </button>
@@ -988,37 +988,37 @@
 
         <!-- Seletor de Mídia [ Áudio | Texto ] -->
         <div class="reader-segmented-toggle" role="tablist" data-i18n-aria="ui.reader.modeLabel" aria-label="Modo de leitura">
-          <button id="toggle-audio-btn" type="button" class="toggle-pill" onclick="app.ativarModoAudio()">
+          <button id="toggle-audio-btn" type="button" class="toggle-pill" data-acao="ativarModoAudio">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
             <span data-i18n="ui.reader.audio">Áudio</span>
           </button>
-          <button id="toggle-texto-btn" type="button" class="toggle-pill active" onclick="app.ativarModoTexto()">
+          <button id="toggle-texto-btn" type="button" class="toggle-pill active" data-acao="ativarModoTexto">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
             <span data-i18n="ui.reader.text">Texto</span>
           </button>
         </div>
 
         <div class="reader-header-actions">
-          <button id="btn-toggle-painel" class="reader-action-btn" onclick="app.togglePainelAjustes()" data-i18n-title="ui.reader.settingsTitle" title="Ajustes de Leitura e Conforto">
+          <button id="btn-toggle-painel" class="reader-action-btn" data-acao="togglePainelAjustes" data-i18n-title="ui.reader.settingsTitle" title="Ajustes de Leitura e Conforto">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </button>
           <a id="btn-leitor-pdf" class="btn-pdf-header hidden" href="#leitor" target="_blank" rel="noopener noreferrer" title="Abrir Edição Oficial Completa (PDF)" data-i18n-title="ui.reader.officialPdf">
              <span class="btn-pdf-label" data-i18n="ui.reader.officialPdf">PDF Oficial</span>
           </a>
-          <button class="reader-action-btn" onclick="app.fecharModais()" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor"></button>
+          <button class="reader-action-btn" data-acao="fecharModais" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor"></button>
         </div>
       </div>
 
       <!-- Barra de Navegação de Capítulos -->
       <div id="reader-chapter-bar" class="reader-chapter-bar hidden">
-        <button id="btn-cap-anterior" class="btn-cap-nav" onclick="app.capituloAnterior()" title="Capítulo Anterior">
+        <button id="btn-cap-anterior" class="btn-cap-nav" data-acao="capituloAnterior" title="Capítulo Anterior">
            <span class="cap-nav-text">Anterior</span>
         </button>
         <div class="chapter-select-wrapper">
-          <select id="leitor-capitulos-select" class="chapter-nav-select" onchange="app.mudarCapituloPeloSelect(this.value)" aria-label="Selecionar capítulo">
+          <select id="leitor-capitulos-select" class="chapter-nav-select" data-acao="mudarCapituloPeloSelect" data-le-valor="1" data-evento="change" aria-label="Selecionar capítulo">
           </select>
         </div>
-        <button id="btn-cap-proximo" class="btn-cap-nav" onclick="app.proximoCapitulo()" title="Próximo Capítulo">
+        <button id="btn-cap-proximo" class="btn-cap-nav" data-acao="proximoCapitulo" title="Próximo Capítulo">
           <span class="cap-nav-text">Próximo</span>
         </button>
       </div>
@@ -1031,15 +1031,15 @@
           <span id="audio-voz-badge" class="badge-voz">pt-BR</span>
         </div>
         <div class="audio-controls">
-          <button id="btn-audio-play" class="btn-audio-control primary" onclick="app.alternarPlayAudio()">
+          <button id="btn-audio-play" class="btn-audio-control primary" data-acao="alternarPlayAudio">
             <span id="icone-play">▶</span> <span id="audio-play-label" data-i18n="ui.reader.listen">Ouvir</span>
           </button>
-          <button id="btn-audio-stop" class="btn-audio-control" onclick="app.pararAudio()" data-i18n="ui.reader.stop">Parar</button>
+          <button id="btn-audio-stop" class="btn-audio-control" data-acao="pararAudio" data-i18n="ui.reader.stop">Parar</button>
           <div class="audio-speed-selector">
             <span class="speed-label" data-i18n="ui.reader.speed">Velocidade:</span>
-            <button class="btn-speed active" data-speed="1" onclick="app.alterarVelocidadeAudio(1, this)">1.0x</button>
-            <button class="btn-speed" data-speed="1.2" onclick="app.alterarVelocidadeAudio(1.2, this)">1.2x</button>
-            <button class="btn-speed" data-speed="1.5" onclick="app.alterarVelocidadeAudio(1.5, this)">1.5x</button>
+            <button class="btn-speed active" data-speed="1" data-acao="alterarVelocidadeAudio" data-arg="1" data-passa-el="1">1.0x</button>
+            <button class="btn-speed" data-speed="1.2" data-acao="alterarVelocidadeAudio" data-arg="1.2" data-passa-el="1">1.2x</button>
+            <button class="btn-speed" data-speed="1.5" data-acao="alterarVelocidadeAudio" data-arg="1.5" data-passa-el="1">1.5x</button>
           </div>
         </div>
       </div>
@@ -1052,7 +1052,7 @@
 
         <!-- Ação de Avanço no Fim do Capítulo -->
         <div id="leitor-proximo-cap-container" class="next-chapter-action hidden">
-          <button id="btn-avancar-proximo-cap" class="btn-next-cap" onclick="app.proximoCapitulo()">
+          <button id="btn-avancar-proximo-cap" class="btn-next-cap" data-acao="proximoCapitulo">
             Avançar para o Próximo Capítulo
           </button>
         </div>
@@ -1065,7 +1065,7 @@
 
       <!-- Painel Flutuante de Conforto Visual (Bottom Sheet / Inicia Recolhido) -->
       <div id="painel-ajustes-leitura" class="reader-bottom-panel collapsed" data-i18n-aria="ui.reader.settingsLabel" aria-label="Ajustes de leitura">
-        <div class="panel-handle-bar" onclick="app.togglePainelAjustes()">
+        <div class="panel-handle-bar" data-acao="togglePainelAjustes">
           <span class="panel-drag-pill"></span>
         </div>
         
@@ -1075,7 +1075,7 @@
             <span class="control-label" data-i18n="ui.reader.brightness">Iluminação</span>
             <div class="brightness-slider-container">
               <span class="sun-icon min"></span>
-              <input type="range" id="slider-brilho" min="0.4" max="1" step="0.05" value="1" oninput="app.ajustarBrilho(this.value)" data-i18n-aria="ui.reader.brightnessAria" aria-label="Ajuste de brilho">
+              <input type="range" id="slider-brilho" min="0.4" max="1" step="0.05" value="1" data-acao="ajustarBrilho" data-le-valor="1" data-evento="input" data-i18n-aria="ui.reader.brightnessAria" aria-label="Ajuste de brilho">
               <span class="sun-icon max"></span>
             </div>
           </div>
@@ -1084,13 +1084,13 @@
           <div class="panel-control-row">
             <span class="control-label" data-i18n="ui.reader.paperTone">Tom do Papel</span>
             <div class="paper-swatches">
-              <button type="button" id="swatch-creme" class="paper-swatch swatch-creme active" onclick="app.mudarTemaPapel('creme')" data-i18n-title="ui.reader.creamTitle" title="Creme Natural">
+              <button type="button" id="swatch-creme" class="paper-swatch swatch-creme active" data-acao="mudarTemaPapel" data-arg="creme" data-i18n-title="ui.reader.creamTitle" title="Creme Natural">
                 <span data-i18n="ui.reader.cream">Creme</span>
               </button>
-              <button type="button" id="swatch-sepia" class="paper-swatch swatch-sepia" onclick="app.mudarTemaPapel('sepia')" data-i18n-title="ui.reader.sepiaTitle" title="Sépia Acolhedor">
+              <button type="button" id="swatch-sepia" class="paper-swatch swatch-sepia" data-acao="mudarTemaPapel" data-arg="sepia" data-i18n-title="ui.reader.sepiaTitle" title="Sépia Acolhedor">
                 <span data-i18n="ui.reader.sepia">Sépia</span>
               </button>
-              <button type="button" id="swatch-noturno" class="paper-swatch swatch-noturno" onclick="app.mudarTemaPapel('noturno')" data-i18n-title="ui.reader.nightTitle" title="Modo Noturno">
+              <button type="button" id="swatch-noturno" class="paper-swatch swatch-noturno" data-acao="mudarTemaPapel" data-arg="noturno" data-i18n-title="ui.reader.nightTitle" title="Modo Noturno">
                 <span data-i18n="ui.reader.night">Noite</span>
               </button>
             </div>
@@ -1100,9 +1100,9 @@
           <div class="panel-control-row">
             <span class="control-label" data-i18n="ui.reader.fontSize">Tamanho da Fonte</span>
             <div class="font-stepper">
-              <button type="button" class="btn-stepper" onclick="app.alterarFonte(-2)" data-i18n-title="ui.reader.fontDown" title="Diminuir fonte">−</button>
+              <button type="button" class="btn-stepper" data-acao="alterarFonte" data-arg="-2" data-i18n-title="ui.reader.fontDown" title="Diminuir fonte">−</button>
               <span id="valor-fonte-indicador" class="stepper-value">22</span>
-              <button type="button" class="btn-stepper" onclick="app.alterarFonte(2)" data-i18n-title="ui.reader.fontUp" title="Aumentar fonte">+</button>
+              <button type="button" class="btn-stepper" data-acao="alterarFonte" data-arg="2" data-i18n-title="ui.reader.fontUp" title="Aumentar fonte">+</button>
             </div>
           </div>
 
@@ -1110,16 +1110,16 @@
           <div class="panel-control-row">
             <span class="control-label" data-i18n="ui.reader.align">Alinhamento</span>
             <div class="alignment-buttons">
-              <button type="button" class="btn-align" data-align="left" onclick="app.mudarAlinhamento('left')" data-i18n-title="ui.reader.alignLeft" title="Alinhar à Esquerda">
+              <button type="button" class="btn-align" data-align="left" data-acao="mudarAlinhamento" data-arg="left" data-i18n-title="ui.reader.alignLeft" title="Alinhar à Esquerda">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
               </button>
-              <button type="button" class="btn-align" data-align="center" onclick="app.mudarAlinhamento('center')" data-i18n-title="ui.reader.alignCenter" title="Centralizar">
+              <button type="button" class="btn-align" data-align="center" data-acao="mudarAlinhamento" data-arg="center" data-i18n-title="ui.reader.alignCenter" title="Centralizar">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/></svg>
               </button>
-              <button type="button" class="btn-align active" data-align="justify" onclick="app.mudarAlinhamento('justify')" data-i18n-title="ui.reader.alignJustify" title="Justificado">
+              <button type="button" class="btn-align active" data-align="justify" data-acao="mudarAlinhamento" data-arg="justify" data-i18n-title="ui.reader.alignJustify" title="Justificado">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
               </button>
-              <button type="button" class="btn-align" data-align="right" onclick="app.mudarAlinhamento('right')" data-i18n-title="ui.reader.alignRight" title="Alinhar à Direita">
+              <button type="button" class="btn-align" data-align="right" data-acao="mudarAlinhamento" data-arg="right" data-i18n-title="ui.reader.alignRight" title="Alinhar à Direita">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
               </button>
             </div>
@@ -1138,7 +1138,7 @@
           <span class="badge-format" id="detalhes-badge-idioma">PT</span>
           <h3 id="detalhes-titulo" class="modal-book-title">Título da Obra</h3>
         </div>
-        <button class="btn-close" onclick="app.fecharModais()" aria-label="Fechar" title="Fechar">&times;</button>
+        <button class="btn-close" data-acao="fecharModais" aria-label="Fechar" title="Fechar">&times;</button>
       </div>
 
       <div class="modal-card-body book-details-modal-body">
@@ -1146,7 +1146,7 @@
           <!-- Coluna Esquerda: Capa e Metadados Rápidos -->
           <div class="book-details-cover-col">
             <div class="book-details-cover-wrap">
-              <img id="detalhes-capa" src="/capas/dom_casmurro.jpg" alt="Capa do Livro" class="book-details-cover" width="240" height="360" loading="lazy" decoding="async" onerror="this.src='/capas/dom_casmurro.jpg'">
+              <img id="detalhes-capa" src="/capas/dom_casmurro.jpg" alt="Capa do Livro" class="book-details-cover" width="240" height="360" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg" data-evento="error">
             </div>
             <div class="book-details-quick-meta">
               <div class="quick-meta-pill" id="detalhes-leituras-pill" title="Contagem de Leituras">
@@ -1191,10 +1191,10 @@
 
             <!-- Ações Principais: Leitura Online -->
             <div class="book-actions-primary">
-              <button id="btn-detalhes-ler-online" class="btn btn-primary btn-lg" onclick="app.abrirLeitorDoModal()">
+              <button id="btn-detalhes-ler-online" class="btn btn-primary btn-lg" data-acao="abrirLeitorDoModal">
                 📖 Ler Online no Navegador
               </button>
-              <button id="btn-detalhes-compartilhar" class="btn btn-secondary btn-lg" onclick="app.compartilharLivroAtual()">
+              <button id="btn-detalhes-compartilhar" class="btn btn-secondary btn-lg" data-acao="compartilharLivroAtual">
                 🔗 Partilhar Obra
               </button>
             </div>
@@ -1217,7 +1217,7 @@
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn btn-secondary" onclick="app.fecharModais()">Fechar</button>
+        <button type="button" class="btn btn-secondary" data-acao="fecharModais">Fechar</button>
       </div>
     </div>
   </div>
@@ -1227,9 +1227,9 @@
     <div class="modal-card">
       <div class="modal-card-header">
         <h3 data-i18n="ui.form.title">Adicionar Livro Digital ao Acervo</h3>
-        <button class="btn-close" onclick="app.fecharModais()">&times;</button>
+        <button class="btn-close" data-acao="fecharModais">&times;</button>
       </div>
-      <form onsubmit="app.salvarNovoLivro(event)" class="modal-card-body">
+      <form data-acao="salvarNovoLivro" data-passa-ev="1" data-evento="submit" class="modal-card-body">
         <!-- Aviso de Moderação & Conformidade Legal -->
         <div class="admin-notice-box" style="background: rgba(37, 99, 235, 0.08); border-left: 4px solid var(--accent, #2563eb); padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 4px; font-size: 0.825rem; line-height: 1.4; color: var(--text-color, #1e293b);">
           <div style="font-weight: 600; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
@@ -1303,8 +1303,13 @@
           </label>
           <input type="password" id="novo-admin-key" class="form-input" placeholder="Insira a chave autorizada ou deixe vazio para moderação" data-i18n-ph="ui.form.phAdminKey" autocomplete="off">
         </div>
+        <div class="form-group">
+          <!-- Contentor do Cloudflare Turnstile: só é mostrado se o servidor
+               tiver TURNSTILE_SITE_KEY configurada (anti-bot opcional). -->
+          <div id="turnstile-widget" class="turnstile-widget" hidden></div>
+        </div>
         <div class="modal-card-footer">
-          <button type="button" class="btn btn-secondary" onclick="app.fecharModais()" data-i18n="ui.form.cancel">Cancelar</button>
+          <button type="button" class="btn btn-secondary" data-acao="fecharModais" data-i18n="ui.form.cancel">Cancelar</button>
           <button type="submit" class="btn btn-primary" data-i18n="ui.form.save">Salvar no Acervo</button>
         </div>
       </form>
@@ -1319,15 +1324,15 @@
           <span style="font-size:1.3rem;"></span>
           <h3 id="modal-legal-titulo" data-i18n="ui.legal.title">Diretrizes Legais & Termos de Uso</h3>
         </div>
-        <button class="btn-close" onclick="app.fecharModais()">&times;</button>
+        <button class="btn-close" data-acao="fecharModais">&times;</button>
       </div>
 
       <!-- Abas Internas do Modal Legal -->
       <div class="modal-legal-nav">
-        <button class="modal-tab-btn active" id="modal-legal-tab-termos" onclick="app.trocarAbaLegal('termos')" data-i18n="ui.legal.tabTerms"> Termos de Uso</button>
-        <button class="modal-tab-btn" id="modal-legal-tab-isencao" onclick="app.trocarAbaLegal('isencao')" data-i18n="ui.legal.tabDisclaimer"> Intermediário & Isenção</button>
-        <button class="modal-tab-btn" id="modal-legal-tab-takedown" onclick="app.trocarAbaLegal('takedown')" data-i18n="ui.legal.tabDmca"> DMCA / Takedown</button>
-        <button class="modal-tab-btn" id="modal-legal-tab-privacidade" onclick="app.trocarAbaLegal('privacidade')" data-i18n="ui.legal.tabPrivacy"> Privacidade</button>
+        <button class="modal-tab-btn active" id="modal-legal-tab-termos" data-acao="trocarAbaLegal" data-arg="termos" data-i18n="ui.legal.tabTerms"> Termos de Uso</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-isencao" data-acao="trocarAbaLegal" data-arg="isencao" data-i18n="ui.legal.tabDisclaimer"> Intermediário & Isenção</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-takedown" data-acao="trocarAbaLegal" data-arg="takedown" data-i18n="ui.legal.tabDmca"> DMCA / Takedown</button>
+        <button class="modal-tab-btn" id="modal-legal-tab-privacidade" data-acao="trocarAbaLegal" data-arg="privacidade" data-i18n="ui.legal.tabPrivacy"> Privacidade</button>
       </div>
 
       <div class="modal-card-body modal-legal-body">
@@ -1376,7 +1381,7 @@
         <a href="/termos.html" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:600;text-decoration:none;font-size:0.9rem;" data-i18n="ui.legal.readFull">
            Ler Documento Legal Completo em Nova Aba ↗
         </a>
-        <button type="button" class="btn btn-secondary" onclick="app.fecharModais()" data-i18n="ui.legal.close">Fechar</button>
+        <button type="button" class="btn btn-secondary" data-acao="fecharModais" data-i18n="ui.legal.close">Fechar</button>
       </div>
     </div>
   </div>
@@ -1386,6 +1391,6 @@
 
 
   <script defer src="/js/i18n.js?v=20261023b"></script>
-  <script defer src="/js/app.js?v=20261023b"></script>
+  <script defer src="/js/app.js?v=20261024a"></script>
 </body>
 </html>
