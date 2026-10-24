@@ -3,6 +3,14 @@
  * Compilado a partir de OS-100-LIVROS-MAIS-LIDOS-DO-MUNDO.md
  * Enriquecido com capas oficiais do Gutenberg e Open Library e links externos verificados.
  * Em estrita conformidade com AGENTS.md (zero arquivos locais).
+ *
+ * Política de links (auditoria de 2026-10-24):
+ *  - Obras em domínio público apontam para o ficheiro aberto no Project Gutenberg
+ *    ou na Wikisource.
+ *  - Obras com licença "outro" (direitos comerciais) apontam apenas para o
+ *    catálogo público da Open Library (metadados, empréstimo legal ou compra).
+ *  - Nunca são publicados links diretos do tipo archive.org/download para itens
+ *    de empréstimo: esses URLs devolvem HTTP 401/403 (nginx) e não são acesso livre.
  */
 
 const worldClassicsList = [
@@ -161,17 +169,13 @@ const worldClassicsList = [
     "categoria": "Romance & Crônicas",
     "fonteSlug": "openlibrary",
     "fonteIdExterno": "world-top100-2",
-    "licenca": "dominio-publico",
+    "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 200 milhões. Título original: \"Le Petit Prince\" (1943). Reconhecido no cânone global de obras fundamentais.",
     "capaUrl": "https://covers.openlibrary.org/b/id/10708272-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/bwb_S0-CBV-436/bwb_S0-CBV-436.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/bwb_S0-CBV-436"
+        "url": "https://openlibrary.org/search?q=O%20Pequeno%20Pr%C3%ADncipe%20Antoine%20de%20Saint-Exup%C3%A9ry"
       }
     ]
   },
@@ -208,12 +212,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/7414780-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/alchemik0000coel/alchemik0000coel.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/alchemik0000coel"
+        "url": "https://openlibrary.org/search?q=O%20Alquimista%20Paulo%20Coelho"
       }
     ]
   },
@@ -231,12 +231,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/15155833-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/isbn_9757501956008/isbn_9757501956008.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/isbn_9757501956008"
+        "url": "https://openlibrary.org/search?q=Harry%20Potter%20e%20a%20Pedra%20Filosofal%20J.%20K.%20Rowling"
       }
     ]
   },
@@ -300,12 +296,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/14627509-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/hobbitortherebac00tolk_2/hobbitortherebac00tolk_2.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/hobbitortherebac00tolk_2"
+        "url": "https://openlibrary.org/search?q=O%20Hobbit%20J.%20R.%20R.%20Tolkien"
       }
     ]
   },
@@ -396,12 +388,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/9255229-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/bwb_P9-BII-054/bwb_P9-BII-054.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/bwb_P9-BII-054"
+        "url": "https://openlibrary.org/search?q=O%20C%C3%B3digo%20Da%20Vinci%20Dan%20Brown"
       }
     ]
   },
@@ -419,12 +407,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/15158664-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/snj.harrypotter0000jkro_e1f9/snj.harrypotter0000jkro_e1f9.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/snj.harrypotter0000jkro_e1f9"
+        "url": "https://openlibrary.org/search?q=Harry%20Potter%20e%20a%20C%C3%A2mara%20Secreta%20J.%20K.%20Rowling"
       }
     ]
   },
@@ -465,12 +449,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/9273490-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/maitianlideshouw0000unse/maitianlideshouw0000unse.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/maitianlideshouw0000unse"
+        "url": "https://openlibrary.org/search?q=O%20Apanhador%20no%20Campo%20de%20Centeio%20J.%20D.%20Salinger"
       }
     ]
   },
@@ -526,12 +506,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/12627383-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/onehundredyearso0001garc/onehundredyearso0001garc.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/onehundredyearso0001garc"
+        "url": "https://openlibrary.org/search?q=Cem%20Anos%20de%20Solid%C3%A3o%20Gabriel%20Garc%C3%ADa%20M%C3%A1rquez"
       }
     ]
   },
@@ -549,12 +525,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/12984540-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/lolitanovel0000vlad/lolitanovel0000vlad.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/lolitanovel0000vlad"
+        "url": "https://openlibrary.org/search?q=Lolita%20Vladimir%20Nabokov"
       }
     ]
   },
@@ -672,12 +644,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/8598263-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/elnombredelarosa0000umbe/elnombredelarosa0000umbe.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/elnombredelarosa0000umbe"
+        "url": "https://openlibrary.org/search?q=O%20Nome%20da%20Rosa%20Umberto%20Eco"
       }
     ]
   },
@@ -752,12 +720,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/8461797-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/bwb_P9-ASR-010/bwb_P9-ASR-010.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/bwb_P9-ASR-010"
+        "url": "https://openlibrary.org/search?q=A%20Teia%20de%20Charlotte%20E.%20B.%20White"
       }
     ]
   },
@@ -840,12 +804,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/6522230-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/bwb_P9-AEW-961/bwb_P9-AEW-961.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/bwb_P9-AEW-961"
+        "url": "https://openlibrary.org/search?q=Fern%C3%A3o%20Capelo%20Gaivota%20Richard%20Bach"
       }
     ]
   },
@@ -909,12 +869,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/14351077-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/blblldrmek0000harp/blblldrmek0000harp.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/blblldrmek0000harp"
+        "url": "https://openlibrary.org/search?q=O%20Sol%20%C3%A9%20Para%20Todos%20Harper%20Lee"
       }
     ]
   },
@@ -951,12 +907,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/8283901-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/unserkosmosereis0000saga/unserkosmosereis0000saga.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/unserkosmosereis0000saga"
+        "url": "https://openlibrary.org/search?q=Cosmos%20Carl%20Sagan"
       }
     ]
   },
@@ -974,12 +926,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/11408459-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/isbn_9788086518435/isbn_9788086518435.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/isbn_9788086518435"
+        "url": "https://openlibrary.org/search?q=Anjos%20e%20Dem%C3%B4nios%20Dan%20Brown"
       }
     ]
   },
@@ -997,12 +945,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/13314878-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/comoganaramigose0000dale_e9l0/comoganaramigose0000dale_e9l0.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/comoganaramigose0000dale_e9l0"
+        "url": "https://openlibrary.org/search?q=Como%20Fazer%20Amigos%20e%20Influenciar%20Pessoas%20Dale%20Carnegie"
       }
     ]
   },
@@ -1126,17 +1070,13 @@ const worldClassicsList = [
     "categoria": "Romance & Crônicas",
     "fonteSlug": "openlibrary",
     "fonteIdExterno": "world-top100-45",
-    "licenca": "dominio-publico",
+    "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 35 milhões. Título original: \"Het Achterhuis\" (1947). Reconhecido no cânone global de obras fundamentais.",
     "capaUrl": "https://covers.openlibrary.org/b/id/8584021-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/lp_the-diary-of-a-young-girl_anne-frank-elinor-basescu/lp_the-diary-of-a-young-girl_anne-frank-elinor-basescu.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/lp_the-diary-of-a-young-girl_anne-frank-elinor-basescu"
+        "url": "https://openlibrary.org/search?q=O%20Di%C3%A1rio%20de%20Anne%20Frank%20Anne%20Frank"
       }
     ]
   },
@@ -1211,12 +1151,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/14846827-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/bdrc-W3KG128/bdrc-W3KG128.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/bdrc-W3KG128"
+        "url": "https://openlibrary.org/search?q=O%20Ca%C3%A7ador%20de%20Pipas%20Khaled%20Hosseini"
       }
     ]
   },
@@ -1280,12 +1216,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/14817133-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/bwb_P9-BUB-500/bwb_P9-BUB-500.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/bwb_P9-BUB-500"
+        "url": "https://openlibrary.org/search?q=E%20o%20Vento%20Levou%20Margaret%20Mitchell"
       }
     ]
   },
@@ -1341,12 +1273,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/9274740-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/millnium0000unse/millnium0000unse.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/millnium0000unse"
+        "url": "https://openlibrary.org/search?q=Os%20Homens%20que%20N%C3%A3o%20Amavam%20as%20Mulheres%20Stieg%20Larsson"
       }
     ]
   },
@@ -1364,12 +1292,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/8373389-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/isbn_9789722524889/isbn_9789722524889.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/isbn_9789722524889"
+        "url": "https://openlibrary.org/search?q=O%20S%C3%ADmbolo%20Perdido%20Dan%20Brown"
       }
     ]
   },
@@ -1387,12 +1311,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/12646537-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/jieyouxi0000coll/jieyouxi0000coll.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/jieyouxi0000coll"
+        "url": "https://openlibrary.org/search?q=Jogos%20Vorazes%20Suzanne%20Collins"
       }
     ]
   },
@@ -1494,12 +1414,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/10432365-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/krotkahistoriacz0000hawk/krotkahistoriacz0000hawk.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/krotkahistoriacz0000hawk"
+        "url": "https://openlibrary.org/search?q=Uma%20Breve%20Hist%C3%B3ria%20do%20Tempo%20Stephen%20Hawking"
       }
     ]
   },
@@ -1590,12 +1506,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/10079937-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/gaoxiaonengrensh0000cove_a2i5/gaoxiaonengrensh0000cove_a2i5.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/gaoxiaonengrensh0000cove_a2i5"
+        "url": "https://openlibrary.org/search?q=Os%207%20H%C3%A1bitos%20das%20Pessoas%20Altamente%20Eficazes%20Stephen%20R.%20Covey"
       }
     ]
   },
@@ -1632,12 +1544,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/8634250-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/einekurzegeschic0000yuva/einekurzegeschic0000yuva.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/einekurzegeschic0000yuva"
+        "url": "https://openlibrary.org/search?q=Sapiens%3A%20Uma%20Breve%20Hist%C3%B3ria%20da%20Humanidade%20Yuval%20Noah%20Harari"
       }
     ]
   },
@@ -1674,12 +1582,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/8749217-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/lanovenarevelaci0000redf/lanovenarevelaci0000redf.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/lanovenarevelaci0000redf"
+        "url": "https://openlibrary.org/search?q=A%20Profecia%20Celestina%20James%20Redfield"
       }
     ]
   },
@@ -1697,12 +1601,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/7418786-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/bajolamismaestre0000gree_b4i6/bajolamismaestre0000gree_b4i6.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/bajolamismaestre0000gree_b4i6"
+        "url": "https://openlibrary.org/search?q=A%20Culpa%20%C3%A9%20das%20Estrelas%20John%20Green"
       }
     ]
   },
@@ -1739,12 +1639,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/2700082-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/shacknovel00youn_0/shacknovel00youn_0.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/shacknovel00youn_0"
+        "url": "https://openlibrary.org/search?q=A%20Cabana%20William%20P.%20Young"
       }
     ]
   },
@@ -1819,12 +1715,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/12646539-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/losjuegosdelhamb0000suza_u8q0/losjuegosdelhamb0000suza_u8q0.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/losjuegosdelhamb0000suza_u8q0"
+        "url": "https://openlibrary.org/search?q=Em%20Chamas%20Suzanne%20Collins"
       }
     ]
   },
@@ -1842,12 +1734,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/12646459-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/ziyouhuanmeng0000coll/ziyouhuanmeng0000coll.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/ziyouhuanmeng0000coll"
+        "url": "https://openlibrary.org/search?q=A%20Esperan%C3%A7a%20Suzanne%20Collins"
       }
     ]
   },
@@ -1865,12 +1753,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/409670-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/kichin0000yosh/kichin0000yosh.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/kichin0000yosh"
+        "url": "https://openlibrary.org/search?q=Kitchen%20Banana%20Yoshimoto"
       }
     ]
   },
@@ -1907,12 +1791,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/8368314-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/kongzhi0000flyn/kongzhi0000flyn.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/kongzhi0000flyn"
+        "url": "https://openlibrary.org/search?q=Garota%20Exemplar%20Gillian%20Flynn"
       }
     ]
   },
@@ -1949,12 +1829,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/12816943-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/isbn_8936024911577/isbn_8936024911577.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/isbn_8936024911577"
+        "url": "https://openlibrary.org/search?q=O%20Mundo%20se%20Despeda%C3%A7a%20Chinua%20Achebe"
       }
     ]
   },
@@ -2243,12 +2119,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/11481354-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/isbn_9780340765906/isbn_9780340765906.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/isbn_9780340765906"
+        "url": "https://openlibrary.org/search?q=Duna%20Frank%20Herbert"
       }
     ]
   },
@@ -2266,12 +2138,8 @@ const worldClassicsList = [
     "capaUrl": "https://covers.openlibrary.org/b/id/12459564-M.jpg",
     "links": [
       {
-        "formato": "pdf",
-        "url": "https://archive.org/download/chokortokjnohimi0000dahl/chokortokjnohimi0000dahl.pdf"
-      },
-      {
         "formato": "html",
-        "url": "https://archive.org/details/chokortokjnohimi0000dahl"
+        "url": "https://openlibrary.org/search?q=A%20Fant%C3%A1stica%20F%C3%A1brica%20de%20Chocolate%20Roald%20Dahl"
       }
     ]
   },

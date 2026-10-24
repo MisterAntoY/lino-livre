@@ -477,7 +477,7 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - Hodômetro `#placar-total-livros` atualizado para **2.000** (0.0200% da grande meta de 10.000.000).
   - Marco 1 (1.000) comemorado com a classe `reached`; Marco 2 (10.000) promovido a `active` com tag "Próximo marco" e meta imediata definida para 10.000.
   - Faltam exatamente 8.000 obras para atingir o Marco 2 e 9.998.000 para a grande meta global.
-  - Suíte automatizada mantida em **100% verde** (313 testes em 61 suítes) e TypeScript sem erros.
+  - Suíte automatizada mantida em **100% verde** (319 testes em 62 suítes) e TypeScript sem erros.
 
 ---
 
@@ -493,6 +493,25 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - `public/img/icons/icon.svg` + `icon-192.png`, `icon-512.png`, `icon-maskable-*.png` e `apple-touch-icon.png` — ícones PWA com a assinatura “LINODIGITAL / LINO LIVRE”.
 - **Superfícies obrigatórias de aplicação:** cabeçalho e rodapé de todas as páginas, `manifest.webmanifest`, `<title>`/Open Graph/Twitter, JSON-LD (`Organization` e `WebSite`), `llms.txt`, `llms-full.txt`, `ai-catalog.json`, locales i18n, README e fallbacks do Worker.
 - **Teste de regressão:** `test/brand_linodigital.test.js` valida a presença da marca-mãe, do produto, dos ativos e da hierarquia nos metadados.
+
+### 2.31. Auditoria de Links Externos: Remoção de Downloads Restritos do Internet Archive (HTTP 401/403)
+- **Problema Relatado:** Ao abrir a obra 475 (*O Alquimista*) e clicar no botão PDF, o utilizador recebia:
+  ```text
+  401 Authorization Required
+  nginx
+  https://dn790009.ca.archive.org/0/items/alchemik0000coel/alchemik0000coel.pdf
+  ```
+- **Causa Raiz:** O link era um item de empréstimo digital controlado (*controlled digital lending*) do Internet Archive. Os URLs `archive.org/download/<id>/<ficheiro>.pdf` devolvem HTTP 401/403 (nginx) para utilizadores não autenticados, mesmo quando a página `archive.org/details/<id>` responde 200 e oferece empréstimo legal.
+- **Auditoria Realizada:** 129 links `archive.org/download` foram verificados contra a API de metadados do Internet Archive. Desses, 34 tinham `access-restricted-item: true`: 33 eram obras com licença `outro` do ranking `world-top100-*` e 1 era *O Pequeno Príncipe* (indevidamente marcado como domínio público).
+- **Resolução Implementada:**
+  1. [`src/database/worldClassicsSeedData.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/database/worldClassicsSeedData.js): as 35 obras deixaram de expor downloads diretos do Internet Archive e passaram a apontar apenas para o catálogo público da Open Library (metadados, empréstimo legal ou compra). *O Pequeno Príncipe* e *O Diário de Anne Frank* passaram de `dominio-publico` para `outro`, porque os itens do Internet Archive são restritos e a situação de direitos varia por jurisdição.
+  2. [`migrations/0006_links_externos_seguros.sql`](file:///Users/mendes/Desktop/I%20am%20Abc/migrations/0006_links_externos_seguros.sql): remove os downloads restritos na D1 de produção e substitui as páginas de detalhe do Internet Archive por URLs codificados da Open Library. A migração é idempotente.
+  3. **Testes de Regressão:** [`test/world_classics_links.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/world_classics_links.test.js) (6 testes) e o cenário 33.6 em [`test/api.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/api.test.js), garantindo que nenhuma obra comercial expõe PDF/EPUB direto e que *O Alquimista* responde apenas com o link da Open Library.
+- **Regra Inviolável para Agentes:**
+  - **Nunca** publicar URLs `archive.org/download/...` para obras com licença `outro` ou para itens com `access-restricted-item: true`.
+  - Obras com direitos comerciais devem apontar para páginas de catálogo, empréstimo legal ou compra (Open Library, editora, biblioteca nacional).
+  - Downloads diretos só são permitidos quando a licença aberta for comprovada e o URL responder HTTP 200/206 sem autenticação.
+  - Qualquer novo importador deve validar `access-restricted-item` antes de catalogar links do Internet Archive.
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
@@ -597,7 +616,7 @@ Ambos os backends aplicam:
 ## 💻 6. Guia Rápido de Comandos para Agentes
 
 ```bash
-# Executar a suíte completa de testes automatizados (313 testes em 61 suítes)
+# Executar a suíte completa de testes automatizados (319 testes em 62 suítes)
 npm test
 
 # Executar diagnóstico completo de tráfego e consumo de cotas (D1 e Supabase)
@@ -631,7 +650,7 @@ node scripts/aplicar_indices_d1_auto.mjs
 ---
 
 ## 🔒 7. Compromisso Contínuo dos Agentes
-- **Nunca** quebre os 313 testes automatizados.
+- **Nunca** quebre os 319 testes automatizados.
 - **Sempre** preserve a hierarquia de marca **LinoDigital (mãe) · Lino Livre (produto)** em todas as superfícies.
 - **Nunca** hospede arquivos de mídia locais.
 - **Sempre** rode `npm test` e `npx tsc --noEmit` antes de qualquer commit.

@@ -1861,6 +1861,22 @@ describe('Testes de Integração da API Lino Livre (Fase 9)', () => {
     assert.equal(resBusca.status, 200);
     assert.equal(resBusca.data.total, 3, 'Deve encontrar os livros de Harry Potter e Pedro Coelho (Beatrix Potter)');
     assert.ok(resBusca.data.data.every(b => b.fonte_id_externo.startsWith('world-')), 'Todos os resultados devem pertencer à coleção world-*');
+
+    // 33.6 - O Alquimista não pode expor o PDF restrito do Internet Archive (HTTP 401/403).
+    const db = getDatabase();
+    const alquimista = db.prepare("SELECT id FROM livros WHERE fonte_id_externo = 'world-top100-4'").get();
+    assert.ok(alquimista, 'A obra world-top100-4 deve existir no banco de testes');
+    const resAlquimista = await request(`/api/livros/${alquimista.id}`);
+    assert.equal(resAlquimista.status, 200);
+    assert.equal(resAlquimista.data.licenca, 'outro');
+    assert.ok(
+      !resAlquimista.data.links.some(l => l.formato === 'pdf' && l.url.includes('archive.org/download')),
+      'O Alquimista não pode expor um PDF restrito do Internet Archive'
+    );
+    assert.ok(
+      resAlquimista.data.links.some(l => l.formato === 'html' && l.url.includes('openlibrary.org/search')),
+      'O Alquimista deve apontar para o catálogo público da Open Library'
+    );
   });
 
   // Teste 34: Livros Mais Populares e Procurados (Seção de Destaques e Ordenação Inicial)
