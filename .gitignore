@@ -70,3 +70,5 @@ cache/
 
 
 .scratch/
+lino-a11y-pr/
+lino-perf-pr/
