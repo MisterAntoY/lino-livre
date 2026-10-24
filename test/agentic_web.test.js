@@ -30,7 +30,8 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
       
       const text = await res.text();
       assert.ok(text.startsWith('# '), 'O ficheiro llms.txt deve iniciar com um cabeçalho H1 (# ) conforme llmstxt.org');
-      assert.ok(text.includes('Lino Livre'), 'Deve mencionar o nome da plataforma');
+      assert.ok(text.includes('LinoDigital'), 'Deve mencionar a marca institucional LinoDigital');
+      assert.ok(text.includes('Lino Livre'), 'Deve mencionar o produto Lino Livre');
       assert.ok(text.includes('/api/livros'), 'Deve apontar para os endpoints abertos');
       assert.ok(text.includes('Zero Armazenamento Local') || text.includes('intermediário'), 'Deve declarar arquitetura de intermediação legal');
     });
@@ -39,7 +40,8 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
       const res = await fetch(`${baseUrl}/llms-full.txt`);
       assert.equal(res.status, 200);
       const text = await res.text();
-      assert.ok(text.includes('# Lino Livre'), 'Deve conter título H1');
+      assert.ok(text.includes('# LinoDigital'), 'Deve conter título H1 com a marca-mãe');
+      assert.ok(text.includes('Lino Livre'), 'Deve conter o nome do produto');
       assert.ok(text.includes('/api/livros/destaques'), 'Deve documentar rota de destaques');
       assert.ok(text.includes('/api/cursos'), 'Deve documentar diretório de cursos');
       assert.ok(text.includes('/api/busca/federada'), 'Deve documentar busca federada RRF');
@@ -56,7 +58,7 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
 
       const data = await res.json();
       assert.equal(data.specVersion, '1.0.0', 'specVersion deve ser 1.0.0');
-      assert.equal(data.name, 'Lino Livre');
+      assert.equal(data.name, 'LinoDigital');
       assert.ok(Array.isArray(data.entries), 'entries deve ser um array de recursos');
       assert.ok(data.entries.length >= 2, 'Deve conter pelo menos as ferramentas essenciais');
 
@@ -71,7 +73,7 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
       const res = await fetch(`${baseUrl}/ai-catalog.json`);
       assert.equal(res.status, 200);
       const data = await res.json();
-      assert.equal(data.name, 'Lino Livre');
+      assert.equal(data.name, 'LinoDigital');
       assert.equal(data.specVersion, '1.0.0');
     });
   });

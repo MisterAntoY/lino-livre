@@ -7,7 +7,7 @@
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
-const CACHE_VERSION = 'v20261025';
+const CACHE_VERSION = 'v20261025b';
 const CORE_CACHE = `linolivre-core-${CACHE_VERSION}`;
 const API_CACHE = `linolivre-api-${CACHE_VERSION}`;
 const IMAGE_CACHE = `linolivre-images-v1`;
@@ -31,6 +31,8 @@ const PRECACHE_ASSETS = [
   '/manifest.json',
   '/favicon.svg',
   '/apple-touch-icon.png',
+  '/img/brand/linodigital-mark.svg',
+  '/img/brand/linodigital-og.jpg',
   '/img/icons/icon-192.png',
   '/img/icons/icon-512.png',
   '/img/icons/icon-maskable-192.png',

@@ -6,7 +6,7 @@
     "htmlLang": "en",
     "speechLang": "en-US"
   },
-  "title": "Lino Livre — Free books, for everyone.",
+  "title": "LinoDigital — Lino Livre | Free books, for everyone.",
   "ui": {
     "langLabel": "Site language",
     "brand": {
@@ -21,7 +21,7 @@
     },
     "pwa": {
       "installBtn": "Install App",
-      "installTitle": "Install Lino Livre on your phone or desktop",
+      "installTitle": "Install LinoDigital · Lino Livre on your phone or desktop",
       "offlineMode": "Offline Mode: No internet connection. Browsing cached books and pages."
     },
     "goal": {
@@ -224,7 +224,7 @@
       "tagline": "• Free books, for everyone. Public Domain works and Open Educational Resources.",
       "group": "WhatsApp Group",
       "channel": "WhatsApp Channel",
-      "mission": "Community, non-profit open library platform dedicated to universal access to knowledge, literature and tech education for students and educators in PALOP and the Global South.",
+      "mission": "LinoDigital is the institutional brand for technology and free knowledge. Lino Livre is its community, non-profit open library platform dedicated to universal access to knowledge, literature and tech education for students and educators in PALOP and the Global South.",
       "safeBadge": "🛡️ Search Intermediary Provider • Zero Local Storage of Files",
       "headingExplore": "Explore Library",
       "headingLegal": "Legal & Guidelines",

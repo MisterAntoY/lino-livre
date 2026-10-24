@@ -1,4 +1,4 @@
-# ⚖️ Termos de Uso, Isenção de Responsabilidade e Diretrizes Legais — Lino Livre
+# ⚖️ Termos de Uso, Isenção de Responsabilidade e Diretrizes Legais — LinoDigital · Lino Livre
 
 **Última atualização:** 11 de Outubro de 2026  
 **Versão:** 1.0 (Oficial)  
@@ -8,7 +8,7 @@
 
 ## 1. Apresentação e Missão da Plataforma
 
-O **Lino Livre** é uma iniciativa educacional, comunitária e sem fins lucrativos criada para democratizar o acesso à literatura, ao conhecimento técnico, científico e à formação profissional, prioritariamente para jovens, estudantes e educadores nos Países Africanos de Língua Oficial Portuguesa (PALOP) — Angola, Moçambique, Cabo Verde, Guiné-Bissau, São Tomé e Príncipe — e em todo o Sul Global.
+O **Lino Livre**, biblioteca digital da **LinoDigital**, é uma iniciativa educacional, comunitária e sem fins lucrativos criada para democratizar o acesso à literatura, ao conhecimento técnico, científico e à formação profissional, prioritariamente para jovens, estudantes e educadores nos Países Africanos de Língua Oficial Portuguesa (PALOP) — Angola, Moçambique, Cabo Verde, Guiné-Bissau, São Tomé e Príncipe — e em todo o Sul Global.
 
 O acesso universal ao conhecimento é um direito humano fundamental. Em regiões onde a aquisição de um livro didático ou técnico pode equivaler ao custo do sustento básico, o Lino Livre atua para derrubar barreiras financeiras e geográficas, reunindo recursos abertos, obras em domínio público e guias educacionais.
 
@@ -50,7 +50,7 @@ O Lino Livre respeita integralmente a propriedade intelectual, direitos de autor
 ### 4.1. Canal Oficial de Atendimento
 Toda solicitação de remoção ou notificação de infração deve ser enviada para:
 📧 **Email Oficial:** [bv6alblu6@mozmail.com](mailto:bv6alblu6@mozmail.com)  
-📌 **Assunto Obrigatório:** `[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre`
+📌 **Assunto Obrigatório:** `[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - LinoDigital · Lino Livre`
 
 ### 4.2. Requisitos da Notificação Formal
 Para que o pedido seja processado com máxima celeridade, a mensagem deve conter:

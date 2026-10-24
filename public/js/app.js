@@ -1,4 +1,4 @@
-// Lino Livre — Aplicação Web Digital
+// LinoDigital · Lino Livre — Aplicação Web Digital
 
 // Inicialização segura de Trusted Types (Prevenção de DOM XSS)
 if (typeof window !== 'undefined' && window.trustedTypes && typeof window.trustedTypes.createPolicy === 'function') {
@@ -2641,11 +2641,11 @@ const app = {
     if (!this.livroModalAtual) return;
     const l = this.livroModalAtual;
     const url = `${window.location.origin}/#livro-${l.id}`;
-    const texto = `📚 Leia "${l.titulo}" (${l.autor_nome || 'Autor Clássico'}) gratuitamente no Lino Livre:`;
+    const texto = `📚 Leia "${l.titulo}" (${l.autor_nome || 'Autor Clássico'}) gratuitamente no Lino Livre (LinoDigital):`;
 
     if (navigator.share) {
       navigator.share({
-        title: `${l.titulo} — Lino Livre`,
+        title: `${l.titulo} — LinoDigital · Lino Livre`,
         text: texto,
         url: url
       }).catch(() => {});
@@ -2933,7 +2933,7 @@ const app = {
     const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);
 
-    let texto = ` Junte-se ao Lino Livre na jornada dos 10 Milhões de Livros Livres! Já temos ${numFmt} obras abertas e gratuitas indexadas. Venha ler e contribuir:`;
+    let texto = ` Junte-se ao Lino Livre, da LinoDigital, na jornada dos 10 Milhões de Livros Livres! Já temos ${numFmt} obras abertas e gratuitas indexadas. Venha ler e contribuir:`;
     if (typeof t === 'function') {
       const trad = t('goal.shareText', { n: numFmt });
       if (trad && !trad.startsWith('goal.')) texto = trad;
@@ -2942,7 +2942,7 @@ const app = {
 
     if (navigator.share) {
       navigator.share({
-        title: 'Lino Livre — Rumo aos 10 Milhões de Livros Livres',
+        title: 'LinoDigital · Lino Livre — Rumo aos 10 Milhões de Livros Livres',
         text: texto,
         url: url
       }).catch(() => {});
@@ -3065,7 +3065,7 @@ const app = {
       this.deferredPrompt = null;
       const btn = document.getElementById('btn-instalar-app');
       if (btn) btn.classList.add('hidden');
-      this.mostrarToast('Aplicativo Lino Livre instalado com sucesso!');
+      this.mostrarToast('Aplicativo LinoDigital · Lino Livre instalado com sucesso!');
     });
 
     // 4. Detecção e notificação do status de rede (Online / Modo Offline)

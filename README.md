@@ -1,8 +1,10 @@
-# Lino Livre — Livros Livres, Para Todos
+# LinoDigital — Lino Livre
+
+> **LinoDigital** é a marca institucional de tecnologia e conhecimento livre. O **Lino Livre** é a sua biblioteca digital aberta de livros e cursos gratuitos.
 
 > *"Livros livres, para todos."*
 
-Plataforma aberta, ultrassimples e direta para distribuição de **livros digitais** e **cursos gratuitos**, voltada para escolas, estudantes e a comunidade em geral. O modelo de empréstimo físico e controle de inventário foi integralmente descartado em prol do acesso livre, irrestrito e legal.
+O **Lino Livre**, produto da **LinoDigital**, é uma plataforma aberta, ultrassimples e direta para distribuição de **livros digitais** e **cursos gratuitos**, voltada para escolas, estudantes e a comunidade em geral. O modelo de empréstimo físico e controle de inventário foi integralmente descartado em prol do acesso livre, irrestrito e legal.
 
 ---
 
@@ -31,7 +33,7 @@ Plataforma aberta, ultrassimples e direta para distribuição de **livros digita
 
 ## ⚖️ Arquitetura & Defesa Legal (Servidor Intermediário)
 
-> **AVISO LEGAL E ARQUITETÓNICO:** O **Lino Livre** é uma plataforma que atua exclusivamente como **intermediária e indexadora de links**.
+> **AVISO LEGAL E ARQUITETÓNICO:** O **Lino Livre**, da **LinoDigital**, é uma plataforma que atua exclusivamente como **intermediária e indexadora de links**.
 > 
 > - **Zero Armazenamento Local:** Nenhum arquivo de livro (PDF, EPUB, TXT ou binários) é armazenado no servidor ou no banco de dados do projeto.
 > - **Hospedagem Externa:** Todos os livros disponibilizados no catálogo estão hospedados fora da nossa infraestrutura, em servidores de terceiros e repositórios públicos externos.

@@ -8,7 +8,9 @@ exports.obterDiretrizesLegais = (req, res) => {
   return res.json({
     status: 'ativo',
     versao: '1.0',
-    plataforma: 'Lino Livre',
+    plataforma: 'LinoDigital · Lino Livre',
+    marca_mae: 'LinoDigital',
+    produto: 'Lino Livre',
     slogan: 'Livros livres, para todos.',
     natureza: 'Educacional, comunitária e sem fins lucrativos',
     missao: 'Democratização do acesso à leitura, formação técnica e literatura nos países de língua portuguesa (PALOP) e Sul Global.',
@@ -18,10 +20,10 @@ exports.obterDiretrizesLegais = (req, res) => {
       redirecionamento_protocolo: 'HTTP 302',
       diretriz_principal: 'Zero armazenamento local de arquivos binários (PDF, EPUB, MOBI) no servidor web e banco de dados. O acervo mantém unicamente metadados e links para provedores externos.'
     },
-    aviso_legal: 'O Lino Livre opera estritamente como plataforma intermediária e motor de busca de hiperligações externas públicas. Não controlamos, não editamos e não armazenamos o conteúdo físico nos nossos servidores.',
+    aviso_legal: 'O Lino Livre, da LinoDigital, opera estritamente como plataforma intermediária e motor de busca de hiperligações externas públicas. Não controlamos, não editamos e não armazenamos o conteúdo físico nos nossos servidores.',
     dmca_takedown: {
       canal_oficial: 'bv6alblu6@mozmail.com',
-      assunto_obrigatorio: '[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre',
+      assunto_obrigatorio: '[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - LinoDigital · Lino Livre',
       prazo_atendimento_horas: 48,
       compromisso: 'Desindexação célere e voluntária de links notificados de boa-fé por autores, editores ou seus representantes legais.',
       requisitos: [
@@ -78,7 +80,9 @@ exports.obterCreditos = (req, res) => {
 
     return res.json({
       status: 'ativo',
-      plataforma: 'Lino Livre',
+      plataforma: 'LinoDigital · Lino Livre',
+      marca_mae: 'LinoDigital',
+      produto: 'Lino Livre',
       missao: 'Livros livres, para todos. Democratização do acesso ao conhecimento através de catalogação aberta.',
       taxonomia_licencas: {
         'dominio-publico': 'Obras em Domínio Público por decurso de prazo patrimonial (vida do autor + 70 anos)',

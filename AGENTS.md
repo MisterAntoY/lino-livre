@@ -477,9 +477,22 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - Hodômetro `#placar-total-livros` atualizado para **2.000** (0.0200% da grande meta de 10.000.000).
   - Marco 1 (1.000) comemorado com a classe `reached`; Marco 2 (10.000) promovido a `active` com tag "Próximo marco" e meta imediata definida para 10.000.
   - Faltam exatamente 8.000 obras para atingir o Marco 2 e 9.998.000 para a grande meta global.
-  - Suíte automatizada mantida em **100% verde** (211 testes em 44 suítes) e TypeScript sem erros.
+  - Suíte automatizada mantida em **100% verde** (313 testes em 61 suítes) e TypeScript sem erros.
 
 ---
+
+### 2.30. Identidade de Marca: LinoDigital (Marca-Mãe) e Lino Livre (Produto)
+- **Hierarquia oficial e inviolável:**
+  - **LinoDigital** é a marca institucional de tecnologia e conhecimento livre, responsável pela plataforma, infraestrutura e identidade visual.
+  - **Lino Livre** é o produto/biblioteca digital aberta da LinoDigital, dedicado a livros e cursos gratuitos.
+- **Regra de redação:** nunca eliminar o nome do produto em contextos legais, de licenças ou de intermediação. Usar a forma composta **“LinoDigital · Lino Livre”** em títulos, rodapés e metadados, ou **“Lino Livre, da LinoDigital”** em textos corridos.
+- **Ativos oficiais da marca:**
+  - `public/img/brand/linodigital-mark.svg` — símbolo compacto (livro aberto + estrela) para cabeçalhos.
+  - `public/img/brand/linodigital-logo.svg` — assinatura horizontal para documentação e materiais.
+  - `public/img/brand/linodigital-og.svg` + `linodigital-og.jpg` — cartão Open Graph/Twitter 1200×630 com a hierarquia de marca.
+  - `public/img/icons/icon.svg` + `icon-192.png`, `icon-512.png`, `icon-maskable-*.png` e `apple-touch-icon.png` — ícones PWA com a assinatura “LINODIGITAL / LINO LIVRE”.
+- **Superfícies obrigatórias de aplicação:** cabeçalho e rodapé de todas as páginas, `manifest.webmanifest`, `<title>`/Open Graph/Twitter, JSON-LD (`Organization` e `WebSite`), `llms.txt`, `llms-full.txt`, `ai-catalog.json`, locales i18n, README e fallbacks do Worker.
+- **Teste de regressão:** `test/brand_linodigital.test.js` valida a presença da marca-mãe, do produto, dos ativos e da hierarquia nos metadados.
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
@@ -584,7 +597,7 @@ Ambos os backends aplicam:
 ## 💻 6. Guia Rápido de Comandos para Agentes
 
 ```bash
-# Executar a suíte completa de testes automatizados (211 testes em 44 suítes)
+# Executar a suíte completa de testes automatizados (313 testes em 61 suítes)
 npm test
 
 # Executar diagnóstico completo de tráfego e consumo de cotas (D1 e Supabase)
@@ -618,7 +631,8 @@ node scripts/aplicar_indices_d1_auto.mjs
 ---
 
 ## 🔒 7. Compromisso Contínuo dos Agentes
-- **Nunca** quebre os 211 testes automatizados.
+- **Nunca** quebre os 313 testes automatizados.
+- **Sempre** preserve a hierarquia de marca **LinoDigital (mãe) · Lino Livre (produto)** em todas as superfícies.
 - **Nunca** hospede arquivos de mídia locais.
 - **Sempre** rode `npm test` e `npx tsc --noEmit` antes de qualquer commit.
 - **Sempre** garanta que qualquer novo curso ou livro contenha uma licença aberta válida e comprovada.

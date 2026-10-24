@@ -90,14 +90,14 @@ describe('Performance frontend — LCP, fontes e animações compostas', () => {
   });
 
   test('6. Assets versionados para cache longo com invalidação', () => {
-    assert.ok(html.includes('/css/style.css?v=20261025'), 'CSS deve usar ?v=20261025');
-    assert.ok(html.includes('/js/app.js?v=20261025'), 'app.js deve usar ?v=20261025');
-    assert.ok(html.includes('/js/i18n.js?v=20261025'), 'i18n.js deve usar ?v=20261025');
+    assert.ok(html.includes('/css/style.css?v=20261025b'), 'CSS deve usar ?v=20261025b');
+    assert.ok(html.includes('/js/app.js?v=20261025b'), 'app.js deve usar ?v=20261025b');
+    assert.ok(html.includes('/js/i18n.js?v=20261025b'), 'i18n.js deve usar ?v=20261025b');
   });
 
   test('7. Service Worker alinhado com a versão dos assets e com as fontes locais', () => {
     assert.ok(
-      /CACHE_VERSION\s*=\s*'v20261025'/.test(sw),
+      /CACHE_VERSION\s*=\s*'v20261025b'/.test(sw),
       'CACHE_VERSION deve ser invalidado a cada release de assets'
     );
     assert.ok(

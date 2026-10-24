@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="LinoDigital — Lino Livre">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18" result="b"/>
+      <feComposite in="SourceGraphic" in2="b" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="235" cy="315" r="185" fill="url(#emerald)" opacity="0.12" filter="url(#glow)"/>
+  <rect x="80" y="160" width="310" height="310" rx="70" fill="#0b1220" stroke="#334155" stroke-width="3"/>
+  <path d="M235 245 C199 222 137 222 95 244 V398 C137 376 199 376 235 398 Z" fill="url(#emerald)"/>
+  <path d="M235 245 C271 222 333 222 375 244 V398 C333 376 271 376 235 398 Z" fill="#f8fafc"/>
+  <path d="M235 245 V398" stroke="url(#gold)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M135 285 C163 274 192 278 214 290" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+  <path d="M135 320 C163 309 192 313 214 325" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+  <path d="M256 290 C278 278 307 274 335 285" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round"/>
+  <path d="M256 325 C278 313 307 309 335 320" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="235" cy="200" r="17" fill="url(#gold)" filter="url(#glow)"/>
+  <text x="455" y="290" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="104" font-weight="800" fill="#f8fafc" letter-spacing="-3">LinoDigital</text>
+  <text x="460" y="360" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#34d399" letter-spacing="1">Lino Livre · Conhecimento aberto</text>
+  <text x="460" y="425" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="500" fill="#cbd5e1">Livros livres, cursos gratuitos e leitura aberta.</text>
+  <text x="460" y="505" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#94a3b8" letter-spacing="1.5">LINOLIVRE.ORG · PALOP &amp; SUL GLOBAL</text>
+</svg>

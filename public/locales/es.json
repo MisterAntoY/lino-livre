@@ -6,7 +6,7 @@
     "htmlLang": "es",
     "speechLang": "es-ES"
   },
-  "title": "Lino Livre — Libros libres, para todos.",
+  "title": "LinoDigital — Lino Livre | Libros libres, para todos.",
   "ui": {
     "langLabel": "Idioma del sitio",
     "brand": {
@@ -22,7 +22,7 @@
     },
     "pwa": {
       "installBtn": "Instalar App",
-      "installTitle": "Instalar la aplicación Lino Livre en tu dispositivo",
+      "installTitle": "Instalar la aplicación LinoDigital · Lino Livre en tu dispositivo",
       "offlineMode": "Modo Offline: Sin conexión a internet. Navegando en libros y páginas en caché."
     },
     "kofi": {
@@ -243,7 +243,7 @@
       "tagline": "• Libros libres, para todos. Obras de dominio público y recursos educativos abiertos.",
       "group": "Grupo de WhatsApp",
       "channel": "Canal de WhatsApp",
-      "mission": "Plataforma comunitaria y sin fines de lucro dedicada a democratizar el acceso universal al conocimiento, la literatura y la tecnología para estudiantes y educadores en los países de habla hispana y el Sur Global.",
+      "mission": "LinoDigital es la marca institucional de tecnología y conocimiento libre. Lino Livre es su biblioteca digital comunitaria y sin fines de lucro, dedicada a democratizar el acceso universal al conocimiento, la literatura y la tecnología para estudiantes y educadores en los países de habla hispana y el Sur Global.",
       "safeBadge": "🛡️ Proveedor Intermediario de Búsqueda • Cero Almacenamiento Local",
       "headingExplore": "Explorar Catálogo",
       "headingLegal": "Legal y Directrices",

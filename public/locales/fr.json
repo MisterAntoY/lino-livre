@@ -6,7 +6,7 @@
     "htmlLang": "fr",
     "speechLang": "fr-FR"
   },
-  "title": "Lino Livre — Des livres libres, pour tous.",
+  "title": "LinoDigital — Lino Livre | Des livres libres, pour tous.",
   "ui": {
     "langLabel": "Langue du site",
     "brand": {
@@ -21,7 +21,7 @@
     },
     "pwa": {
       "installBtn": "Installer l'App",
-      "installTitle": "Installer l'application Lino Livre sur votre appareil",
+      "installTitle": "Installer l'application LinoDigital · Lino Livre sur votre appareil",
       "offlineMode": "Mode Hors-ligne: Aucune connexion internet. Navigation dans le contenu en cache."
     },
     "goal": {
@@ -207,7 +207,7 @@
       "tagline": "• Des livres libres, pour tous. Œuvres du domaine public et ressources éducatives ouvertes.",
       "group": "Groupe WhatsApp",
       "channel": "Canal WhatsApp",
-      "mission": "Plateforme communautaire et à but non lucratif dédiée à démocratiser l'accès universel au savoir, à la littérature et à la formation technique pour les étudiants et enseignants des PALOP et du Sud Global.",
+      "mission": "LinoDigital est la marque institutionnelle de technologie et de savoir libre. Lino Livre est sa bibliothèque numérique communautaire et à but non lucratif, dédiée à démocratiser l'accès universel au savoir, à la littérature et à la formation technique pour les étudiants et enseignants des PALOP et du Sud Global.",
       "safeBadge": "🛡️ Fournisseur Intermédiaire d'Indexation • Zéro Stockage Local",
       "headingExplore": "Explorer le Catalogue",
       "headingLegal": "Mentions Légales",

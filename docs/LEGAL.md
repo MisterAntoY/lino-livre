@@ -1,4 +1,4 @@
-# ⚖️ Conformidade Legal, Direitos de Autor e Diretrizes Jurídicas — Lino Livre
+# ⚖️ Conformidade Legal, Direitos de Autor e Diretrizes Jurídicas — LinoDigital · Lino Livre
 
 **Data de Atualização:** 20 de Outubro de 2026  
 **Versão:** 2.0 (Marco Jurídico e Internacional)  
@@ -9,7 +9,7 @@
 
 ## 1. Missão Educacional, Natureza Comunitária e Zero Monetização
 
-O **Lino Livre** é uma plataforma comunitária, cívica e educacional sem fins lucrativos desenvolvida prioritariamente para estudantes, investigadores, docentes e autodidatas nos **Países Africanos de Língua Oficial Portuguesa (PALOP)** — com foco primário em **Angola**, e extensão a Moçambique, Cabo Verde, Guiné-Bissau e São Tomé e Príncipe — além de toda a comunidade lusófona do Sul Global.
+O **Lino Livre**, biblioteca digital da **LinoDigital**, é uma plataforma comunitária, cívica e educacional sem fins lucrativos desenvolvida prioritariamente para estudantes, investigadores, docentes e autodidatas nos **Países Africanos de Língua Oficial Portuguesa (PALOP)** — com foco primário em **Angola**, e extensão a Moçambique, Cabo Verde, Guiné-Bissau e São Tomé e Príncipe — além de toda a comunidade lusófona do Sul Global.
 
 ### 1.1. Princípio da Zero Monetização
 - **100% Gratuito:** O Lino Livre não cobra qualquer taxa, mensalidade, anuidade ou assinatura dos seus utilizadores.
@@ -70,7 +70,7 @@ O Lino Livre opera sob a doutrina de boa-fé (*Safe Harbor*), garantindo a todos
 ### 5.1. Canal Oficial de Atendimento
 As notificações de infração ou pedidos de desindexação devem ser dirigidos ao encarregado de conformidade:
 - **E-mail:** [bv6alblu6@mozmail.com](mailto:bv6alblu6@mozmail.com)
-- **Assunto Obrigatório:** `[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre`
+- **Assunto Obrigatório:** `[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - LinoDigital · Lino Livre`
 
 ### 5.2. Compromisso de Resolução em até 48 Horas Úteis
 O Lino Livre compromete-se formalmente a:

@@ -1,8 +1,8 @@
-# Lino Livre — Livros Livres e Conhecimento Aberto para Todos
+# LinoDigital — Lino Livre | Conhecimento Aberto para Todos
 
-> Lino Livre é uma plataforma pública, aberta e comunitária de catalogação e indexação educacional de livros digitais em domínio público e recursos educacionais abertos (REA/OER), além de cursos livres gratuitos e roadmaps profissionais para os países de língua oficial portuguesa (PALOP) e Sul Global.
+> **LinoDigital** é a marca institucional de tecnologia e conhecimento livre. O **Lino Livre** é a sua biblioteca digital pública, aberta e comunitária de catalogação e indexação educacional de livros digitais em domínio público e recursos educacionais abertos (REA/OER), além de cursos livres gratuitos e roadmaps profissionais para os países de língua oficial portuguesa (PALOP) e Sul Global.
 
-O Lino Livre opera estritamente como um **intermediário de busca educacional** (com zero armazenamento local de binários de livros e redirecionamento HTTP 302 direto para repositórios externos abertos).
+O Lino Livre, operado pela LinoDigital, atua estritamente como um **intermediário de busca educacional** (com zero armazenamento local de binários de livros e redirecionamento HTTP 302 direto para repositórios externos abertos).
 
 ## Recursos Principais para Agentes de IA
 

@@ -1249,27 +1249,29 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       const ct = res.headers.get('content-type') || '';
       assert.ok(ct.includes('text/markdown') || ct.includes('text/plain'));
       const text = await res.text();
-      assert.ok(text.includes('# Lino Livre'));
+      assert.ok(text.includes('# LinoDigital'));
+      assert.ok(text.includes('Lino Livre'));
     });
 
     test('13.2 - GET /llms-full.txt no Worker responde 200 com documentação técnica', async () => {
       const res = await workerRequest('/llms-full.txt', { method: 'GET' });
       assert.equal(res.status, 200);
       const text = await res.text();
-      assert.ok(text.includes('# Lino Livre'));
+      assert.ok(text.includes('# LinoDigital'));
+      assert.ok(text.includes('Lino Livre'));
     });
 
     test('13.3 - GET /.well-known/ai-catalog.json e /ai-catalog.json respondem 200 com ARD schema', async () => {
       const res1 = await workerRequest('/.well-known/ai-catalog.json', { method: 'GET' });
       assert.equal(res1.status, 200);
       const json1 = await res1.json();
-      assert.equal(json1.name, 'Lino Livre');
+      assert.equal(json1.name, 'LinoDigital');
       assert.equal(json1.specVersion, '1.0.0');
 
       const res2 = await workerRequest('/ai-catalog.json', { method: 'GET' });
       assert.equal(res2.status, 200);
       const json2 = await res2.json();
-      assert.equal(json2.name, 'Lino Livre');
+      assert.equal(json2.name, 'LinoDigital');
     });
     test('13.4 - GET /.well-known/security.txt responde 200 (RFC 9116) sem depender de ficheiros ocultos', async () => {
       const res = await workerRequest('/.well-known/security.txt', { method: 'GET' });

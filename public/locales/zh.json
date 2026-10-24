@@ -6,7 +6,7 @@
     "htmlLang": "zh-CN",
     "speechLang": "zh-CN"
   },
-  "title": "Lino Livre — 自由书籍，人人共享。",
+  "title": "LinoDigital — Lino Livre | 自由书籍，人人共享。",
   "ui": {
     "langLabel": "网站语言",
     "brand": {
@@ -21,7 +21,7 @@
     },
     "pwa": {
       "installBtn": "安装应用",
-      "installTitle": "在手机或电脑上安装 Lino Livre",
+      "installTitle": "在手机或电脑上安装 LinoDigital · Lino Livre",
       "offlineMode": "离线模式：暂无网络连接，正在浏览本地缓存的内容与图书。"
     },
     "goal": {
@@ -207,7 +207,7 @@
       "tagline": "• 自由书籍，人人共享。公有领域作品与开放教育资源。",
       "group": "WhatsApp 群组",
       "channel": "WhatsApp 频道",
-      "mission": "面向葡语国家（PALOP）和全球南方学生与教育工作者的社区非营利开放图书馆平台，致力于促进知识、文学和技术教育的普及平等。",
+      "mission": "LinoDigital 是技术与自由知识的机构品牌。Lino Livre 是其社区非营利开放图书馆平台，面向葡语国家（PALOP）和全球南方的学生与教育工作者，致力于促进知识、文学和技术教育的普及平等。",
       "safeBadge": "🛡️ 中介搜索索引服务商 • 本地零文件存储",
       "headingExplore": "探索馆藏",
       "headingLegal": "法律与准则",

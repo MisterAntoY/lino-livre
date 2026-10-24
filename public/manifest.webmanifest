@@ -1,18 +1,26 @@
 {
   "id": "/?source=pwa",
-  "name": "Lino Livre — Livros Livres, Para Todos",
-  "short_name": "Lino Livre",
-  "description": "Biblioteca digital gratuita e aberta: clássicos de domínio público da lusofonia e literatura de África, além de mais de 8.500 cursos gratuitos com certificados para estudantes e professores.",
+  "name": "LinoDigital — Lino Livre",
+  "short_name": "LinoDigital",
+  "description": "LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital gratuita: clássicos de domínio público da lusofonia e literatura de África, além de mais de 8.500 cursos gratuitos com certificados para estudantes e professores.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
   "background_color": "#0f172a",
   "theme_color": "#10b981",
   "lang": "pt-AO",
   "dir": "ltr",
-  "categories": ["education", "books", "reference"],
+  "categories": [
+    "education",
+    "books",
+    "reference"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
@@ -52,28 +60,48 @@
       "short_name": "Livros",
       "description": "Explorar catálogo de obras abertas e domínio público",
       "url": "/#livros",
-      "icons": [{ "src": "/img/icons/icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/img/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Cursos Gratuitos",
       "short_name": "Cursos",
       "description": "Cursos gratuitos com certificados e roadmaps de TI",
       "url": "/#cursos",
-      "icons": [{ "src": "/img/icons/icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/img/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Cartaz & Comunidade",
       "short_name": "Comunidade",
       "description": "Cartaz escolar para impressão e grupos do WhatsApp",
       "url": "/comunidade",
-      "icons": [{ "src": "/img/icons/icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/img/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Dicas de Estudo",
       "short_name": "Dicas",
       "description": "Métodos de estudo e hábitos atômicos",
       "url": "/#dicas",
-      "icons": [{ "src": "/img/icons/icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/img/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

@@ -47,8 +47,8 @@ describe('Suíte PWA (Progressive Web App) — Lino Livre', () => {
     assert.ok(res.headers.get('cache-control'), 'Deve possuir cabeçalho Cache-Control');
 
     const manifest = res.data;
-    assert.equal(manifest.name, 'Lino Livre — Livros Livres, Para Todos');
-    assert.equal(manifest.short_name, 'Lino Livre');
+    assert.equal(manifest.name, 'LinoDigital — Lino Livre');
+    assert.equal(manifest.short_name, 'LinoDigital');
     assert.equal(manifest.display, 'standalone');
     assert.equal(manifest.start_url, '/?source=pwa');
     assert.equal(manifest.theme_color, '#10b981');
@@ -60,7 +60,7 @@ describe('Suíte PWA (Progressive Web App) — Lino Livre', () => {
   test('2. Compatibilidade legada com /manifest.json', async () => {
     const res = await request('/manifest.json');
     assert.equal(res.status, 200, 'Deveria responder 200 para /manifest.json');
-    assert.equal(res.data.short_name, 'Lino Livre');
+    assert.equal(res.data.short_name, 'LinoDigital');
   });
 
   test('3. Service Worker (/sw.js) deve ser servido com escopo raiz permitido e cabeçalhos defensivos', async () => {

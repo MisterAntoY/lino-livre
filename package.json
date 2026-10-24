@@ -1,7 +1,7 @@
 {
   "name": "lino-livre",
   "version": "1.0.0",
-  "description": "Lino Livre — Livros livres, para todos. Plataforma de livros digitais e cursos gratuitos.",
+  "description": "LinoDigital · Lino Livre — Livros livres e cursos gratuitos. Plataforma de intermediação e indexação de conhecimento aberto.",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -24,7 +24,7 @@
     "security:probe": "node scripts/security_probe_local.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "LinoDigital",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
@@ -42,5 +42,11 @@
     "prisma": "^8.0.0-rc.23",
     "typescript": "^7.0.2",
     "wrangler": "^4.149.0"
+  },
+  "brand": "LinoDigital",
+  "homepage": "https://linolivre.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MisterAntoY/lino-livre.git"
   }
 }

@@ -1,4 +1,4 @@
-# Lino Livre — https://lino-livre.linolivre.workers.dev
+# LinoDigital · Lino Livre — https://lino-livre.linolivre.workers.dev
 # Biblioteca digital gratuita de livros de África e da lusofonia.
 
 User-agent: *

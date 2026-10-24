@@ -1,4 +1,4 @@
-// Lino Livre — Sistema de internacionalização (i18n)
+// LinoDigital · Lino Livre — Sistema de internacionalização (i18n)
 // Idiomas disponíveis: pt (pt-AO, base), pt-br (pt-BR), en, de, zh, fr
 //
 // Uso:
@@ -161,7 +161,7 @@
 
     titulo() {
       const d = this.dict || this.base;
-      return (d && d.title) || 'Lino Livre';
+      return (d && d.title) || 'LinoDigital — Lino Livre | Livros livres, para todos.';
     },
 
     // sinopse do livro traduzida (chave = id do livro); cai para o texto do banco

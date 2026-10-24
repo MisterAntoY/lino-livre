@@ -1,9 +1,9 @@
-# Lino Livre — Documentação Técnica Completa para Modelos de Linguagem e Agentes Autônomos
+# LinoDigital — Lino Livre | Documentação Técnica Completa para Modelos de Linguagem e Agentes Autônomos
 
-> Guia detalhado de integração, esquemas de dados, endpoints REST e diretrizes de conformidade jurídica da plataforma Lino Livre.
+> Guia detalhado de integração, esquemas de dados, endpoints REST e diretrizes de conformidade jurídica da plataforma **LinoDigital** e da sua biblioteca digital **Lino Livre**.
 
 ## 1. Visão Geral da Arquitetura
-O Lino Livre opera como um **provedor intermediário de busca educacional** sob a Lei n.º 15/14 de Angola e tratados internacionais da WIPO/OMPI.
+O Lino Livre, produto da LinoDigital, opera como um **provedor intermediário de busca educacional** sob a Lei n.º 15/14 de Angola e tratados internacionais da WIPO/OMPI.
 - **Zero Armazenamento Local de Binários:** O servidor e banco de dados nunca armazenam arquivos de livros (PDF, EPUB, TXT, MOBI). O banco guarda apenas metadados (título, autor, ano, idioma, licença, sinopse) e links de redirecionamento (HTTP 302).
 - **Conteúdo em Texto:** Quando presente na coluna `conteudo_texto`, pertence 100% comprovadamente ao Domínio Público universal (autores falecidos há mais de 70 anos).
 - **Redirecionamento 302:** O acesso/download do usuário é feito via redirecionamento HTTP 302 para repositórios externos (ex.: Wikisource, Gutenberg, Standard Ebooks, Repositórios Universitários, GitHub).

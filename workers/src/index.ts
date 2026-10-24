@@ -1866,7 +1866,7 @@ app.post('/api/sugestoes', async (c) => {
 
     return c.json({
       sucesso: true,
-      mensagem: 'Sugestão recebida com sucesso! Passará pela curadoria do Lino Livre antes de ser publicada.',
+      mensagem: 'Sugestão recebida com sucesso! Passará pela curadoria do Lino Livre (LinoDigital) antes de ser publicada.',
       id: res.meta?.last_row_id
     }, 201);
   } catch (err: any) {
@@ -2612,7 +2612,7 @@ app.get('/llms.txt', async (c) => {
     newRes.headers.set('Cache-Control', 'public, max-age=86400');
     return newRes;
   }
-  return c.text('# Lino Livre — Livros Livres e Conhecimento Aberto para Todos\n\n> Plataforma pública de catalogação e busca de livros em domínio público e cursos livres gratuitos.', 200, {
+  return c.text('# LinoDigital — Lino Livre | Conhecimento Aberto para Todos\n\n> LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital pública de livros em domínio público e cursos livres gratuitos.', 200, {
     'Content-Type': 'text/markdown; charset=utf-8',
     'Cache-Control': 'public, max-age=86400'
   });
@@ -2626,7 +2626,7 @@ app.get('/llms-full.txt', async (c) => {
     newRes.headers.set('Cache-Control', 'public, max-age=86400');
     return newRes;
   }
-  return c.text('# Lino Livre — Documentação Técnica Completa para Modelos de Linguagem\n\nAPI REST: GET /api/livros, GET /api/cursos, GET /api/busca/federada, GET /api/dashboard.', 200, {
+  return c.text('# LinoDigital — Lino Livre | Documentação Técnica Completa para Modelos de Linguagem\n\nAPI REST: GET /api/livros, GET /api/cursos, GET /api/busca/federada, GET /api/dashboard.', 200, {
     'Content-Type': 'text/markdown; charset=utf-8',
     'Cache-Control': 'public, max-age=86400'
   });
@@ -2642,8 +2642,8 @@ const servirAiCatalogWorker = async (c: any) => {
   }
   return c.json({
     specVersion: '1.0.0',
-    name: 'Lino Livre',
-    description: 'Plataforma pública e comunitária de indexação e busca educacional de livros digitais em domínio público e cursos abertos.',
+    name: 'LinoDigital',
+    description: 'LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital pública e comunitária de indexação e busca educacional de livros digitais em domínio público e cursos abertos.',
     url: 'https://linolivre.org',
     documentationUrl: 'https://linolivre.org/llms.txt',
     entries: [
@@ -2702,7 +2702,9 @@ app.get('/api/legal', (c) => {
   return c.json({
     status: 'ativo',
     versao: '1.0',
-    plataforma: c.env.SITE_NAME || 'Lino Livre',
+    plataforma: c.env.SITE_NAME || 'LinoDigital · Lino Livre',
+    marca_mae: 'LinoDigital',
+    produto: 'Lino Livre',
     slogan: c.env.SITE_SLOGAN || 'Livros livres, para todos.',
     natureza: 'Educacional, comunitária e sem fins lucrativos',
     missao: 'Democratização do acesso à leitura, formação técnica e literatura nos países de língua portuguesa (PALOP) e Sul Global.',
@@ -2712,10 +2714,10 @@ app.get('/api/legal', (c) => {
       redirecionamento_protocolo: 'HTTP 302',
       diretriz_principal: 'Zero armazenamento local de arquivos binários (PDF, EPUB, MOBI) no servidor web e banco de dados. O acervo mantém unicamente metadados e links para provedores externos.'
     },
-    aviso_legal: 'O Lino Livre opera estritamente como plataforma intermediária e motor de busca de hiperligações externas públicas. Não controlamos, não editamos e não armazenamos o conteúdo físico nos nossos servidores.',
+    aviso_legal: 'O Lino Livre, da LinoDigital, opera estritamente como plataforma intermediária e motor de busca de hiperligações externas públicas. Não controlamos, não editamos e não armazenamos o conteúdo físico nos nossos servidores.',
     dmca_takedown: {
       canal_oficial: c.env.SUPPORT_EMAIL || 'bv6alblu6@mozmail.com',
-      assunto_obrigatorio: '[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre',
+      assunto_obrigatorio: '[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - LinoDigital · Lino Livre',
       prazo_atendimento_horas: 48,
       compromisso: 'Desindexação célere e voluntária de links notificados de boa-fé por autores, editores ou seus representantes legais.',
       requisitos: [
@@ -2779,7 +2781,9 @@ app.get('/api/creditos', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json({
       status: 'ativo',
-      plataforma: c.env.SITE_NAME || 'Lino Livre',
+      plataforma: c.env.SITE_NAME || 'LinoDigital · Lino Livre',
+      marca_mae: 'LinoDigital',
+      produto: 'Lino Livre',
       missao: 'Livros livres, para todos. Democratização do acesso ao conhecimento através de catalogação aberta.',
       taxonomia_licencas: {
         'dominio-publico': 'Obras em Domínio Público por decurso de prazo patrimonial (vida do autor + 70 anos)',
@@ -2964,10 +2968,10 @@ app.notFound((c) => {
   }
   return c.html(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>404 — Página não encontrada | Lino Livre</title>
+<title>404 — Página não encontrada | LinoDigital · Lino Livre</title>
 <meta name="robots" content="noindex">
 <style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center;padding:24px}a{color:#34d399}</style>
-</head><body><main><h1>404</h1><p>Esta página não existe no Lino Livre.</p>
+</head><body><main><h1>404</h1><p>Esta página não existe no LinoDigital · Lino Livre.</p>
 <p><a href="/">Voltar ao acervo de livros livres</a></p></main></body></html>`, 404);
 });
 

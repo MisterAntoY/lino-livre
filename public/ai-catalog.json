@@ -1,12 +1,12 @@
 {
   "$schema": "https://agenticresourcediscovery.org/schemas/v1/ai-catalog.json",
   "specVersion": "1.0.0",
-  "name": "Lino Livre",
-  "description": "Plataforma pública e comunitária de indexação e busca educacional de livros digitais livres em domínio público e cursos abertos nos PALOP e Sul Global.",
+  "name": "LinoDigital",
+  "description": "LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital pública e comunitária de indexação e busca educacional de livros digitais livres em domínio público e cursos abertos nos PALOP e Sul Global.",
   "url": "https://linolivre.org",
   "documentationUrl": "https://linolivre.org/llms.txt",
   "contact": {
-    "name": "Equipe Lino Livre",
+    "name": "Equipe LinoDigital",
     "email": "bv6alblu6@mozmail.com"
   },
   "entries": [
