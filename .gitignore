@@ -69,3 +69,4 @@ lote_importacao*.sql
 cache/
 
 
+.scratch/
