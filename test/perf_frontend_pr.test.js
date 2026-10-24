@@ -90,18 +90,18 @@ describe('Performance frontend — LCP, fontes e animações compostas', () => {
   });
 
   test('6. Assets versionados para cache longo com invalidação', () => {
-    assert.ok(html.includes('/css/style.css?v=20261024'), 'CSS deve usar ?v=20261024');
-    assert.ok(html.includes('/js/app.js?v=20261024'), 'app.js deve usar ?v=20261024');
-    assert.ok(html.includes('/js/i18n.js?v=20261024'), 'i18n.js deve usar ?v=20261024');
+    assert.ok(html.includes('/css/style.css?v=20261025'), 'CSS deve usar ?v=20261025');
+    assert.ok(html.includes('/js/app.js?v=20261025'), 'app.js deve usar ?v=20261025');
+    assert.ok(html.includes('/js/i18n.js?v=20261025'), 'i18n.js deve usar ?v=20261025');
   });
 
   test('7. Service Worker alinhado com a versão dos assets e com as fontes locais', () => {
     assert.ok(
-      /CACHE_VERSION\s*=\s*'v20261024perf'/.test(sw),
+      /CACHE_VERSION\s*=\s*'v20261025'/.test(sw),
       'CACHE_VERSION deve ser invalidado a cada release de assets'
     );
     assert.ok(
-      sw.includes('/fonts/lora-latin-var.woff2'),
+      sw.includes('/fonts/lora-latin-var-v20261023.woff2'),
       'o service worker deve pré-cachear a fonte Lora auto-hospedada'
     );
   });
