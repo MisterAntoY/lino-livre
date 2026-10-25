@@ -106,7 +106,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-hist-4",
     "licenca": "outro",
     "sinopse": "Coletânea histórica de aforismos e discursos de Mao Tsé-Tung amplamente impressa e distribuída na China no século XX.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/15047576-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -125,7 +125,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-hist-5",
     "licenca": "dominio-publico",
     "sinopse": "Texto sagrado do Islã, considerado uma das obras fundamentais da literatura clássica árabe e da história das religiões mundiais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/12779381-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -190,7 +190,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-3",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 150 milhões. Título original: \"The Lord of the Rings\" (1954). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/15024346-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -247,7 +247,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-6",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 100 milhões. Título original: \"And Then There Were None\" (1939). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/11172296-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -366,7 +366,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-11",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 85 milhões. Título original: \"The Lion, the Witch and the Wardrobe\" (1950). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/8441376-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -484,7 +484,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-17",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 60 milhões. Título original: \"The Bridges of Madison County\" (1992). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/490280-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -568,7 +568,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-21",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 50 milhões. Título original: \"The Common Sense Book of Baby and Child Care\" (1946). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/6924878-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -660,7 +660,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-25",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 50 milhões. Título original: \"The Eagle Has Landed\" (1975). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/271801-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -679,7 +679,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-26",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 50 milhões. Título original: \"Watership Down\" (1972). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/6450196-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -698,7 +698,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-27",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 50 milhões. Título original: \"The Hite Report\" (1976). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/846825-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -736,7 +736,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-29",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 50 milhões. Título original: \"The Ginger Man\" (1955). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/12961708-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -820,7 +820,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-33",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 43 milhões. Título original: \"The Very Hungry Caterpillar\" (1969). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/6573238-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -885,7 +885,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-36",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 40 milhões. Título original: \"Flowers in the Attic\" (1979). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/14598487-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -961,7 +961,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-40",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em > 37 milhões. Título original: \"Alcoholics Anonymous\" (1939). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/706712-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -980,7 +980,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-41",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 37 milhões. Título original: \"Fear of Flying\" (1973). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/296653-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -999,7 +999,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-42",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 36,4 milhões. Título original: \"Как закалялась сталь\" (1932). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/9353109-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1091,7 +1091,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-46",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 35 milhões. Título original: \"Your Erroneous Zones\" (1976). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/9541476-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1110,7 +1110,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-47",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 33 milhões. Título original: \"The Thorn Birds\" (1977). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/8293225-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1129,7 +1129,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-48",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 32,7 milhões. Título original: \"Kane and Abel\" (1979). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/11279169-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1167,7 +1167,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-50",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 31 milhões. Título original: \"Valley of the Dolls\" (1966). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/568844-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1232,7 +1232,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-53",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 30 milhões. Título original: \"Rebecca\" (1938). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/8767961-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1251,7 +1251,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-54",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 30 milhões. Título original: \"The Revolt of Mamie Stover\" (1951). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/6558221-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1327,7 +1327,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-58",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 28 milhões. Título original: \"James and the Giant Peach\" (1961). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/8252454-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1373,7 +1373,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-60",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em > 26 milhões. Título original: \"Молодая гвардия\" (1945). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/698900-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1457,7 +1457,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-64",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 25 milhões. Título original: \"Lust for Life\" (1934). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/6617761-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1522,7 +1522,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-67",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 25 milhões. Título original: \"窓ぎわのトットちゃん\" (1981). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/1043590-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1560,7 +1560,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-69",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em > 24 milhões. Título original: \"Поднятая целина\" (1935). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/6508657-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1655,7 +1655,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-74",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em > 21 milhões. Título original: \"Дядя Стёпа\" (1936). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/10620807-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1693,7 +1693,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-76",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 21 milhões. Título original: \"Love Story\" (1970). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/5004689-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1769,7 +1769,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-80",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"Туманность Андромеды\" (1957). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/4807684-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1807,7 +1807,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-82",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Bermuda Triangle\" (1974). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/6880996-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1845,7 +1845,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-84",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"狼图腾 (Wolf Totem)\" (2004). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/7278994-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1883,7 +1883,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-86",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"Love You Forever\" (1986). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/772161-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1902,7 +1902,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-87",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Women's Room\" (1977). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/915193-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1921,7 +1921,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-88",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"What to Expect When You're Expecting\" (1984). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/693116-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1967,7 +1967,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-90",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Secret Diary of Adrian Mole\" (1982). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/5944471-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -2013,7 +2013,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-92",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"Kon-Tiki ekspedisjonen\" (1950). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/1019938-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -2059,7 +2059,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-94",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"Where the Wild Things Are\" (1963). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/50842-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -2078,7 +2078,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-95",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Power of Positive Thinking\" (1952). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/14570213-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -2154,7 +2154,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-99",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Naked Ape\" (1968). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8232000-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/15023229-L.jpg",
     "links": [
       {
         "formato": "html",

@@ -80,4 +80,32 @@ describe('Links externos do catálogo mundial (anti-401/403)', () => {
       }
     }
   });
+
+  test('7. As capas são únicas, usam HTTPS e não reutilizam a capa placeholder 8232000', () => {
+    const hostsPermitidos = new Set(['covers.openlibrary.org', 'www.gutenberg.org']);
+    const capas = new Map();
+
+    for (const obra of worldClassicsList) {
+      const capa = String(obra.capaUrl || '');
+      assert.ok(capa, `${obra.titulo}: capa ausente`);
+
+      const url = new URL(capa);
+      assert.equal(url.protocol, 'https:', `${obra.titulo}: capa não HTTPS (${capa})`);
+      assert.ok(hostsPermitidos.has(url.hostname), `${obra.titulo}: host de capa não permitido (${url.hostname})`);
+      assert.ok(!capa.includes('/8232000-'), `${obra.titulo}: capa placeholder 8232000 (${capa})`);
+
+      const chave = capa.replace(/-[SML]\.jpg$/, '');
+      assert.ok(!capas.has(chave), `${obra.titulo}: capa duplicada com ${capas.get(chave)} (${capa})`);
+      capas.set(chave, obra.titulo);
+    }
+
+    assert.equal(capas.size, worldClassicsList.length, 'Cada obra deve ter uma capa própria');
+
+    const livroVermelho = worldClassicsList.find((obra) => obra.fonteIdExterno === 'world-hist-4');
+    assert.ok(livroVermelho, 'A obra world-hist-4 deve existir');
+    assert.ok(
+      livroVermelho.capaUrl.includes('/15047576-'),
+      'O Livro Vermelho de Mao deve usar a capa correta da Open Library (ID 15047576)'
+    );
+  });
 });
