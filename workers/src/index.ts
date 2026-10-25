@@ -573,7 +573,18 @@ app.get('/api/categorias', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(categorias);
   } catch (err: any) {
-    if (ehErroDeCota(err)) return respostaDegradada(c);
+    if (ehErroDeCota(err)) {
+      const repoFallback = obterRepoSupabase(c.env);
+      if (repoFallback) {
+        try {
+          const categorias = await repoFallback.categorias();
+          c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+          c.header('X-Data-Status', 'degraded');
+          return c.json(categorias);
+        } catch {}
+      }
+      return respostaDegradada(c);
+    }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar categorias' }, 500);
   }
 });
@@ -1998,7 +2009,18 @@ app.get('/api/fontes', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
     return c.json(fontes);
   } catch (err: any) {
-    if (ehErroDeCota(err)) return respostaDegradada(c);
+    if (ehErroDeCota(err)) {
+      const repoFallback = obterRepoSupabase(c.env);
+      if (repoFallback) {
+        try {
+          const fontes = await repoFallback.fontes();
+          c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
+          c.header('X-Data-Status', 'degraded');
+          return c.json(fontes);
+        } catch {}
+      }
+      return respostaDegradada(c);
+    }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao listar fontes' }, 500);
   }
 });
@@ -2162,8 +2184,8 @@ app.get('/api/sugestoes', verificarAdminWorker, async (c) => {
 
 // 6. Cursos
 app.get('/api/cursos', async (c) => {
+  const filtros = c.req.query();
   try {
-    const filtros = c.req.query();
     const repo = repoSupabase(c);
     if (repo) {
       try {
@@ -2237,14 +2259,25 @@ app.get('/api/cursos', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(cursos);
   } catch (err: any) {
-    if (ehErroDeCota(err)) return respostaDegradada(c);
+    if (ehErroDeCota(err)) {
+      const repoFallback = obterRepoSupabase(c.env);
+      if (repoFallback) {
+        try {
+          const cursos = await repoFallback.cursos(filtros);
+          c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+          c.header('X-Data-Status', 'degraded');
+          return c.json(cursos);
+        } catch {}
+      }
+      return respostaDegradada(c);
+    }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar cursos' }, 500);
   }
 });
 
 app.get('/api/roadmaps', async (c) => {
+  const filtros = c.req.query();
   try {
-    const filtros = c.req.query();
     const repo = repoSupabase(c);
     if (repo) {
       try {
@@ -2291,7 +2324,18 @@ app.get('/api/roadmaps', async (c) => {
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     return c.json(roadmaps);
   } catch (err: any) {
-    if (ehErroDeCota(err)) return respostaDegradada(c);
+    if (ehErroDeCota(err)) {
+      const repoFallback = obterRepoSupabase(c.env);
+      if (repoFallback) {
+        try {
+          const roadmaps = await repoFallback.roadmaps(filtros);
+          c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+          c.header('X-Data-Status', 'degraded');
+          return c.json(roadmaps);
+        } catch {}
+      }
+      return respostaDegradada(c);
+    }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar roadmaps' }, 500);
   }
 });
