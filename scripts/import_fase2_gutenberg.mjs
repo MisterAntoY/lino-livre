@@ -156,10 +156,26 @@ async function main() {
   const mapaAutores = new Map();
   for (const a of autoresDb) mapaAutores.set(a.nome.trim().toLowerCase(), a.id);
 
-  // Livros do Gutenberg já cadastrados (para evitar duplicados)
+  // Livros do Gutenberg já cadastrados (para evitar duplicados).
+  // Deduplicação de padrão duplo: o acervo curado usa apenas o número
+  // ("1342") e o lote em massa usa o prefixo "pg-1342" — os dois padrões
+  // representam a MESMA obra e o novo número só entra se nenhuma das
+  // formas existir. Isto evita re-indexar o mesmo título duas vezes.
   const existentesGutenberg = await sqlJson("SELECT fonte_id_externo FROM livros WHERE fonte_id = 5;");
-  const setExistentes = new Set(existentesGutenberg.map(r => r.fonte_id_externo));
-  console.log(`   ✔ ${setExistentes.size} obras do Gutenberg já indexadas anteriormente`);
+  const setExistentes = new Set();
+  for (const r of existentesGutenberg) {
+    const ext = String(r.fonte_id_externo || '').trim();
+    if (/^pg-\d+$/.test(ext)) {
+      setExistentes.add(ext);
+      setExistentes.add(ext.slice(3)); // forma curta equivalente
+    } else if (/^\d+$/.test(ext)) {
+      setExistentes.add(ext);
+      setExistentes.add(`pg-${ext}`); // forma longa equivalente
+    } else if (ext) {
+      setExistentes.add(ext);
+    }
+  }
+  console.log(`   ✔ ${setExistentes.size} chaves de obras do Gutenberg já indexadas anteriormente`);
   console.log(`   ✔ Ponto de partida de IDs: autores=${maxA}, livros=${maxL}, links=${maxK}`);
 
   const categoriaGutenbergId = 51; // 📚 Project Gutenberg (Domínio Público)
@@ -180,7 +196,7 @@ async function main() {
     if (!num || !tituloCru || !tituloCru.trim()) continue;
 
     const extId = `pg-${num.trim()}`;
-    if (setExistentes.has(extId)) continue; // já existe
+    if (setExistentes.has(extId) || setExistentes.has(num.trim())) continue; // já existe (os dois padrões)
 
     const titulo = tituloCru.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 250);
     const autorNome = cleanAuthor(authorCru);
@@ -197,11 +213,11 @@ async function main() {
       novosAutores.push({ id: autorId, nome: autorNome });
     }
 
-    // Ano
-    let ano = null;
-    if (issued && /^\d{4}/.test(issued)) {
-      ano = parseInt(issued.slice(0, 4), 10);
-    }
+    // Ano de PUBLICAÇÃO desconhecido no catálogo oficial do Gutenberg: o
+    // campo "Issued" é a data de digitalização (p.ex. 2008 para clássicos
+    // do século XIX) e fabricar o ano seria dados falsos. Fica NULL; o
+    // enriquecedor Gutendex pode preencher com anos reais no futuro.
+    const ano = null;
 
     // Idioma
     const lang = (langCru ? langCru.trim().toLowerCase() : 'en');
@@ -215,7 +231,10 @@ async function main() {
     }
     sinopse = sinopse.slice(0, 400);
 
-    const capaUrl = `https://www.gutenberg.org/cache/epub/${num}/pg${num}.cover.medium.jpg`;
+    // Capa fica NULL na ingestão base: apenas o enriquecedor Gutendex
+    // preenche capa_url com imagens verificadas (formats['image/jpeg']),
+    // garantindo 100% de capas válidas (nunca 404) no catálogo.
+    const capaUrl = null;
     const urlLeitura = `https://www.gutenberg.org/ebooks/${num}.html.images`;
 
     maxL++;
@@ -302,8 +321,19 @@ async function main() {
     }
 
     const batchNum = String(b + 1).padStart(3, '0');
-    const fPath = path.join(SQL_DIR, `pg-batch-${batchNum}.sql`);
-    fs.writeFileSync(fPath, linhas.join('\n') + '\n');
+    const fPath = path.join(SQL_DIR, `pg-batch-v2-${batchNum}.sql`);
+    const linhasFinais = [];
+
+    // Bootstrap nos lotes v2: fonte e categoria existem com IDs explícitos
+    // tanto na D1 de produção quanto no SQLite local de desenvolvimento.
+    if (b === 0) {
+      linhasFinais.push(
+        `INSERT OR IGNORE INTO fontes (id, slug, nome, tipo) VALUES (${fonteGutenbergId}, 'gutenberg', 'Project Gutenberg', 'api');`,
+        `INSERT OR IGNORE INTO categorias (id, nome) VALUES (${categoriaGutenbergId}, 'Ebook Project Gutenberg (Domínio Público)');`
+      );
+    }
+    linhasFinais.push(...linhas);
+    fs.writeFileSync(fPath, linhasFinais.join('\n') + '\n');
     ficheirosSql.push(fPath);
   }
 
@@ -314,7 +344,7 @@ async function main() {
       const a = novosAutores[autorIdx++];
       linhas.push(`INSERT OR IGNORE INTO autores (id, nome) VALUES (${a.id}, ${esc(a.nome)});`);
     }
-    const fPath = path.join(SQL_DIR, `pg-batch-000-autores.sql`);
+    const fPath = path.join(SQL_DIR, `pg-batch-v2-000-autores.sql`);
     fs.writeFileSync(fPath, linhas.join('\n') + '\n');
     ficheirosSql.unshift(fPath);
   }
@@ -322,16 +352,31 @@ async function main() {
   console.log(`   ✔ ${ficheirosSql.length} ficheiros SQL gerados.`);
 
   if (aplicar) {
+    const PROGRESS = path.resolve('.scratch/gutenberg-applied-v2.json');
+    let progresso = new Set(fs.existsSync(PROGRESS) ? (JSON.parse(fs.readFileSync(PROGRESS, 'utf-8')).applied || []) : []);
+    const guardarProgresso = () => fs.writeFileSync(PROGRESS, JSON.stringify({ applied: [...progresso], generated: ficheirosSql.map(f => path.basename(f)) }, null, 2));
+
     console.log(`\n5. A aplicar lotes na base local e no Cloudflare D1 remoto...`);
     let aplicados = 0;
     for (const f of ficheirosSql) {
-      applyFile(f);
-      aplicados++;
-      if (aplicados % 10 === 0 || aplicados === ficheirosSql.length) {
-        console.log(`   ✔ Progresso: ${aplicados}/${ficheirosSql.length} lotes aplicados.`);
+      const nome = path.basename(f);
+      if (progresso.has(nome)) { continue; }
+      try {
+        applyFile(f);
+        progresso.add(nome);
+        guardarProgresso();
+        aplicados++;
+        if (aplicados % 10 === 0 || aplicados === ficheirosSql.length) {
+          console.log(`   ✔ Progresso: ${aplicados}/${ficheirosSql.length} lotes aplicados.`);
+        }
+      } catch (err) {
+        guardarProgresso();
+        console.error(`\n⚠ Lote ${nome} falhou: ${(err.stderr || err.message || '').slice(-400)}`);
+        console.error(`  → Retome mais tarde com: node scripts/import_fase2_gutenberg.mjs --apply`);
+        break;
       }
     }
-    console.log(`\n🎉 Concluído com sucesso! ${novosLivros.length} obras adicionadas ao Lino Livre.`);
+    console.log(`\n🎉 Concluído! ${novosLivros.length} novas obras adicionadas (instruções de retomada em .scratch/gutenberg-applied-v2.json).`);
   } else {
     console.log(`\nℹ Execução em modo DRY-RUN. Para aplicar, execute:\n   node scripts/import_fase2_gutenberg.mjs --apply`);
   }
