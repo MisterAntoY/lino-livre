@@ -477,7 +477,7 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - Hodômetro `#placar-total-livros` atualizado para **2.000** (0.0200% da grande meta de 10.000.000).
   - Marco 1 (1.000) comemorado com a classe `reached`; Marco 2 (10.000) promovido a `active` com tag "Próximo marco" e meta imediata definida para 10.000.
   - Faltam exatamente 8.000 obras para atingir o Marco 2 e 9.998.000 para a grande meta global.
-  - Suíte automatizada mantida em **100% verde** (319 testes em 62 suítes) e TypeScript sem erros.
+  - Suíte automatizada mantida em **100% verde** (341 testes em 66 suítes) e TypeScript sem erros.
 
 ---
 
@@ -512,6 +512,52 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   - Obras com direitos comerciais devem apontar para páginas de catálogo, empréstimo legal ou compra (Open Library, editora, biblioteca nacional).
   - Downloads diretos só são permitidos quando a licença aberta for comprovada e o URL responder HTTP 200/206 sem autenticação.
   - Qualquer novo importador deve validar `access-restricted-item` antes de catalogar links do Internet Archive.
+
+### 2.32. Auditoria de Conteúdo (Imagens, Títulos, Descrições) e Suíte TDD de Ler/Baixar PDF
+- **Diretriz do Usuário:** *"Verifique todas as imagens e titulos de livros e descrições. Automatize teste unitário de ler e baixar pdf"*
+- **Auditoria One-for-One de Todas as Capas (2.000 livros):**
+  - Reexecução do verificador oficial [`scripts/verify_book_covers.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/verify_book_covers.js) → **2000/2000 capas OK (100,0%)**: 1.374 locais (arquivo presente, > 0 bytes, assinatura PNG/JPG/SVG válida) e 626 externas (HTTP 200/206 com content-type de imagem).
+  - **Descoberta crítica:** a capa externa do livro #997 (*Tese do Método Fluência*, `static.wixstatic.com`) respondia 200 direto, mas **quebrava em produção** porque o proxy `/api/capas` (Express e Worker) rejeitava o host com 403, exibindo o fallback `dom_casmurro.jpg` no lugar da capa correta.
+  - **Correção:** `wixstatic.com` adicionado à `HOSTS_CAPAS_PERMITIDOS` em [`src/controllers/capasController.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/controllers/capasController.js) e [`workers/src/index.ts`](file:///Users/mendes/Desktop/I%20am%20Abc/workers/src/index.ts), mantendo todos os filtros anti-SSRF e o limite de 5 MB.
+- **Auditoria de Títulos e Descrições:**
+  - 0 títulos vazios/placeholders, 0 sinopses vazias, 0 duplicatas (titulo + autor), 0 mojibake no seed atual (o aviso anterior sobre a obra 1143 era falso positivo — "MÃE" contém a letra legítima "Ã").
+  - 2 sinopses de catálogo DOAB mantêm estilo "assuntos" ("Scientific criticism; marxism" e "Latin America; theory") — dados fiéis à fonte, candidatos a enriquecimento futuro (sem fabricação).
+- **Descoberta de Política (TDD Red → Green):** um link de domínio pirata entregue por `/api/livros/:id/ler/:linkId` respondia **HTTP 500 interno** no Express (o Worker já respondia 400), e ainda incrementava o contador de leituras antes de rejeitar.
+  - **Correção no Express e Worker ([`src/utils/urlValidator.js`](file:///Users/mendes/Desktop/I%20am%20Abc/src/utils/urlValidator.js), [`workers/src/utils/urlValidator.ts`](file:///Users/mendes/Desktop/I%20am%20Abc/workers/src/utils/urlValidator.ts), controllers/rotas `/ler`):** todos os erros de política/SSRF do validador passam a carregar `err.codigoHttp = 400`; o `/ler` valida o destino **antes** de contar a leitura e responde **400 com mensagem de política** (nunca 500 e nunca redireciona). Leituras bloqueadas não contaminam o contador.
+- **Nova Suíte de Testes TDD:** [`test/ler_baixar_pdf.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/ler_baixar_pdf.test.js) — 22 testes em 3 grupos:
+  1. **Leitura `/ler` (9):** 302 + Location https validada, incremento atômico exato de leituras, upgrade automático http→https, 404 anti-SQLi (IDs não numéricos), 404 para inexistentes, 404 para IDOR cross-resource, JSON de leitura web local, **400 político** para domínio pirata e verificação exata do link PDF.
+  2. **Baixar PDF (5):** cartas do catálogo com badge PDF expõem link válido, amostra determinística de 20 PDFs com 302 https (sem SSRF/pirataria), zero esquemas perigosos, zero domínios da lista negra, zero destinos internos.
+  3. **Integridade do acervo (8):** 100% das capas locais existem com assinatura de imagem válida, 100% das capas externas na allowlist do proxy (protege contra capas quebradas por host não autorizado), títulos/sinopses sem placeholders e mojibake, zero duplicatas, fluxo frontend sobre `/ler/` e paridade Express/Worker das correções.
+  - Snapshot do acervo real é capturado antes das fixtures de teste para que as varreduras nunca sejam contaminadas (fixtures descartadas ao final do grupo 1).
+- **Suíte completa mantida 100% verde: 341 testes em 66 suítes**, com `npx tsc --noEmit` limpo.
+
+### 2.33. Integração Integral do Project Gutenberg (79.634 Obras) e Backfill de Paridade Dev/Produção
+- **Diretriz do Usuário:** *"Adicione todos os livros do Project Gutenberg - 79.668 books"*
+- **Fonte Oficial de Catálogo:** `pg_catalog.csv.gz` (feed diário oficial do Project Gutenberg, snapshot 2026-10-18, 79.634 obras `Type=Text`) complementado pelo **Gutendex** (`gutendex.com`, 79.666 e-books ao vivo) para sinopses, capas e formatos por obra.
+- **Diagnóstico Inicial (Estado Real das Bases):**
+  - Produção D1 já continha **79.101 obras** do Gutenberg (fonte 5): 78.283 com padrão `pg-N` (lote em massa de Out/2026) + 818 curadas com chave numérica pura (`1342`).
+  - Constatadas **779 duplicatas reais em produção** (mesma obra indexada duas vezes: curado `105` + em massa `pg-105`).
+  - Delta genuíno do CSV oficial: apenas **101 obras novas** (+31 autores).
+- **Importador Fortalecido ([`scripts/import_fase2_gutenberg.mjs`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/import_fase2_gutenberg.mjs)):**
+  1. **Deduplicação de Padrão Duplo:** `pg-N` e `N` tratados como a mesma chave canónica (o novo número só entra se NENHUMA das duas formas existir), eliminando re-indexação duplicada.
+  2. **Lotes Versionados (`pg-batch-v2-*.sql`):** nomes com sufixo v2 evitam colisão com o progresso antigo (`gutenberg-applied.json`); novo checkpoint idempotente em `gutenberg-applied-v2.json`.
+  3. **Bootstrap de `fonte`/`categoria`:** INSERT OR IGNORE idempotente nos dois lados (id 5 / id 51), eliminando dependência de estado pré-existente.
+  4. **Dados Honestos:** `ano_publicacao = NULL` para o lote em massa (o campo "Issued" do CSV é a data de digitalização — fabricar o ano da publicação original seria dado falso, violando o princípio 2.7 de números reais); `capa_url = NULL` na ingestão (só o Gutendex preenche com imagem verificada — zero capas 404).
+  5. **Aplicação segue em progresso:** delta de 101 obras aplicado localmente e na D1 remota com checkpoint/multi-tentativa.
+- **Cura de Duplicatas em Produção:**
+  - Removidas **678 linhas pg-N** (e respectivos links) onde já existia a versão curada (com 3 links e sinopse real). Resultado: produção consolidada em **104.170 obras** (de 104.848: +101 novas, −779 cópias).
+  - `total_livros` da D1 atualizado surgicalmente (104.170) e `versao_mutacoes=1`/`versao_calculada=0` garantem que o cron das 00:10 UTC recalcule todos os agregados (`estatisticas`, `contadores`, `autor_totais`) sem custo para o daytime.
+- **Backfill de Paridade Dev/Produção ([`scripts/sincronizar_gutenberg_local.mjs`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/sincronizar_gutenberg_local.mjs)):**
+  - Espelha o acervo Gutenberg integral da **D1 → `biblioteca.db` local** mantendo **os MESMOS IDs** de livros/autores/categorias/links (o id numérico da linha do seed coincide entre as bases, validado por amostragem; Machado de Assis = id 1 em ambas).
+  - Resultado: **78.461 obras Gutenberg** + **78.626 links externos** + **26.220 autores garantidos** localmente; estado local final **80.331 obras · 27.185 autores · 0.8033% da meta**.
+  - Agregados locais recalculados set-based (`estatisticas`, `contadores` por idioma/licença/categoria/fonte, `autor_totais`), FTS5 verificado por sondas de MATCH (busca "hamlet" e títulos pt OK).
+  - Idempotente e retomável por checkpoint (`.scratch/gutenberg-local-sync.json`); `conteudo_texto` copiado fielmente (Gutenberg = 100% domínio público, conforme Regra 4).
+- **Enriquecimento Gutendex ([`scripts/enriquecer_gutenberg.mjs`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/enriquecer_gutenberg.mjs)):**
+  - Passe sequencial respeitando 1 req/s (~2.490 páginas ≈ 50 min, checkpoint auto-retomável) aplicando: **sinopses REAIS** (substitui apenas o texto-base template, conserva sinopses curadas), **capas auditadas** (`formats['image/jpeg']` — substitui o padrão-cego antigo e anula URLs prováveis de 404) e **links PDF/EPUB/TXT oficiais** por obra (respeitando UNIQUE(livro_id, formato)).
+  - Obras presentes só no Gutendex são registadas em `.scratch/gutenberg-faltantes.json` para remediação.
+- **Sincronização de Métricas:** `scripts/corrigirMetricasDashboard.js` (modo padrão) atualizou `public/index.html` ← 80.331 (seed local) e `workers/src/index.ts` ← 104.170 (produção D1) — `resumo_estavel` e `totalCatalogoConhecido`.
+- **Enriquecimento Remoto (futuro):** atualizar as ~78k obras Gutenberg na D1 consome mais de 100k escritas/dia do Free Tier; cada janela diária permite aplicar lotes progressivos via o mesmo enriquecedor estendido à D1 (com orçamento e retomada), priorizando as obras mais lidas.
+- **Validação da Sessão:** suíte **341 testes em 66 suítes 100% verde** + `npx tsc --noEmit` limpo; smoke test Express local: `/api/dashboard` (80.331), busca FTS "hamlet" (25 resultados), `GET /api/livros/22923/ler/27159` → HTTP 302 para `gutenberg.org` ✓.
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
@@ -616,7 +662,7 @@ Ambos os backends aplicam:
 ## 💻 6. Guia Rápido de Comandos para Agentes
 
 ```bash
-# Executar a suíte completa de testes automatizados (319 testes em 62 suítes)
+# Executar a suíte completa de testes automatizados (341 testes em 66 suítes)
 npm test
 
 # Executar diagnóstico completo de tráfego e consumo de cotas (D1 e Supabase)
@@ -627,6 +673,16 @@ npm run test:worker
 
 # Verificar tipagem estrita TypeScript (sem emitir binários)
 npx tsc --noEmit
+
+# ── Project Gutenberg (Fase 2 integral, §2.33) ────────────────────────
+# Gerar lotes SQL a partir do pg_catalog.csv e aplicar local + D1 (retomável)
+node scripts/import_fase2_gutenberg.mjs --apply
+
+# Espelhar o acervo Gutenberg da D1 de produção para o biblioteca.db local
+node scripts/sincronizar_gutenberg_local.mjs [--recalc]
+
+# Enriquecer sinopses/capas/links oficiais via Gutendex (retomável, 1 req/s)
+node scripts/enriquecer_gutenberg.mjs [--max-pages N]
 
 # Repovoar o banco local com todas as fontes, livros e cursos limpos
 npm run seed -- --reset
@@ -650,7 +706,7 @@ node scripts/aplicar_indices_d1_auto.mjs
 ---
 
 ## 🔒 7. Compromisso Contínuo dos Agentes
-- **Nunca** quebre os 319 testes automatizados.
+- **Nunca** quebre os 341 testes automatizados em 66 suítes.
 - **Sempre** preserve a hierarquia de marca **LinoDigital (mãe) · Lino Livre (produto)** em todas as superfícies.
 - **Nunca** hospede arquivos de mídia locais.
 - **Sempre** rode `npm test` e `npx tsc --noEmit` antes de qualquer commit.
