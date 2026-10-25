@@ -10,6 +10,14 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "workers/src/index.ts",
 
+  // Workers Builds (CI integrado da Cloudflare via GitHub):
+  // Sem passo de build separado — o wrangler compila e faz deploy direto.
+  // Isto evita que o Workers Build tente executar "npm run build"
+  // (que não existe) e falhe em ~1 min.
+  "build": {
+    "command": ""
+  },
+
   // Static assets served by Cloudflare Pages-like functionality
   "assets": {
     "directory": "./public",
