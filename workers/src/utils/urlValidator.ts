@@ -21,12 +21,23 @@ export const DOMINIOS_PROIBIDOS = [
 
 const SUFIXOS_INTERNOS = ['.localhost', '.local', '.internal', '.home.arpa', '.lan'];
 
+/**
+ * Erro de política de URL (não é falha do servidor): as rotas /ler usam
+ * `err.codigoHttp` para responder HTTP 400 em vez de 500 interno, com
+ * paridade com o backend Express.
+ */
+function erroUrl(mensagem: string, codigoHttp = 400): Error {
+  const erro = new Error(mensagem) as Error & { codigoHttp?: number };
+  erro.codigoHttp = codigoHttp;
+  return erro;
+}
+
 export function verificarUrlConformidade(url: string | null | undefined): void {
   if (!url) return;
   const urlLower = String(url).toLowerCase();
   for (const dom of DOMINIOS_PROIBIDOS) {
     if (urlLower.includes(dom)) {
-      throw new Error(`URL rejeitada por violar a política de compliance e legalidade (fonte não autorizada / lista negra de pirataria: ${dom}). O Lino Livre veda estritamente o uso de repositórios piratas.`);
+      throw erroUrl(`URL rejeitada por violar a política de compliance e legalidade (fonte não autorizada / lista negra de pirataria: ${dom}). O Lino Livre veda estritamente o uso de repositórios piratas.`);
     }
   }
 }
@@ -121,32 +132,32 @@ export function hostInterno(hostname: string | null | undefined): boolean {
 
 export function validarUrlRedirecionamento(url: string | null | undefined): string {
   if (!url || typeof url !== 'string') {
-    throw new Error('URL de destino inválida ou vazia');
+    throw erroUrl('URL de destino inválida ou vazia');
   }
 
   const trimmed = url.trim();
   if (trimmed.length > 2048) {
-    throw new Error('URL de destino demasiado longa');
+    throw erroUrl('URL de destino demasiado longa');
   }
 
   let parsed: URL;
   try {
     parsed = new URL(trimmed);
   } catch {
-    throw new Error('Formato de URL inválido');
+    throw erroUrl('Formato de URL inválido');
   }
 
   // Apenas HTTP e HTTPS são permitidos (bloqueia javascript:, data:, file:, etc.)
   if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-    throw new Error(`Protocolo '${parsed.protocol}' não permitido para redirecionamento`);
+    throw erroUrl(`Protocolo '${parsed.protocol}' não permitido para redirecionamento`);
   }
 
   if (parsed.username || parsed.password) {
-    throw new Error('URL com credenciais embutidas não é permitida');
+    throw erroUrl('URL com credenciais embutidas não é permitida');
   }
 
   if (hostInterno(parsed.hostname)) {
-    throw new Error('Redirecionamento para endereços de rede interna/local é estritamente proibido');
+    throw erroUrl('Redirecionamento para endereços de rede interna/local é estritamente proibido');
   }
 
   verificarUrlConformidade(trimmed);

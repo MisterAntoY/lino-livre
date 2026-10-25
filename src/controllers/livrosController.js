@@ -330,14 +330,21 @@ function lerRedirect(req, res) {
       return res.status(404).json({ erro: 'Link de leitura não encontrado' });
     }
 
-    // Incrementar contador de leituras atômico
-    db.prepare('UPDATE livros SET leituras = leituras + 1 WHERE id = ?').run(id);
+    // Não contar na cota: leitura de URLs web locais (ex.: obras em domínio
+    // público com texto integral) também é leitura.
+    const contarLeitura = () => {
+      db.prepare('UPDATE livros SET leituras = leituras + 1 WHERE id = ?').run(id);
+    };
 
-    // Redirect 302 para a fonte externa após validação estrita
+    // Redirect 302 para a fonte externa após validação estrita. A validação
+    // acontece ANTES do incremento: leitura bloqueada não conta leituras.
     if (link.url) {
       const urlDestino = normalizarUrlSegura(validarUrlRedirecionamento(link.url));
+      contarLeitura();
       return res.redirect(302, urlDestino);
     }
+
+    contarLeitura();
 
     // Se for formato web local
     res.json({
@@ -346,6 +353,11 @@ function lerRedirect(req, res) {
       conteudo_texto: link.conteudo_texto
     });
   } catch (err) {
+    // Violações de URL (SSRF/política de compliance) são 400, com paridade
+    // com o Cloudflare Worker — nunca um 500 interno com stack vazada.
+    if (err && err.codigoHttp) {
+      return res.status(err.codigoHttp).json({ erro: err.message });
+    }
     console.error('[livros.lerRedirect]', err);
     res.status(500).json({ erro: 'Erro interno ao processar leitura' });
   }

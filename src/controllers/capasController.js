@@ -29,7 +29,11 @@ const HOSTS_CAPAS_PERMITIDOS = [
   'unsplash.com',
   'wikimedia.org',
   'africanstorybook.org',
-  'standardebooks.org'
+  'standardebooks.org',
+  // CDN oficial de imagens do site da obra #997 (Tese do Método Fluência):
+  // PNG verificado (HTTP 200, image/png, Cache imutável). O filtro anti-SSRF
+  // e o limite de 5 MB continuam aplicados a este host.
+  'wixstatic.com'
 ];
 
 const CAPA_CACHE_CONTROL = 'public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=604800';

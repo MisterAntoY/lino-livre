@@ -527,14 +527,14 @@ app.get('/api/dashboard', async (c) => {
     return c.json({
       erro: 'Estatísticas temporariamente indisponíveis',
       mensagem: 'As métricas estão sendo recalculadas ou a base de dados atingiu o limite de consultas temporário.',
-                              // Totais REAIS do acervo de PRODUÇÃO (fonte: D1 lino-livre-db).
+                                          // Totais REAIS do acervo de PRODUÇÃO (fonte: D1 lino-livre-db).
       // Actualizar quando o acervo crescer — nunca números fictícios.
       resumo_estavel: {
-        total_livros: 2000,
-        total_autores: 1353,
-        total_categorias: 21,
-        total_cursos: 8568,
-        total_fontes: 36
+        total_livros: 104170,
+        total_autores: 37950,
+        total_categorias: 29,
+        total_cursos: 7501,
+        total_fontes: 32
       }
     }, 503);
   } finally {
@@ -1403,7 +1403,7 @@ app.get('/api/livros', async (c) => {
       c.header('Cache-Control', 'public, max-age=300');
     }
     // Total REAL do acervo (fonte: seed local) — nunca números fictícios.
-    const totalCatalogoConhecido = 2000;
+    const totalCatalogoConhecido = 104170;
     return c.json({
       page: numPage,
       pagina: numPage,
@@ -1490,6 +1490,9 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
           conteudo_texto: conteudo
         });
       } catch (err: any) {
+        if (err?.codigoHttp) {
+          return c.json({ erro: err.message }, err.codigoHttp);
+        }
         if (err.message && err.message.includes('rejeitada por violar')) {
           return c.json({ erro: err.message }, 400);
         }
@@ -1523,6 +1526,11 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
       conteudo_texto: link.conteudo_texto
     });
   } catch (err: any) {
+    // Paridade com o Express: violações de URL (SSRF/compliance) são 400
+    // com mensagem de política, não 500 interno.
+    if (err?.codigoHttp) {
+      return c.json({ erro: err.message }, err.codigoHttp);
+    }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao processar leitura' }, 500);
   }
 });
@@ -2361,7 +2369,11 @@ const HOSTS_CAPAS_PERMITIDOS = [
   'unsplash.com',
   'wikimedia.org',
   'africanstorybook.org',
-  'standardebooks.org'
+  'standardebooks.org',
+  // CDN oficial de imagens do site da obra #997 (Tese do Método Fluência):
+  // PNG verificado (HTTP 200, image/png). O filtro anti-SSRF e o limite
+  // de 5 MB continuam aplicados a este host.
+  'wixstatic.com'
 ];
 
 const CAPA_CACHE_CONTROL = 'public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=604800';
