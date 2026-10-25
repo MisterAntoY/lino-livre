@@ -159,4 +159,4 @@ npx tsc --noEmit
 - **Armazenamento:** O servidor e o banco de dados **não armazenam nem hospedam ficheiros de livros**. O sistema funciona exclusivamente como **intermediário de links externos**.
 - **Textos e capas de obras clássicas:** **Domínio Público**.
 - **Cursos e simuladores:** **Creative Commons** e licenças educacionais das respectivas instituições parceiras.
-- **Plataforma:** Código aberto sob licença MIT/ISC.
+- **Plataforma:** Código aberto sob licença Apache 2.0 (consulte `LICENSE`).

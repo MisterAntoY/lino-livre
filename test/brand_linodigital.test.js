@@ -106,4 +106,14 @@ describe('Marca LinoDigital — hierarquia, ativos e consistência', () => {
     assert.ok(/\.brand-logo\s*\{[^}]*width:\s*42px[^}]*height:\s*42px/.test(css), 'A classe .brand-logo deve reservar 42x42px');
     assert.ok(html.includes('class="brand-logo" width="42" height="42"'), 'A imagem do cabeçalho deve declarar width/height');
   });
+
+  test('11. Licença da plataforma é Apache 2.0 (LICENSE e package.json)', () => {
+    assert.ok(existe('LICENSE'), 'Ficheiro LICENSE deve existir na raiz');
+    const licenseText = ler('LICENSE');
+    assert.ok(licenseText.includes('Apache License'), 'LICENSE deve conter Apache License');
+    assert.ok(licenseText.includes('Version 2.0'), 'LICENSE deve ser versão 2.0');
+    assert.ok(licenseText.includes('Copyright 2026 LinoDigital'), 'LICENSE deve conter Copyright LinoDigital');
+    const pkg = JSON.parse(ler('package.json'));
+    assert.equal(pkg.license, 'Apache-2.0', 'package.json deve declarar licença Apache-2.0');
+  });
 });

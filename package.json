@@ -25,7 +25,7 @@
   },
   "keywords": [],
   "author": "LinoDigital",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "type": "commonjs",
   "dependencies": {
     "@supabase/server": "^1.9.2",

@@ -1315,4 +1315,57 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.equal(paramsBusca[0], '%\\%%');
     });
   });
+
+  describe('Cenário 15: Resiliência e Degradação Graciosa sob Esgotamento de Cota D1 (Erro 7500)', () => {
+    const d1ComErroDeCota = createMockD1({
+      firstHandler: async () => {
+        throw new Error("Your account has exceeded D1's free tier daily row read limit [code: 7500]");
+      },
+      allHandler: async () => {
+        throw new Error("Your account has exceeded D1's free tier daily row read limit [code: 7500]");
+      },
+      runHandler: async () => {
+        throw new Error("Your account has exceeded D1's free tier daily row read limit [code: 7500]");
+      }
+    });
+
+    test('15.1 - GET /api/livros/:id/ler/:linkId redireciona 302 via fallback quando D1 esgota cota', async () => {
+      const res = await workerRequest('/api/livros/1/ler/1', { method: 'GET' }, { DB: d1ComErroDeCota });
+      assert.equal(res.status, 302);
+      assert.equal(res.headers.get('x-data-status'), 'degraded');
+      assert.match(res.headers.get('location') || '', /wikisource\.org/);
+    });
+
+    test('15.2 - GET /api/livros/:id/ler/:linkId devolve 503 degradado para livro fora do fallback sob cota esgotada', async () => {
+      const res = await workerRequest('/api/livros/999999/ler/1', { method: 'GET' }, { DB: d1ComErroDeCota });
+      assert.equal(res.status, 503);
+      assert.equal(res.headers.get('x-data-status'), 'degraded');
+      const json = await res.json();
+      assert.equal(json.status, 'degraded');
+    });
+
+    test('15.3 - GET /api/livros/destaques responde 200 com acervo fallback e X-Data-Status sob cota esgotada', async () => {
+      const res = await workerRequest('/api/livros/destaques', { method: 'GET' }, { DB: d1ComErroDeCota });
+      assert.equal(res.status, 200);
+      assert.equal(res.headers.get('x-data-status'), 'degraded');
+      const json = await res.json();
+      assert.equal(json.status, 'ok');
+      assert.ok(json.data.length > 0);
+    });
+
+    test('15.4 - GET /api/livros/:id responde 200 para obra no catálogo fallback quando D1 esgota cota', async () => {
+      const res = await workerRequest('/api/livros/1', { method: 'GET' }, { DB: d1ComErroDeCota });
+      assert.equal(res.status, 200);
+      assert.equal(res.headers.get('x-data-status'), 'degraded');
+      const json = await res.json();
+      assert.equal(json.id, 1);
+      assert.equal(json.titulo, 'Dom Casmurro');
+    });
+
+    test('15.5 - GET /api/livros/:id responde 503 degradado para obra fora do catálogo fallback sob cota esgotada', async () => {
+      const res = await workerRequest('/api/livros/999999', { method: 'GET' }, { DB: d1ComErroDeCota });
+      assert.equal(res.status, 503);
+      assert.equal(res.headers.get('x-data-status'), 'degraded');
+    });
+  });
 });

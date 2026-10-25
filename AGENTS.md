@@ -559,6 +559,31 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
 - **Enriquecimento Remoto (futuro):** atualizar as ~78k obras Gutenberg na D1 consome mais de 100k escritas/dia do Free Tier; cada janela diária permite aplicar lotes progressivos via o mesmo enriquecedor estendido à D1 (com orçamento e retomada), priorizando as obras mais lidas.
 - **Validação da Sessão:** suíte **341 testes em 66 suítes 100% verde** + `npx tsc --noEmit` limpo; smoke test Express local: `/api/dashboard` (80.331), busca FTS "hamlet" (25 resultados), `GET /api/livros/22923/ler/27159` → HTTP 302 para `gutenberg.org` ✓.
 
+### 2.34. Licenciamento 100% Open Source: Adopção Oficial da Apache 2.0
+- **Diretriz do Usuário:** *"Quero usar o Apache 2.0"* / *"Doravente o projecto será 100% opensource"*
+- **Decisão e Aplicação:**
+  - O código-fonte da plataforma LinoDigital · Lino Livre é oficialmente licenciado sob a **Apache License, Version 2.0**.
+  - **Ficheiro de Licença:** Criado [`LICENSE`](file:///Users/mendes/Desktop/I%20am%20Abc/LICENSE) na raiz do repositório com o texto canónico da Apache License 2.0 e cabeçalho `Copyright 2026 LinoDigital`.
+  - **Metadados:** Declarado `"license": "Apache-2.0"` em [`package.json`](file:///Users/mendes/Desktop/I%20am%20Abc/package.json) e documentado em [`README.md`](file:///Users/mendes/Desktop/I%20am%20Abc/README.md).
+  - **Benefícios da Escolha:**
+    1. **Concessão Expressa de Patentes:** Cláusula 3 protege contribuidores e utilizadores contra litígios patentários.
+    2. **Proteção da Marca Registada LinoDigital:** Cláusula 6 veda expressamente o uso indevido das marcas e nomes comerciais sem autorização.
+    3. **Permissividade Comercial e Comunitária:** Permite ampla colaboração institucional, governamental e acadêmica internacional.
+  - **Teste Automatizado de Regressão:** Adicionado teste 11 em [`test/brand_linodigital.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/brand_linodigital.test.js) que valida a existência física do arquivo `LICENSE`, a versão 2.0, o copyright LinoDigital e a declaração SPDX no `package.json`.
+
+### 2.35. Resolução de Erro de Leitura/Download e Degradação sob Esgotamento de Cota D1 (Erro 7500)
+- **Problema Relatado:** Ao tentar ler ou baixar livros em produção, o usuário recebia erro `"Erro ao processar leitura"` (HTTP 500) e `"Erro ao carregar livro"`.
+- **Causa Raiz Identificada:**
+  - A base D1 em produção atingiu o limite gratuito diário de leitura da Cloudflare (5M linhas lidas/dia, erro `code: 7500`).
+  - O endpoint `/api/livros` possuía tratamento de degradação, mas as rotas `/api/livros/:id/ler/:linkId`, `/api/livros/:id` e `/api/livros/destaques` capturavam o erro e retornavam HTTP 500 genérico.
+  - O backend Supabase não era consultado como alternativa porque `DB_BACKEND` estava fixado em `d1`.
+- **Resoluções de Engenharia Implementadas:**
+  1. **Fallback de Alta Disponibilidade para Supabase (`obterRepoSupabase`):** Quando a D1 dispara `ehErroDeCota(err)`, o Worker tenta instantaneamente consultar os metadados e links no Supabase (que possui as 104k obras espelhadas).
+  2. **Catálogo Fallback Local em Borda (`FALLBACK_LIVROS` & `obterLinkFallback`):** Se ambas as bases remotas estiverem indisponíveis, o Worker mantém em memória os links verificados (Wikisource e Project Gutenberg) das principais obras clássicas (Dom Casmurro, Memórias Póstumas, O Cortiço, Os Lusíadas, Mensagem, Iracema, O Alienista, etc.), redirecionando (HTTP 302) com cabeçalho `X-Data-Status: degraded`.
+  3. **Degradação Limpa HTTP 503:** Obras fora do catálogo fallback retornam HTTP 503 educativo com cabeçalhos `X-Data-Status: degraded` e `Retry-After: 3600`, eliminando erros 500 internos inesperados.
+  4. **Proteção contra Falha de Escrita Assíncrona:** A chamada `UPDATE livros SET leituras = leituras + 1` no background context foi envolvida com `.catch(() => {})`, impedindo unhandled rejections quando a cota de gravação estiver esgotada.
+  5. **Cobertura de Testes Automatizados TDD:** Cenário 15 adicionado em [`test/worker.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/worker.test.js) com 5 testes de regressão (348 testes em 67 suítes 100% verdes).
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:

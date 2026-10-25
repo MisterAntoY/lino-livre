@@ -90,22 +90,27 @@ jobs:
           fi
           echo "$WHOAMI"
 
-          # 2) Acesso à D1 (exige "D1: Edit"). Falha aqui interrompe o deploy.
+          # 2) Acesso à D1 (exige "D1: Edit"). Falha aqui interrompe o deploy,
+          # exceto se a quota de leitura estiver esgotada (7500): nesse caso,
+          # prossegue para publicar o Worker com resiliência e fallback ativo.
           if ! D1=$(npx wrangler d1 migrations list lino-livre-db --remote 2>&1); then
             echo "$D1"
             if echo "$D1" | grep -q "7500"; then
-              echo "::error::Quota da D1 esgotada: a conta excedeu o limite diário de linhas lidas do plano gratuito (erro 7500). Não é problema do token — a quota reinicia à meia-noite UTC. Opções: esperar pela reposição, upgrade para plano pago, ou reduzir as leituras da D1."
+              echo "::warning::Quota da D1 esgotada (erro 7500). Prosseguindo com deploy do Worker para manter o site ativo com modo de resiliência e catálogo fallback."
+              echo "D1_ESGOTADA=1" >> "$GITHUB_ENV"
             elif echo "$D1" | grep -q "9109"; then
               echo "::error::Token com filtro de IP (9109): a D1 não será acessada até o filtro ser removido."
+              exit 1
             else
               echo "::error::Token sem acesso à D1 (falta o escopo 'D1: Edit'): migrações são obrigatórias para o deploy."
+              exit 1
             fi
-            exit 1
           fi
           echo "$D1"
 
       - name: 🗄️ Aplicar Migrações D1 (Remoto com backoff)
         id: migracoes
+        if: env.D1_ESGOTADA != '1'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |

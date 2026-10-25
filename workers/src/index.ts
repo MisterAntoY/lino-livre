@@ -400,6 +400,13 @@ function repoSupabase(c: any): RepoSupabase | null {
   return cfg ? new RepoSupabase(cfg) : null;
 }
 
+// Repositório auxiliar do Supabase quando configurado, permitindo fallback
+// automático de alta disponibilidade se a D1 atingir a cota de leitura diária.
+function obterRepoSupabase(env: any): RepoSupabase | null {
+  const cfg = obterConfigSupabase(env);
+  return cfg ? new RepoSupabase(cfg) : null;
+}
+
 async function contadoresDe(db: any, dimensao: string): Promise<any[]> {
   try {
     const res = await db.prepare('SELECT chave, rotulo, total FROM contadores WHERE dimensao = ? ORDER BY total DESC')
@@ -881,6 +888,189 @@ function gerarDestaqueBadge(livro: any): string {
   return '⭐ Muito Procurado';
 }
 
+// ────────────────────────────────────────────────────────────
+// Catálogo Fallback de Resiliência para Degradação de Cota D1
+// ────────────────────────────────────────────────────────────
+const FALLBACK_LIVROS: any[] = [
+  {
+    id: 1,
+    titulo: 'Dom Casmurro',
+    autor_nome: 'Machado de Assis',
+    categoria_id: 1,
+    categoria_nome: 'Clássicos Brasileiros',
+    ano_publicacao: 1899,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/dom_casmurro.jpg',
+    sinopse: 'A obra-prima de Machado de Assis narrando a história de Bento Santiago e Capitu.',
+    links: [
+      { id: 1, formato: 'html', url: 'https://pt.wikisource.org/wiki/Dom_Casmurro', link_externo: 1 },
+      { id: 1001, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/55752.pdf', link_externo: 1 },
+      { id: 1002, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/55752.epub3.images', link_externo: 1 }
+    ]
+  },
+  {
+    id: 2,
+    titulo: 'Memórias Póstumas de Brás Cubas',
+    autor_nome: 'Machado de Assis',
+    categoria_id: 1,
+    categoria_nome: 'Clássicos Brasileiros',
+    ano_publicacao: 1881,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/memorias_posthumas.jpg',
+    sinopse: 'Narrativa irônica e revolucionária de um defunto-autor.',
+    links: [
+      { id: 2, formato: 'html', url: 'https://pt.wikisource.org/wiki/Memórias_Póstumas_de_Brás_Cubas', link_externo: 1 },
+      { id: 1003, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/54829.pdf', link_externo: 1 },
+      { id: 1004, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/54829.epub3.images', link_externo: 1 }
+    ]
+  },
+  {
+    id: 3,
+    titulo: 'O Cortiço',
+    autor_nome: 'Aluísio Azevedo',
+    categoria_id: 2,
+    categoria_nome: 'Romance & Crônicas',
+    ano_publicacao: 1890,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/o_cortico.png',
+    sinopse: 'Obra fundadora do Naturalismo no Brasil retratando a vida coletiva num cortiço.',
+    links: [
+      { id: 3, formato: 'html', url: 'https://pt.wikisource.org/wiki/O_Cortiço', link_externo: 1 },
+      { id: 1005, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/55800.pdf', link_externo: 1 }
+    ]
+  },
+  {
+    id: 4,
+    titulo: 'Os Lusíadas',
+    autor_nome: 'Luís de Camões',
+    categoria_id: 3,
+    categoria_nome: 'Teatro & Poesia',
+    ano_publicacao: 1572,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/os_lusiadas.jpg',
+    sinopse: 'O épico supremo da língua portuguesa sobre a viagem de Vasco da Gama.',
+    links: [
+      { id: 4, formato: 'html', url: 'https://pt.wikisource.org/wiki/Os_Lusíadas', link_externo: 1 },
+      { id: 1006, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/3333.pdf', link_externo: 1 }
+    ]
+  },
+  {
+    id: 5,
+    titulo: 'Mensagem',
+    autor_nome: 'Fernando Pessoa',
+    categoria_id: 3,
+    categoria_nome: 'Teatro & Poesia',
+    ano_publicacao: 1934,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/mensagem.jpg',
+    sinopse: 'A epopeia mística e poética dos navegadores e da alma portuguesa.',
+    links: [
+      { id: 5, formato: 'html', url: 'https://pt.wikisource.org/wiki/Mensagem', link_externo: 1 }
+    ]
+  },
+  {
+    id: 6,
+    titulo: 'O Alienista',
+    autor_nome: 'Machado de Assis',
+    categoria_id: 1,
+    categoria_nome: 'Clássicos Brasileiros',
+    ano_publicacao: 1882,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/o_alienista.png',
+    sinopse: 'Simão Bacamarte funda a Casa Verde e investiga os limites entre sanidade e loucura.',
+    links: [
+      { id: 6, formato: 'html', url: 'https://pt.wikisource.org/wiki/O_Alienista', link_externo: 1 },
+      { id: 1007, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/55753.pdf', link_externo: 1 }
+    ]
+  },
+  {
+    id: 7,
+    titulo: 'Iracema',
+    autor_nome: 'José de Alencar',
+    categoria_id: 4,
+    categoria_nome: 'Romance Indianista',
+    ano_publicacao: 1865,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/iracema.png',
+    sinopse: 'A virgem dos lábios de mel e o nascimento místico do Ceará.',
+    links: [
+      { id: 7, formato: 'html', url: 'https://pt.wikisource.org/wiki/Iracema', link_externo: 1 },
+      { id: 1008, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/6770.pdf', link_externo: 1 }
+    ]
+  },
+  {
+    id: 8,
+    titulo: 'Triste Fim de Policarpo Quaresma',
+    autor_nome: 'Lima Barreto',
+    categoria_id: 5,
+    categoria_nome: 'Apoio Pedagógico & Filosofia',
+    ano_publicacao: 1915,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/policarpo_quaresma.png',
+    sinopse: 'O patriotismo idealista e trágico de Policarpo Quaresma no início da República.',
+    links: [
+      { id: 8, formato: 'html', url: 'https://pt.wikisource.org/wiki/Triste_Fim_de_Policarpo_Quaresma', link_externo: 1 }
+    ]
+  },
+  {
+    id: 9,
+    titulo: 'Auto da Barca do Inferno',
+    autor_nome: 'Gil Vicente',
+    categoria_id: 3,
+    categoria_nome: 'Teatro & Poesia',
+    ano_publicacao: 1517,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/auto_da_barca_do_inferno.jpg',
+    sinopse: 'A clássica moralidade teatral renascentista julgando as almas humanas.',
+    links: [
+      { id: 9, formato: 'html', url: 'https://pt.wikisource.org/wiki/Auto_da_Barca_do_Inferno', link_externo: 1 }
+    ]
+  },
+  {
+    id: 10,
+    titulo: 'Os Sertões',
+    autor_nome: 'Euclides da Cunha',
+    categoria_id: 5,
+    categoria_nome: 'Apoio Pedagógico & Filosofia',
+    ano_publicacao: 1902,
+    idioma: 'pt',
+    licenca: 'dominio-publico',
+    capa_url: '/capas/os_sertoes.jpg',
+    sinopse: 'O relato épico, sociológico e humano da Guerra de Canudos no sertão baiano.',
+    links: [
+      { id: 10, formato: 'html', url: 'https://pt.wikisource.org/wiki/Os_Sertões', link_externo: 1 }
+    ]
+  }
+];
+
+function obterLinkFallback(livroId: string | number, linkId?: string | number) {
+  const lId = Number(livroId);
+  const lnkId = linkId !== undefined && /^\d+$/.test(String(linkId)) ? Number(linkId) : null;
+  const livro = FALLBACK_LIVROS.find((l) => l.id === lId);
+  if (!livro) return null;
+  const links = livro.links || [];
+  if (lnkId !== null) {
+    const linkExato = links.find((lnk: any) => lnk.id === lnkId);
+    if (linkExato) {
+      return { ...linkExato, livro_id: lId, titulo: livro.titulo, conteudo_texto: null };
+    }
+  }
+  const linkPadrao = links[0];
+  if (linkPadrao) {
+    return { ...linkPadrao, livro_id: lId, titulo: livro.titulo, conteudo_texto: null };
+  }
+  return null;
+}
+
 app.get('/api/livros/destaques', async (c) => {
   const queryParams = c.req.query();
   const tipo = (queryParams.tipo || 'todos').toLowerCase();
@@ -978,6 +1168,20 @@ app.get('/api/livros/destaques', async (c) => {
       data: livros
     });
   } catch (err: any) {
+    if (ehErroDeCota(err)) {
+      c.header('X-Data-Status', 'degraded');
+      c.header('Cache-Control', 'public, max-age=60');
+      let filtrados = FALLBACK_LIVROS.map((l) => ({ ...l, destaque_badge: gerarDestaqueBadge(l) }));
+      if (tipo === 'lusofonia' || tipo === 'classicos') {
+        filtrados = filtrados.filter((l) => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(l.id));
+      }
+      return c.json({
+        status: 'ok',
+        tipo,
+        total: filtrados.length,
+        data: filtrados.slice(0, limit)
+      });
+    }
     console.error('Erro ao obter livros em destaque:', err);
     return c.json({ erro: 'Erro ao obter livros em destaque' }, 500);
   }
@@ -1273,128 +1477,6 @@ app.get('/api/livros', async (c) => {
       data: livros
     });
   } catch (err: any) {
-    const fallbackLivros = [
-      {
-        id: 1,
-        titulo: 'Dom Casmurro',
-        autor_nome: 'Machado de Assis',
-        categoria_nome: 'Clássicos Brasileiros',
-        ano_publicacao: 1899,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/dom_casmurro.jpg',
-        sinopse: 'A obra-prima de Machado de Assis narrando a história de Bento Santiago e Capitu.',
-        links: [{ id: 1, formato: 'html', url: 'https://pt.wikisource.org/wiki/Dom_Casmurro', link_externo: 1 }]
-      },
-      {
-        id: 2,
-        titulo: 'Memórias Póstumas de Brás Cubas',
-        autor_nome: 'Machado de Assis',
-        categoria_nome: 'Clássicos Brasileiros',
-        ano_publicacao: 1881,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/memorias_posthumas.jpg',
-        sinopse: 'Narrativa irônica e revolucionária de um defunto-autor.',
-        links: [{ id: 2, formato: 'html', url: 'https://pt.wikisource.org/wiki/Memórias_Póstumas_de_Brás_Cubas', link_externo: 1 }]
-      },
-      {
-        id: 3,
-        titulo: 'O Cortiço',
-        autor_nome: 'Aluísio Azevedo',
-        categoria_nome: 'Romance & Crônicas',
-        ano_publicacao: 1890,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/o_cortico.png',
-        sinopse: 'Obra fundadora do Naturalismo no Brasil retratando a vida coletiva num cortiço.',
-        links: [{ id: 3, formato: 'html', url: 'https://pt.wikisource.org/wiki/O_Cortiço', link_externo: 1 }]
-      },
-      {
-        id: 4,
-        titulo: 'Os Lusíadas',
-        autor_nome: 'Luís de Camões',
-        categoria_nome: 'Teatro & Poesia',
-        ano_publicacao: 1572,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/os_lusiadas.jpg',
-        sinopse: 'O épico supremo da língua portuguesa sobre a viagem de Vasco da Gama.',
-        links: [{ id: 4, formato: 'html', url: 'https://pt.wikisource.org/wiki/Os_Lusíadas', link_externo: 1 }]
-      },
-      {
-        id: 5,
-        titulo: 'Mensagem',
-        autor_nome: 'Fernando Pessoa',
-        categoria_nome: 'Teatro & Poesia',
-        ano_publicacao: 1934,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/mensagem.jpg',
-        sinopse: 'A epopeia mística e poética dos navegadores e da alma portuguesa.',
-        links: [{ id: 5, formato: 'html', url: 'https://pt.wikisource.org/wiki/Mensagem', link_externo: 1 }]
-      },
-      {
-        id: 6,
-        titulo: 'O Alienista',
-        autor_nome: 'Machado de Assis',
-        categoria_nome: 'Clássicos Brasileiros',
-        ano_publicacao: 1882,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/o_alienista.png',
-        sinopse: 'Simão Bacamarte funda a Casa Verde e investiga os limites entre sanidade e loucura.',
-        links: [{ id: 6, formato: 'html', url: 'https://pt.wikisource.org/wiki/O_Alienista', link_externo: 1 }]
-      },
-      {
-        id: 7,
-        titulo: 'Iracema',
-        autor_nome: 'José de Alencar',
-        categoria_nome: 'Romance Indianista',
-        ano_publicacao: 1865,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/iracema.png',
-        sinopse: 'A virgem dos lábios de mel e o nascimento místico do Ceará.',
-        links: [{ id: 7, formato: 'html', url: 'https://pt.wikisource.org/wiki/Iracema', link_externo: 1 }]
-      },
-      {
-        id: 8,
-        titulo: 'Triste Fim de Policarpo Quaresma',
-        autor_nome: 'Lima Barreto',
-        categoria_nome: 'Apoio Pedagógico & Filosofia',
-        ano_publicacao: 1915,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/policarpo_quaresma.png',
-        sinopse: 'O patriotismo idealista e trágico de Policarpo Quaresma no início da República.',
-        links: [{ id: 8, formato: 'html', url: 'https://pt.wikisource.org/wiki/Triste_Fim_de_Policarpo_Quaresma', link_externo: 1 }]
-      },
-      {
-        id: 9,
-        titulo: 'Auto da Barca do Inferno',
-        autor_nome: 'Gil Vicente',
-        categoria_nome: 'Teatro & Poesia',
-        ano_publicacao: 1517,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/auto_da_barca_do_inferno.jpg',
-        sinopse: 'A clássica moralidade teatral renascentista julgando as almas humanas.',
-        links: [{ id: 9, formato: 'html', url: 'https://pt.wikisource.org/wiki/Auto_da_Barca_do_Inferno', link_externo: 1 }]
-      },
-      {
-        id: 10,
-        titulo: 'Os Sertões',
-        autor_nome: 'Euclides da Cunha',
-        categoria_nome: 'Apoio Pedagógico & Filosofia',
-        ano_publicacao: 1902,
-        idioma: 'pt',
-        licenca: 'dominio-publico',
-        capa_url: '/capas/os_sertoes.jpg',
-        sinopse: 'O relato épico, sociológico e humano da Guerra de Canudos no sertão baiano.',
-        links: [{ id: 10, formato: 'html', url: 'https://pt.wikisource.org/wiki/Os_Sertões', link_externo: 1 }]
-      }
-    ];
     if (ehErroDeCota(err)) {
       // Recupera assim que a cota reiniciar (00:00 UTC), sem ficar preso em cache.
       c.header('Cache-Control', 'public, max-age=60');
@@ -1412,7 +1494,7 @@ app.get('/api/livros', async (c) => {
       total: totalCatalogoConhecido,
       total_pages: Math.ceil(totalCatalogoConhecido / numLimit),
       total_paginas: Math.ceil(totalCatalogoConhecido / numLimit),
-      data: fallbackLivros
+      data: FALLBACK_LIVROS
     });
   }
 });
@@ -1437,27 +1519,86 @@ app.get('/api/livros/:id', async (c) => {
     }
 
     const db = c.env.DB;
-    const livro = await db.prepare(`
-      SELECT 
-        l.*,
-        a.nome AS autor_nome,
-        c.nome AS categoria_nome,
-        f.slug AS fonte_slug, f.nome AS fonte_nome, f.url_base AS fonte_url
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      LEFT JOIN fontes f ON f.id = l.fonte_id
-      WHERE l.id = ?
-    `).bind(id).first<any>();
+    let livro: any = null;
+    let d1FalhouPorCota = false;
 
-    if (!livro) return c.json({ erro: 'Livro não encontrado' }, 404);
+    if (db) {
+      try {
+        livro = await db.prepare(`
+          SELECT 
+            l.*,
+            a.nome AS autor_nome,
+            c.nome AS categoria_nome,
+            f.slug AS fonte_slug, f.nome AS fonte_nome, f.url_base AS fonte_url
+          FROM livros l
+          LEFT JOIN autores a ON a.id = l.autor_id
+          LEFT JOIN categorias c ON c.id = l.categoria_id
+          LEFT JOIN fontes f ON f.id = l.fonte_id
+          WHERE l.id = ?
+        `).bind(id).first<any>();
+      } catch (dbErr: any) {
+        if (ehErroDeCota(dbErr)) {
+          d1FalhouPorCota = true;
+          const repoFallback = obterRepoSupabase(c.env);
+          if (repoFallback) {
+            try {
+              livro = await repoFallback.livro(id);
+            } catch (_) {}
+          }
+        } else {
+          throw dbErr;
+        }
+      }
+    }
+
+    if (!livro && d1FalhouPorCota) {
+      const lId = Number(id);
+      const fl = FALLBACK_LIVROS.find((l) => l.id === lId);
+      if (fl) {
+        livro = { ...fl };
+      }
+    }
+
+    if (!livro) {
+      if (d1FalhouPorCota) {
+        c.header('X-Data-Status', 'degraded');
+        c.header('Retry-After', '3600');
+        return c.json({
+          erro: 'Serviço temporariamente indisponível devido ao limite diário da base de dados. Tente novamente mais tarde.',
+          status: 'degraded'
+        }, 503);
+      }
+      return c.json({ erro: 'Livro não encontrado' }, 404);
+    }
 
     livro.capa_url = normalizarCapaUrl(livro.capa_url);
-    const rawLinks = (await db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').bind(livro.id).all()).results as any[];
-    livro.links = rawLinks.map((lnk: any) => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
-    c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+    if (!livro.links) {
+      try {
+        const rawLinks = (await db.prepare('SELECT id, formato, url, tamanho_bytes, link_externo FROM links_livros WHERE livro_id = ?').bind(livro.id).all()).results as any[];
+        livro.links = rawLinks.map((lnk: any) => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
+      } catch (_) {
+        livro.links = [];
+      }
+    } else {
+      livro.links = livro.links.map((lnk: any) => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
+    }
+
+    if (d1FalhouPorCota) {
+      c.header('X-Data-Status', 'degraded');
+      c.header('Cache-Control', 'public, max-age=60');
+    } else {
+      c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+    }
     return c.json(livro);
   } catch (err: any) {
+    if (ehErroDeCota(err)) {
+      c.header('X-Data-Status', 'degraded');
+      c.header('Retry-After', '3600');
+      return c.json({
+        erro: 'Serviço temporariamente indisponível devido ao limite diário da base de dados. Tente novamente mais tarde.',
+        status: 'degraded'
+      }, 503);
+    }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao carregar livro' }, 500);
   }
 });
@@ -1471,24 +1612,23 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
   try {
     const id = c.req.param('id');
     const linkId = c.req.param('linkId');
+
+    // Validação estrita de parâmetros numéricos (anti-SQLi / IDOR)
+    if (!/^\d+$/.test(id) || !/^\d+$/.test(linkId)) {
+      return c.json({ erro: 'Parâmetros id e linkId devem ser números inteiros' }, 404);
+    }
+
+    let link: any = null;
+    let d1FalhouPorCota = false;
+
+    // 1. Tentar Supabase se configurado como backend primário
     const repo = repoSupabase(c);
     if (repo) {
       try {
-        const link = await repo.link(id, linkId);
-        if (!link) return c.json({ erro: 'Link de leitura não encontrado' }, 404);
-
-        c.executionCtx.waitUntil(repo.registrarLeitura(id));
-
-        if (link.url && String(link.url).startsWith('http')) {
-          const urlSegura = normalizarUrlSegura(validarUrlRedirecionamento(String(link.url)));
-          return c.redirect(urlSegura, 302);
+        link = await repo.link(id, linkId);
+        if (link) {
+          c.executionCtx.waitUntil(repo.registrarLeitura(id).catch(() => {}));
         }
-        const conteudo = await repo.conteudoTexto(id);
-        return c.json({
-          mensagem: 'Leitura iniciada',
-          url: link.url,
-          conteudo_texto: conteudo
-        });
       } catch (err: any) {
         if (err?.codigoHttp) {
           return c.json({ erro: err.message }, err.codigoHttp);
@@ -1500,23 +1640,68 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
       }
     }
 
+    // 2. Se não encontrou no Supabase, tenta a D1
     const db = c.env.DB;
+    if (!link && db) {
+      try {
+        link = await db.prepare(`
+          SELECT ll.*, l.titulo, l.conteudo_texto
+          FROM links_livros ll
+          JOIN livros l ON l.id = ll.livro_id
+          WHERE ll.livro_id = ? AND ll.id = ?
+        `).bind(id, linkId).first<any>();
 
-    const link = await db.prepare(`
-      SELECT ll.*, l.titulo, l.conteudo_texto
-      FROM links_livros ll
-      JOIN livros l ON l.id = ll.livro_id
-      WHERE ll.livro_id = ? AND ll.id = ?
-    `).bind(id, linkId).first<any>();
+        if (link) {
+          c.executionCtx.waitUntil(
+            db.prepare('UPDATE livros SET leituras = leituras + 1 WHERE id = ?').bind(id).run().catch(() => {})
+          );
+        }
+      } catch (dbErr: any) {
+        if (ehErroDeCota(dbErr)) {
+          d1FalhouPorCota = true;
+          // Tenta Supabase como fallback em caso de cota esgotada na D1
+          const repoFallback = obterRepoSupabase(c.env);
+          if (repoFallback) {
+            try {
+              link = await repoFallback.link(id, linkId);
+              if (link) {
+                c.executionCtx.waitUntil(repoFallback.registrarLeitura(id).catch(() => {}));
+              }
+            } catch (supaErr: any) {
+              if (supaErr?.codigoHttp) return c.json({ erro: supaErr.message }, supaErr.codigoHttp);
+              console.error('Fallback Supabase leitura falhou:', supaErr);
+            }
+          }
+        } else {
+          throw dbErr;
+        }
+      }
+    }
 
-    if (!link) return c.json({ erro: 'Link de leitura não encontrado' }, 404);
+    // 3. Se ainda não encontrou e a D1 está degradada, consulta o catálogo de fallback
+    if (!link && d1FalhouPorCota) {
+      link = obterLinkFallback(id, linkId);
+    }
 
-    c.executionCtx.waitUntil(
-      db.prepare('UPDATE livros SET leituras = leituras + 1 WHERE id = ?').bind(id).run()
-    );
+    // 4. Se o link não existe em nenhuma fonte
+    if (!link) {
+      if (d1FalhouPorCota) {
+        c.header('X-Data-Status', 'degraded');
+        c.header('Retry-After', '3600');
+        return c.json({
+          erro: 'Serviço temporariamente indisponível devido ao limite diário da base de dados. Tente novamente mais tarde.',
+          status: 'degraded'
+        }, 503);
+      }
+      return c.json({ erro: 'Link de leitura não encontrado' }, 404);
+    }
 
-    if (link.url && link.url.startsWith('http')) {
-      const urlSegura = normalizarUrlSegura(validarUrlRedirecionamento(link.url));
+    // 5. Redirecionamento 302 seguro para repositório externo
+    if (link.url && String(link.url).startsWith('http')) {
+      const urlSegura = normalizarUrlSegura(validarUrlRedirecionamento(String(link.url)));
+      if (d1FalhouPorCota) {
+        c.header('X-Data-Status', 'degraded');
+      }
       return c.redirect(urlSegura, 302);
     }
 
@@ -1530,6 +1715,14 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
     // com mensagem de política, não 500 interno.
     if (err?.codigoHttp) {
       return c.json({ erro: err.message }, err.codigoHttp);
+    }
+    if (ehErroDeCota(err)) {
+      c.header('X-Data-Status', 'degraded');
+      c.header('Retry-After', '3600');
+      return c.json({
+        erro: 'Serviço temporariamente indisponível devido ao limite diário da base de dados. Tente novamente mais tarde.',
+        status: 'degraded'
+      }, 503);
     }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao processar leitura' }, 500);
   }
