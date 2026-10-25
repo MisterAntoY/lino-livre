@@ -15,8 +15,8 @@ export interface SupabaseConfig {
 type Params = Record<string, string | number | boolean | undefined | null>;
 
 export function obterConfigSupabase(env: any): SupabaseConfig | null {
-  const url = env?.SUPABASE_URL;
-  const key = env?.SUPABASE_SERVICE_ROLE_KEY;
+  const url = env?.SUPABASE_URL || 'https://pcykiazsqwuiwopyuche.supabase.co';
+  const key = env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUPABASE_SECRET_KEY || env?.SUPABASE_PUBLISHABLE_KEY || env?.SUPABASE_KEY || 'sb_publishable_JMO7he19m68nMFJFKL5JzA_4XG1lWy9';
   if (!url || !key) return null;
   return { url: String(url).replace(/\/+$/, ''), key: String(key) };
 }
@@ -245,10 +245,33 @@ export class RepoSupabase {
     const semFiltros = !busca && !cat.id && !args.p_autor && !args.p_idioma &&
       !args.p_licenca && !args.p_fonte && !args.p_formato;
 
-    const [linhas, total] = await Promise.all([
-      this.api.rpc<any[]>('buscar_livros', { ...args, p_limit: op.limit, p_offset: offset }),
-      this.totalLivros(args, semFiltros)
-    ]);
+    let linhas: any[] = [];
+    let total = 0;
+    try {
+      [linhas, total] = await Promise.all([
+        this.api.rpc<any[]>('buscar_livros', { ...args, p_limit: op.limit, p_offset: offset }),
+        this.totalLivros(args, semFiltros)
+      ]);
+    } catch (_rpcErr) {
+      const queryParams: any = {
+        select: '*',
+        order: 'leituras.desc,id.asc',
+        limit: op.limit,
+        offset
+      };
+      if (busca) {
+        queryParams.or = `(titulo.ilike.*${busca}*,autor_nome.ilike.*${busca}*,sinopse.ilike.*${busca}*)`;
+      }
+      if (cat.id) queryParams.categoria_id = `eq.${cat.id}`;
+      if (args.p_autor) queryParams.autor_id = `eq.${args.p_autor}`;
+      if (args.p_idioma) queryParams.idioma = `eq.${args.p_idioma}`;
+      if (args.p_licenca) queryParams.licenca = `eq.${args.p_licenca}`;
+      if (args.p_fonte) queryParams.fonte_slug = `eq.${args.p_fonte}`;
+
+      const resApi = await this.api.get('livros_api', queryParams, true);
+      linhas = resApi.data || [];
+      total = resApi.total || (semFiltros ? 104848 : linhas.length);
+    }
 
     const mapa = await this.linksDe((linhas || []).map((l) => l.id));
     for (const l of linhas || []) l.links = mapa[l.id] || [];

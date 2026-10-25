@@ -89,7 +89,9 @@
     "SUPPORT_EMAIL": "bv6alblu6@mozmail.com",
     // 'd1' (padrão) ou 'supabase'. Para usar Supabase, definir também os
     // secrets SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY.
-    "DB_BACKEND": "d1"
+    "DB_BACKEND": "d1",
+    "SUPABASE_URL": "https://pcykiazsqwuiwopyuche.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_JMO7he19m68nMFJFKL5JzA_4XG1lWy9"
   }
 
   // Secrets (set via: wrangler secret put <NAME>):

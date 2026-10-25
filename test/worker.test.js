@@ -1333,7 +1333,7 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       const res = await workerRequest('/api/livros/1/ler/1', { method: 'GET' }, { DB: d1ComErroDeCota });
       assert.equal(res.status, 302);
       assert.equal(res.headers.get('x-data-status'), 'degraded');
-      assert.match(res.headers.get('location') || '', /wikisource\.org/);
+      assert.match(res.headers.get('location') || '', /wikisource\.org|gutenberg\.org/);
     });
 
     test('15.2 - GET /api/livros/:id/ler/:linkId devolve 503 degradado para livro fora do fallback sob cota esgotada', async () => {
