@@ -382,7 +382,7 @@ async function tabelaExiste(db: any, nome: string): Promise<boolean> {
 // Erro de cota da D1 (free tier) — permite degradar em vez de devolver 500.
 function ehErroDeCota(err: any): boolean {
   // Cota esgotada OU tabelas de agregados ainda não criadas (antes do 1º cron).
-  return /exceeded D1|free tier daily row read|no such table: (estatisticas|contadores)/i
+  return /exceeded D1|free tier daily row read|row read limit|daily row read limit|7500|no such table: (estatisticas|contadores)/i
     .test(String(err?.message || ''));
 }
 
@@ -1481,20 +1481,93 @@ app.get('/api/livros', async (c) => {
       // Recupera assim que a cota reiniciar (00:00 UTC), sem ficar preso em cache.
       c.header('Cache-Control', 'public, max-age=60');
       c.header('X-Data-Status', 'degraded');
+      const repoFallback = obterRepoSupabase(c.env);
+      if (repoFallback) {
+        try {
+          const payload = await repoFallback.livros({
+            page: numPage,
+            limit: numLimit,
+            busca,
+            categoria: categoria_id,
+            autor: autor_id,
+            idioma,
+            licenca,
+            fonte: fonte_slug || fonte,
+            formato,
+            colecao
+          });
+          return c.json(payload);
+        } catch (supaErr) {
+          console.error('[worker] Supabase fallback para livros falhou:', supaErr);
+        }
+      }
     } else {
       c.header('Cache-Control', 'public, max-age=300');
     }
-    // Total REAL do acervo (fonte: seed local) — nunca números fictícios.
+
+    const catDecoded = categoria_id ? decodeURIComponent(String(categoria_id)) : '';
+    const isTop100 = (categoria_id && (
+      catDecoded === '🌟 Mais Lidos do Mundo' ||
+      catDecoded === 'Mais Lidos do Mundo' ||
+      catDecoded.includes('Mais Lidos') ||
+      categoria_id === 'top100' ||
+      categoria_id === 'mais_lidos'
+    )) || (colecao === 'top100' || colecao === 'mais_lidos');
+
+    let filtrados = [...FALLBACK_LIVROS];
+    if (busca) {
+      const q = busca.toLowerCase();
+      filtrados = filtrados.filter(l =>
+        (l.titulo && l.titulo.toLowerCase().includes(q)) ||
+        (l.autor_nome && l.autor_nome.toLowerCase().includes(q)) ||
+        (l.sinopse && l.sinopse.toLowerCase().includes(q))
+      );
+    }
+    if (categoria_id) {
+      if (/^\d+$/.test(categoria_id)) {
+        const catNum = Number(categoria_id);
+        filtrados = filtrados.filter(l => l.categoria_id === catNum);
+      } else if (!isTop100) {
+        const cNome = catDecoded.toLowerCase();
+        filtrados = filtrados.filter(l => l.categoria_nome && l.categoria_nome.toLowerCase() === cNome);
+      }
+    }
+    if (autor_id && /^\d+$/.test(autor_id)) {
+      const aId = Number(autor_id);
+      filtrados = filtrados.filter((l: any) => l.autor_id === aId);
+    }
+    if (idioma) {
+      filtrados = filtrados.filter(l => l.idioma === idioma);
+    }
+    if (licenca) {
+      filtrados = filtrados.filter(l => l.licenca === licenca);
+    }
+    if (formato) {
+      const fmt = formato.toLowerCase();
+      filtrados = filtrados.filter(l => l.links && l.links.some((lnk: any) => lnk.formato && lnk.formato.toLowerCase() === fmt));
+    }
+    if (fonte_slug || fonte) {
+      const fSlug = (fonte_slug || fonte).toLowerCase();
+      filtrados = filtrados.filter((l: any) =>
+        (l.fonte_slug && l.fonte_slug.toLowerCase() === fSlug) ||
+        (l.fonte_nome && l.fonte_nome.toLowerCase().includes(fSlug))
+      );
+    }
+
+    const semFiltros = !busca && !categoria_id && !autor_id && !idioma && !licenca && !formato && !(fonte_slug || fonte) && !isTop100;
     const totalCatalogoConhecido = 104170;
+    const totalResp = semFiltros ? totalCatalogoConhecido : filtrados.length;
+    const paginados = filtrados.slice((numPage - 1) * numLimit, numPage * numLimit);
+
     return c.json({
       page: numPage,
       pagina: numPage,
       limit: numLimit,
       limite: numLimit,
-      total: totalCatalogoConhecido,
-      total_pages: Math.ceil(totalCatalogoConhecido / numLimit),
-      total_paginas: Math.ceil(totalCatalogoConhecido / numLimit),
-      data: FALLBACK_LIVROS
+      total: totalResp,
+      total_pages: Math.ceil(totalResp / numLimit) || 1,
+      total_paginas: Math.ceil(totalResp / numLimit) || 1,
+      data: paginados
     });
   }
 });

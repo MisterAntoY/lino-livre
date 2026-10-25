@@ -114,6 +114,7 @@ export interface FiltrosLivros {
   licenca?: string;
   fonte?: string;
   formato?: string;
+  colecao?: string;
 }
 
 export class RepoSupabase {
@@ -195,10 +196,34 @@ export class RepoSupabase {
       String(op.categoria).includes('Mais Lidos') ||
       op.categoria === 'top100' ||
       op.categoria === 'mais_lidos'
-    )) || (op as any).colecao === 'top100' || (op as any).colecao === 'mais_lidos';
+    )) || op.colecao === 'top100' || op.colecao === 'mais_lidos';
 
     if (isTop100) {
-      throw new Error('Top 100 mundial é gerenciado pelo catálogo D1');
+      const offset = (op.page - 1) * op.limit;
+      const { data, total } = await this.api.get('livros', {
+        select: '*,autores(nome),categorias(nome)',
+        fonte_id_externo: 'like.world-*',
+        order: 'id.asc',
+        limit: op.limit,
+        offset
+      }, true);
+      const mapa = await this.linksDe((data || []).map((l: any) => l.id));
+      const livrosFormatados = (data || []).map((l: any) => ({
+        ...l,
+        autor_nome: l.autores?.nome || null,
+        categoria_nome: l.categorias?.nome || null,
+        links: mapa[l.id] || []
+      }));
+      return {
+        page: op.page,
+        pagina: op.page,
+        limit: op.limit,
+        limite: op.limit,
+        total: total || 105,
+        total_pages: Math.ceil((total || 105) / op.limit),
+        total_paginas: Math.ceil((total || 105) / op.limit),
+        data: livrosFormatados
+      };
     }
 
     const offset = (op.page - 1) * op.limit;

@@ -584,6 +584,18 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   4. **Proteção contra Falha de Escrita Assíncrona:** A chamada `UPDATE livros SET leituras = leituras + 1` no background context foi envolvida com `.catch(() => {})`, impedindo unhandled rejections quando a cota de gravação estiver esgotada.
   5. **Cobertura de Testes Automatizados TDD:** Cenário 15 adicionado em [`test/worker.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/worker.test.js) com 5 testes de regressão (348 testes em 67 suítes 100% verdes).
 
+### 2.36. Resolução de Filtros Ignorados no Catálogo sob Degradação da D1
+- **Problema Relatado:** Ao aplicar filtros (categorias, idiomas, licenças, formatos, busca) no catálogo geral, o catálogo continuava a devolver sempre as mesmas obras iniciais, ignorando os filtros.
+- **Causa Raiz Identificada:**
+  - Quando a cota de leitura diária da D1 esgotava (código `7500`), a rota `GET /api/livros` entrava no bloco `catch (err)`.
+  - No `catch`, o Worker devolvia estaticamente o array `FALLBACK_LIVROS` (10 obras clássicas) sem aplicar nenhum dos parâmetros de busca ou filtragem recebidos na query string (`busca`, `categoria_id`, `idioma`, `licenca`, `formato`, `fonte`, `colecao`).
+  - Além disso, o Supabase (que possui o catálogo integral de 104k obras espelhado) não era consultado como fallback antes da resposta degradada.
+- **Resoluções de Engenharia Implementadas:**
+  1. **Fallback em Cascata para Supabase:** Ao capturar `ehErroDeCota(err)` em `/api/livros`, o Worker consulta `obterRepoSupabase(c.env).livros(...)`, aplicando busca e filtros sobre a base integral no Supabase.
+  2. **Filtragem em Memória sobre `FALLBACK_LIVROS`:** Caso o Supabase também esteja inacessível, o Worker aplica filtros em memória (título, autor, sinopse, categoria_id, idioma, licença, formato) sobre o catálogo de contingência, garantindo que consultas filtradas respeitem estritamente as restrições selecionadas pelo usuário.
+  3. **Suporte a Coleção Top 100 no Supabase:** Tratamento explícito de `fonte_id_externo LIKE 'world-*'` no repositório Supabase para responder a requisições com `categoria_id="🌟 Mais Lidos do Mundo"` e `colecao="top100"`.
+  4. **Testes de Regressão TDD:** Adicionados testes 15.6 e 15.7 em [`test/worker.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/worker.test.js) validando filtragem por categoria e por busca textual sob cota esgotada (350 testes em 67 suítes 100% verdes).
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:

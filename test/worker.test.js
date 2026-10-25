@@ -1367,5 +1367,27 @@ describe('Testes Automatizados do Cloudflare Worker (Hono + D1)', () => {
       assert.equal(res.status, 503);
       assert.equal(res.headers.get('x-data-status'), 'degraded');
     });
+
+    test('15.6 - GET /api/livros com filtros (categoria_id) sob cota esgotada aplica filtragem e não devolve todas as obras indiscriminadamente', async () => {
+      const res = await workerRequest('/api/livros?categoria_id=2', { method: 'GET' }, { DB: d1ComErroDeCota });
+      assert.equal(res.status, 200);
+      assert.equal(res.headers.get('x-data-status'), 'degraded');
+      const json = await res.json();
+      assert.ok(json.data.length > 0);
+      // Todos os livros devolvidos devem pertencer à categoria 2
+      for (const livro of json.data) {
+        assert.equal(livro.categoria_id, 2);
+      }
+    });
+
+    test('15.7 - GET /api/livros com busca textual sob cota esgotada filtra obras correspondentes', async () => {
+      const res = await workerRequest('/api/livros?busca=Cortiço', { method: 'GET' }, { DB: d1ComErroDeCota });
+      assert.equal(res.status, 200);
+      assert.equal(res.headers.get('x-data-status'), 'degraded');
+      const json = await res.json();
+      assert.ok(json.data.length > 0);
+      assert.ok(json.data.some(l => l.titulo.includes('Cortiço')));
+      assert.ok(json.data.every(l => l.titulo.includes('Cortiço') || (l.sinopse && l.sinopse.includes('Cortiço'))));
+    });
   });
 });
