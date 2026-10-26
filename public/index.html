@@ -277,7 +277,7 @@
            <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
         </a>
         <button id="btn-instalar-app" class="btn btn-pwa-install hidden" data-acao="instalarPwa" data-i18n-title="ui.pwa.installTitle" title="Instalar aplicativo Lino Livre no telemóvel">
-          <span>📲</span> <span data-i18n="ui.pwa.installBtn">Instalar App</span>
+          <span data-i18n="ui.pwa.installBtn">Instalar App</span>
         </button>
         <button class="btn btn-outline" data-acao="abrirModalNovoLivro" data-i18n="ui.header.addBook">+ Adicionar Livro</button>
       </div>
@@ -295,164 +295,17 @@
   <!-- Navegação Principal por Abas -->
   <nav class="container nav-tabs-section">
     <div class="nav-tabs">
-      <button class="tab-btn active" id="tab-btn-livros" data-acao="trocarAba" data-arg="livros" data-i18n="ui.tabs.books"> Livros Digitais</button>
-      <button class="tab-btn" id="tab-btn-cursos" data-acao="trocarAba" data-arg="cursos" data-i18n="ui.tabs.courses"> Cursos Gratuitos</button>
-      <button class="tab-btn" id="tab-btn-roadmaps" data-acao="trocarAba" data-arg="roadmaps" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</button>
-      <button class="tab-btn" id="tab-btn-podcasts" data-acao="trocarAba" data-arg="podcasts" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</button>
-      <button class="tab-btn" id="tab-btn-dicas" data-acao="trocarAba" data-arg="dicas" data-i18n="ui.tabs.tips"> Dicas & Ferramentas</button>
-      <button class="tab-btn" id="tab-btn-dashboard" data-acao="trocarAba" data-arg="dashboard" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</button>
+      <button class="tab-btn active" id="tab-btn-livros" data-acao="trocarAba" data-arg="livros" data-i18n="ui.tabs.books">Livros Digitais</button>
+      <button class="tab-btn" id="tab-btn-cursos" data-acao="trocarAba" data-arg="cursos" data-i18n="ui.tabs.courses">Cursos Gratuitos</button>
+      <button class="tab-btn" id="tab-btn-roadmaps" data-acao="trocarAba" data-arg="roadmaps" data-i18n="ui.tabs.roadmaps">Roadmaps & Trilhas</button>
+      <button class="tab-btn" id="tab-btn-podcasts" data-acao="trocarAba" data-arg="podcasts" data-i18n="ui.tabs.podcasts">Podcasts & Spotify</button>
+      <button class="tab-btn" id="tab-btn-dicas" data-acao="trocarAba" data-arg="dicas" data-i18n="ui.tabs.tips">Dicas & Ferramentas</button>
+      <button class="tab-btn" id="tab-btn-dashboard" data-acao="trocarAba" data-arg="dashboard" data-i18n="ui.tabs.dashboard">Métricas & Fontes</button>
     </div>
   </nav>
 
   <!-- ==================== ABA 1: LIVROS DIGITAIS ==================== -->
   <div id="aba-livros" class="tab-content active">
-    <!-- Placar da Jornada: Rumo aos 10 Milhões de Livros -->
-    <section class="container goal-scoreboard-section" id="secao-placar-meta">
-      <div class="goal-scoreboard-card">
-        <div class="goal-header">
-          <div class="goal-title-group">
-            <div class="goal-badge">
-              <span data-i18n="ui.goal.badge">Meta Coletiva Global</span>
-            </div>
-            <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
-            <p class="goal-subtitle" data-i18n="ui.goal.subtitle">Uma biblioteca aberta, universal e gratuita para todos os estudantes, professores e leitores do mundo. Acompanhe o avanço em tempo real e faça parte desta jornada histórica!</p>
-          </div>
-          <div class="goal-live-counter">
-            <div class="goal-counter-box">
-              <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
-              <div class="counter-number-row">
-                <span class="counter-odometer" id="placar-total-livros">80 331</span>
-                <span class="counter-divider">/</span>
-                <span class="counter-target">10.000.000</span>
-              </div>
-              <span class="counter-pct" id="placar-porcentagem">0.8033% da meta</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Barra de Progresso Visual e Marcos Históricos -->
-        <div class="goal-progress-wrapper">
-          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="80331" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="2.000 de 10.000.000 obras catalogadas" id="placar-progressbar-container">
-            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.0002);"></div>
-          </div>
-          
-          <!-- Marcos da Jornada / Milestones -->
-          <div class="goal-milestones">
-            <div class="milestone-step reached" title="Marco Inicial: Lançamento da Plataforma">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">0</span>
-            </div>
-            <div class="milestone-step reached" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">1.000</span>
-            </div>
-            <div class="milestone-step reached" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">10.000</span>
-            </div>
-            <div class="milestone-step active" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">
-              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>100.000</span>
-            </div>
-            <div class="milestone-step" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">1.000.000</span>
-            </div>
-            <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
-              <span class="milestone-dot gold"></span>
-              <span class="milestone-text gold">10.000.000 </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Estatísticas Rápidas e Ações da Comunidade -->
-        <div class="goal-footer">
-          <div class="goal-stats-grid">
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val" id="placar-stat-atual">80 331</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val">10.000.000</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statTarget">Alvo Global</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val" id="placar-stat-faltam">9 919 669</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val" id="placar-stat-next-target">10.000</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="goal-actions">
-            <button class="btn btn-goal-contrib" data-acao="abrirModalNovoLivro">
-              <span>+</span> <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
-            </button>
-            <button class="btn btn-goal-share" data-acao="compartilharMeta10M">
-              <span></span> <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
-            </button>
-            <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
-              <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
-              <span data-i18n="ui.goal.btnJoin">Comunidade</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- DESTAQUES DA BIBLIOTECA: LIVROS MAIS POPULARES E MUITO PROCURADOS -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <section class="container destaques-section" id="secao-destaques">
-      <div class="destaques-card">
-        <div class="destaques-header">
-          <div class="destaques-title-group">
-            <div class="destaques-badge">
-              <span data-i18n="ui.books.highlightsBadge">⭐ Obras em Destaque • Mais Procuradas</span>
-            </div>
-            <h2 class="destaques-title" data-i18n="ui.books.highlightsTitle">🌟 Livros Mais Populares e Muito Procurados</h2>
-            <p class="destaques-subtitle" data-i18n="ui.books.highlightsSubtitle">Descubra as obras mais lidas da humanidade, grandes bestsellers internacionais e os clássicos imortais da literatura com leitura online e download gratuito imediato.</p>
-          </div>
-          <div class="destaques-actions">
-            <button class="btn btn-destaque-all" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.highlightsViewAll">
-              <span>Explorar Todos os 100+ Mais Lidos</span> <span>→</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Pílulas de Navegação dos Destaques -->
-        <div class="destaques-tabs-pills" id="pills-destaques-tipo">
-          <button class="pill-destaque-tab active" data-tipo="todos" data-acao="trocarAbaDestaques" data-arg="todos" data-i18n="ui.books.highlightsAll">🌟 Mais Procurados do Mundo</button>
-          <button class="pill-destaque-tab" data-tipo="lusofonia" data-acao="trocarAbaDestaques" data-arg="lusofonia" data-i18n="ui.books.highlightsClassics">📜 Clássicos Lusófonos</button>
-          <button class="pill-destaque-tab" data-tipo="africa" data-acao="trocarAbaDestaques" data-arg="africa" data-i18n="ui.books.highlightsAfrica">🌍 Tesouros de África</button>
-          <button class="pill-destaque-tab" data-tipo="tech" data-acao="trocarAbaDestaques" data-arg="tech" data-i18n="ui.books.highlightsTech">💻 Manuais de Tecnologia</button>
-        </div>
-
-        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
-        <div class="destaques-grid" id="grade-destaques">
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
-        </div>
-      </div>
-    </section>
-
     <!-- Filtros e Busca com Anotações WebMCP para Agentes de IA -->
     <section class="container filter-section">
       <form id="form-busca-livros" role="search" toolname="buscar_livros" tooldescription="Pesquisar livros digitais no acervo aberto do Lino Livre por título da obra, autor, assunto ou tema" data-acao="buscarComDebounce" data-evento="submit" class="search-bar-wrap">
@@ -460,7 +313,6 @@
           <input type="search" id="filtro-busca" name="q" placeholder="Pesquisar por título ou autor..." data-i18n-ph="ui.books.searchPlaceholder" data-acao="buscarComDebounce" data-evento="input" toolparamdescription="Termo de pesquisa para buscar no acervo aberto (título, autor ou tema)">
         </div>
         <button type="button" class="btn btn-federada" id="btn-busca-federada" data-acao="alternarBuscaFederada" title="Consultar catálogos globais em paralelo (Fase 4)">
-          <span class="fed-icon">🌐</span>
           <span data-i18n="ui.books.federatedSearch">Busca Global</span>
         </button>
       </form>
@@ -468,7 +320,7 @@
       <!-- Resultados da Busca Federada Global (Fase 4 — motor distribuído RRF) -->
       <div id="painel-federada" class="federada-panel hidden">
         <div class="federada-header">
-          <span class="federada-badge">🌐 <span data-i18n="ui.books.federatedTitle">Busca Federada Global</span></span>
+          <span class="federada-badge"><span data-i18n="ui.books.federatedTitle">Busca Federada Global</span></span>
           <span class="federada-stats" id="federada-stats"></span>
         </div>
         <div id="grade-federada" class="federada-grid"></div>
@@ -479,12 +331,12 @@
         <span class="filter-label" data-i18n="ui.books.languageFilter">Idioma:</span>
         <div class="pills-container" id="pills-idiomas-livros">
           <button class="pill active" data-lang="" data-acao="filtrarPorIdiomaLivro" data-arg="" data-i18n="ui.books.allLanguages">Todos os Idiomas</button>
-          <button class="pill" data-lang="pt" data-acao="filtrarPorIdiomaLivro" data-arg="pt"> Português</button>
-          <button class="pill" data-lang="en" data-acao="filtrarPorIdiomaLivro" data-arg="en"> English</button>
-          <button class="pill" data-lang="es" data-acao="filtrarPorIdiomaLivro" data-arg="es"> Español</button>
-          <button class="pill" data-lang="fr" data-acao="filtrarPorIdiomaLivro" data-arg="fr"> Français</button>
-          <button class="pill" data-lang="de" data-acao="filtrarPorIdiomaLivro" data-arg="de"> Deutsch</button>
-          <button class="pill" data-lang="zh" data-acao="filtrarPorIdiomaLivro" data-arg="zh"> 中文</button>
+          <button class="pill" data-lang="pt" data-acao="filtrarPorIdiomaLivro" data-arg="pt">Português</button>
+          <button class="pill" data-lang="en" data-acao="filtrarPorIdiomaLivro" data-arg="en">English</button>
+          <button class="pill" data-lang="es" data-acao="filtrarPorIdiomaLivro" data-arg="es">Español</button>
+          <button class="pill" data-lang="fr" data-acao="filtrarPorIdiomaLivro" data-arg="fr">Français</button>
+          <button class="pill" data-lang="de" data-acao="filtrarPorIdiomaLivro" data-arg="de">Deutsch</button>
+          <button class="pill" data-lang="zh" data-acao="filtrarPorIdiomaLivro" data-arg="zh">中文</button>
         </div>
       </div>
 
@@ -493,26 +345,26 @@
         <span class="filter-label" data-i18n="ui.books.categories">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
           <button class="pill active" data-categoria="" data-acao="filtrarPorCategoria" data-arg="" data-i18n="ui.books.all">Todas</button>
-          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.catTop100">🌟 Os 100 Mais Lidos do Mundo</button>
-          <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" data-acao="filtrarPorCategoria" data-arg="Autores Lusófonos Clássicos">📜 Autores Lusófonos Clássicos</button>
-          <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" data-acao="filtrarPorCategoria" data-arg="Literatura Angolana">🇦🇴 Literatura Angolana</button>
-          <button class="pill highlight-pill-africa" data-categoria="🎓 Teses & Trabalhos Universitários (UAN)" data-acao="filtrarPorCategoria" data-arg="🎓 Teses &amp; Trabalhos Universitários (UAN)">🎓 Teses & Trabalhos UAN</button>
-          <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" data-acao="filtrarPorCategoria" data-arg="Literatura Africana Lusófona">🇨🇻 Literatura Africana Lusófona</button>
-          <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" data-acao="filtrarPorCategoria" data-arg="Poesia Africana">🇲🇿 Poesia Africana</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" data-acao="filtrarPorCategoria" data-arg="🌍 Literatura &amp; Vozes de África">🌍 Literatura & Vozes de África</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Contos & Tradição Oral Africana" data-acao="filtrarPorCategoria" data-arg="🌍 Contos &amp; Tradição Oral Africana">🌍 Contos & Tradição Oral</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 História & Sociedade Africana" data-acao="filtrarPorCategoria" data-arg="🌍 História &amp; Sociedade Africana">🌍 História de África</button>
-          <button class="pill highlight-pill-africa" data-categoria="🌍 Filosofia & Pensamento Africano" data-acao="filtrarPorCategoria" data-arg="🌍 Filosofia &amp; Pensamento Africano">🌍 Filosofia Africana</button>
+          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.catTop100">Os 100 Mais Lidos do Mundo</button>
+          <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" data-acao="filtrarPorCategoria" data-arg="Autores Lusófonos Clássicos">Autores Lusófonos Clássicos</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" data-acao="filtrarPorCategoria" data-arg="Literatura Angolana">Literatura Angolana</button>
+          <button class="pill highlight-pill-africa" data-categoria="🎓 Teses & Trabalhos Universitários (UAN)" data-acao="filtrarPorCategoria" data-arg="🎓 Teses &amp; Trabalhos Universitários (UAN)">Teses & Trabalhos UAN</button>
+          <button class="pill highlight-pill-africa" data-categoria="Literatura Africana Lusófona" data-acao="filtrarPorCategoria" data-arg="Literatura Africana Lusófona">Literatura Africana Lusófona</button>
+          <button class="pill highlight-pill-africa" data-categoria="Poesia Africana" data-acao="filtrarPorCategoria" data-arg="Poesia Africana">Poesia Africana</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Literatura & Vozes de África" data-acao="filtrarPorCategoria" data-arg="🌍 Literatura &amp; Vozes de África">Literatura & Vozes de África</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Contos & Tradição Oral Africana" data-acao="filtrarPorCategoria" data-arg="🌍 Contos &amp; Tradição Oral Africana">Contos & Tradição Oral</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 História & Sociedade Africana" data-acao="filtrarPorCategoria" data-arg="🌍 História &amp; Sociedade Africana">História de África</button>
+          <button class="pill highlight-pill-africa" data-categoria="🌍 Filosofia & Pensamento Africano" data-acao="filtrarPorCategoria" data-arg="🌍 Filosofia &amp; Pensamento Africano">Filosofia Africana</button>
           <button class="pill" data-categoria="Clássicos Brasileiros" data-acao="filtrarPorCategoria" data-arg="Clássicos Brasileiros" data-i18n="ui.books.catClassics">Clássicos Brasileiros</button>
           <button class="pill" data-categoria="Romance & Crônicas" data-acao="filtrarPorCategoria" data-arg="Romance &amp; Crônicas" data-i18n="ui.books.catRomance">Romances</button>
           <button class="pill" data-categoria="Teatro & Poesia" data-acao="filtrarPorCategoria" data-arg="Teatro &amp; Poesia" data-i18n="ui.books.catPoetry">Poesia</button>
           <button class="pill" data-categoria="Romance Indianista" data-acao="filtrarPorCategoria" data-arg="Romance Indianista">Romance Indianista</button>
           <button class="pill" data-categoria="Apoio Pedagógico & Filosofia" data-acao="filtrarPorCategoria" data-arg="Apoio Pedagógico &amp; Filosofia" data-i18n="ui.books.catEssays">Didáticos & Ensaios</button>
-          <button class="pill" data-categoria="Arquitetura & Engenharia de Software" data-acao="filtrarPorCategoria" data-arg="Arquitetura &amp; Engenharia de Software"> Arquitetura & Engenharia</button>
-          <button class="pill" data-categoria="Desenvolvimento Web & Mobile" data-acao="filtrarPorCategoria" data-arg="Desenvolvimento Web &amp; Mobile"> Web & Mobile</button>
-          <button class="pill" data-categoria="DevOps, Cloud & Infraestrutura" data-acao="filtrarPorCategoria" data-arg="DevOps, Cloud &amp; Infraestrutura"> DevOps & Nuvem</button>
-          <button class="pill" data-categoria="Ciência de Dados & Inteligência Artificial" data-acao="filtrarPorCategoria" data-arg="Ciência de Dados &amp; Inteligência Artificial"> Dados & IA</button>
-          <button class="pill" data-categoria="Metodologias Ágeis & Carreira Tech" data-acao="filtrarPorCategoria" data-arg="Metodologias Ágeis &amp; Carreira Tech"> Ágil & Carreira</button>
+          <button class="pill" data-categoria="Arquitetura & Engenharia de Software" data-acao="filtrarPorCategoria" data-arg="Arquitetura &amp; Engenharia de Software">Arquitetura & Engenharia</button>
+          <button class="pill" data-categoria="Desenvolvimento Web & Mobile" data-acao="filtrarPorCategoria" data-arg="Desenvolvimento Web &amp; Mobile">Web & Mobile</button>
+          <button class="pill" data-categoria="DevOps, Cloud & Infraestrutura" data-acao="filtrarPorCategoria" data-arg="DevOps, Cloud &amp; Infraestrutura">DevOps & Nuvem</button>
+          <button class="pill" data-categoria="Ciência de Dados & Inteligência Artificial" data-acao="filtrarPorCategoria" data-arg="Ciência de Dados &amp; Inteligência Artificial">Dados & IA</button>
+          <button class="pill" data-categoria="Metodologias Ágeis & Carreira Tech" data-acao="filtrarPorCategoria" data-arg="Metodologias Ágeis &amp; Carreira Tech">Ágil & Carreira</button>
         </div>
       </div>
 
@@ -521,14 +373,14 @@
         <span class="filter-label">Fonte / Acervo:</span>
         <div class="pills-container" id="pills-fontes">
           <button class="pill active" data-fonte="" data-acao="filtrarPorFonteLivro" data-arg="">Todos os Acervos</button>
-          <button class="pill highlight-pill-africa" data-fonte="uan-tfc" data-acao="filtrarPorFonteLivro" data-arg="uan-tfc">🇦🇴 UAN Repositório TFC</button>
-          <button class="pill" data-fonte="dominiopublico" data-acao="filtrarPorFonteLivro" data-arg="dominiopublico">🏛️ Domínio Público & África</button>
-          <button class="pill" data-fonte="gutenberg" data-acao="filtrarPorFonteLivro" data-arg="gutenberg">🌐 Project Gutenberg</button>
-          <button class="pill" data-fonte="github-bibliotecadev" data-acao="filtrarPorFonteLivro" data-arg="github-bibliotecadev">📂 BibliotecaDev</button>
-          <button class="pill" data-fonte="github-italocamilo" data-acao="filtrarPorFonteLivro" data-arg="github-italocamilo">📂 Books Tech / italocamil0</button>
-          <button class="pill" data-fonte="github-freebooks-es" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-es">🇪🇸 Free Programming Books ES</button>
-          <button class="pill" data-fonte="rheinwerk-openbook" data-acao="filtrarPorFonteLivro" data-arg="rheinwerk-openbook">🇩🇪 Rheinwerk Openbooks</button>
-          <button class="pill" data-fonte="github-freebooks-de" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-de">🇩🇪 Free Programming Books DE</button>
+          <button class="pill highlight-pill-africa" data-fonte="uan-tfc" data-acao="filtrarPorFonteLivro" data-arg="uan-tfc">UAN Repositório TFC</button>
+          <button class="pill" data-fonte="dominiopublico" data-acao="filtrarPorFonteLivro" data-arg="dominiopublico">Domínio Público & África</button>
+          <button class="pill" data-fonte="gutenberg" data-acao="filtrarPorFonteLivro" data-arg="gutenberg">Project Gutenberg</button>
+          <button class="pill" data-fonte="github-bibliotecadev" data-acao="filtrarPorFonteLivro" data-arg="github-bibliotecadev">BibliotecaDev</button>
+          <button class="pill" data-fonte="github-italocamilo" data-acao="filtrarPorFonteLivro" data-arg="github-italocamilo">Books Tech / italocamil0</button>
+          <button class="pill" data-fonte="github-freebooks-es" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-es">Free Programming Books ES</button>
+          <button class="pill" data-fonte="rheinwerk-openbook" data-acao="filtrarPorFonteLivro" data-arg="rheinwerk-openbook">Rheinwerk Openbooks</button>
+          <button class="pill" data-fonte="github-freebooks-de" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-de">Free Programming Books DE</button>
         </div>
       </div>
 
@@ -575,13 +427,154 @@
         <button id="btn-pag-prox" class="btn btn-secondary btn-sm" data-acao="proximaPagina" data-i18n="ui.books.next">Próxima →</button>
       </div>
     </main>
+
+    <!-- DESTAQUES DA BIBLIOTECA: LIVROS MAIS POPULARES E PROCURADOS -->
+    <section class="container destaques-section" id="secao-destaques">
+      <div class="destaques-card">
+        <div class="destaques-header">
+          <div class="destaques-title-group">
+            <div class="destaques-badge">
+              <span data-i18n="ui.books.highlightsBadge">Obras em Destaque</span>
+            </div>
+            <h2 class="destaques-title" data-i18n="ui.books.highlightsTitle">Livros em Destaque</h2>
+            <p class="destaques-subtitle" data-i18n="ui.books.highlightsSubtitle">Descubra as obras mais lidas da humanidade, grandes bestsellers internacionais e os clássicos imortais da literatura com leitura online e download gratuito imediato.</p>
+          </div>
+          <div class="destaques-actions">
+            <button class="btn btn-destaque-all" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.highlightsViewAll">
+              <span>Explorar Todos os 100+ Mais Lidos</span> <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pílulas de Navegação dos Destaques -->
+        <div class="destaques-tabs-pills" id="pills-destaques-tipo">
+          <button class="pill-destaque-tab active" data-tipo="todos" data-acao="trocarAbaDestaques" data-arg="todos" data-i18n="ui.books.highlightsAll">Mais Procurados</button>
+          <button class="pill-destaque-tab" data-tipo="lusofonia" data-acao="trocarAbaDestaques" data-arg="lusofonia" data-i18n="ui.books.highlightsClassics">Clássicos Lusófonos</button>
+          <button class="pill-destaque-tab" data-tipo="africa" data-acao="trocarAbaDestaques" data-arg="africa" data-i18n="ui.books.highlightsAfrica">Literatura Africana</button>
+          <button class="pill-destaque-tab" data-tipo="tech" data-acao="trocarAbaDestaques" data-arg="tech" data-i18n="ui.books.highlightsTech">Tecnologia & Computação</button>
+        </div>
+
+        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
+        <div class="destaques-grid" id="grade-destaques">
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Placar da Jornada: Rumo aos 10 Milhões de Livros (Compacto e Objetivo) -->
+    <section class="container goal-scoreboard-section" id="secao-placar-meta">
+      <div class="goal-scoreboard-card">
+        <div class="goal-header">
+          <div class="goal-title-group">
+            <div class="goal-badge">
+              <span data-i18n="ui.goal.badge">Meta Coletiva Global</span>
+            </div>
+            <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
+            <p class="goal-subtitle" data-i18n="ui.goal.subtitle">Uma biblioteca aberta, universal e gratuita para todos os estudantes, professores e leitores do mundo.</p>
+          </div>
+          <div class="goal-live-counter">
+            <div class="goal-counter-box">
+              <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
+              <div class="counter-number-row">
+                <span class="counter-odometer" id="placar-total-livros">104 170</span>
+                <span class="counter-divider">/</span>
+                <span class="counter-target">10.000.000</span>
+              </div>
+              <span class="counter-pct" id="placar-porcentagem">1.0417% da meta</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de Progresso Visual e Marcos Históricos -->
+        <div class="goal-progress-wrapper">
+          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="104170" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="104 170 de 10.000.000 obras catalogadas (1.04%)" id="placar-progressbar-container">
+            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.01042);"></div>
+          </div>
+          
+          <!-- Marcos da Jornada / Milestones -->
+          <div class="goal-milestones">
+            <div class="milestone-step reached" title="Marco Inicial: Lançamento da Plataforma">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">0</span>
+            </div>
+            <div class="milestone-step reached" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">1.000</span>
+            </div>
+            <div class="milestone-step reached" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">10.000</span>
+            </div>
+            <div class="milestone-step reached" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">100.000</span>
+            </div>
+            <div class="milestone-step active" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">
+              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>1.000.000</span>
+            </div>
+            <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
+              <span class="milestone-dot gold"></span>
+              <span class="milestone-text gold">10.000.000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas Rápidas e Ações da Comunidade -->
+        <div class="goal-footer">
+          <div class="goal-stats-grid">
+            <div class="goal-stat-pill">
+              <div>
+                <span class="stat-val" id="placar-stat-atual">104 170</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+              <div>
+                <span class="stat-val">10.000.000</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statTarget">Alvo Global</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+              <div>
+                <span class="stat-val" id="placar-stat-faltam">9 895 830</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+              <div>
+                <span class="stat-val" id="placar-stat-next-target">1 000 000</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="goal-actions">
+            <button class="btn btn-goal-contrib" data-acao="abrirModalNovoLivro">
+              <span>+</span> <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
+            </button>
+            <button class="btn btn-goal-share" data-acao="compartilharMeta10M">
+              <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
+            </button>
+            <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
+              <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
+              <span data-i18n="ui.goal.btnJoin">Comunidade</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- ==================== ABA 2: CURSOS GRATUITOS ==================== -->
   <div id="aba-cursos" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner">
-        <div class="banner-badge-primary" data-i18n="ui.courses.bannerBadge">⭐ Cursos Livres & Certificações Gratuitas</div>
+        <div class="banner-badge-primary" data-i18n="ui.courses.bannerBadge">Cursos Livres & Certificações Gratuitas</div>
         <h2 data-i18n="ui.courses.bannerTitle">Diretório de Cursos Online Gratuitos</h2>
         <p><span data-i18n="ui.courses.bannerDescBefore">Cursos em vídeo, videoaulas no YouTube com emissão de certificado gratuito e formações abertas reunindo recursos do </span><a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a><span data-i18n="ui.courses.bannerDescAfter"> e da Fundação Bradesco.</span></p>
       </div>
@@ -594,16 +587,16 @@
         <span class="filter-label" data-i18n="ui.courses.filters">Filtros & Categorias:</span>
         <div class="pills-container" id="pills-cursos-areas">
           <button class="pill active" data-filtro="" data-acao="filtrarCursosPorArea" data-arg="" data-i18n="ui.courses.all">Todos</button>
-          <button class="pill" data-filtro="OER Commons" data-acao="filtrarCursosPorPlataforma" data-arg="OER Commons">🏛️ OER Commons</button>
-          <button class="pill" data-filtro="OpenStax" data-acao="filtrarCursosPorPlataforma" data-arg="OpenStax">📖 OpenStax (CC BY)</button>
-          <button class="pill" data-filtro="MIT" data-acao="filtrarCursosPorPlataforma" data-arg="MIT"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ MIT OCW</button>
-          <button class="pill" data-filtro="PhET" data-acao="filtrarCursosPorPlataforma" data-arg="PhET">🔬 PhET Simulações</button>
-          <button class="pill" data-filtro="CK-12" data-acao="filtrarCursosPorPlataforma" data-arg="CK-12">📐 CK-12 Foundation</button>
-          <button class="pill" data-filtro="Khan Academy" data-acao="filtrarCursosPorPlataforma" data-arg="Khan Academy">🟢 Khan Academy</button>
-          <button class="pill" data-filtro="Cursa" data-acao="filtrarCursosPorPlataforma" data-arg="Cursa"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Cursa App (Cursos)</button>
-          <button class="pill" data-filtro="exercicios" data-acao="filtrarCursosPorTipo" data-arg="exercicios"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 📝 Cursa Exercícios & Simulados</button>
-          <button class="pill" data-filtro="Harvard" data-acao="filtrarCursosPorPlataforma" data-arg="Harvard"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Harvard Online (PLL)</button>
-          <button class="pill" data-filtro="Stanford" data-acao="filtrarCursosPorPlataforma" data-arg="Stanford">🌲 Stanford Online</button>
+          <button class="pill" data-filtro="OER Commons" data-acao="filtrarCursosPorPlataforma" data-arg="OER Commons">OER Commons</button>
+          <button class="pill" data-filtro="OpenStax" data-acao="filtrarCursosPorPlataforma" data-arg="OpenStax">OpenStax (CC BY)</button>
+          <button class="pill" data-filtro="MIT" data-acao="filtrarCursosPorPlataforma" data-arg="MIT"><img src="/img/logos/mit.png" alt="MIT" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> MIT OCW</button>
+          <button class="pill" data-filtro="PhET" data-acao="filtrarCursosPorPlataforma" data-arg="PhET">PhET Simulações</button>
+          <button class="pill" data-filtro="CK-12" data-acao="filtrarCursosPorPlataforma" data-arg="CK-12">CK-12 Foundation</button>
+          <button class="pill" data-filtro="Khan Academy" data-acao="filtrarCursosPorPlataforma" data-arg="Khan Academy">Khan Academy</button>
+          <button class="pill" data-filtro="Cursa" data-acao="filtrarCursosPorPlataforma" data-arg="Cursa"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursa App (Cursos)</button>
+          <button class="pill" data-filtro="exercicios" data-acao="filtrarCursosPorTipo" data-arg="exercicios"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursa Exercícios & Simulados</button>
+          <button class="pill" data-filtro="Harvard" data-acao="filtrarCursosPorPlataforma" data-arg="Harvard"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Harvard Online (PLL)</button>
+          <button class="pill" data-filtro="Stanford" data-acao="filtrarCursosPorPlataforma" data-arg="Stanford">Stanford Online</button>
           <button class="pill" data-filtro="DIO" data-acao="filtrarCursosPorPlataforma" data-arg="DIO"><img src="/img/logos/dio.png" alt="DIO" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> DIO Bootcamps</button>
 
           <button class="pill" data-filtro="Santander" data-acao="filtrarCursosPorPlataforma" data-arg="Santander"><img src="/img/logos/santander.png" alt="Santander" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Santander Academy</button>
@@ -613,15 +606,15 @@
           <button class="pill pill-youtube" data-filtro="SegInfoBrasil" data-acao="filtrarCursosPorPlataforma" data-arg="SegInfoBrasil"><img src="/img/logos/youtube.svg" alt="SegInfoBrasil" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> SegInfoBrasil (Redes)</button>
           <button class="pill pill-youtube" data-filtro="Glaucia Lemos" data-acao="filtrarCursosPorPlataforma" data-arg="Glaucia Lemos"><img src="/img/logos/youtube.svg" alt="Glaucia Lemos" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Glaucia Lemos (TS)</button>
           <button class="pill pill-youtube" data-filtro="Gustavo Sacchi" data-acao="filtrarCursosPorPlataforma" data-arg="Gustavo Sacchi"><img src="/img/logos/youtube.svg" alt="Gustavo Sacchi" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Gustavo Sacchi (LangChain)</button>
-          <button class="pill" data-filtro="Bora na Tech" data-acao="filtrarCursosPorPlataforma" data-arg="Bora na Tech">🚀 Bora na Tech?</button>
-          <button class="pill" data-filtro="Jornada do Dev" data-acao="filtrarCursosPorPlataforma" data-arg="Jornada do Dev">🚀 Jornada do Dev</button>
-          <button class="pill" data-filtro="Fluência AI" data-acao="filtrarCursosPorPlataforma" data-arg="Fluência AI">🧠 Fluência AI</button>
-          <button class="pill" data-filtro="Recode" data-acao="filtrarCursosPorPlataforma" data-arg="Recode">🌐 Recode</button>
-          <button class="pill" data-filtro="Code IoT" data-acao="filtrarCursosPorPlataforma" data-arg="Code IoT">🤖 Code IoT (Samsung & USP)</button>
-          <button class="pill" data-filtro="Aliança pela Educação (ABE)" data-acao="filtrarCursosPorPlataforma" data-arg="Aliança pela Educação (ABE)">🎓 Aliança pela Educação (ABE)</button>
-          <button class="pill" data-filtro="KA Solution" data-acao="filtrarCursosPorPlataforma" data-arg="KA Solution"><img src="/img/logos/kasolution.png" alt="KA Solution" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> KA Solution (Webinars & KAtrocinados)</button>
-          <button class="pill" data-filtro="Samsung Ocean" data-acao="filtrarCursosPorPlataforma" data-arg="Samsung Ocean"><img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌊 Samsung Ocean (USP & UEA)</button>
-          <button class="pill" data-filtro="EBAC Online" data-acao="filtrarCursosPorPlataforma" data-arg="EBAC Online"><img src="/img/logos/ebac.svg" alt="EBAC Online" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> EBAC Online (Cursos & Webinars)</button>
+          <button class="pill" data-filtro="Bora na Tech" data-acao="filtrarCursosPorPlataforma" data-arg="Bora na Tech">Bora na Tech?</button>
+          <button class="pill" data-filtro="Jornada do Dev" data-acao="filtrarCursosPorPlataforma" data-arg="Jornada do Dev">Jornada do Dev</button>
+          <button class="pill" data-filtro="Fluência AI" data-acao="filtrarCursosPorPlataforma" data-arg="Fluência AI">Fluência AI</button>
+          <button class="pill" data-filtro="Recode" data-acao="filtrarCursosPorPlataforma" data-arg="Recode">Recode</button>
+          <button class="pill" data-filtro="Code IoT" data-acao="filtrarCursosPorPlataforma" data-arg="Code IoT">Code IoT (Samsung & USP)</button>
+          <button class="pill" data-filtro="Aliança pela Educação (ABE)" data-acao="filtrarCursosPorPlataforma" data-arg="Aliança pela Educação (ABE)">Aliança pela Educação (ABE)</button>
+          <button class="pill" data-filtro="KA Solution" data-acao="filtrarCursosPorPlataforma" data-arg="KA Solution"><img src="/img/logos/kasolution.png" alt="KA Solution" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> KA Solution (Webinars)</button>
+          <button class="pill" data-filtro="Samsung Ocean" data-acao="filtrarCursosPorPlataforma" data-arg="Samsung Ocean"><img src="/img/logos/samsung-ocean.svg" alt="Samsung Ocean" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Samsung Ocean (USP & UEA)</button>
+          <button class="pill" data-filtro="EBAC Online" data-acao="filtrarCursosPorPlataforma" data-arg="EBAC Online"><img src="/img/logos/ebac.svg" alt="EBAC Online" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> EBAC Online</button>
           <button class="pill" data-filtro="Data Science Academy" data-acao="filtrarCursosPorPlataforma" data-arg="Data Science Academy"><img src="/img/logos/dsa.png" alt="Data Science Academy" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Data Science Academy (DSA)</button>
           <button class="pill" data-filtro="FIAP ON" data-acao="filtrarCursosPorPlataforma" data-arg="FIAP ON"><img src="/img/logos/fiap.png" alt="FIAP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> FIAP ON</button>
           <button class="pill" data-filtro="Eu Capacito" data-acao="filtrarCursosPorPlataforma" data-arg="Eu Capacito"><img src="/img/logos/eucapacito.svg" alt="Eu Capacito" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Eu Capacito</button>
@@ -636,14 +629,14 @@
           <button class="pill" data-filtro="Oracle Next Education" data-acao="filtrarCursosPorPlataforma" data-arg="Oracle Next Education"><img src="/img/logos/oracle.svg" alt="Oracle ONE" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Oracle ONE</button>
           <button class="pill" data-filtro="Generation Brasil" data-acao="filtrarCursosPorPlataforma" data-arg="Generation Brasil"><img src="/img/logos/generation.png" alt="Generation" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Generation Brasil</button>
           <button class="pill" data-filtro="WoMakersCode" data-acao="filtrarCursosPorPlataforma" data-arg="WoMakersCode"><img src="/img/logos/womakerscode.png" alt="WoMakersCode" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> WoMakersCode</button>
-          <button class="pill" data-filtro="openHPI" data-acao="filtrarCursosPorPlataforma" data-arg="openHPI"> openHPI (Hasso-Plattner)</button>
+          <button class="pill" data-filtro="openHPI" data-acao="filtrarCursosPorPlataforma" data-arg="openHPI">openHPI (Hasso-Plattner)</button>
           <button class="pill pill-youtube" data-filtro="youtube" data-acao="filtrarCursosYouTube" data-i18n="ui.courses.youtube"><img src="/img/logos/youtube.svg" alt="YouTube" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> YouTube (Certificado)</button>
-          <button class="pill" data-filtro="Fundação Bradesco" data-acao="filtrarCursosPorPlataforma" data-arg="Fundação Bradesco"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ Fundação Bradesco (EV)</button>
-          <button class="pill" data-filtro="Escola Virtual de Governo" data-acao="filtrarCursosPorPlataforma" data-arg="Escola Virtual de Governo"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ EV.G / ENAP (Governo)</button>
-          <button class="pill" data-filtro="Lumina" data-acao="filtrarCursosPorPlataforma" data-arg="Lumina"><img src="/img/logos/lumina.svg" alt="Lumina" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🎓 Lumina (UFRGS)</button>
-          <button class="pill" data-filtro="IFRS" data-acao="filtrarCursosPorPlataforma" data-arg="IFRS"><img src="/img/logos/ifrs.svg" alt="IFRS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🏛️ IFRS (Moodle MOOC)</button>
-          <button class="pill" data-filtro="Google Ateliê Digital" data-acao="filtrarCursosPorPlataforma" data-arg="Google Ateliê Digital"><img src="/img/logos/google.svg" alt="Google" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 🌐 Google Ateliê Digital</button>
-          <button class="pill" data-filtro="OpenBootcamp" data-acao="filtrarCursosPorPlataforma" data-arg="OpenBootcamp"><img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> 💻 OpenBootcamp / Kogno</button>
+          <button class="pill" data-filtro="Fundação Bradesco" data-acao="filtrarCursosPorPlataforma" data-arg="Fundação Bradesco"><img src="/img/logos/bradesco.svg" alt="Bradesco" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Fundação Bradesco (EV)</button>
+          <button class="pill" data-filtro="Escola Virtual de Governo" data-acao="filtrarCursosPorPlataforma" data-arg="Escola Virtual de Governo"><img src="/img/logos/evg.png" alt="EV.G" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> EV.G / ENAP (Governo)</button>
+          <button class="pill" data-filtro="Lumina" data-acao="filtrarCursosPorPlataforma" data-arg="Lumina"><img src="/img/logos/lumina.svg" alt="Lumina" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Lumina (UFRGS)</button>
+          <button class="pill" data-filtro="IFRS" data-acao="filtrarCursosPorPlataforma" data-arg="IFRS"><img src="/img/logos/ifrs.svg" alt="IFRS" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> IFRS (Moodle MOOC)</button>
+          <button class="pill" data-filtro="Google Ateliê Digital" data-acao="filtrarCursosPorPlataforma" data-arg="Google Ateliê Digital"><img src="/img/logos/google.svg" alt="Google" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Google Ateliê Digital</button>
+          <button class="pill" data-filtro="OpenBootcamp" data-acao="filtrarCursosPorPlataforma" data-arg="OpenBootcamp"><img src="/img/logos/openbootcamp.svg" alt="OpenBootcamp" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> OpenBootcamp / Kogno</button>
           <button class="pill pill-guiadeti" data-filtro="guiadeti" data-acao="filtrarCursosPorFonte" data-arg="Guia de TI" data-i18n="ui.courses.guiadeti"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
           <button class="pill" data-filtro="USP" data-acao="filtrarCursosPorPlataforma" data-arg="USP"><img src="/img/logos/usp.png" alt="USP" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursos USP</button>
           <button class="pill" data-filtro="Alura" data-acao="filtrarCursosPorPlataforma" data-arg="Alura"><img src="/img/logos/alura.png" alt="Alura" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Alura Aberta</button>
@@ -686,10 +679,10 @@
           <button class="pill active" data-filtro="" data-acao="filtrarRoadmapsPorOrigem" data-arg="" data-i18n="ui.roadmaps.all">Todos os Roadmaps</button>
           <button class="pill pill-trilha" data-filtro="Trilha Info" data-acao="filtrarRoadmapsPorOrigem" data-arg="Trilha Info"><img src="/img/logos/trilhainfo.png" alt="Trilha Info" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Trilha Info (BR)</button>
           <button class="pill" data-filtro="Roadmap.sh" data-acao="filtrarRoadmapsPorOrigem" data-arg="Roadmap.sh"><img src="/img/logos/roadmapsh.png" alt="Roadmap.sh" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Roadmap.sh (95 roadmaps)</button>
-          <button class="pill" data-filtro="Awesome Roadmaps" data-acao="filtrarRoadmapsPorOrigem" data-arg="Awesome Roadmaps">⭐ Awesome Roadmaps (GitHub)</button>
+          <button class="pill" data-filtro="Awesome Roadmaps" data-acao="filtrarRoadmapsPorOrigem" data-arg="Awesome Roadmaps">Awesome Roadmaps (GitHub)</button>
           <button class="pill pill-guiadeti" data-filtro="Guia de TI" data-acao="filtrarRoadmapsPorOrigem" data-arg="Guia de TI"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
-          <button class="pill" data-filtro="TechGuide.sh" data-acao="filtrarRoadmapsPorOrigem" data-arg="TechGuide.sh">🧭 TechGuide.sh (Alura)</button>
-          <button class="pill" data-filtro="Bora na Tech" data-acao="filtrarRoadmapsPorOrigem" data-arg="Bora na Tech">🚀 Bora na Tech?</button>
+          <button class="pill" data-filtro="TechGuide.sh" data-acao="filtrarRoadmapsPorOrigem" data-arg="TechGuide.sh">TechGuide.sh (Alura)</button>
+          <button class="pill" data-filtro="Bora na Tech" data-acao="filtrarRoadmapsPorOrigem" data-arg="Bora na Tech">Bora na Tech?</button>
           <button class="pill" data-filtro="frontend" data-acao="filtrarRoadmapsPorTermo" data-arg="Frontend"> Frontend</button>
           <button class="pill" data-filtro="backend" data-acao="filtrarRoadmapsPorTermo" data-arg="Backend"> Backend</button>
           <button class="pill" data-filtro="devops" data-acao="filtrarRoadmapsPorTermo" data-arg="DevOps"> DevOps & Cloud</button>
@@ -722,14 +715,14 @@
         <span class="filter-label" data-i18n="ui.tips.filters">Categorias de Dicas:</span>
         <div class="pills-container" id="pills-dicas-cat">
           <button class="pill active" data-cat="" data-acao="filtrarDicasPorCategoria" data-arg="" data-i18n="ui.tips.all">Todas as Dicas</button>
-          <button class="pill highlight-pill-africa" data-cat="angola" data-acao="filtrarDicasPorCategoria" data-arg="angola">🇦🇴 Repositórios de Angola (ADM)</button>
-          <button class="pill highlight-pill-gold" data-cat="habitos" data-acao="filtrarDicasPorCategoria" data-arg="habitos">⚡ Hábitos Atômicos (James Clear)</button>
-          <button class="pill" data-cat="estudo" data-acao="filtrarDicasPorCategoria" data-arg="estudo">🧠 Técnicas de Estudo & Foco</button>
-          <button class="pill" data-cat="organizacao" data-acao="filtrarDicasPorCategoria" data-arg="organizacao">📓 Organização & Notas</button>
-          <button class="pill" data-cat="escrita" data-acao="filtrarDicasPorCategoria" data-arg="escrita">✍️ Escrita & Revisão</button>
-          <button class="pill" data-cat="idiomas" data-acao="filtrarDicasPorCategoria" data-arg="idiomas">🗣️ Idiomas & Dicionários</button>
-          <button class="pill" data-cat="criacao" data-acao="filtrarDicasPorCategoria" data-arg="criacao">🎨 Mídia Livre & Criação</button>
-          <button class="pill" data-cat="carreira" data-acao="filtrarDicasPorCategoria" data-arg="carreira">💼 Carreira & Apoio</button>
+          <button class="pill highlight-pill-africa" data-cat="angola" data-acao="filtrarDicasPorCategoria" data-arg="angola">Repositórios de Angola (ADM)</button>
+          <button class="pill highlight-pill-gold" data-cat="habitos" data-acao="filtrarDicasPorCategoria" data-arg="habitos">Hábitos Atômicos (James Clear)</button>
+          <button class="pill" data-cat="estudo" data-acao="filtrarDicasPorCategoria" data-arg="estudo">Técnicas de Estudo & Foco</button>
+          <button class="pill" data-cat="organizacao" data-acao="filtrarDicasPorCategoria" data-arg="organizacao">Organização & Notas</button>
+          <button class="pill" data-cat="escrita" data-acao="filtrarDicasPorCategoria" data-arg="escrita">Escrita & Revisão</button>
+          <button class="pill" data-cat="idiomas" data-acao="filtrarDicasPorCategoria" data-arg="idiomas">Idiomas & Dicionários</button>
+          <button class="pill" data-cat="criacao" data-acao="filtrarDicasPorCategoria" data-arg="criacao">Mídia Livre & Criação</button>
+          <button class="pill" data-cat="carreira" data-acao="filtrarDicasPorCategoria" data-arg="carreira">Carreira & Apoio</button>
         </div>
       </div>
     </section>
@@ -886,7 +879,7 @@
 
     <div style="margin-top: 1.5rem; text-align: center;">
       <a href="/comunidade" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; padding: 0.55rem 1.15rem; border-radius: var(--radius-sm); border: 1px solid var(--border);" target="_blank">
-        <span>🖨️ Imprimir Cartaz Escolar para Biblioteca (A4)</span>
+        <span>Imprimir Cartaz Escolar (A4)</span>
       </a>
     </div>
   </section>
@@ -925,7 +918,7 @@
           <li><a href="/legal.html#secao-isencao" data-acao="abrirModalLegal" data-arg="isencao" data-i18n="ui.footer.disclaimer"> Isenção de Responsabilidade</a></li>
           <li><a href="/legal.html#secao-direitos" data-acao="abrirModalLegal" data-arg="takedown" data-i18n="ui.footer.dmca"> Direitos Autorais & DMCA</a></li>
           <li><a href="/legal.html#secao-privacidade" data-acao="abrirModalLegal" data-arg="privacidade" data-i18n="ui.footer.privacy"> Privacidade (LGPD/RGPD)</a></li>
-          <li><a href="/creditos.html" target="_blank" rel="noopener noreferrer">📜 Créditos & Licenças ↗</a></li>
+          <li><a href="/creditos.html" target="_blank" rel="noopener noreferrer">Créditos & Licenças ↗</a></li>
           <li><a href="/termos.html" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.fullTerms"> Página Legal Completa ↗</a></li>
         </ul>
       </div>
@@ -1155,16 +1148,16 @@
             </div>
             <div class="book-details-quick-meta">
               <div class="quick-meta-pill" id="detalhes-leituras-pill" title="Contagem de Leituras">
-                <span>📖</span> <span id="detalhes-leituras">0 leituras</span>
+                <span id="detalhes-leituras">0 leituras</span>
               </div>
               <div class="quick-meta-pill" id="detalhes-ano-pill" title="Ano de Publicação">
-                <span>📅</span> <span id="detalhes-ano">Ano —</span>
+                <span id="detalhes-ano">Ano —</span>
               </div>
               <div class="quick-meta-pill" id="detalhes-paginas-pill" title="Extensão">
-                <span>📄</span> <span id="detalhes-paginas">Páginas —</span>
+                <span id="detalhes-paginas">Páginas —</span>
               </div>
               <div class="quick-meta-pill" id="detalhes-fonte-pill" title="Fonte Oficial Conectada">
-                <span>🏛️</span> <span id="detalhes-fonte">Fonte Aberta</span>
+                <span id="detalhes-fonte">Fonte Aberta</span>
               </div>
             </div>
           </div>
@@ -1179,7 +1172,7 @@
             <!-- Caixa de Licença Legal -->
             <div class="book-license-box">
               <div class="license-box-header">
-                <span class="license-shield">🛡️</span>
+                <span class="license-shield"></span>
                 <strong>Licença:</strong>
                 <span class="badge-license" id="detalhes-licenca">Domínio Público</span>
               </div>
@@ -1197,10 +1190,10 @@
             <!-- Ações Principais: Leitura Online -->
             <div class="book-actions-primary">
               <button id="btn-detalhes-ler-online" class="btn btn-primary btn-lg" data-acao="abrirLeitorDoModal">
-                📖 Ler Online no Navegador
+                Ler Online no Navegador
               </button>
               <button id="btn-detalhes-compartilhar" class="btn btn-secondary btn-lg" data-acao="compartilharLivroAtual">
-                🔗 Partilhar Obra
+                Partilhar Obra
               </button>
             </div>
 
@@ -1215,7 +1208,7 @@
 
             <!-- Nota de Intermediação Legal -->
             <div class="legal-intermediary-notice">
-              <p>⚖️ <em>O Lino Livre, biblioteca digital da LinoDigital, atua unicamente como indexador intermediário. Nenhum arquivo binário é armazenado localmente nos nossos servidores.</em></p>
+              <p><em>O Lino Livre, biblioteca digital da LinoDigital, atua unicamente como indexador intermediário. Nenhum arquivo binário é armazenado localmente nos nossos servidores.</em></p>
             </div>
           </div>
         </div>
@@ -1238,7 +1231,7 @@
         <!-- Aviso de Moderação & Conformidade Legal -->
         <div class="admin-notice-box" style="background: rgba(37, 99, 235, 0.08); border-left: 4px solid var(--accent, #2563eb); padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 4px; font-size: 0.825rem; line-height: 1.4; color: var(--text-color, #1e293b);">
           <div style="font-weight: 600; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
-            <span>🛡️ Moderação & Conformidade Legal</span>
+            <span>Moderação & Conformidade Legal</span>
           </div>
           <span data-i18n="ui.form.moderationNotice">Nota: Apenas administradores com chave autorizada podem publicar diretamente. Contribuições públicas de links devem possuir comprovação de licença aberta ou domínio público e passam por auditoria prévia.</span>
         </div>

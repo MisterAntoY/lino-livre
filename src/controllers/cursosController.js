@@ -1,74 +1,12 @@
 const { getDatabase } = require('../database');
 const { validarUrlRedirecionamento } = require('../utils/urlValidator');
-
-// Escapa os metacaracteres de LIKE. Sem isto, `busca=%a%b%c...` transforma o
-// filtro num varrimento com múltiplos wildcards (DoS de CPU na base de dados).
-function escaparLike(valor) {
-  return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
-}
+const { buildCursosQuery, buildRoadmapsQuery, escaparLike } = require('../database/queries/cursosQueries');
 
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps, licenca } = req.query;
-
-    let query = 'SELECT * FROM cursos WHERE 1=1';
-    const params = [];
-
-    if (tipo) {
-      query += ' AND tipo = ?';
-      params.push(tipo);
-    }
-    if (licenca) {
-      query += ' AND licenca = ?';
-      params.push(licenca);
-    }
-    if (excluir_roadmaps === '1' || excluir_roadmaps === 'true') {
-      query += " AND (tipo != 'roadmap' OR tipo IS NULL)";
-    }
-    if (area) {
-      query += ' AND area = ?';
-      params.push(area);
-    }
-    if (nivel) {
-      query += ' AND nivel = ?';
-      params.push(nivel);
-    }
-    if (plataforma) {
-      query += ' AND plataforma LIKE ?';
-      params.push(`%${plataforma}%`);
-    } else if (fonte && (fonte.toLowerCase() === 'guiadeti' || fonte.toLowerCase() === 'guia de ti')) {
-      query += ' AND plataforma LIKE ?';
-      params.push('%Guia de TI%');
-    }
-    if (youtube === '1' || youtube === 'true' || (plataforma && plataforma.toLowerCase() === 'youtube')) {
-      query += ' AND plataforma LIKE ?';
-      params.push('%YouTube%');
-    }
-    if (certificado === 'gratuito' || certificado === '1' || certificado === 'true') {
-      query += ' AND (descricao LIKE ? OR plataforma LIKE ?)';
-      params.push('%certifica%', '%certifica%');
-    }
-    if (busca && busca.trim()) {
-      const termo = `%${escaparLike(busca.trim())}%`;
-      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
-      params.push(termo, termo, termo);
-    }
-
-    // Guia de TI como fonte principal destacada no topo, ordenação estável por id
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, id ASC";
-
-    const limitParam = req.query.limit || req.query.limite;
-    const pageParam = req.query.page || req.query.pagina;
-    if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
-      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
-      const offset = (page - 1) * limit;
-      query += ' LIMIT ? OFFSET ?';
-      params.push(limit, offset);
-    }
-
-    const cursos = db.prepare(query).all(...params);
+    const { sql, params } = buildCursosQuery(req.query);
+    const cursos = db.prepare(sql).all(...params);
     res.json(cursos);
   } catch (err) {
     console.error('[cursosController]', err);
@@ -79,37 +17,8 @@ function listar(req, res) {
 function listarRoadmaps(req, res) {
   try {
     const db = getDatabase();
-    const { busca, plataforma, area } = req.query;
-    let query = "SELECT * FROM cursos WHERE tipo = 'roadmap'";
-    const params = [];
-
-    if (plataforma) {
-      query += ' AND plataforma LIKE ?';
-      params.push(`%${plataforma}%`);
-    }
-    if (area) {
-      query += ' AND area = ?';
-      params.push(area);
-    }
-    if (busca && busca.trim()) {
-      const termo = `%${escaparLike(busca.trim())}%`;
-      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
-      params.push(termo, termo, termo);
-    }
-
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
-
-    const limitParam = req.query.limit || req.query.limite;
-    const pageParam = req.query.page || req.query.pagina;
-    if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
-      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
-      const offset = (page - 1) * limit;
-      query += ' LIMIT ? OFFSET ?';
-      params.push(limit, offset);
-    }
-
-    const roadmaps = db.prepare(query).all(...params);
+    const { sql, params } = buildRoadmapsQuery(req.query);
+    const roadmaps = db.prepare(sql).all(...params);
     res.json(roadmaps);
   } catch (err) {
     console.error('[cursosController]', err);

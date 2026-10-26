@@ -79,20 +79,30 @@ function aplicarHtml(T) {
   s = s.replace(/id="placar-porcentagem">[^<]*</, `id="placar-porcentagem">${pct(T.livros).toFixed(4)}% da meta<`);
   s = s.replace(/id="placar-stat-atual">[^<]*</, `id="placar-stat-atual">${brl(T.livros)}<`);
   s = s.replace(/id="placar-stat-faltam">[^<]*</, `id="placar-stat-faltam">${brl(META - T.livros)}<`);
-  s = s.replace(/id="placar-barra-progresso" style="width: [\d.]+%;"/,
-    `id="placar-barra-progresso" style="width: ${pct(T.livros).toFixed(2)}%;"`);
+  
+  const scale = (T.livros / META).toFixed(5);
+  s = s.replace(/id="placar-barra-progresso" style="[^"]*"/,
+    `id="placar-barra-progresso" style="transform: scaleX(${scale});"`);
+  s = s.replace(/aria-valuetext="[^"]*"/,
+    `aria-valuetext="${brl(T.livros)} de 10.000.000 obras catalogadas (${pct(T.livros).toFixed(2)}%)"`);
 
   const marcos = [
-    { id: 'milestone-1k', limiar: 1000 },
-    { id: 'milestone-10k', limiar: 10000 },
-    { id: 'milestone-100k', limiar: 100000 },
-    { id: 'milestone-1m', limiar: 1000000 }
+    { id: 'milestone-1k', limiar: 1000, val: 1000 },
+    { id: 'milestone-10k', limiar: 10000, val: 10000 },
+    { id: 'milestone-100k', limiar: 100000, val: 100000 },
+    { id: 'milestone-1m', limiar: 1000000, val: 1000000 }
   ];
   let proximoId = null;
+  let proximoVal = 10000000;
   for (const m of marcos) {
     if (T.livros >= m.limiar) continue;
-    if (proximoId === null) proximoId = m.id;
+    if (proximoId === null) {
+      proximoId = m.id;
+      proximoVal = m.val;
+    }
   }
+  s = s.replace(/id="placar-stat-next-target">[^<]*</, `id="placar-stat-next-target">${brl(proximoVal)}<`);
+
   for (const m of marcos) {
     const classe = T.livros >= m.limiar ? 'reached' : (m.id === proximoId ? 'active' : '');
     s = s.replace(new RegExp(`<div class="milestone-step[^"]*" id="${m.id}"`),
@@ -141,8 +151,8 @@ if (modo !== 'local') {
   console.log(`Acervo de PRODUÇÃO (D1 remoto): ${brl(remoto.livros)} obras · ${brl(remoto.autores)} autores`);
 }
 
-// O HTML é o placeholder do seed local (AGENTS.md §2.7)
-const alvoHtml = (modo === 'remoto' && remoto) ? local : local;
+// O HTML reflecte a produção em modo remoto (evita flash visual na web) ou local com --local
+const alvoHtml = (modo === 'local' || !remoto) ? local : remoto;
 const proximo = aplicarHtml(alvoHtml);
 console.log(`✔ ${ARQ_HTML}: ${brl(alvoHtml.livros)} obras · ${pct(alvoHtml.livros).toFixed(4)}% · ` +
   `próximo marco ${proximo ? proximo.replace('milestone-', '') : '(meta final)'}`);
@@ -158,7 +168,7 @@ console.log('\n--- verificação ---');
 const idx = fs.readFileSync(ARQ_HTML, 'utf-8');
 const wk = fs.readFileSync(ARQ_WORKER, 'utf-8');
 const ok = [
-  [`HTML reflecte o seed local (${local.livros})`, idx.includes(`aria-valuenow="${local.livros}"`)],
+  [`HTML reflecte o acervo (${alvoHtml.livros})`, idx.includes(`aria-valuenow="${alvoHtml.livros}"`)],
   ['HTML sem placeholders vazios', !/aria-valuenow=""|placar-stat-atual"><\/span>/.test(idx)],
   [`Worker reflecte produção (${alvoWorker.livros})`, wk.includes(`total_livros: ${alvoWorker.livros}`) && wk.includes(`totalCatalogoConhecido = ${alvoWorker.livros};`)],
   ['sem 104.848 se a produção for diferente', alvoWorker.livros !== 104848 || wk.includes('104848')]

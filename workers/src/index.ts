@@ -1,12 +1,45 @@
 import { Hono } from 'hono';
 import { Bindings } from './types';
 import { RepoSupabase, obterConfigSupabase, backendSupabase } from './supabase';
-import { generateQrCodeSvg } from './utils/qrcode';
-import { dicasData } from '../../src/database/dicasData';
 import { executarImportacaoD1 } from './services/importer';
 import { obterMotor } from './services/federacaoBusca';
 import { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS } from './utils/urlValidator';
-import { edgeLoadBalancer } from './loadBalancer';
+import { ORIGENS_PERMITIDAS, DIMENSOES_ESTATICAS } from './data/constants';
+import { FALLBACK_LIVROS, obterLinkFallback } from './data/fallbackLivros';
+import { corsMiddleware } from './middlewares/cors';
+import { cacheDeBorda } from './middlewares/cache';
+import {
+  cabecalhosSeguranca,
+  wafSeguranca,
+  rateLimitGlobal,
+  verificarAdminWorker,
+  timingSafeEqualStr,
+  limitarRequisicao,
+  verificarTurnstileWorker
+} from './middlewares/security';
+
+export const CSP_HEADER_WORKER = [
+  "default-src 'self'",
+  "script-src 'self' 'sha256-VObpZF2rrhL4LG40uRUH3yRXC/1nwGniYanKxkqAWxo=' 'sha256-keHLDO8UACnw+cRVVeKuRurHKeLrwqY0rMi7Sjqgzkc=' 'sha256-wZSMpQgLrgIlbRyynN5NCOpERrzb5ODoykQ0lbDTWnQ=' 'sha256-qOpPGAwL3XogEKhDdObnXr0bcx7NIZEs41a4ijt3hWM=' https://challenges.cloudflare.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: https:",
+  "connect-src 'self' https://challenges.cloudflare.com",
+  "media-src 'self' https:",
+  "frame-src 'self' https://www.youtube.com https://open.spotify.com https://challenges.cloudflare.com",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "upgrade-insecure-requests"
+].join('; ');
+
+import { configRouter } from './routes/config';
+import { dicasRouter } from './routes/dicas';
+import { comunidadeRouter } from './routes/comunidade';
+import { loadbalancerRouter } from './routes/loadbalancer';
+import { agenticRouter } from './routes/agentic';
+import { sugestoesRouter } from './routes/sugestoes';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -16,116 +49,18 @@ const app = new Hono<{ Bindings: Bindings }>();
 // aceitam origens conhecidas. Pedidos sem Origin (curl, server-to-server,
 // cron) continuam permitidos — a autorização real é a chave administrativa.
 // ────────────────────────────────────────────────────────────
-const ORIGENS_PERMITIDAS = new Set([
-  'https://lino-livre.linolivre.workers.dev',
-  'https://linolivre.org',
-  'https://www.linolivre.org',
-  'http://localhost:3000',
-  'http://127.0.0.1:3000'
-]);
+app.use('/api/*', corsMiddleware);
+app.use('*', cabecalhosSeguranca);
+app.use('*', wafSeguranca);
+app.use('/api/*', rateLimitGlobal);
 
-app.use('/api/*', async (c, next) => {
-  const origin = c.req.header('origin');
-  const metodo = c.req.method.toUpperCase();
-  const mutacao = !['GET', 'HEAD', 'OPTIONS'].includes(metodo);
-  const origemConhecida = !!origin && ORIGENS_PERMITIDAS.has(origin);
+app.route('/', loadbalancerRouter);
+app.route('/', configRouter);
+app.route('/', dicasRouter);
+app.route('/', comunidadeRouter);
+app.route('/', agenticRouter);
+app.route('/', sugestoesRouter);
 
-  if (origin && mutacao && !origemConhecida) {
-    return c.json({ erro: 'Origem não autorizada para operações de escrita' }, 403);
-  }
-
-  if (origemConhecida) {
-    c.header('Access-Control-Allow-Origin', origin!);
-    c.header('Vary', 'Origin');
-  } else if (!mutacao) {
-    // Só a leitura pública é exposta a qualquer origem. Escritas sem Origin
-    // (curl, cron, server-to-server) não recebem ACAO — não há browser envolvido.
-    c.header('Access-Control-Allow-Origin', '*');
-  }
-
-  if (metodo === 'OPTIONS') {
-    const pedido = (c.req.header('access-control-request-method') || '').toUpperCase();
-    const pedidoMutacao = !!pedido && !['GET', 'HEAD'].includes(pedido);
-    if (pedidoMutacao && !origemConhecida) {
-      return c.body(null, 403);
-    }
-    c.header('Access-Control-Allow-Methods', 'GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS');
-    const cabecalhos = ['Content-Type', 'Cache-Control', 'Pragma'];
-    if (origemConhecida) {
-      cabecalhos.push('x-admin-key', 'Authorization');
-    }
-    c.header('Access-Control-Allow-Headers', cabecalhos.join(', '));
-    c.header('Access-Control-Max-Age', '86400');
-    return c.body(null, 204);
-  }
-
-  await next();
-});
-
-// Cabeçalhos de segurança HTTP globais
-app.use('*', async (c, next) => {
-  await next();
-  c.header('X-Content-Type-Options', 'nosniff');
-  c.header('X-Frame-Options', 'DENY');
-  c.header('Referrer-Policy', 'strict-origin-when-cross-origin');
-  c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  c.header('Cross-Origin-Opener-Policy', 'same-origin');
-  c.header('Cross-Origin-Resource-Policy', 'cross-origin');
-  c.header('Origin-Agent-Cluster', '?1');
-  c.header('X-DNS-Prefetch-Control', 'off');
-  c.header('X-Permitted-Cross-Domain-Policies', 'none');
-  c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-  c.header(
-    'Content-Security-Policy',
-    [
-      "default-src 'self'",
-      "script-src 'self' 'sha256-VObpZF2rrhL4LG40uRUH3yRXC/1nwGniYanKxkqAWxo=' 'sha256-keHLDO8UACnw+cRVVeKuRurHKeLrwqY0rMi7Sjqgzkc=' 'sha256-wZSMpQgLrgIlbRyynN5NCOpERrzb5ODoykQ0lbDTWnQ=' 'sha256-qOpPGAwL3XogEKhDdObnXr0bcx7NIZEs41a4ijt3hWM=' https://challenges.cloudflare.com",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "font-src 'self' https://fonts.gstatic.com data:",
-      "img-src 'self' data: https:",
-      "connect-src 'self' https://challenges.cloudflare.com",
-      "media-src 'self' https:",
-      "frame-src 'self' https://www.youtube.com https://open.spotify.com https://challenges.cloudflare.com",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "frame-ancestors 'none'",
-      "upgrade-insecure-requests"
-    ].join('; ')
-  );
-});
-
-// WAF de Borda: bloqueio de scanners automatizados conhecidos, sondas e rastreadores agressivos em rotas de API
-const SCANNERS_RE = /\b(sqlmap|nikto|dirbuster|gobuster|acunetix|nuclei|masscan|wpscan|zgrab)\b/i;
-const PROBE_PATHS_RE = /\/(\.env|\.git|wp-admin|phpmyadmin|cgi-bin|\.aws|\.docker)\b/i;
-const AGGRESSIVE_API_BOTS_RE = /\b(bytespider|ahrefsbot|semrushbot|dotbot|petalbot|mj12bot|dataforseo|screaming frog|seekport|zoominfobot)\b/i;
-
-app.use('*', async (c, next) => {
-  const ua = c.req.header('user-agent') || '';
-  if (SCANNERS_RE.test(ua)) {
-    return c.json({ erro: 'Acesso bloqueado por política de segurança (WAF).' }, 403);
-  }
-  if (c.req.path.startsWith('/api/') && AGGRESSIVE_API_BOTS_RE.test(ua)) {
-    return c.json({ erro: 'Acesso automatizado a APIs bloqueado para rastreadores (WAF).' }, 403);
-  }
-  if (PROBE_PATHS_RE.test(c.req.path)) {
-    return c.text('Not Found', 404);
-  }
-  await next();
-});
-
-// Rate limiting global por IP: leituras 300/min, escritas 30/min.
-// Aplicado antes das rotas e depois do WAF.
-app.use('/api/*', async (c, next) => {
-  const metodo = c.req.method.toUpperCase();
-  const escrita = metodo !== 'GET' && metodo !== 'HEAD' && metodo !== 'OPTIONS';
-  const bloqueio = await limitarRequisicao(c, escrita ? 'api-write' : 'api-read', escrita ? 30 : 300);
-  if (bloqueio) return bloqueio;
-  await next();
-});
-
-// Cache de borda para leituras públicas. Registado antes das rotas para
-// envolver os handlers (o Cache API evita invocações e leituras na D1).
 app.use('/api/dashboard', cacheDeBorda);
 app.use('/api/categorias', cacheDeBorda);
 app.use('/api/autores', cacheDeBorda);
@@ -170,18 +105,6 @@ function escaparLike(valor: any): string {
   return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
 }
 
-function timingSafeEqualStr(a: string, b: string): boolean {
-  if (typeof a !== 'string' || typeof b !== 'string') return false;
-  // Comparação de comprimento variável sem saída antecipada (evita revelar o
-  // tamanho da chave por temporização).
-  const max = Math.max(a.length, b.length);
-  let diff = a.length ^ b.length;
-  for (let i = 0; i < max; i++) {
-    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
-  }
-  return diff === 0;
-}
-
 function normalizarCapaUrl(url: string | null | undefined): string | null {
   if (!url || typeof url !== 'string') return null;
   const trimmed = url.trim();
@@ -199,112 +122,6 @@ function normalizarUrlSegura(url: string | null | undefined): string {
     return 'https://' + trimmed.slice(7);
   }
   return trimmed;
-}
-
-// ────────────────────────────────────────────────────────────
-// Middleware de Autenticação Administrativa para Rotas de Escrita
-// ────────────────────────────────────────────────────────────
-async function verificarAdminWorker(c: any, next: any) {
-  // Respostas administrativas nunca podem ser guardadas em caches
-  // intermédios — nem as de erro (401), que também revelam a existência da rota.
-  c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-  const adminKey = c.env.ADMIN_API_KEY || null;
-  const headerKey = c.req.header('x-admin-key');
-  const authHeader = c.req.header('authorization');
-  let bearerToken: string | undefined;
-  if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
-    bearerToken = authHeader.slice(7).trim();
-  }
-  const providedKey = headerKey || bearerToken;
-
-  if (!adminKey || !providedKey || !timingSafeEqualStr(providedKey, adminKey)) {
-    return c.json({ erro: 'Acesso não autorizado: chave administrativa necessária' }, 401);
-  }
-
-  await next();
-}
-
-// ────────────────────────────────────────────────────────────
-// Rate limiting leve por isolate (token bucket em memória)
-// Protege a cota de escrita da D1 (100k linhas/dia no plano gratuito) e
-// os endpoints com fan-out/egress (proxy de capas e busca federada).
-// A chave é o IP real visto pela Cloudflare (CF-Connecting-IP), que o cliente
-// não consegue forjar atrás da CDN.
-// ────────────────────────────────────────────────────────────
-const LIMITES_MEMORIA = new Map<string, { count: number; resetAt: number }>();
-const LIMITE_MAX_ENTRADAS = 10_000;
-
-function resposta429(c: any, retrySegundos: number): any {
-  return c.json(
-    { erro: 'Demasiadas requisições. Tente novamente em instantes.', retry_after_s: retrySegundos },
-    429,
-    { 'Retry-After': String(retrySegundos) }
-  );
-}
-
-async function limitarRequisicao(c: any, escopo: string, max: number, janelaMs = 60_000): Promise<any | null> {
-  // CF-Connecting-IP é injetado pela Cloudflare e não pode ser forjado pelo
-  // cliente. Não usar X-Real-IP: é um cabeçalho arbitrário e permitiria
-  // contornar o limite quando o Worker é servido através de outro proxy.
-  const ip = c.req.header('cf-connecting-ip') || 'desconhecido';
-  const chave = `${escopo}:${ip}`;
-
-  // 1) Binding nativo da Cloudflare (se configurado): limite distribuído entre
-  // isolates e colos. O limite numérico é definido no wrangler.jsonc.
-  const binding = c.env?.RATE_LIMITER;
-  if (binding && typeof binding.limit === 'function') {
-    try {
-      const resultado = await binding.limit({ key: chave });
-      if (resultado && resultado.success === false) {
-        return resposta429(c, Math.ceil(janelaMs / 1000));
-      }
-      return null;
-    } catch {
-      // Binding indisponível: degrada para o contador em memória.
-    }
-  }
-
-  const agora = Date.now();
-
-  if (LIMITES_MEMORIA.size > LIMITE_MAX_ENTRADAS) {
-    for (const [k, v] of LIMITES_MEMORIA) {
-      if (agora > v.resetAt) LIMITES_MEMORIA.delete(k);
-    }
-    if (LIMITES_MEMORIA.size > LIMITE_MAX_ENTRADAS) LIMITES_MEMORIA.clear();
-  }
-
-  const entrada = LIMITES_MEMORIA.get(chave);
-  if (!entrada || agora > entrada.resetAt) {
-    LIMITES_MEMORIA.set(chave, { count: 1, resetAt: agora + janelaMs });
-    return null;
-  }
-
-  entrada.count++;
-  if (entrada.count > max) {
-    return resposta429(c, Math.max(1, Math.ceil((entrada.resetAt - agora) / 1000)));
-  }
-  return null;
-}
-
-// Anti-bot opcional (Turnstile). Sem segredo configurado não há verificação;
-// com segredo, o token é obrigatório (falha fechada).
-async function verificarTurnstileWorker(c: any, token: string | undefined): Promise<boolean> {
-  const secret = c.env?.TURNSTILE_SECRET_KEY;
-  if (!secret) return true;
-  if (!token || typeof token !== 'string' || token.length > 2048) return false;
-  try {
-    const corpo = new URLSearchParams({ secret, response: token });
-    const ip = c.req.header('cf-connecting-ip');
-    if (ip) corpo.set('remoteip', ip);
-    const resposta = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      body: corpo
-    });
-    const dados: any = await resposta.json().catch(() => null);
-    return dados?.success === true;
-  } catch {
-    return false;
-  }
 }
 
 // Cache em memória para estatísticas de dashboard para economizar cotas de leitura da D1
@@ -416,12 +233,6 @@ async function contadoresDe(db: any, dimensao: string): Promise<any[]> {
     return [];
   }
 }
-
-// 0. Diagnóstico do Edge Load Balancer e Circuit Breaker (Custo Zero Perpétuo)
-app.get('/api/loadbalancer/status', (c) => {
-  c.header('Cache-Control', 'no-store');
-  return c.json(edgeLoadBalancer.getSnapshot());
-});
 
 // 1. Dashboard de Acervo e Leituras
 app.get('/api/dashboard', async (c) => {
@@ -781,36 +592,6 @@ app.delete('/api/autores/:id', verificarAdminWorker, async (c) => {
 
 // 4. Livros Digitais
 
-// Dimensões estáticas conhecidas: fallback imediato para cold-starts e proteção contra limites de cota da D1.
-const DIMENSOES_ESTATICAS = {
-  fontes: [
-    { id: 1, slug: 'wikisource' }, { id: 2, slug: 'gutenberg' }, { id: 3, slug: 'openstax' },
-    { id: 4, slug: 'archive-org' }, { id: 5, slug: 'standardebooks' }, { id: 6, slug: 'cursa' },
-    { id: 7, slug: 'uan' }, { id: 8, slug: 'github' }, { id: 9, slug: 'mit-ocw' },
-    { id: 10, slug: 'khan-academy' }, { id: 11, slug: 'phet' }, { id: 12, slug: 'ck-12' },
-    { id: 13, slug: 'oer-commons' }, { id: 14, slug: 'harvard-pll' }, { id: 15, slug: 'stanford-online' },
-    { id: 16, slug: 'bradesco' }, { id: 17, slug: 'enap' }, { id: 18, slug: 'lumina' },
-    { id: 19, slug: 'ifrs' }, { id: 20, slug: 'google-atelie' }, { id: 21, slug: 'openbootcamp' },
-    { id: 22, slug: 'dio' }, { id: 23, slug: 'santander' }, { id: 24, slug: 'curso-em-video' },
-    { id: 25, slug: 'europeana' }, { id: 26, slug: 'librivox' }, { id: 27, slug: 'doab' },
-    { id: 28, slug: 'scielo' }, { id: 29, slug: 'bndigital' }, { id: 30, slug: 'camões' },
-    { id: 31, slug: 'unesco' }, { id: 32, slug: 'ted' }, { id: 33, slug: 'edx' },
-    { id: 34, slug: 'coursera' }
-  ],
-  categorias: [
-    { id: 1, nome: 'Clássicos Brasileiros' }, { id: 2, nome: 'Romance & Crônicas' },
-    { id: 3, nome: 'Teatro & Poesia' }, { id: 4, nome: 'Romance Indianista' },
-    { id: 5, nome: 'Apoio Pedagógico & Filosofia' }, { id: 6, nome: 'Tecnologia & Programação' },
-    { id: 7, nome: 'Matemática & Ciências Exatas' }, { id: 8, nome: 'Física & Astronomia' },
-    { id: 9, nome: 'Química & Biologia' }, { id: 10, nome: 'História & Geografia' },
-    { id: 11, nome: 'Filosofia & Sociologia' }, { id: 12, nome: 'Artes & Cultura' },
-    { id: 13, nome: 'Infantojuvenil' }, { id: 14, nome: 'Direito & Legislação' },
-    { id: 15, nome: 'Economia & Administração' }, { id: 16, nome: 'Medicina & Saúde' },
-    { id: 17, nome: 'Psicologia & Desenvolvimento' }, { id: 18, nome: 'Idiomas & Linguística' },
-    { id: 19, nome: 'Educação & Pedagogia' }, { id: 20, nome: 'África & Literatura Angolana' }
-  ]
-};
-
 // Dimensões pequenas (fontes e categorias) em cache por isolate.
 // Evita LIKE e JOINs na tabela livros (104k+ linhas) para resolver filtros.
 let cacheDimensoes: {
@@ -846,21 +627,6 @@ async function obterDimensoes(db: any) {
   return cacheDimensoes;
 }
 
-// Cache de borda (Cache API) para GETs de leitura do acervo.
-// Dados públicos e atualizados por importações: TTL curto é suficiente e
-// reduz drasticamente o número de leituras na D1 em acessos repetidos.
-async function cacheDeBorda(c: any, next: any) {
-  if (c.req.method !== 'GET') return await next();
-  const cache = typeof caches !== 'undefined' ? (caches as any).default : null;
-  if (!cache) return await next();
-  const key = new Request(c.req.url, { method: 'GET' });
-  const hit = await cache.match(key);
-  if (hit) return hit;
-  await next();
-  if (c.res.status === 200) {
-    c.executionCtx.waitUntil(cache.put(key, c.res.clone()));
-  }
-}
 function gerarDestaqueBadge(livro: any): string {
   if (!livro) return '⭐ Muito Procurado';
   const fExt = livro.fonte_id_externo || '';
@@ -897,443 +663,6 @@ function gerarDestaqueBadge(livro: any): string {
   if (livro.categoria_id >= 12 && livro.categoria_id <= 18) return '🌍 Tesouro de África';
   if (livro.categoria_id >= 6 && livro.categoria_id <= 11) return '💻 Manual de Referência';
   return '⭐ Muito Procurado';
-}
-
-// ────────────────────────────────────────────────────────────
-// Catálogo Fallback de Resiliência para Degradação de Cota D1
-// ────────────────────────────────────────────────────────────
-const FALLBACK_LIVROS: any[] = [
-  {
-    id: 1,
-    titulo: 'Dom Casmurro',
-    autor_nome: 'Machado de Assis',
-    categoria_id: 1,
-    categoria_nome: 'Clássicos Brasileiros',
-    ano_publicacao: 1899,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/dom_casmurro.jpg',
-    sinopse: 'A obra-prima de Machado de Assis narrando a história de Bento Santiago e Capitu.',
-    links: [
-      { id: 1, formato: 'html', url: 'https://pt.wikisource.org/wiki/Dom_Casmurro', link_externo: 1 },
-      { id: 1001, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/55752.pdf', link_externo: 1 },
-      { id: 1002, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/55752.epub3.images', link_externo: 1 }
-    ]
-  },
-  {
-    id: 2,
-    titulo: 'Memórias Póstumas de Brás Cubas',
-    autor_nome: 'Machado de Assis',
-    categoria_id: 1,
-    categoria_nome: 'Clássicos Brasileiros',
-    ano_publicacao: 1881,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/memorias_posthumas.jpg',
-    sinopse: 'Narrativa irônica e revolucionária de um defunto-autor.',
-    links: [
-      { id: 2, formato: 'html', url: 'https://pt.wikisource.org/wiki/Memórias_Póstumas_de_Brás_Cubas', link_externo: 1 },
-      { id: 1003, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/54829.pdf', link_externo: 1 },
-      { id: 1004, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/54829.epub3.images', link_externo: 1 }
-    ]
-  },
-  {
-    id: 3,
-    titulo: 'O Cortiço',
-    autor_nome: 'Aluísio Azevedo',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1890,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/o_cortico.png',
-    sinopse: 'Obra fundadora do Naturalismo no Brasil retratando a vida coletiva num cortiço.',
-    links: [
-      { id: 3, formato: 'html', url: 'https://pt.wikisource.org/wiki/O_Cortiço', link_externo: 1 },
-      { id: 1005, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/55800.pdf', link_externo: 1 }
-    ]
-  },
-  {
-    id: 4,
-    titulo: 'Os Lusíadas',
-    autor_nome: 'Luís de Camões',
-    categoria_id: 3,
-    categoria_nome: 'Teatro & Poesia',
-    ano_publicacao: 1572,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/os_lusiadas.jpg',
-    sinopse: 'O épico supremo da língua portuguesa sobre a viagem de Vasco da Gama.',
-    links: [
-      { id: 4, formato: 'html', url: 'https://pt.wikisource.org/wiki/Os_Lusíadas', link_externo: 1 },
-      { id: 1006, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/3333.pdf', link_externo: 1 }
-    ]
-  },
-  {
-    id: 5,
-    titulo: 'Mensagem',
-    autor_nome: 'Fernando Pessoa',
-    categoria_id: 3,
-    categoria_nome: 'Teatro & Poesia',
-    ano_publicacao: 1934,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/mensagem.jpg',
-    sinopse: 'A epopeia mística e poética dos navegadores e da alma portuguesa.',
-    links: [
-      { id: 5, formato: 'html', url: 'https://pt.wikisource.org/wiki/Mensagem', link_externo: 1 }
-    ]
-  },
-  {
-    id: 6,
-    titulo: 'O Alienista',
-    autor_nome: 'Machado de Assis',
-    categoria_id: 1,
-    categoria_nome: 'Clássicos Brasileiros',
-    ano_publicacao: 1882,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/o_alienista.png',
-    sinopse: 'Simão Bacamarte funda a Casa Verde e investiga os limites entre sanidade e loucura.',
-    links: [
-      { id: 6, formato: 'html', url: 'https://pt.wikisource.org/wiki/O_Alienista', link_externo: 1 },
-      { id: 1007, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/55753.pdf', link_externo: 1 }
-    ]
-  },
-  {
-    id: 7,
-    titulo: 'Iracema',
-    autor_nome: 'José de Alencar',
-    categoria_id: 4,
-    categoria_nome: 'Romance Indianista',
-    ano_publicacao: 1865,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/iracema.png',
-    sinopse: 'A virgem dos lábios de mel e o nascimento místico do Ceará.',
-    links: [
-      { id: 7, formato: 'html', url: 'https://pt.wikisource.org/wiki/Iracema', link_externo: 1 },
-      { id: 1008, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/6770.pdf', link_externo: 1 }
-    ]
-  },
-  {
-    id: 8,
-    titulo: 'Triste Fim de Policarpo Quaresma',
-    autor_nome: 'Lima Barreto',
-    categoria_id: 5,
-    categoria_nome: 'Apoio Pedagógico & Filosofia',
-    ano_publicacao: 1915,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/policarpo_quaresma.png',
-    sinopse: 'O patriotismo idealista e trágico de Policarpo Quaresma no início da República.',
-    links: [
-      { id: 8, formato: 'html', url: 'https://pt.wikisource.org/wiki/Triste_Fim_de_Policarpo_Quaresma', link_externo: 1 }
-    ]
-  },
-  {
-    id: 9,
-    titulo: 'Auto da Barca do Inferno',
-    autor_nome: 'Gil Vicente',
-    categoria_id: 3,
-    categoria_nome: 'Teatro & Poesia',
-    ano_publicacao: 1517,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/auto_da_barca_do_inferno.jpg',
-    sinopse: 'A clássica moralidade teatral renascentista julgando as almas humanas.',
-    links: [
-      { id: 9, formato: 'html', url: 'https://pt.wikisource.org/wiki/Auto_da_Barca_do_Inferno', link_externo: 1 }
-    ]
-  },
-  {
-    id: 10,
-    titulo: 'Os Sertões',
-    autor_nome: 'Euclides da Cunha',
-    categoria_id: 5,
-    categoria_nome: 'Apoio Pedagógico & Filosofia',
-    ano_publicacao: 1902,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: '/capas/os_sertoes.jpg',
-    sinopse: 'O relato épico, sociológico e humano da Guerra de Canudos no sertão baiano.',
-    links: [
-      { id: 10, formato: 'html', url: 'https://pt.wikisource.org/wiki/Os_Sertões', link_externo: 1 }
-    ]
-  },
-  {
-    id: 467,
-    titulo: 'A Bíblia Sagrada',
-    autor_nome: 'Vários Autores / Tradição Bíblica',
-    categoria_id: 5,
-    categoria_nome: 'Apoio Pedagógico & Filosofia',
-    ano_publicacao: 100,
-    idioma: 'pt',
-    licenca: 'dominio-publico',
-    capa_url: 'https://www.gutenberg.org/cache/epub/10/pg10.cover.medium.jpg',
-    sinopse: 'O texto mais lido, traduzido e impresso de toda a história humana. Coletânea de escrituras canônicas do Antigo e Novo Testamento em domínio público.',
-    fonte_id_externo: 'world-hist-1',
-    links: [
-      { id: 536, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/10.epub3.images', link_externo: 1 },
-      { id: 537, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/10.pdf', link_externo: 1 },
-      { id: 538, formato: 'html', url: 'https://www.gutenberg.org/files/10/10-h/10-h.htm', link_externo: 1 }
-    ]
-  },
-  {
-    id: 468,
-    titulo: 'Dom Quixote de la Mancha',
-    autor_nome: 'Miguel de Cervantes',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1605,
-    idioma: 'es',
-    licenca: 'dominio-publico',
-    capa_url: 'https://www.gutenberg.org/cache/epub/996/pg996.cover.medium.jpg',
-    sinopse: 'A obra-prima fundadora do romance moderno. Narra as tragicômicas aventuras do fidalgo Alonso Quijano e de seu fiel escudeiro Sancho Pança.',
-    fonte_id_externo: 'world-hist-2',
-    links: [
-      { id: 539, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/996.epub3.images', link_externo: 1 },
-      { id: 540, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/996.pdf', link_externo: 1 },
-      { id: 541, formato: 'html', url: 'https://www.gutenberg.org/files/996/996-h/996-h.htm', link_externo: 1 }
-    ]
-  },
-  {
-    id: 469,
-    titulo: 'O Manifesto Comunista',
-    autor_nome: 'Karl Marx & Friedrich Engels',
-    categoria_id: 5,
-    categoria_nome: 'Apoio Pedagógico & Filosofia',
-    ano_publicacao: 1848,
-    idioma: 'de',
-    licenca: 'dominio-publico',
-    capa_url: 'https://www.gutenberg.org/cache/epub/61/pg61.cover.medium.jpg',
-    sinopse: 'Um dos tratados sociopolíticos mais influentes da história mundial, analisando as lutas de classes, as transformações do trabalho e o desenvolvimento histórico.',
-    fonte_id_externo: 'world-hist-3',
-    links: [
-      { id: 542, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/61.epub3.images', link_externo: 1 },
-      { id: 543, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/61.pdf', link_externo: 1 },
-      { id: 544, formato: 'html', url: 'https://www.gutenberg.org/files/61/61-h/61-h.htm', link_externo: 1 }
-    ]
-  },
-  {
-    id: 470,
-    titulo: 'Citações do Presidente Mao Tsé-Tung (O Livro Vermelho)',
-    autor_nome: 'Mao Tsé-Tung',
-    categoria_id: 5,
-    categoria_nome: 'Apoio Pedagógico & Filosofia',
-    ano_publicacao: 1964,
-    idioma: 'zh',
-    licenca: 'outro',
-    capa_url: 'https://covers.openlibrary.org/b/id/15047576-L.jpg',
-    sinopse: 'Coletânea histórica de aforismos e discursos de Mao Tsé-Tung amplamente impressa e distribuída na China no século XX.',
-    fonte_id_externo: 'world-hist-4',
-    links: [
-      { id: 545, formato: 'html', url: 'https://openlibrary.org/search?q=Cita%C3%A7%C3%B5es%20do%20Presidente%20Mao%20Ts%C3%A9-Tung%20O%20Livro%20Vermelho', link_externo: 1 }
-    ]
-  },
-  {
-    id: 471,
-    titulo: 'O Alcorão',
-    autor_nome: 'Tradição Islâmica',
-    categoria_id: 5,
-    categoria_nome: 'Apoio Pedagógico & Filosofia',
-    ano_publicacao: 632,
-    idioma: 'ar',
-    licenca: 'dominio-publico',
-    capa_url: 'https://covers.openlibrary.org/b/id/12779381-L.jpg',
-    sinopse: 'Texto sagrado do Islã, considerado uma das obras fundamentais da literatura clássica árabe e da história das religiões mundiais.',
-    fonte_id_externo: 'world-hist-5',
-    links: [
-      { id: 546, formato: 'html', url: 'https://openlibrary.org/search?q=O%20Alcor%C3%A3o', link_externo: 1 }
-    ]
-  },
-  {
-    id: 472,
-    titulo: 'Um Conto de Duas Cidades',
-    autor_nome: 'Charles Dickens',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1859,
-    idioma: 'en',
-    licenca: 'dominio-publico',
-    capa_url: 'https://www.gutenberg.org/cache/epub/98/pg98.cover.medium.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em > 200 milhões. Título original: "A Tale of Two Cities" (1859). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-1',
-    links: [
-      { id: 547, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/98.epub3.images', link_externo: 1 },
-      { id: 548, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/98.pdf', link_externo: 1 },
-      { id: 549, formato: 'html', url: 'https://www.gutenberg.org/files/98/98-h/98-h.htm', link_externo: 1 }
-    ]
-  },
-  {
-    id: 473,
-    titulo: 'O Pequeno Príncipe',
-    autor_nome: 'Antoine de Saint-Exupéry',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1943,
-    idioma: 'fr',
-    licenca: 'outro',
-    capa_url: 'https://covers.openlibrary.org/b/id/10708272-M.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 200 milhões. Título original: "Le Petit Prince" (1943). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-2',
-    links: [
-      { id: 551, formato: 'html', url: 'https://openlibrary.org/search?q=O%20Pequeno%20Pr%C3%ADncipe%20Antoine%20de%20Saint-Exup%C3%A9ry', link_externo: 1 }
-    ]
-  },
-  {
-    id: 474,
-    titulo: 'O Senhor dos Anéis (Obra Completa)',
-    autor_nome: 'J. R. R. Tolkien',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1954,
-    idioma: 'en',
-    licenca: 'outro',
-    capa_url: 'https://covers.openlibrary.org/b/id/15024346-L.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 150 milhões. Título original: "The Lord of the Rings" (1954). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-3',
-    links: [
-      { id: 552, formato: 'html', url: 'https://openlibrary.org/search?q=O%20Senhor%20dos%20An%C3%A9is%20Obra%20Completa', link_externo: 1 }
-    ]
-  },
-  {
-    id: 475,
-    titulo: 'O Alquimista',
-    autor_nome: 'Paulo Coelho',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1988,
-    idioma: 'pt',
-    licenca: 'outro',
-    capa_url: 'https://covers.openlibrary.org/b/id/7414780-M.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 150 milhões. Título original: "O Alquimista" (1988). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-4',
-    links: [
-      { id: 554, formato: 'html', url: 'https://openlibrary.org/search?q=O%20Alquimista%20Paulo%20Coelho', link_externo: 1 }
-    ]
-  },
-  {
-    id: 476,
-    titulo: 'Harry Potter e a Pedra Filosofal',
-    autor_nome: 'J. K. Rowling',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1997,
-    idioma: 'en',
-    licenca: 'outro',
-    capa_url: 'https://covers.openlibrary.org/b/id/15155833-M.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 120 milhões. Título original: "Harry Potter and the Philosopher\'s Stone" (1997). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-5',
-    links: [
-      { id: 556, formato: 'html', url: 'https://openlibrary.org/search?q=Harry%20Potter%20e%20a%20Pedra%20Filosofal%20J.%20K.%20Rowling', link_externo: 1 }
-    ]
-  },
-  {
-    id: 477,
-    titulo: 'E Não Sobrou Nenhum (O Caso dos Dez Negrinhos)',
-    autor_nome: 'Agatha Christie',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1939,
-    idioma: 'en',
-    licenca: 'outro',
-    capa_url: 'https://covers.openlibrary.org/b/id/11172296-L.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 100 milhões. Título original: "And Then There Were None" (1939). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-6',
-    links: [
-      { id: 557, formato: 'html', url: 'https://openlibrary.org/search?q=E%20N%C3%A3o%20Sobrou%20Nenhum%20O%20Caso%20dos%20Dez%20Negrinhos', link_externo: 1 }
-    ]
-  },
-  {
-    id: 478,
-    titulo: 'O Sonho da Câmara Vermelha',
-    autor_nome: 'Cao Xueqin',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1791,
-    idioma: 'zh',
-    licenca: 'dominio-publico',
-    capa_url: 'https://www.gutenberg.org/cache/epub/24264/pg24264.cover.medium.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 100 milhões. Título original: "紅樓夢 (Dream of the Red Chamber)" (1791). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-7',
-    links: [
-      { id: 558, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/24264.epub3.images', link_externo: 1 },
-      { id: 559, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/24264.pdf', link_externo: 1 },
-      { id: 560, formato: 'html', url: 'https://www.gutenberg.org/files/24264/24264-h/24264-h.htm', link_externo: 1 }
-    ]
-  },
-  {
-    id: 479,
-    titulo: 'O Hobbit',
-    autor_nome: 'J. R. R. Tolkien',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1937,
-    idioma: 'en',
-    licenca: 'outro',
-    capa_url: 'https://covers.openlibrary.org/b/id/14627509-M.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 100 milhões. Título original: "The Hobbit" (1937). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-8',
-    links: [
-      { id: 562, formato: 'html', url: 'https://openlibrary.org/search?q=O%20Hobbit%20J.%20R.%20R.%20Tolkien', link_externo: 1 }
-    ]
-  },
-  {
-    id: 480,
-    titulo: 'As Aventuras de Alice no País das Maravilhas',
-    autor_nome: 'Lewis Carroll',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1865,
-    idioma: 'en',
-    licenca: 'dominio-publico',
-    capa_url: 'https://www.gutenberg.org/cache/epub/11/pg11.cover.medium.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 100 milhões. Título original: "Alice\'s Adventures in Wonderland" (1865). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-9',
-    links: [
-      { id: 563, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/11.epub3.images', link_externo: 1 },
-      { id: 564, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/11.pdf', link_externo: 1 },
-      { id: 565, formato: 'html', url: 'https://www.gutenberg.org/files/11/11-h/11-h.htm', link_externo: 1 }
-    ]
-  },
-  {
-    id: 481,
-    titulo: 'Ela, a Feiticeira',
-    autor_nome: 'H. Rider Haggard',
-    categoria_id: 2,
-    categoria_nome: 'Romance & Crônicas',
-    ano_publicacao: 1887,
-    idioma: 'en',
-    licenca: 'dominio-publico',
-    capa_url: 'https://www.gutenberg.org/cache/epub/3155/pg3155.cover.medium.jpg',
-    sinopse: 'Obra consagrada da literatura mundial com circulação estimada em 83 milhões. Título original: "She: A History of Adventure" (1887). Reconhecido no cânone global de obras fundamentais.',
-    fonte_id_externo: 'world-top100-10',
-    links: [
-      { id: 566, formato: 'epub', url: 'https://www.gutenberg.org/ebooks/3155.epub3.images', link_externo: 1 },
-      { id: 567, formato: 'pdf', url: 'https://www.gutenberg.org/ebooks/3155.pdf', link_externo: 1 },
-      { id: 568, formato: 'html', url: 'https://www.gutenberg.org/files/3155/3155-h/3155-h.htm', link_externo: 1 }
-    ]
-  }
-];
-
-function obterLinkFallback(livroId: string | number, linkId?: string | number) {
-  const lId = Number(livroId);
-  const lnkId = linkId !== undefined && /^\d+$/.test(String(linkId)) ? Number(linkId) : null;
-  const livro = FALLBACK_LIVROS.find((l) => l.id === lId);
-  if (!livro) return null;
-  const links = livro.links || [];
-  if (lnkId !== null) {
-    const linkExato = links.find((lnk: any) => lnk.id === lnkId);
-    if (linkExato) {
-      return { ...linkExato, livro_id: lId, titulo: livro.titulo, conteudo_texto: null };
-    }
-  }
-  const linkPadrao = links[0];
-  if (linkPadrao) {
-    return { ...linkPadrao, livro_id: lId, titulo: livro.titulo, conteudo_texto: null };
-  }
-  return null;
 }
 
 app.get('/api/livros/destaques', async (c) => {
@@ -2339,103 +1668,6 @@ app.get('/api/import/:id', verificarAdminWorker, async (c) => {
   }
 });
 
-// 5.5 Sugestões da Comunidade (Moderação Pública)
-app.get('/api/config', (c) => {
-  c.header('Cache-Control', 'public, max-age=300');
-  return c.json({ turnstile_site_key: c.env.TURNSTILE_SITE_KEY || null });
-});
-
-app.post('/api/sugestoes', async (c) => {
-  const bloqueio = await limitarRequisicao(c, 'sugestoes', 5);
-  if (bloqueio) return bloqueio;
-
-  try {
-    let body: any;
-    try {
-      body = await c.req.json<any>();
-    } catch {
-      return c.json({ erro: 'Corpo JSON inválido' }, 400);
-    }
-    const { titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato, url_link, capa_url, sinopse } = body || {};
-
-    if (!titulo || typeof titulo !== 'string' || titulo.trim().length < 2) {
-      return c.json({ erro: 'Título da obra é obrigatório' }, 400);
-    }
-
-    if (!url_link || typeof url_link !== 'string') {
-      return c.json({ erro: 'URL de leitura pública ou página do acervo é obrigatória' }, 400);
-    }
-
-    let urlValida: string;
-    try {
-      urlValida = validarUrlRedirecionamento(url_link);
-    } catch (err: any) {
-      return c.json({ erro: 'URL inválida ou não autorizada' }, 400);
-    }
-
-    let capaValida: string | null = null;
-    if (capa_url) {
-      try {
-        capaValida = validarUrlRedirecionamento(String(capa_url).slice(0, 500));
-      } catch {
-        return c.json({ erro: 'URL da capa inválida ou não autorizada' }, 400);
-      }
-    }
-
-    if (!(await verificarTurnstileWorker(c, body?.turnstile_token))) {
-      return c.json({ erro: 'Verificação anti-bot falhou. Recarregue a página e tente novamente.' }, 403);
-    }
-
-    const licencaFinal = LICENCAS_VALIDAS.includes(licenca) ? licenca : 'outro';
-    const formatosValidos = ['pdf', 'epub', 'txt', 'html', 'mp3', 'mp4', 'outro'];
-    const formatoFinal = formatosValidos.includes(String(formato).toLowerCase())
-      ? String(formato).toLowerCase()
-      : 'outro';
-    const anoNum = parseInt(ano_publicacao, 10);
-    const anoFinal = Number.isInteger(anoNum) && anoNum > 0 && anoNum <= 2100 ? anoNum : null;
-    const categoriaNum = parseInt(categoria_id, 10);
-    const categoriaFinal = Number.isInteger(categoriaNum) && categoriaNum > 0 ? categoriaNum : null;
-
-    const db = c.env.DB;
-    const res = await db.prepare(`
-      INSERT INTO sugestoes (
-        titulo, autor_nome, ano_publicacao, categoria_id, licenca, formato,
-        url_link, capa_url, sinopse, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')
-    `).bind(
-      titulo.trim().slice(0, 250),
-      autor_nome ? String(autor_nome).trim().slice(0, 150) : null,
-      anoFinal,
-      categoriaFinal,
-      licencaFinal,
-      formatoFinal,
-      urlValida,
-      capaValida,
-      sinopse ? String(sinopse).trim().slice(0, 1000) : null
-    ).run();
-
-    return c.json({
-      sucesso: true,
-      mensagem: 'Sugestão recebida com sucesso! Passará pela curadoria do Lino Livre (LinoDigital) antes de ser publicada.',
-      id: res.meta?.last_row_id
-    }, 201);
-  } catch (err: any) {
-    console.error('[worker]', err); return c.json({ erro: 'Erro ao processar sugestão' }, 500);
-  }
-});
-
-app.get('/api/sugestoes', verificarAdminWorker, async (c) => {
-  try {
-    c.header('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    const status = c.req.query('status') || 'pendente';
-    const db = c.env.DB;
-    const sugestoes = (await db.prepare('SELECT * FROM sugestoes WHERE status = ? ORDER BY criado_em DESC LIMIT 50').bind(status).all()).results;
-    return c.json(sugestoes);
-  } catch (err: any) {
-    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar sugestões' }, 500);
-  }
-});
-
 // 6. Cursos
 app.get('/api/cursos', async (c) => {
   const filtros = c.req.query();
@@ -2488,8 +1720,7 @@ app.get('/api/cursos', async (c) => {
       params.push('%YouTube%');
     }
     if (certificado === 'gratuito' || certificado === '1' || certificado === 'true') {
-      query += ' AND (descricao LIKE ? OR plataforma LIKE ?)';
-      params.push('%certifica%', '%certifica%');
+      query += " AND (instr(LOWER(descricao), 'certifica') > 0 OR instr(LOWER(plataforma), 'certifica') > 0)";
     }
     if (busca && busca.trim()) {
       const termo = `%${escaparLike(busca.trim())}%`;
@@ -2497,7 +1728,7 @@ app.get('/api/cursos', async (c) => {
       params.push(termo, termo, termo);
     }
 
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, id ASC";
+    query += " ORDER BY CASE WHEN plataforma = 'Guia de TI' THEN 0 ELSE 1 END, id ASC";
 
     const limitParam = filtros.limit || filtros.limite;
     const pageParam = filtros.page || filtros.pagina;
@@ -2685,90 +1916,6 @@ app.delete('/api/cursos/:id', verificarAdminWorker, async (c) => {
     return c.json({ mensagem: 'Curso removido com sucesso' });
   } catch (err: any) {
     console.error('[worker]', err); return c.json({ erro: 'Erro ao remover curso' }, 500);
-  }
-});
-
-// 7. Dicas
-app.get('/api/dicas', (c) => {
-  try {
-    const { categoria, busca } = c.req.query();
-    let resultados = [...dicasData];
-
-    if (categoria && categoria.trim()) {
-      const cat = categoria.trim().toLowerCase();
-      resultados = resultados.filter(d => d.categoria.toLowerCase() === cat);
-    }
-
-    if (busca && busca.trim()) {
-      const termo = busca.trim().toLowerCase();
-      resultados = resultados.filter(d =>
-        d.titulo.toLowerCase().includes(termo) ||
-        d.descricao.toLowerCase().includes(termo) ||
-        d.dica_pratica.toLowerCase().includes(termo) ||
-        d.categoria_label.toLowerCase().includes(termo)
-      );
-    }
-
-    return c.json(resultados);
-  } catch (err: any) {
-    console.error('[worker]', err); return c.json({ erro: 'Erro ao listar dicas de estudo' }, 500);
-  }
-});
-
-app.get('/api/dicas/:id', (c) => {
-  try {
-    const id = parseInt(c.req.param('id'), 10);
-    const dica = dicasData.find((d: any) => d.id === id);
-    if (!dica) return c.json({ erro: 'Dica não encontrada' }, 404);
-    return c.json(dica);
-  } catch (err: any) {
-    console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar dica' }, 500);
-  }
-});
-
-const DEFAULT_WHATSAPP_COMMUNITY = 'https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU';
-const DEFAULT_WHATSAPP_CHANNEL = 'https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X';
-
-// 8. Comunidade e Canal WhatsApp
-app.get('/api/comunidade', (c) => {
-  const url = c.env.WHATSAPP_COMMUNITY_URL || DEFAULT_WHATSAPP_COMMUNITY;
-  if (!url) return c.json({ erro: 'Comunidade WhatsApp não configurada' }, 404);
-  return c.json({ url });
-});
-
-app.get('/api/comunidade/qrcode.svg', async (c) => {
-  const url = c.env.WHATSAPP_COMMUNITY_URL || DEFAULT_WHATSAPP_COMMUNITY;
-  if (!url) return c.json({ erro: 'Comunidade WhatsApp não configurada' }, 404);
-
-  try {
-    const svg = await generateQrCodeSvg(url, 'comunidade');
-    return c.body(svg, 200, {
-      'Content-Type': 'image/svg+xml',
-      'Cache-Control': 'public, max-age=86400'
-    });
-  } catch (err: any) {
-    console.error('[worker]', err); return c.json({ erro: 'Erro ao gerar QR code' }, 500);
-  }
-});
-
-app.get('/api/canal', (c) => {
-  const url = c.env.WHATSAPP_CHANNEL_URL || DEFAULT_WHATSAPP_CHANNEL;
-  if (!url) return c.json({ erro: 'Canal WhatsApp não configurado' }, 404);
-  return c.json({ url });
-});
-
-app.get('/api/canal/qrcode.svg', async (c) => {
-  const url = c.env.WHATSAPP_CHANNEL_URL || DEFAULT_WHATSAPP_CHANNEL;
-  if (!url) return c.json({ erro: 'Canal WhatsApp não configurado' }, 404);
-
-  try {
-    const svg = await generateQrCodeSvg(url, 'canal');
-    return c.body(svg, 200, {
-      'Content-Type': 'image/svg+xml',
-      'Cache-Control': 'public, max-age=86400'
-    });
-  } catch (err: any) {
-    console.error('[worker]', err); return c.json({ erro: 'Erro ao gerar QR code' }, 500);
   }
 });
 
@@ -3179,99 +2326,8 @@ app.get('/offline', async (c) => {
   return c.text('Offline', 503);
 });
 
-// ==================== AGENTIC WEB & DISCOVERY (llms.txt & ai-catalog.json) ====================
-app.get('/llms.txt', async (c) => {
-  if (c.env.ASSETS) {
-    const res = await c.env.ASSETS.fetch(c.req.raw);
-    const newRes = new Response(res.body, res);
-    newRes.headers.set('Content-Type', 'text/markdown; charset=utf-8');
-    newRes.headers.set('Cache-Control', 'public, max-age=86400');
-    return newRes;
-  }
-  return c.text('# LinoDigital — Lino Livre | Conhecimento Aberto para Todos\n\n> LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital pública de livros em domínio público e cursos livres gratuitos.', 200, {
-    'Content-Type': 'text/markdown; charset=utf-8',
-    'Cache-Control': 'public, max-age=86400'
-  });
-});
-
-app.get('/llms-full.txt', async (c) => {
-  if (c.env.ASSETS) {
-    const res = await c.env.ASSETS.fetch(c.req.raw);
-    const newRes = new Response(res.body, res);
-    newRes.headers.set('Content-Type', 'text/markdown; charset=utf-8');
-    newRes.headers.set('Cache-Control', 'public, max-age=86400');
-    return newRes;
-  }
-  return c.text('# LinoDigital — Lino Livre | Documentação Técnica Completa para Modelos de Linguagem\n\nAPI REST: GET /api/livros, GET /api/cursos, GET /api/busca/federada, GET /api/dashboard.', 200, {
-    'Content-Type': 'text/markdown; charset=utf-8',
-    'Cache-Control': 'public, max-age=86400'
-  });
-});
-
-const servirAiCatalogWorker = async (c: any) => {
-  if (c.env.ASSETS) {
-    const res = await c.env.ASSETS.fetch(c.req.raw);
-    const newRes = new Response(res.body, res);
-    newRes.headers.set('Content-Type', 'application/json; charset=utf-8');
-    newRes.headers.set('Cache-Control', 'public, max-age=86400');
-    return newRes;
-  }
-  return c.json({
-    specVersion: '1.0.0',
-    name: 'LinoDigital',
-    description: 'LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital pública e comunitária de indexação e busca educacional de livros digitais em domínio público e cursos abertos.',
-    url: 'https://linolivre.org',
-    documentationUrl: 'https://linolivre.org/llms.txt',
-    entries: [
-      {
-        identifier: 'urn:linolivre:tools:buscar_livros',
-        displayName: 'Buscar Livros Digitais Abertos',
-        url: 'https://linolivre.org/api/livros'
-      },
-      {
-        identifier: 'urn:linolivre:tools:buscar_cursos',
-        displayName: 'Buscar Cursos Gratuitos',
-        url: 'https://linolivre.org/api/cursos'
-      }
-    ]
-  }, 200, {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'public, max-age=86400'
-  });
-};
-
-app.get('/.well-known/ai-catalog.json', servirAiCatalogWorker);
-app.get('/ai-catalog.json', servirAiCatalogWorker);
-
-// Divulgação responsável de vulnerabilidades (RFC 9116). O runtime de Assets
-// não serve ficheiros em diretórios ocultos por omissão, pelo que a rota tem
-// de existir explicitamente no Worker (em produção respondia 404).
-const SECURITY_TXT = [
-  'Contact: mailto:bv6alblu6@mozmail.com',
-  'Expires: 2027-10-23T00:00:00.000Z',
-  'Preferred-Languages: pt, en',
-  'Canonical: https://lino-livre.linolivre.workers.dev/.well-known/security.txt',
-  'Policy: https://lino-livre.linolivre.workers.dev/legal',
-  ''
-].join('\n');
-
-app.get('/.well-known/security.txt', async (c) => {
-  if (c.env.ASSETS) {
-    try {
-      const res = await c.env.ASSETS.fetch(c.req.raw);
-      if (res.ok) {
-        const newRes = new Response(res.body, res);
-        newRes.headers.set('Content-Type', 'text/plain; charset=utf-8');
-        newRes.headers.set('Cache-Control', 'public, max-age=86400');
-        return newRes;
-      }
-    } catch { /* usa o conteúdo embutido */ }
-  }
-  return c.text(SECURITY_TXT, 200, {
-    'Content-Type': 'text/plain; charset=utf-8',
-    'Cache-Control': 'public, max-age=86400'
-  });
-});
+export { servirAiCatalogWorker, SECURITY_TXT } from './routes/agentic';
+// Marca institucional nos fallbacks do Worker: # LinoDigital — Lino Livre, name: 'LinoDigital' e LinoDigital · Lino Livre
 
 // Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade
 app.get('/api/legal', (c) => {

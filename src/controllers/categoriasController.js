@@ -3,13 +3,28 @@ const { getDatabase } = require('../database');
 function listar(req, res) {
   try {
     const db = getDatabase();
-    const categorias = db.prepare(`
-      SELECT c.*, COUNT(l.id) AS total_livros
-      FROM categorias c
-      LEFT JOIN livros l ON l.categoria_id = c.id
-      GROUP BY c.id
-      ORDER BY c.nome ASC
-    `).all();
+    let temContadores = false;
+    try {
+      temContadores = !!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='contadores'").get();
+    } catch (_) {}
+
+    let categorias;
+    if (temContadores) {
+      categorias = db.prepare(`
+        SELECT c.*, COALESCE(k.total, 0) AS total_livros
+        FROM categorias c
+        LEFT JOIN contadores k ON k.dimensao = 'categoria' AND k.chave = CAST(c.id AS TEXT)
+        ORDER BY c.nome ASC
+      `).all();
+    } else {
+      categorias = db.prepare(`
+        SELECT c.*, COUNT(l.id) AS total_livros
+        FROM categorias c
+        LEFT JOIN livros l ON l.categoria_id = c.id
+        GROUP BY c.id
+        ORDER BY c.nome ASC
+      `).all();
+    }
     res.json(categorias);
   } catch (err) {
     console.error('[categoriasController]', err);

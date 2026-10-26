@@ -1,5 +1,7 @@
 const { getDatabase } = require('../database');
 const { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS } = require('../utils/urlValidator');
+const { buildDestaquesQuery } = require('../database/queries/destaquesQueries');
+const { buildFiltrosLivros, anexarLinksAosLivros } = require('../database/queries/livrosQueries');
 
 const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
 
@@ -77,89 +79,15 @@ function listar(req, res) {
     const numLimit = Math.min(100, Math.max(1, parseInt(rawLimit, 10) || 24));
     const offset = (numPage - 1) * numLimit;
 
-    // Filtros aplicados exclusivamente sobre livros (sem JOINs e sem LIKE).
-    // Permite COUNT(*) — em vez de COUNT(DISTINCT l.id) — e o uso dos índices
-    // compostos de popularidade (leituras DESC, titulo ASC).
-    const filtros = [];
-    const params = [];
-
-    // Busca FTS5 se o termo de busca for informado
-    if (busca && busca.trim()) {
-      const matchQuery = sanitizarFts5(busca);
-      if (matchQuery) {
-        filtros.push(`l.id IN (
-          SELECT rowid FROM livros_fts WHERE livros_fts MATCH ?
-        )`);
-        params.push(matchQuery);
-      }
-    }
-
-    const isTop100 = (categoria_id && (
-      categoria_id === '🌟 Mais Lidos do Mundo' ||
-      categoria_id === 'Mais Lidos do Mundo' ||
-      String(categoria_id).includes('Mais Lidos') ||
-      categoria_id === 'top100' ||
-      categoria_id === 'mais_lidos'
-    )) || (colecao === 'top100' || colecao === 'mais_lidos');
-
-    if (isTop100) {
-      filtros.push("(l.fonte_id_externo LIKE 'world-%')");
-    } else if (categoria_id) {
-      if (/^\d+$/.test(categoria_id)) {
-        filtros.push('l.categoria_id = ?');
-        params.push(categoria_id);
-      } else {
-        const ids = obterDimensoes(db).categorias
-          .filter((cat) => cat.nome === categoria_id)
-          .map((cat) => cat.id);
-        if (ids.length === 0) {
-          filtros.push('1=0');
-        } else {
-          filtros.push(`l.categoria_id IN (${ids.map(() => '?').join(',')})`);
-          params.push(...ids);
-        }
-      }
-    }
-
-    if (autor_id) {
-      filtros.push('l.autor_id = ?');
-      params.push(autor_id);
-    }
-
-    if (idioma) {
-      filtros.push('l.idioma = ?');
-      params.push(idioma);
-    }
-
-    if (licenca) {
-      filtros.push('l.licenca = ?');
-      params.push(licenca);
-    }
-
-    const fonteFiltro = fonte_slug || fonte;
-    let fonteIds = [];
-    if (fonteFiltro) {
-      const termo = String(fonteFiltro).toLowerCase();
-      const dim = obterDimensoes(db);
-      let ids = dim.fontes.filter((f) => f.slug.toLowerCase() === termo).map((f) => f.id);
-      if (ids.length === 0) {
-        ids = dim.fontes.filter((f) => f.slug.toLowerCase().includes(termo)).map((f) => f.id);
-      }
-      fonteIds = ids;
-      if (ids.length === 0) {
-        filtros.push('1=0');
-      } else {
-        filtros.push(`l.fonte_id IN (${ids.map(() => '?').join(',')})`);
-        params.push(...ids);
-      }
-    }
-
-    if (formato) {
-      filtros.push('l.id IN (SELECT livro_id FROM links_livros WHERE formato = ?)');
-      params.push(formato.toLowerCase());
-    }
-
-    const whereSql = filtros.length ? ` AND ${filtros.join(' AND ')}` : '';
+    const dim = obterDimensoes(db);
+    const {
+      filtros,
+      params,
+      whereSql,
+      fonteIds,
+      fonteFiltro,
+      selectSql
+    } = buildFiltrosLivros(req.query, dim, sanitizarFts5);
 
     // Total para paginação: usa agregados pré-calculados quando o filtro é
     // simples (evita varrer 104k linhas). Fallback seguro se as tabelas
@@ -194,48 +122,7 @@ function listar(req, res) {
       total = totalRow ? totalRow.total : 0;
     }
 
-    const orderByClause = isTop100
-      ? `CASE 
-           WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 0 
-           WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
-           ELSE 9999 
-         END ASC, l.leituras DESC, l.titulo ASC`
-      : `l.leituras DESC, 
-         CASE 
-           WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 1 
-           WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 2 
-           WHEN l.categoria_id = 1 THEN 3 
-           WHEN l.categoria_id = 19 THEN 4 
-           WHEN l.categoria_id = 16 THEN 5 
-           WHEN l.categoria_id = 12 THEN 6 
-           ELSE 10 
-         END ASC, 
-         CASE 
-           WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN CAST(SUBSTR(l.fonte_id_externo, 12) AS INTEGER) 
-           WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
-           ELSE l.id 
-         END ASC, 
-         l.titulo ASC`;
-
-    // Buscar itens paginados
-    const selectQuery = `
-      SELECT 
-        l.id, l.titulo, l.subtitulo, l.isbn, l.ano_publicacao, l.idioma,
-        l.sinopse, l.capa_url, l.paginas, l.licenca, l.leituras, l.criado_em,
-        l.fonte_id_externo,
-        a.id AS autor_id, a.nome AS autor_nome,
-        c.id AS categoria_id, c.nome AS categoria_nome,
-        f.slug AS fonte_slug, f.nome AS fonte_nome
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      LEFT JOIN fontes f ON f.id = l.fonte_id
-      WHERE 1=1${whereSql}
-      ORDER BY ${orderByClause}
-      LIMIT ? OFFSET ?
-    `;
-
-    const livros = db.prepare(selectQuery).all(...params, numLimit, offset);
+    const livros = db.prepare(selectSql).all(...params, numLimit, offset);
 
     // Anexar links para cada livro (otimizado: busca única em vez de N+1 queries)
     if (livros.length > 0) {
@@ -245,22 +132,7 @@ function listar(req, res) {
         FROM links_livros
         WHERE livro_id IN (${placeholders})
       `).all(...livros.map(l => l.id));
-      
-      const linksPorLivro = {};
-      for (const link of links) {
-        if (!linksPorLivro[link.livro_id]) linksPorLivro[link.livro_id] = [];
-        linksPorLivro[link.livro_id].push({
-          id: link.id,
-          formato: link.formato,
-          url: normalizarUrlSegura(link.url),
-          tamanho_bytes: link.tamanho_bytes,
-          link_externo: link.link_externo
-        });
-      }
-      for (const livro of livros) {
-        livro.capa_url = normalizarCapaUrl(livro.capa_url);
-        livro.links = linksPorLivro[livro.id] || [];
-      }
+      anexarLinksAosLivros(livros, links, normalizarUrlSegura, normalizarCapaUrl);
     } else {
       for (const livro of livros) {
         livro.capa_url = normalizarCapaUrl(livro.capa_url);
@@ -570,57 +442,8 @@ function destaques(req, res) {
   try {
     const db = getDatabase();
     const tipo = (req.query.tipo || 'todos').toLowerCase();
-    const limit = Math.min(50, Math.max(1, parseInt(req.query.limite || req.query.limit || 12, 10)));
-
-    let whereSql = '';
-    let orderBySql = '';
-    const params = [];
-
-    if (tipo === 'lusofonia' || tipo === 'classicos') {
-      whereSql = 'WHERE (l.categoria_id IN (1, 19) OR l.id IN (1, 2, 3, 4, 5, 828, 838))';
-      orderBySql = 'ORDER BY l.leituras DESC, l.id ASC';
-    } else if (tipo === 'africa') {
-      whereSql = "WHERE (l.categoria_id IN (12, 13, 14, 15, 16, 17, 18) OR l.fonte_id_externo LIKE 'africa-%')";
-      orderBySql = 'ORDER BY l.leituras DESC, l.id ASC';
-    } else if (tipo === 'tech' || tipo === 'tecnologia') {
-      whereSql = "WHERE (l.categoria_id IN (6, 7, 8, 9, 10, 11) OR l.fonte_id_externo LIKE 'github-%')";
-      orderBySql = 'ORDER BY l.leituras DESC, l.id ASC';
-    } else {
-      // 'todos' ou 'mundo': Obras Mais Populares e Procuradas da História
-      whereSql = `WHERE (
-        l.fonte_id_externo LIKE 'world-hist-%' 
-        OR l.fonte_id_externo LIKE 'world-top100-%'
-        OR l.id IN (1, 2, 3)
-      )`;
-      orderBySql = `ORDER BY 
-        CASE 
-          WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN CAST(SUBSTR(l.fonte_id_externo, 12) AS INTEGER) 
-          WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 10 + CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
-          WHEN l.id = 1 THEN 11 
-          WHEN l.id = 2 THEN 12 
-          ELSE 999 
-        END ASC,
-        l.leituras DESC, l.titulo ASC`;
-    }
-
-    const selectQuery = `
-      SELECT 
-        l.id, l.titulo, l.subtitulo, l.isbn, l.ano_publicacao, l.idioma,
-        l.sinopse, l.capa_url, l.paginas, l.licenca, l.leituras, l.criado_em,
-        l.fonte_id_externo,
-        a.id AS autor_id, a.nome AS autor_nome,
-        c.id AS categoria_id, c.nome AS categoria_nome,
-        f.slug AS fonte_slug, f.nome AS fonte_nome
-      FROM livros l
-      LEFT JOIN autores a ON a.id = l.autor_id
-      LEFT JOIN categorias c ON c.id = l.categoria_id
-      LEFT JOIN fontes f ON f.id = l.fonte_id
-      ${whereSql}
-      ${orderBySql}
-      LIMIT ?
-    `;
-
-    const livros = db.prepare(selectQuery).all(...params, limit);
+    const { sql, params, limit } = buildDestaquesQuery(tipo, req.query.limite || req.query.limit);
+    const livros = db.prepare(sql).all(...params, limit);
 
     // Anexar links
     if (livros.length > 0) {

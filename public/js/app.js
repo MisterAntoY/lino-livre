@@ -541,47 +541,31 @@ const app = {
       const eGuiaWeb = (l.categoria_id === 6 || (htmlLink && !pdfLink && !epubLink));
       const eLivroTecnicoPdf = (!eGuiaWeb && pdfLink && l.categoria_id > 5);
 
-      let badgeHtml = '';
       let botoesAcaoHtml = '';
 
       if (eGuiaWeb && htmlLink) {
-        badgeHtml = `
-          <div class="data-badge-card" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd" title="Recurso Educacional Aberto / Roadmap Interativo">
-             <span>Guia Interativo Web</span>
-          </div>
-        `;
         botoesAcaoHtml = `
           <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${htmlLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Acessar Guia Online: ${this.escape(l.titulo)}">
-             Acessar Guia Online
+             Acessar Guia
           </a>
         `;
       } else if (eLivroTecnicoPdf) {
-        badgeHtml = `
-          <div class="data-badge-card" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0" title="Livro Técnico Completo Aberto">
-             <span>Livro Digital Completo (PDF)</span>
-          </div>
-        `;
         botoesAcaoHtml = `
           <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Ler Livro (PDF): ${this.escape(l.titulo)}">
-             Ler Livro (PDF)
+             Ler Online
           </a>
           <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Baixar ${this.escape(l.titulo)} (PDF)${pdfTamanho}">
-            ⬇ Baixar${pdfTamanho}
+            Baixar PDF${pdfTamanho}
           </a>
         `;
       } else {
-        badgeHtml = `
-          <div class="data-badge-card" title="${this.escape(t('books.ultralightTitle'))}">
-            ${t('books.ultralight')}
-          </div>
-        `;
         botoesAcaoHtml = `
           <button class="btn btn-primary" data-acao="abrirLeitorOuLink" data-arg="${l.id}" aria-label="${this.escape(t('books.readOnline'))}: ${this.escape(l.titulo)}">
             ${t('books.readOnline')}
           </button>
           ${pdfLink ? `
             <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${pdfLink.id}" target="_blank" rel="noopener noreferrer" aria-label="Baixar PDF Oficial: ${this.escape(l.titulo)}${pdfTamanho}" title="${this.escape(t('books.downloadFile'))}${pdfTamanho}">
-               PDF Oficial${pdfTamanho}
+               Baixar PDF${pdfTamanho}
             </a>
           ` : (downloadLink ? `
             <a class="btn btn-secondary" href="/api/livros/${l.id}/ler/${downloadLink.id}" target="_blank" rel="noopener noreferrer" aria-label="${this.escape(t('books.download'))}: ${this.escape(l.titulo)}">
@@ -592,11 +576,12 @@ const app = {
       }
 
       const langFlags = {
-        pt: ' PT',
-        en: ' EN',
-        fr: ' FR',
-        de: ' DE',
-        zh: ' ZH'
+        pt: 'PT',
+        en: 'EN',
+        fr: 'FR',
+        de: 'DE',
+        zh: 'ZH',
+        es: 'ES'
       };
       const rawLang = String(l.idioma || 'pt').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
       const flagLabel = langFlags[rawLang] || this.escape(rawLang.toUpperCase());
@@ -606,9 +591,9 @@ const app = {
       if (isTop100Book) {
         if (String(l.fonte_id_externo).startsWith('world-top100-')) {
           const rankNum = String(l.fonte_id_externo).replace('world-top100-', '');
-          top100BadgeHtml = `<span class="top100-badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fde047; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700; border-radius:4px;">🌟 #${rankNum} Mais Lido do Mundo</span>`;
+          top100BadgeHtml = `<span class="top100-badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fde047; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700; border-radius:4px;">#${rankNum} Mais Lido</span>`;
         } else {
-          top100BadgeHtml = `<span class="top100-badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fde047; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700; border-radius:4px;">🌟 Clássico Universal</span>`;
+          top100BadgeHtml = `<span class="top100-badge" style="background:#fef9c3; color:#854d0e; border:1px solid #fde047; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700; border-radius:4px;">Clássico Universal</span>`;
         }
       }
 
@@ -626,7 +611,7 @@ const app = {
               <span class="book-lang-badge lang-${rawLang}">${flagLabel}</span>
               <span class="badge-license">${this.escape(licencaFormatada)}</span>
               ${top100BadgeHtml}
-              ${isAfrica ? `<span class="africa-stats-badge" style="background:#fef3c7; color:#78350f; border-color:#f59e0b; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700;"> Coleção África</span>` : ''}
+              ${isAfrica ? `<span class="africa-stats-badge" style="background:#fef3c7; color:#78350f; border-color:#f59e0b; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:700;">Coleção África</span>` : ''}
             </div>
 
             <p class="book-synopsis">${this.escape(sinopse)}</p>
@@ -636,16 +621,14 @@ const app = {
             </div>
 
             <div class="book-stats">
-              <span>${l.leituras > 0 ? t('books.readings', { n: l.leituras }) : ' Leitura Aberta'}</span>
-              <span> ${this.escape(traduzirCategoria(l.categoria_nome) || t('books.defaultCategory'))}</span>
+              <span>${l.leituras > 0 ? t('books.readings', { n: l.leituras }) : 'Leitura Aberta'}</span>
+              <span>${this.escape(traduzirCategoria(l.categoria_nome) || t('books.defaultCategory'))}</span>
             </div>
-
-            ${badgeHtml}
 
             <div class="book-actions">
               ${botoesAcaoHtml}
               <button class="btn btn-outline" data-acao="abrirDetalhesLivro" data-arg="${l.id}" aria-label="Detalhes da obra ${this.escape(l.titulo)}" title="Ver sinopse e formatos para baixar">
-                ℹ Detalhes
+                Detalhes
               </button>
             </div>
           </div>
@@ -714,13 +697,13 @@ const app = {
       if (mainLink) {
         btnLer = `
           <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${mainLink.id}" target="_blank" rel="noopener noreferrer" data-stop="1" aria-label="Ler ${this.escape(l.titulo)}" title="Acessar obra imediatamente">
-            📖 Ler Agora
+            Ler Agora
           </a>
         `;
       } else {
         btnLer = `
           <button class="btn btn-primary" data-acao="abrirDetalhesLivro" data-arg="${l.id}" data-stop="1">
-            📖 Ler Agora
+            Ler Agora
           </button>
         `;
       }
@@ -741,7 +724,7 @@ const app = {
             <div class="destaque-card-actions">
               ${btnLer}
               <button class="btn btn-outline" data-acao="abrirDetalhesLivro" data-arg="${l.id}" data-stop="1" aria-label="Detalhes de ${this.escape(l.titulo)}" title="Ver detalhes completos da obra">
-                ℹ Detalhes
+                Detalhes
               </button>
             </div>
           </div>
@@ -781,11 +764,11 @@ const app = {
           if (bestExternalLink) {
             btnPdf.href = `/api/livros/${livro.id}/ler/${bestExternalLink.id}`;
             if (bestExternalLink.formato.toLowerCase() === 'epub') {
-              btnPdf.textContent = ' Baixar EPUB (Gutenberg)';
+              btnPdf.textContent = 'Baixar EPUB (Gutenberg)';
             } else if (bestExternalLink.formato.toLowerCase() === 'html') {
-              btnPdf.textContent = ' Wikisource Oficial';
+              btnPdf.textContent = 'Wikisource Oficial';
             } else {
-              btnPdf.textContent = ' Baixar PDF';
+              btnPdf.textContent = 'Baixar PDF';
             }
             btnPdf.classList.remove('hidden');
           } else {
@@ -1499,62 +1482,62 @@ const app = {
         btnTexto = ' Assistir no YouTube';
         extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffedd5; color:#c2410c; border-color:#fdba74; font-weight:600;"> Curso em Vídeo</span>`;
       } else if (isDsa) {
-        btnTexto = '🔬 Acessar DSA';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">🔬 Data Science Academy</span>`;
+        btnTexto = 'Acessar DSA';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">Data Science Academy</span>`;
       } else if (isCursa) {
         const isEx = (c.tipo === 'exercicios') || (c.url || '').includes('/exercicios');
-        btnTexto = isEx ? '📝 Resolver Exercícios no Cursa' : '🎓 Estudar no Cursa';
+        btnTexto = isEx ? 'Resolver Exercícios' : 'Estudar no Cursa';
         extraBadge = isEx
-          ? `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">📝 Cursa • Exercícios & Quizzes</span>`
-          : `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">🎓 Cursa • Certificado Grátis</span>`;
+          ? `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">Cursa • Exercícios & Quizzes</span>`
+          : `<span class="badge-guiadeti-pill" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; font-weight:600;">Cursa • Certificado Grátis</span>`;
       } else if (isHarvard) {
-        btnTexto = '🏛️ Acessar Harvard PLL';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5; font-weight:600;">🏛️ Harvard Online</span>`;
+        btnTexto = 'Acessar Harvard PLL';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5; font-weight:600;">Harvard Online</span>`;
       } else if (isMit) {
-        btnTexto = '🏛️ Acessar MIT OCW';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;">🏛️ MIT OpenCourseWare</span>`;
+        btnTexto = 'Acessar MIT OCW';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;">MIT OpenCourseWare</span>`;
       } else if (isStanford) {
-        btnTexto = '🌲 Acessar Stanford';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#831843; border-color:#fbcfe8; font-weight:600;">🌲 Stanford Online</span>`;
+        btnTexto = 'Acessar Stanford';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#831843; border-color:#fbcfe8; font-weight:600;">Stanford Online</span>`;
       } else if (isFiap) {
-        btnTexto = ' Acessar FIAP';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffe4e6; color:#e11d48; border-color:#fecdd3; font-weight:600;"> FIAP ON</span>`;
+        btnTexto = 'Acessar FIAP';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ffe4e6; color:#e11d48; border-color:#fecdd3; font-weight:600;">FIAP ON</span>`;
       } else if (isEuCapacito) {
-        btnTexto = ' Acessar Eu Capacito';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f3e8ff; color:#7e22ce; border-color:#e9d5ff; font-weight:600;"> Eu Capacito</span>`;
+        btnTexto = 'Acessar Eu Capacito';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f3e8ff; color:#7e22ce; border-color:#e9d5ff; font-weight:600;">Eu Capacito</span>`;
       } else if (isIbm) {
-        btnTexto = ' Acessar IBM';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; font-weight:600;"> IBM SkillsBuild</span>`;
+        btnTexto = 'Acessar IBM';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; font-weight:600;">IBM SkillsBuild</span>`;
       } else if (isCisco) {
-        btnTexto = ' Acessar Cisco';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd; font-weight:600;"> Cisco NetAcad</span>`;
+        btnTexto = 'Acessar Cisco';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd; font-weight:600;">Cisco NetAcad</span>`;
       } else if (isEscolaTrab) {
-        btnTexto = ' Acessar MTE / Microsoft';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;"> Escola do Trabalhador 4.0</span>`;
+        btnTexto = 'Acessar MTE / Microsoft';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;">Escola do Trabalhador 4.0</span>`;
       } else if (isAws) {
-        btnTexto = ' Acessar AWS';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fffbeb; color:#b45309; border-color:#fde68a; font-weight:600;"> AWS Skill Builder</span>`;
+        btnTexto = 'Acessar AWS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fffbeb; color:#b45309; border-color:#fde68a; font-weight:600;">AWS Skill Builder</span>`;
       } else if (isMsLearn) {
-        btnTexto = c.tipo === 'roadmap' ? '🗺️ Explorar Trilha no Learn' : '🎓 Acessar Curso no Microsoft Learn';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd; font-weight:600;">☁️ Microsoft Learn • Oficial</span>`;
+        btnTexto = c.tipo === 'roadmap' ? 'Explorar Trilha no Learn' : 'Acessar Curso no Learn';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd; font-weight:600;">Microsoft Learn • Oficial</span>`;
       } else if (isFcc) {
-        btnTexto = ' Estudar no freeCodeCamp';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;"> freeCodeCamp</span>`;
+        btnTexto = 'Estudar no freeCodeCamp';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1; font-weight:600;">freeCodeCamp</span>`;
       } else if (isKultivi) {
-        btnTexto = ' Acessar Kultivi';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfeff; color:#0e7490; border-color:#a5f3fc; font-weight:600;"> Kultivi</span>`;
+        btnTexto = 'Acessar Kultivi';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfeff; color:#0e7490; border-color:#a5f3fc; font-weight:600;">Kultivi</span>`;
       } else if (isSenai) {
-        btnTexto = ' Acessar SENAI';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#b91c1c; border-color:#fecaca; font-weight:600;"> SENAI Play</span>`;
+        btnTexto = 'Acessar SENAI';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef2f2; color:#b91c1c; border-color:#fecaca; font-weight:600;">SENAI Play</span>`;
       } else if (isOracleOne) {
-        btnTexto = ' Acessar Oracle ONE';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fff1f2; color:#be123c; border-color:#fecdd3; font-weight:600;"> Oracle ONE</span>`;
+        btnTexto = 'Acessar Oracle ONE';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fff1f2; color:#be123c; border-color:#fecdd3; font-weight:600;">Oracle ONE</span>`;
       } else if (isGeneration) {
-        btnTexto = ' Acessar Generation';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0; font-weight:600;"> Generation Brasil</span>`;
+        btnTexto = 'Acessar Generation';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0; font-weight:600;">Generation Brasil</span>`;
       } else if (isWmc) {
-        btnTexto = ' Acessar WoMakersCode';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fdf4ff; color:#a21caf; border-color:#f5d0fe; font-weight:600;"> WoMakersCode</span>`;
+        btnTexto = 'Acessar WoMakersCode';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fdf4ff; color:#a21caf; border-color:#f5d0fe; font-weight:600;">WoMakersCode</span>`;
       } else if (isYouTube) {
         btnTexto = t('courses.btnYoutube');
         extraBadge = `<span class="badge-youtube-cert">${t('courses.badgeYoutube')}</span>`;
@@ -1562,53 +1545,53 @@ const app = {
         btnTexto = t('courses.btnGuiadeti');
         extraBadge = `<span class="badge-guiadeti-pill">${t('courses.badgeGuiadeti')}</span>`;
       } else if (isBradesco) {
-        btnTexto = '🎓 Estudar na Fundação Bradesco';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; font-weight:600;">🏛️ Fundação Bradesco • Certificado Grátis</span>`;
+        btnTexto = 'Estudar na Fundação Bradesco';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; font-weight:600;">Fundação Bradesco • Certificado</span>`;
       } else if (isEvg) {
-        btnTexto = '📜 Acessar Curso na EV.G';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#86efac; font-weight:600;">🏛️ EV.G / ENAP • Certificado Oficial</span>`;
+        btnTexto = 'Acessar Curso na EV.G';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dcfce7; color:#166534; border-color:#86efac; font-weight:600;">EV.G / ENAP • Certificado Oficial</span>`;
       } else if (isLumina) {
-        btnTexto = '📜 Estudar na Lumina UFRGS';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">🎓 Lumina (UFRGS) • Extensão</span>`;
+        btnTexto = 'Estudar na Lumina UFRGS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">Lumina (UFRGS) • Extensão</span>`;
       } else if (isIfrs) {
-        btnTexto = '📜 Estudar no IFRS';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;">🏛️ IFRS • Certificado Digital Grátis</span>`;
+        btnTexto = 'Estudar no IFRS';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0; font-weight:600;">IFRS • Certificado Digital</span>`;
       } else if (isGoogleAtelie) {
-        btnTexto = '🎓 Estudar no Google';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#b45309; border-color:#fde68a; font-weight:600;">🌐 Google Ateliê • Certificado Oficial</span>`;
+        btnTexto = 'Estudar no Google';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#b45309; border-color:#fde68a; font-weight:600;">Google Ateliê • Certificado</span>`;
       } else if (isOpenBootcamp) {
-        btnTexto = '🚀 Acessar OpenBootcamp';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f5f3ff; color:#6d28d9; border-color:#ddd6fe; font-weight:600;">💻 OpenBootcamp • 100% Gratuito</span>`;
+        btnTexto = 'Acessar OpenBootcamp';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#f5f3ff; color:#6d28d9; border-color:#ddd6fe; font-weight:600;">OpenBootcamp • Gratuito</span>`;
       } else if (isKipper) {
-        btnTexto = '▶ Assistir no YouTube';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5; font-weight:600;">📺 Fernanda Kipper • Docker</span>`;
+        btnTexto = 'Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5; font-weight:600;">Fernanda Kipper • Docker</span>`;
       } else if (isSegInfo) {
-        btnTexto = '▶ Assistir no YouTube';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5; font-weight:600;">📺 SegInfoBrasil • Redes</span>`;
+        btnTexto = 'Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5; font-weight:600;">SegInfoBrasil • Redes</span>`;
       } else if (isGlaucia) {
-        btnTexto = '▶ Assistir no YouTube';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">📺 Glaucia Lemos • TS</span>`;
+        btnTexto = 'Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc; font-weight:600;">Glaucia Lemos • TS</span>`;
       } else if (isSacchi) {
-        btnTexto = '▶ Assistir no YouTube';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#b45309; border-color:#fde68a; font-weight:600;">📺 Gustavo Sacchi • LangChain</span>`;
+        btnTexto = 'Assistir no YouTube';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#b45309; border-color:#fde68a; font-weight:600;">Gustavo Sacchi • LangChain</span>`;
       } else if (isBnt) {
-        btnTexto = '🧭 Acessar Bora na Tech';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef9c3; color:#854d0e; border-color:#fde047; font-weight:600;">🚀 Bora na Tech?</span>`;
+        btnTexto = 'Acessar Bora na Tech';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef9c3; color:#854d0e; border-color:#fde047; font-weight:600;">Bora na Tech?</span>`;
       } else if (isKaSolution) {
-        btnTexto = (c.url || '').includes('zoom.us') ? '🎟️ Inscrever-se no Webinar (Zoom)' : '🎓 Acessar KA Solution';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">🛡️ KA Solution • Treinamento Oficial</span>`;
+        btnTexto = (c.url || '').includes('zoom.us') ? 'Inscrever-se no Webinar' : 'Acessar KA Solution';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">KA Solution • Treinamento Oficial</span>`;
       } else if (isEbac) {
-        btnTexto = (c.url || '').includes('webinars') ? '🎟️ Inscrever-se no Evento EBAC' : '🎓 Acessar Curso na EBAC';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8; font-weight:600;">🎨 EBAC Online • Gratuito</span>`;
+        btnTexto = (c.url || '').includes('webinars') ? 'Inscrever-se no Evento EBAC' : 'Acessar Curso na EBAC';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fce7f3; color:#9d174d; border-color:#fbcfe8; font-weight:600;">EBAC Online • Gratuito</span>`;
       } else if (isOcean) {
-        btnTexto = c.tipo === 'roadmap' ? '🗺️ Explorar Trilha no Ocean' : '🎓 Inscrever-se no Samsung Ocean';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">🌊 Samsung Ocean • USP & UEA</span>`;
+        btnTexto = c.tipo === 'roadmap' ? 'Explorar Trilha no Ocean' : 'Inscrever-se no Samsung Ocean';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#e0f2fe; color:#0369a1; border-color:#7dd3fc; font-weight:600;">Samsung Ocean • USP & UEA</span>`;
       } else if (isUsp) {
-        btnTexto = ' Aulas USP';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;"> Cursos USP</span>`;
+        btnTexto = 'Aulas USP';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">Cursos USP</span>`;
       } else if (isAlura) {
-        btnTexto = ' Aulas Alura';
-        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;"> Alura Aberta</span>`;
+        btnTexto = 'Aulas Alura';
+        extraBadge = `<span class="badge-guiadeti-pill" style="background:#dbeafe; color:#1e40af; border-color:#bfdbfe;">Alura Aberta</span>`;
       }
 
       let cardClass = '';
@@ -1644,7 +1627,7 @@ const app = {
       } else if (isKipper || isSegInfo || isGlaucia || isSacchi) {
         logoHtml = `<img src="/img/logos/youtube.svg" alt="YouTube" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isBnt) {
-        logoHtml = `<span style="font-size:1.3rem;">🚀</span>`;
+        logoHtml = `<span class="course-platform-logo-text">BNT</span>`;
       } else if (isKaSolution) {
         logoHtml = `<img src="/img/logos/kasolution.png" alt="KA Solution" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isEbac) {
@@ -1708,7 +1691,7 @@ const app = {
       } else if ((c.plataforma || '').includes('Harvard')) {
         logoHtml = `<img src="/img/logos/harvard.png" alt="Harvard" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if ((c.plataforma || '').includes('Stanford')) {
-        logoHtml = `<span style="font-size:1.3rem;">🌲</span>`;
+        logoHtml = `<span class="course-platform-logo-text">Stanford</span>`;
       }
 
 
@@ -1841,14 +1824,14 @@ const app = {
         badgeOrigem = ' Guia de TI';
         logoRoadmap = `<img src="/img/logos/guiadeti.png" alt="Guia de TI" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isAwesome) {
-        badgeOrigem = '⭐ Awesome Roadmaps';
+        badgeOrigem = 'Awesome Roadmaps';
         logoRoadmap = `<img src="/img/logos/github.svg" alt="GitHub" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isTechGuide) {
-        badgeOrigem = '🧭 TechGuide.sh (Alura)';
+        badgeOrigem = 'TechGuide.sh (Alura)';
         logoRoadmap = `<img src="/img/logos/alura.png" alt="Alura" class="course-platform-logo" width="18" height="18" loading="lazy" decoding="async">`;
       } else if (isBoraNaTech) {
-        badgeOrigem = '🚀 Bora na Tech?';
-        logoRoadmap = `<span style="font-size:1.3rem;">🚀</span>`;
+        badgeOrigem = 'Bora na Tech?';
+        logoRoadmap = `<span class="course-platform-logo-text">BNT</span>`;
       }
 
       return `
@@ -2294,27 +2277,27 @@ const app = {
             <h3>${t('dashboard.quality')}</h3>
             <div class="dash-list">
               <div class="dash-list-item">
-                <span>📕 ${t('dashboard.withCover')}</span>
+                <span>${t('dashboard.withCover')}</span>
                 <span class="dash-list-badge">${qualidade.com_capa || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>📘 ${t('dashboard.withSynopsis')}</span>
+                <span>${t('dashboard.withSynopsis')}</span>
                 <span class="dash-list-badge">${qualidade.com_sinopse || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>🔗 ${t('dashboard.withLink')}</span>
+                <span>${t('dashboard.withLink')}</span>
                 <span class="dash-list-badge">${qualidade.com_link || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>✍️ ${t('dashboard.withAuthor')}</span>
+                <span>${t('dashboard.withAuthor')}</span>
                 <span class="dash-list-badge">${qualidade.com_autor || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>🏷️ ${t('dashboard.withCategory')}</span>
+                <span>${t('dashboard.withCategory')}</span>
                 <span class="dash-list-badge">${qualidade.com_categoria || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>✅ ${t('dashboard.completeness')}</span>
+                <span>${t('dashboard.completeness')}</span>
                 <span class="dash-list-badge">${qualidade.percentual_completo || 0}%</span>
               </div>
             </div>
@@ -2325,12 +2308,12 @@ const app = {
             <div class="dash-list">
               ${cursosPorTipo.map(c => `
                 <div class="dash-list-item">
-                  <span> ${this.escape(c.tipo)}</span>
+                  <span>${this.escape(c.tipo)}</span>
                   <span class="dash-list-badge">${c.total}</span>
                 </div>
               `).join('')}
               <div class="dash-list-item">
-                <span>🎓 ${t('dashboard.withCertificate')}</span>
+                <span>${t('dashboard.withCertificate')}</span>
                 <span class="dash-list-badge">${r.cursos_com_certificado || 0}</span>
               </div>
             </div>
@@ -2600,18 +2583,10 @@ const app = {
               const mb = (lnk.tamanho_bytes / (1024 * 1024)).toFixed(1);
               tamanhoLabel = mb > 0.1 ? ` (${mb} MB)` : ` (${Math.round(lnk.tamanho_bytes / 1024)} KB)`;
             }
-            const iconMap = {
-              pdf: '📕',
-              epub: '📗',
-              html: '🌐',
-              txt: '📄',
-              audiobook: '🎧'
-            };
-            const icon = iconMap[fmt] || '🔗';
             const actionLabel = (fmt === 'html') ? 'Acessar Web / HTML' : `Baixar ${fmt.toUpperCase()}`;
             return `
               <a href="/api/livros/${livro.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" class="btn-format-download format-${fmt}">
-                <span>${icon}</span>
+                <span class="format-badge">${fmt.toUpperCase()}</span>
                 <strong>${actionLabel}</strong>
                 <span class="format-size">${tamanhoLabel}</span>
                 <span class="format-redirect-arrow">↗</span>
@@ -2641,7 +2616,7 @@ const app = {
     if (!this.livroModalAtual) return;
     const l = this.livroModalAtual;
     const url = `${window.location.origin}/#livro-${l.id}`;
-    const texto = `📚 Leia "${l.titulo}" (${l.autor_nome || 'Autor Clássico'}) gratuitamente no Lino Livre (LinoDigital):`;
+    const texto = `Leia "${l.titulo}" (${l.autor_nome || 'Autor Clássico'}) gratuitamente no Lino Livre (LinoDigital):`;
 
     if (navigator.share) {
       navigator.share({
@@ -2836,11 +2811,11 @@ const app = {
       }
     } catch (_) {}
 
-    this.atualizarPlacarMeta(this.totalLivrosAcervo || 2000);
+    this.atualizarPlacarMeta(this.totalLivrosAcervo || 104170);
   },
 
   atualizarPlacarMeta(total) {
-    if (!total || total < 1) total = this.totalLivrosAcervo || 2000;
+    if (!total || total < 1) total = this.totalLivrosAcervo || 104170;
     this.totalLivrosAcervo = total;
 
     const meta = 10000000;
@@ -2928,7 +2903,7 @@ const app = {
   },
 
   compartilharMeta10M() {
-    const total = this.totalLivrosAcervo || 2000;
+    const total = this.totalLivrosAcervo || 104170;
     const lang = (window.I18N && I18N.lang) ? I18N.lang : 'pt';
     const localeMap = { 'pt': 'pt-AO', 'en': 'en-US', 'es': 'es-ES', 'de': 'de-DE', 'fr': 'fr-FR', 'zh': 'zh-CN' };
     const numFmt = new Intl.NumberFormat(localeMap[lang] || 'pt-AO').format(total);

@@ -596,6 +596,43 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   3. **Suporte a Coleção Top 100 no Supabase:** Tratamento explícito de `fonte_id_externo LIKE 'world-*'` no repositório Supabase para responder a requisições com `categoria_id="🌟 Mais Lidos do Mundo"` e `colecao="top100"`.
   4. **Testes de Regressão TDD:** Adicionados testes 15.6 e 15.7 em [`test/worker.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/worker.test.js) validando filtragem por categoria e por busca textual sob cota esgotada (350 testes em 67 suítes 100% verdes).
 
+### 2.37. Decomposição Modular do Cloudflare Worker (`workers/src/index.ts`)
+- **Objetivo:** Reduzir complexidade e tamanho do monólito `workers/src/index.ts` mantendo 100% de paridade de comportamento, contratos de API e segurança.
+- **Estruturas Criadas:**
+  1. `workers/src/data/constants.ts`: Constantes de dimensões estáticas, origens CORS permitidas e metas globais.
+  2. `workers/src/data/fallbackLivros.ts`: Catálogo de contingência em memória e resolvedor de links de fallback para resiliência sob esgotamento de cotas.
+  3. `workers/src/middlewares/`:
+     - `cors.ts`: Controle granular de CORS (leitura irrestrita, mutação restrita a origens permitidas).
+     - `cache.ts`: Cache de borda via Cloudflare Cache API (`caches.default`).
+     - `security.ts`: Cabeçalhos defensivos (CSP, HSTS, X-Frame-Options), WAF de borda contra scanners/sondas, rate limiter com token bucket e validação Turnstile.
+  4. `workers/src/routes/`:
+     - `config.ts`: Chave pública do Turnstile (`GET /api/config`).
+     - `dicas.ts`: Dicas de estudo e técnicas de aprendizagem (`GET /api/dicas`).
+     - `comunidade.ts`: Comunidade, canal WhatsApp e geração de QR Codes SVG (`GET /api/comunidade`, `GET /api/canal`).
+     - `loadbalancer.ts`: Telemetria e status do Circuit Breaker (`GET /api/loadbalancer/status`).
+     - `agentic.ts`: Descoberta para agentes de IA e segurança (`GET /llms.txt`, `GET /llms-full.txt`, `ai-catalog.json`, `security.txt`).
+     - `sugestoes.ts`: Fila de moderação da comunidade com validação de licenças e proteção anti-bot (`POST /api/sugestoes`, `GET /api/sugestoes`).
+- **Validação:** 350 testes em 67 suítes passando (100% verde) e TypeScript estrito sem erros (`npx tsc --noEmit`).
+
+### 2.38. Otimização de SQL, Eliminação de LIKEs Ineficientes e Query Builders Puros
+- **Problema Abordado:**
+  1. Cláusulas `LIKE '%termo%'` em ordenações de cursos (`ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%'...`) e filtros forçavam scans em tabelas indexadas.
+  2. O `dashboardController.js` e `categoriasController.js` no Express executavam 14 varreduras completas (*Full Table Scan*) sobre os 80.331 livros a cada requisição, mesmo com tabelas de agregados pré-computados (`estatisticas`, `contadores`, `autor_totais`) já existentes.
+  3. Duplicações de código SQL entre Express e Worker para montagem de filtros, ordenação e destaques.
+- **Resoluções de Engenharia Implementadas:**
+  1. **Substituição de LIKE Infixo por Comparações Estritas ou `instr()`:**
+     - Comparações em `cursos` migradas para `= 'Guia de TI'`, `= 'Roadmap.sh'` e `= 'Trilha Info'`.
+     - Filtros de certificado convertidos de `LIKE '%certifica%'` para `instr(LOWER(coluna), 'certifica') > 0`.
+  2. **Adoção de Tabelas Agregadas no Express (`estatisticas`, `contadores`, `autor_totais`):**
+     - Em `categoriasController.js`, leitura via `LEFT JOIN contadores k ON k.dimensao = 'categoria'`, lendo ~20 linhas em vez de 80.331 linhas.
+     - Em `dashboardController.js`, agregações de `licencas`, `idiomas`, `areas` e `fontes` agora consomem `contadores`, eliminando múltiplos scans de tabela cheia.
+     - Em `autoresController.js`, contagem de livros por autor consome diretamente a tabela `autor_totais`.
+  3. **Módulos de Query Builders Puros (`src/database/queries/`):**
+     - `cursosQueries.js`: `buildCursosQuery` e `buildRoadmapsQuery`.
+     - `destaquesQueries.js`: `buildDestaquesQuery`.
+     - `livrosQueries.js`: `buildFiltrosLivros` e `anexarLinksAosLivros`.
+  4. **Ganhos de Performance:** Tempo de execução da suíte de 350 testes reduzido de ~71s para ~43s (~40% mais rápida). Total conformidade mantida: 350/350 testes passando (100% verde).
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:

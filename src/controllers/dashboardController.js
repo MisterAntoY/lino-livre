@@ -46,6 +46,13 @@ function metricas(req, res) {
     `).get().total;
 
     // ==================== DISTRIBUIÇÕES ====================
+    let contadores = [];
+    try {
+      contadores = db.prepare('SELECT dimensao, chave, rotulo, total FROM contadores ORDER BY total DESC').all();
+    } catch (_) {}
+
+    const doGrupo = (dim) => contadores.filter((r) => r.dimensao === dim);
+
     const formatos = db.prepare(`
       SELECT formato, COUNT(DISTINCT livro_id) AS total
       FROM links_livros
@@ -53,40 +60,55 @@ function metricas(req, res) {
       ORDER BY total DESC
     `).all();
 
-    const licencas = db.prepare(`
-      SELECT licenca, COUNT(*) AS total
-      FROM livros
-      GROUP BY licenca
-      ORDER BY total DESC
-    `).all();
+    const licencas = doGrupo('licenca').length > 0
+      ? doGrupo('licenca').map(r => ({ licenca: r.chave, total: r.total }))
+      : db.prepare(`
+          SELECT licenca, COUNT(*) AS total
+          FROM livros
+          GROUP BY licenca
+          ORDER BY total DESC
+        `).all();
 
-    const idiomas = db.prepare(`
-      SELECT idioma, COUNT(*) AS total
-      FROM livros
-      GROUP BY idioma
-      ORDER BY total DESC
-    `).all();
+    const idiomas = doGrupo('idioma').length > 0
+      ? doGrupo('idioma').map(r => ({ idioma: r.chave, total: r.total }))
+      : db.prepare(`
+          SELECT idioma, COUNT(*) AS total
+          FROM livros
+          GROUP BY idioma
+          ORDER BY total DESC
+        `).all();
 
-    const areas = db.prepare(`
-      SELECT 
-        COALESCE(c.nome, 'Sem categoria') AS area,
-        COUNT(l.id) AS total
-      FROM categorias c
-      LEFT JOIN livros l ON l.categoria_id = c.id
-      GROUP BY c.id
-      ORDER BY total DESC, c.nome ASC
-    `).all();
+    const areas = doGrupo('categoria').length > 0
+      ? doGrupo('categoria').map(r => ({ area: r.rotulo || r.chave, total: r.total }))
+      : db.prepare(`
+          SELECT 
+            COALESCE(c.nome, 'Sem categoria') AS area,
+            COUNT(l.id) AS total
+          FROM categorias c
+          LEFT JOIN livros l ON l.categoria_id = c.id
+          GROUP BY c.id
+          ORDER BY total DESC, c.nome ASC
+        `).all();
 
-    const fontes = db.prepare(`
-      SELECT 
-        f.id, f.slug, f.nome, f.url_base,
-        COUNT(l.id) AS total_livros
-      FROM fontes f
-      LEFT JOIN livros l ON l.fonte_id = f.id
-      WHERE f.ativa = 1
-      GROUP BY f.id
-      ORDER BY total_livros DESC, f.nome ASC
-    `).all();
+    let fontes;
+    if (doGrupo('fonte').length > 0) {
+      const fontesAtivas = db.prepare('SELECT id, slug, nome, url_base FROM fontes WHERE ativa = 1').all();
+      fontes = fontesAtivas.map(f => {
+        const c = contadores.find(r => r.dimensao === 'fonte' && r.chave === String(f.id));
+        return { ...f, total_livros: c ? c.total : 0 };
+      }).sort((a, b) => b.total_livros - a.total_livros || String(a.nome).localeCompare(String(b.nome)));
+    } else {
+      fontes = db.prepare(`
+        SELECT 
+          f.id, f.slug, f.nome, f.url_base,
+          COUNT(l.id) AS total_livros
+        FROM fontes f
+        LEFT JOIN livros l ON l.fonte_id = f.id
+        WHERE f.ativa = 1
+        GROUP BY f.id
+        ORDER BY total_livros DESC, f.nome ASC
+      `).all();
+    }
 
     // ==================== CURSOS ====================
     const cursosPorTipo = db.prepare(`
@@ -115,7 +137,7 @@ function metricas(req, res) {
     const cursosComCertificado = db.prepare(`
       SELECT COUNT(*) AS total
       FROM cursos
-      WHERE LOWER(descricao) LIKE '%certificad%' OR LOWER(plataforma) LIKE '%certificad%'
+      WHERE instr(LOWER(descricao), 'certificad') > 0 OR instr(LOWER(plataforma), 'certificad') > 0
     `).get().total;
 
     // ==================== TOP OBRAS ====================
