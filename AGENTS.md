@@ -681,6 +681,15 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   7. `workers/src/routes/podcasts.ts`: Catálogo de podcasts Spotify, episódios recentes, episódios por slug/ID e incremento de reproduções (`GET/POST /api/podcasts`).
 - **Validação:** 356 testes em 68 suítes passando (100% verde) e TypeScript estrito sem erros (`npx tsc --noEmit`).
 
+### 2.42. Otimização de Performance Web Frontend (Zero CLS e Preload Crítico)
+- **Problema Abordado:**
+  1. Imagens dinâmicas de capas de livros (`.book-cover` e `.destaque-cover`) eram renderizadas sem atributos intrínsecos `width` e `height`, dependendo exclusivamente da folha de estilo externa para cálculo de proporções de layout.
+  2. Scripts críticos (`/js/i18n.js` e `/js/app.js`) competiam sequencialmente pelo pipeline de download após o processamento completo do CSS.
+- **Resoluções de Engenharia Implementadas:**
+  1. **Dimensões Intrínsecas Explícitas:** Injeção de `width="180" height="261"` nos cartões do acervo (`.book-cover`) e `width="160" height="228"` nos cartões de destaque (`.destaque-cover`) em `public/js/app.js`, mantendo proporção de lombada e aspect-ratio sem reflow (CLS = 0.00).
+  2. **Preload de Scripts Críticos:** Inserção de `<link rel="preload" as="script" href="...">` no `<head>` de `public/index.html` para antecipar o streaming e compilação do JavaScript durante a fase de rede do CSS.
+- **Validação:** 356 testes em 68 suítes verdes e `npx tsc --noEmit` limpo.
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:

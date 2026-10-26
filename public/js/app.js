@@ -615,7 +615,7 @@ const app = {
       return `
         <article class="book-card ${isAfrica ? 'book-card-africa' : ''}">
           <div class="book-cover-container" data-acao="abrirDetalhesLivro" data-arg="${l.id}" style="cursor:pointer;" title="Ver detalhes da obra e formatos">
-            <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
+            <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" width="180" height="261" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
             <span class="badge-format">${flagLabel}</span>
           </div>
 
@@ -729,7 +729,7 @@ const app = {
       return `
         <article class="destaque-book-card" data-acao="abrirDetalhesLivro" data-arg="${l.id}" title="${this.escape(l.titulo)} — Clique para ver detalhes">
           <div class="destaque-cover-wrap">
-            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
+            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" width="160" height="228" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
             <span class="destaque-badge-tag">${this.escape(badgeText)}</span>
           </div>
           <div class="destaque-info">
