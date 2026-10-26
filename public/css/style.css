@@ -238,22 +238,20 @@ body {
 .book-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  /* Só propriedades compostas: evita recálculo de layout a cada hover */
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  /* Adia o layout/paint dos cartões fora do ecrã (menos trabalho no 1.º layout) */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   content-visibility: auto;
   contain-intrinsic-size: auto 480px;
 }
 
 .book-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-hover);
-  border-color: #cbd5e1;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  border-color: #94a3b8;
 }
 
 /* Capa do Livro */
@@ -303,17 +301,20 @@ body {
 }
 
 .book-title {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--text-main);
-  line-height: 1.3;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
 }
 
 .book-author {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--primary);
-  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  letter-spacing: 0.01em;
 }
 
 .book-synopsis {

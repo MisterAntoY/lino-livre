@@ -2295,27 +2295,27 @@ const app = {
             <h3>${t('dashboard.quality')}</h3>
             <div class="dash-list">
               <div class="dash-list-item">
-                <span>📕 ${t('dashboard.withCover')}</span>
+                <span>${t('dashboard.withCover')}</span>
                 <span class="dash-list-badge">${qualidade.com_capa || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>📘 ${t('dashboard.withSynopsis')}</span>
+                <span>${t('dashboard.withSynopsis')}</span>
                 <span class="dash-list-badge">${qualidade.com_sinopse || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>🔗 ${t('dashboard.withLink')}</span>
+                <span>${t('dashboard.withLink')}</span>
                 <span class="dash-list-badge">${qualidade.com_link || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>✍️ ${t('dashboard.withAuthor')}</span>
+                <span>${t('dashboard.withAuthor')}</span>
                 <span class="dash-list-badge">${qualidade.com_autor || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>🏷️ ${t('dashboard.withCategory')}</span>
+                <span>${t('dashboard.withCategory')}</span>
                 <span class="dash-list-badge">${qualidade.com_categoria || 0}</span>
               </div>
               <div class="dash-list-item">
-                <span>✅ ${t('dashboard.completeness')}</span>
+                <span>${t('dashboard.completeness')}</span>
                 <span class="dash-list-badge">${qualidade.percentual_completo || 0}%</span>
               </div>
             </div>
@@ -2602,17 +2602,17 @@ const app = {
               tamanhoLabel = mb > 0.1 ? ` (${mb} MB)` : ` (${Math.round(lnk.tamanho_bytes / 1024)} KB)`;
             }
             const iconMap = {
-              pdf: '📕',
-              epub: '📗',
-              html: '🌐',
-              txt: '📄',
-              audiobook: '🎧'
+              pdf: 'PDF',
+              epub: 'EPUB',
+              html: 'WEB',
+              txt: 'TXT',
+              audiobook: 'AUDIO'
             };
-            const icon = iconMap[fmt] || '🔗';
+            const icon = iconMap[fmt] || fmt.toUpperCase();
             const actionLabel = (fmt === 'html') ? 'Acessar Web / HTML' : `Baixar ${fmt.toUpperCase()}`;
             return `
               <a href="/api/livros/${livro.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" class="btn-format-download format-${fmt}">
-                <span>${icon}</span>
+                <span class="format-badge-label" style="font-size:0.65rem; font-weight:700; letter-spacing:0.04em; background:rgba(0,0,0,0.06); padding:0.15rem 0.4rem; border-radius:3px;">${icon}</span>
                 <strong>${actionLabel}</strong>
                 <span class="format-size">${tamanhoLabel}</span>
                 <span class="format-redirect-arrow">↗</span>
@@ -2642,7 +2642,7 @@ const app = {
     if (!this.livroModalAtual) return;
     const l = this.livroModalAtual;
     const url = `${window.location.origin}/#livro-${l.id}`;
-    const texto = `📚 Leia "${l.titulo}" (${l.autor_nome || 'Autor Clássico'}) gratuitamente no Lino Livre (LinoDigital):`;
+    const texto = `Leia "${l.titulo}" (${l.autor_nome || 'Autor Clássico'}) gratuitamente no Lino Livre (LinoDigital):`;
 
     if (navigator.share) {
       navigator.share({
