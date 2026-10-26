@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600">
+  <defs>
+    <linearGradient id="bgGrad_world_top100_28" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#450a0a"/>
+      <stop offset="100%" stop-color="#1c0404"/>
+    </linearGradient>
+    <pattern id="pat_bgGrad_world_top100_28" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Fundo com gradiente e textura sutil -->
+  <rect width="400" height="600" fill="url(#bgGrad_world_top100_28)"/>
+  <rect width="400" height="600" fill="url(#pat_bgGrad_world_top100_28)"/>
+
+  <!-- Brilho radial focal atrás do emblema -->
+  <circle cx="200" cy="180" r="110" fill="#f43f5e" opacity="0.12"/>
+
+  <!-- Efeito de lombada / relevo editorial clássico -->
+  <rect x="0" y="0" width="16" height="600" fill="rgba(0,0,0,0.45)"/>
+  <line x1="16" y1="0" x2="16" y2="600" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <rect x="390" y="0" width="10" height="600" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- Badge Superior: Ranking Oficial / Clássico Universal -->
+  <g transform="translate(40, 36)">
+    <rect width="250" height="26" rx="13" fill="rgba(244,63,94,0.15)" stroke="#f43f5e" stroke-opacity="0.5" stroke-width="1"/>
+    <circle cx="14" cy="13" r="4" fill="#f43f5e"/>
+    <text x="26" y="17" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#ffe4e6" letter-spacing="0.8">🌟 #28 MAIS LIDO DO MUNDO</text>
+  </g>
+
+  <!-- Emblema Central Temático -->
+  <g transform="translate(200, 180)">
+    <circle r="60" fill="rgba(0,0,0,0.3)" stroke="#f43f5e" stroke-opacity="0.4" stroke-width="1.5"/>
+    <circle r="52" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="3,3"/>
+    <g transform="translate(-18, -18) scale(1.5)" fill="none" stroke="#f43f5e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+   <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+    </g>
+  </g>
+
+  <!-- Barra divisória de destaque -->
+  <rect x="40" y="317" width="48" height="4" rx="2" fill="#f43f5e"/>
+
+  <!-- Título da Obra -->
+  <text x="40" y="345" font-family="Georgia, 'Times New Roman', serif" font-size="29" font-weight="700" fill="#f8fafc">A Teia de Charlotte</text>
+
+
+  <!-- Subtítulo / Título Original -->
+  <text x="40" y="389.25" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#f43f5e">Charlotte&apos;s Web</text>
+
+
+  <!-- Nome do Autor e Ano -->
+  <text x="40" y="465" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-style="italic" fill="#cbd5e1">E. B. White</text>
+  <text x="40" y="487" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#94a3b8">Publicação Original: 1952</text>
+
+  <!-- Rodapé Institucional LinoDigital · Lino Livre -->
+  <line x1="40" y1="545" x2="360" y2="545" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <g transform="translate(40, 563)">
+    <circle cx="5" cy="5" r="3" fill="#f43f5e"/>
+    <text x="14" y="9" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#e2e8f0" letter-spacing="1">LINODIGITAL · LINO LIVRE</text>
+    <text x="175" y="9" font-family="system-ui, -apple-system, sans-serif" font-size="9.5" font-weight="400" fill="#64748b">Cânone Mundial Aberto</text>
+  </g>
+</svg>

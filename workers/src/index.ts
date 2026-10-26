@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { Bindings } from './types';
 import { RepoSupabase, obterConfigSupabase, backendSupabase } from './supabase';
+import { edgeLoadBalancer } from './loadBalancer';
 import { executarImportacaoD1 } from './services/importer';
 import { obterMotor } from './services/federacaoBusca';
 import { validarUrlRedirecionamento, verificarUrlConformidade, DOMINIOS_PROIBIDOS } from './utils/urlValidator';
@@ -209,6 +210,20 @@ function respostaDegradada(c: any, vazio: any = []) {
   return c.json(vazio);
 }
 
+function obterRepo(c: any): {
+  d1: any | null;
+  supabase: RepoSupabase | null;
+  backendMode: 'd1' | 'supabase' | 'auto';
+} {
+  const env = c.env || {};
+  const db = env.DB || null;
+  const cfg = obterConfigSupabase(env);
+  const supa = cfg ? new RepoSupabase(cfg) : null;
+  const rawMode = String(env.DB_BACKEND || 'd1').toLowerCase();
+  const backendMode = (rawMode === 'supabase' ? 'supabase' : rawMode === 'auto' ? 'auto' : 'd1') as 'd1' | 'supabase' | 'auto';
+  return { d1: db, supabase: supa, backendMode };
+}
+
 // Devolve o repositório Supabase quando DB_BACKEND=supabase e as credenciais
 // existem. As rotas tentam o Supabase e, em caso de erro, seguem para a D1.
 function repoSupabase(c: any): RepoSupabase | null {
@@ -257,75 +272,70 @@ app.get('/api/dashboard', async (c) => {
   }
 
   const carregarDadosDashboard = async () => {
-    const repo = repoSupabase(c);
-    if (repo) {
-      try {
-        const payload = await repo.dashboard();
-        cachedDashboard = { data: payload, timestamp: Date.now() };
-        return payload;
-      } catch (err) {
-        console.error('Supabase dashboard falhou; a usar D1:', err);
-      }
-    }
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: payload } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? () => supabase.dashboard() : undefined,
+      d1: d1 ? async () => {
+        // Leitura dos agregados: ~330 linhas no total (era ~700k por cache miss).
+        const [statsRes, contadoresRes, maisLidosRes, fontesRes] = await Promise.all([
+          d1.prepare('SELECT chave, valor FROM estatisticas').all(),
+          d1.prepare('SELECT dimensao, chave, rotulo, total FROM contadores ORDER BY total DESC').all(),
+          d1.prepare(`
+            SELECT l.id, l.titulo, l.leituras, l.licenca, l.capa_url,
+                   a.nome AS autor_nome, c.nome AS categoria_nome
+            FROM livros l
+            LEFT JOIN autores a ON a.id = l.autor_id
+            LEFT JOIN categorias c ON c.id = l.categoria_id
+            ORDER BY 
+              l.leituras DESC,
+              CASE 
+                WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 1 
+                WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 2 
+                WHEN l.categoria_id IN (1, 19, 16, 12) THEN 3
+                ELSE 10 
+              END ASC,
+              l.titulo ASC
+            LIMIT 5
+          `).all(),
+          d1.prepare('SELECT id, slug, nome, url_base FROM fontes WHERE ativa = 1').all()
+        ]);
 
-    const db = c.env.DB;
+        const stats: Record<string, number> = {};
+        for (const row of (statsRes.results || []) as any[]) stats[row.chave] = Number(row.valor);
 
-    // Leitura dos agregados: ~330 linhas no total (era ~700k por cache miss).
-    const [statsRes, contadoresRes, maisLidosRes, fontesRes] = await Promise.all([
-      db.prepare('SELECT chave, valor FROM estatisticas').all(),
-      db.prepare('SELECT dimensao, chave, rotulo, total FROM contadores ORDER BY total DESC').all(),
-      db.prepare(`
-        SELECT l.id, l.titulo, l.leituras, l.licenca, l.capa_url,
-               a.nome AS autor_nome, c.nome AS categoria_nome
-        FROM livros l
-        LEFT JOIN autores a ON a.id = l.autor_id
-        LEFT JOIN categorias c ON c.id = l.categoria_id
-        ORDER BY 
-          l.leituras DESC,
-          CASE 
-            WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 1 
-            WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 2 
-            WHEN l.categoria_id IN (1, 19, 16, 12) THEN 3
-            ELSE 10 
-          END ASC,
-          l.titulo ASC
-        LIMIT 5
-      `).all(),
-      db.prepare('SELECT id, slug, nome, url_base FROM fontes WHERE ativa = 1').all()
-    ]);
+        const contadores = (contadoresRes.results || []) as any[];
+        // Sem agregados (primeiro deploy, antes do cron): usa o fallback estático.
+        if (contadores.length === 0) throw new Error('agregados ainda não calculados');
 
-    const stats: Record<string, number> = {};
-    for (const row of (statsRes.results || []) as any[]) stats[row.chave] = Number(row.valor);
+        const doGrupo = (dim: string) => contadores.filter((r: any) => r.dimensao === dim);
+        const fontes = ((fontesRes.results || []) as any[]).map((f: any) => {
+          const c = contadores.find((r: any) => r.dimensao === 'fonte' && r.chave === String(f.id));
+          return { ...f, total_livros: c ? c.total : 0 };
+        }).sort((a: any, b: any) => b.total_livros - a.total_livros || String(a.nome).localeCompare(String(b.nome)));
 
-    const contadores = (contadoresRes.results || []) as any[];
-    // Sem agregados (primeiro deploy, antes do cron): usa o fallback estático.
-    if (contadores.length === 0) throw new Error('agregados ainda não calculados');
-
-    const doGrupo = (dim: string) => contadores.filter((r) => r.dimensao === dim);
-    const fontes = ((fontesRes.results || []) as any[]).map((f) => {
-      const c = contadores.find((r) => r.dimensao === 'fonte' && r.chave === String(f.id));
-      return { ...f, total_livros: c ? c.total : 0 };
-    }).sort((a, b) => b.total_livros - a.total_livros || String(a.nome).localeCompare(String(b.nome)));
-
-    const payload = {
-      resumo: {
-        total_livros: stats.total_livros ?? 0,
-        total_leituras: stats.total_leituras ?? 0,
-        total_autores: stats.total_autores ?? 0,
-        total_categorias: stats.total_categorias ?? 0,
-        total_cursos: stats.total_cursos ?? 0,
-        total_fontes: stats.total_fontes ?? 0
-      },
-      formatos: doGrupo('formato').map((r) => ({ formato: r.chave, total: r.total })),
-      licencas: doGrupo('licenca').map((r) => ({ licenca: r.chave, total: r.total })),
-      idiomas: doGrupo('idioma').map((r) => ({ idioma: r.chave, total: r.total })),
-      areas: doGrupo('categoria').map((r) => ({ area: r.rotulo || r.chave, total: r.total })),
-      fontes,
-      mais_lidos: (maisLidosRes.results || []).map((l: any) => ({
-        ...l,
-        capa_url: normalizarCapaUrl(l.capa_url)
-      }))
-    };
+        return {
+          resumo: {
+            total_livros: stats.total_livros ?? 0,
+            total_leituras: stats.total_leituras ?? 0,
+            total_autores: stats.total_autores ?? 0,
+            total_categorias: stats.total_categorias ?? 0,
+            total_cursos: stats.total_cursos ?? 0,
+            total_fontes: stats.total_fontes ?? 0
+          },
+          formatos: doGrupo('formato').map((r: any) => ({ formato: r.chave, total: r.total })),
+          licencas: doGrupo('licenca').map((r: any) => ({ licenca: r.chave, total: r.total })),
+          idiomas: doGrupo('idioma').map((r: any) => ({ idioma: r.chave, total: r.total })),
+          areas: doGrupo('categoria').map((r: any) => ({ area: r.rotulo || r.chave, total: r.total })),
+          fontes,
+          mais_lidos: (maisLidosRes.results || []).map((l: any) => ({
+            ...l,
+            capa_url: normalizarCapaUrl(l.capa_url)
+          }))
+        };
+      } : undefined
+    });
 
     cachedDashboard = { data: payload, timestamp: Date.now() };
     return payload;
@@ -345,7 +355,7 @@ app.get('/api/dashboard', async (c) => {
     return c.json({
       erro: 'Estatísticas temporariamente indisponíveis',
       mensagem: 'As métricas estão sendo recalculadas ou a base de dados atingiu o limite de consultas temporário.',
-                                          // Totais REAIS do acervo de PRODUÇÃO (fonte: D1 lino-livre-db).
+                                                // Totais REAIS do acervo de PRODUÇÃO (fonte: D1 lino-livre-db).
       // Actualizar quando o acervo crescer — nunca números fictícios.
       resumo_estavel: {
         total_livros: 104170,
@@ -363,38 +373,30 @@ app.get('/api/dashboard', async (c) => {
 // 2. Categorias / Áreas do Conhecimento
 app.get('/api/categorias', async (c) => {
   try {
-    const repo = repoSupabase(c);
-    if (repo) {
-      try {
-        const categorias = await repo.categorias();
-        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-        return c.json(categorias);
-      } catch (err) {
-        console.error('Supabase categorias falhou; a usar D1:', err);
-      }
-    }
-    const db = c.env.DB;
-    // Contadores pré-calculados: 29 linhas em vez de varrer 104k livros.
-    const categorias = (await db.prepare(`
-      SELECT c.*, COALESCE(k.total, 0) AS total_livros
-      FROM categorias c
-      LEFT JOIN contadores k ON k.dimensao = 'categoria' AND k.chave = CAST(c.id AS TEXT)
-      ORDER BY c.nome ASC
-    `).all()).results;
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: categorias, backend, degraded } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? () => supabase.categorias() : undefined,
+      d1: d1 ? async () => {
+        const res = await d1.prepare(`
+          SELECT c.*, COALESCE(k.total, 0) AS total_livros
+          FROM categorias c
+          LEFT JOIN contadores k ON k.dimensao = 'categoria' AND k.chave = CAST(c.id AS TEXT)
+          ORDER BY c.nome ASC
+        `).all();
+        return res.results;
+      } : undefined,
+      fallback: () => DIMENSOES_ESTATICAS.categorias
+    });
+
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    c.header('X-Data-Backend', backend);
+    if (degraded) c.header('X-Data-Status', 'degraded');
     return c.json(categorias);
   } catch (err: any) {
     if (ehErroDeCota(err)) {
-      const repoFallback = obterRepoSupabase(c.env);
-      if (repoFallback) {
-        try {
-          const categorias = await repoFallback.categorias();
-          c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-          c.header('X-Data-Status', 'degraded');
-          return c.json(categorias);
-        } catch {}
-      }
-      return respostaDegradada(c);
+      return respostaDegradada(c, DIMENSOES_ESTATICAS.categorias);
     }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar categorias' }, 500);
   }
@@ -464,66 +466,67 @@ app.delete('/api/categorias/:id', verificarAdminWorker, async (c) => {
 // 3. Autores
 app.get('/api/autores', async (c) => {
   try {
-    const db = c.env.DB;
     const busca = (c.req.query('busca') || c.req.query('q') || '').trim();
     const nomeExato = (c.req.query('nome') || '').trim();
     const limitParam = c.req.query('limit') || c.req.query('limite');
     const pageParam = c.req.query('page') || c.req.query('pagina');
-
-    // A contagem de livros por autor vem de autor_totais (índice), e não de
-    // um LEFT JOIN sobre os 104.848 livros — esse JOIN era, depois do
-    // dashboard, o maior ofensor de leituras da API.
-    const temTotais = await tabelaExiste(db, 'autor_totais');
-
-    let query = temTotais
-      ? `SELECT a.*, COALESCE(t.total, 0) AS total_livros
-           FROM autores a LEFT JOIN autor_totais t ON t.autor_id = a.id`
-      : `SELECT a.*, 0 AS total_livros FROM autores a`;
-    const params: any[] = [];
-
-    if (nomeExato) {
-      // Correspondência exata — usa o índice de autores(nome).
-      query += ' WHERE a.nome = ? COLLATE NOCASE';
-      params.push(nomeExato);
-    } else if (busca) {
-      query += " WHERE a.nome LIKE ? ESCAPE '\\'";
-      params.push(`%${escaparLike(busca)}%`);
-    }
-
-    query += ' ORDER BY a.nome ASC';
-
-    // Limite por omissão: sem ele, a rota devolvia os ~37.919 autores numa
-    // só resposta (dezenas de milhares de linhas lidas). A paginação
-    // (?limit / ?page) continua disponível para quem precisar de mais.
     const limit = Math.min(Math.max(parseInt(limitParam || '500', 10) || 500, 1), 500);
-    if (limitParam || pageParam) {
-      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
-      const offset = (page - 1) * limit;
-      query += ' LIMIT ? OFFSET ?';
-      params.push(limit, offset);
-    } else {
-      query += ' LIMIT ?';
-      params.push(limit);
-    }
+    const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
 
-    const autores = (await db.prepare(query).bind(...params).all()).results as any[];
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: autores, backend, degraded } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? () => supabase.autores({ busca, nome: nomeExato, limit, page }) : undefined,
+      d1: d1 ? async () => {
+        const temTotais = await tabelaExiste(d1, 'autor_totais');
+        let query = temTotais
+          ? `SELECT a.*, COALESCE(t.total, 0) AS total_livros
+               FROM autores a LEFT JOIN autor_totais t ON t.autor_id = a.id`
+          : `SELECT a.*, 0 AS total_livros FROM autores a`;
+        const params: any[] = [];
 
-    // Sem a tabela de totais (ainda antes da migração), conta apenas os
-    // autores devolvidos: a consulta usa idx_livros_autor e não varre a
-    // tabela de livros inteira.
-    if (!temTotais && autores.length > 0) {
-      const ids = autores.map((a) => a.id);
-      const contagens = (await db.prepare(
-        `SELECT autor_id, COUNT(*) AS total FROM livros
-         WHERE autor_id IN (${ids.map(() => '?').join(',')}) GROUP BY autor_id`
-      ).bind(...ids).all()).results as any[];
-      const porAutor = new Map(contagens.map((r) => [Number(r.autor_id), Number(r.total)]));
-      for (const a of autores) a.total_livros = porAutor.get(a.id) || 0;
-    }
+        if (nomeExato) {
+          query += ' WHERE a.nome = ? COLLATE NOCASE';
+          params.push(nomeExato);
+        } else if (busca) {
+          query += " WHERE a.nome LIKE ? ESCAPE '\\'";
+          params.push(`%${escaparLike(busca)}%`);
+        }
+
+        query += ' ORDER BY a.nome ASC';
+
+        if (limitParam || pageParam) {
+          const offset = (page - 1) * limit;
+          query += ' LIMIT ? OFFSET ?';
+          params.push(limit, offset);
+        } else {
+          query += ' LIMIT ?';
+          params.push(limit);
+        }
+
+        const res = (await d1.prepare(query).bind(...params).all()).results as any[];
+
+        if (!temTotais && res.length > 0) {
+          const ids = res.map((a: any) => a.id);
+          const contagens = (await d1.prepare(
+            `SELECT autor_id, COUNT(*) AS total FROM livros
+             WHERE autor_id IN (${ids.map(() => '?').join(',')}) GROUP BY autor_id`
+          ).bind(...ids).all()).results as any[];
+          const porAutor = new Map(contagens.map((r: any) => [Number(r.autor_id), Number(r.total)]));
+          for (const a of res) a.total_livros = porAutor.get(a.id) || 0;
+        }
+        return res;
+      } : undefined,
+      fallback: () => []
+    });
 
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    c.header('X-Data-Backend', backend);
+    if (degraded) c.header('X-Data-Status', 'degraded');
     return c.json(autores);
   } catch (err: any) {
+    if (ehErroDeCota(err)) return respostaDegradada(c);
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar autores' }, 500);
   }
 });
@@ -531,13 +534,33 @@ app.get('/api/autores', async (c) => {
 app.get('/api/autores/:id', async (c) => {
   try {
     const id = c.req.param('id');
-    const db = c.env.DB;
-    const autor = await db.prepare('SELECT * FROM autores WHERE id = ?').bind(id).first();
-    if (!autor) return c.json({ erro: 'Autor não encontrado' }, 404);
-
-    const livros = (await db.prepare('SELECT id, titulo, ano_publicacao FROM livros WHERE autor_id = ?').bind(id).all()).results;
-    return c.json({ ...autor, livros });
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: autor } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? async () => {
+        const a = await supabase.autor(id);
+        if (!a) {
+          const err: any = new Error('Autor não encontrado');
+          err.codigoHttp = 404;
+          throw err;
+        }
+        return a;
+      } : undefined,
+      d1: d1 ? async () => {
+        const a = await d1.prepare('SELECT * FROM autores WHERE id = ?').bind(id).first();
+        if (!a) {
+          const err: any = new Error('Autor não encontrado');
+          err.codigoHttp = 404;
+          throw err;
+        }
+        const livros = (await d1.prepare('SELECT id, titulo, ano_publicacao FROM livros WHERE autor_id = ?').bind(id).all()).results;
+        return { ...a, livros };
+      } : undefined
+    });
+    return c.json(autor);
   } catch (err: any) {
+    if (err?.codigoHttp) return c.json({ erro: err.message }, err.codigoHttp);
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar autor' }, 500);
   }
 });
@@ -811,10 +834,12 @@ app.get('/api/livros', async (c) => {
   const offset = (numPage - 1) * numLimit;
 
   try {
-    const repo = repoSupabase(c);
-    if (repo) {
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { primary } = edgeLoadBalancer.pickBackend(!!supabase);
+
+    if (primary === 'supabase' && supabase) {
       try {
-        const payload = await repo.livros({
+        const payload = await supabase.livros({
           page: numPage,
           limit: numLimit,
           busca,
@@ -823,11 +848,15 @@ app.get('/api/livros', async (c) => {
           idioma,
           licenca,
           fonte: fonte_slug || fonte,
-          formato
+          formato,
+          colecao
         });
+        edgeLoadBalancer.recordSuccess('supabase', 0);
         c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
+        c.header('X-Data-Backend', 'supabase');
         return c.json(payload);
       } catch (err) {
+        edgeLoadBalancer.recordFailure('supabase', err);
         console.error('Supabase livros falhou; a usar D1:', err);
       }
     }
@@ -1071,32 +1100,32 @@ app.get('/api/livros', async (c) => {
       data: livros
     });
   } catch (err: any) {
-    if (ehErroDeCota(err)) {
-      // Recupera assim que a cota reiniciar (00:00 UTC), sem ficar preso em cache.
-      c.header('Cache-Control', 'public, max-age=60');
-      c.header('X-Data-Status', 'degraded');
-      const repoFallback = obterRepoSupabase(c.env);
-      if (repoFallback) {
-        try {
-          const payload = await repoFallback.livros({
-            page: numPage,
-            limit: numLimit,
-            busca,
-            categoria: categoria_id,
-            autor: autor_id,
-            idioma,
-            licenca,
-            fonte: fonte_slug || fonte,
-            formato,
-            colecao
-          });
-          return c.json(payload);
-        } catch (supaErr) {
-          console.error('[worker] Supabase fallback para livros falhou:', supaErr);
-        }
+    edgeLoadBalancer.recordFailure('d1', err);
+    // Recupera assim que a cota reiniciar (00:00 UTC), sem ficar preso em cache.
+    c.header('Cache-Control', 'public, max-age=60');
+    c.header('X-Data-Status', 'degraded');
+    const repoFallback = obterRepoSupabase(c.env);
+    if (repoFallback) {
+      try {
+        const payload = await repoFallback.livros({
+          page: numPage,
+          limit: numLimit,
+          busca,
+          categoria: categoria_id,
+          autor: autor_id,
+          idioma,
+          licenca,
+          fonte: fonte_slug || fonte,
+          formato,
+          colecao
+        });
+        edgeLoadBalancer.recordSuccess('supabase', 0);
+        c.header('X-Data-Backend', 'supabase');
+        return c.json(payload);
+      } catch (supaErr) {
+        edgeLoadBalancer.recordFailure('supabase', supaErr);
+        console.error('[worker] Supabase fallback para livros falhou:', supaErr);
       }
-    } else {
-      c.header('Cache-Control', 'public, max-age=300');
     }
 
     const catDecoded = categoria_id ? decodeURIComponent(String(categoria_id)) : '';
@@ -1169,18 +1198,26 @@ app.get('/api/livros', async (c) => {
 app.get('/api/livros/:id', async (c) => {
   try {
     const id = c.req.param('id');
-    const repo = repoSupabase(c);
-    if (repo) {
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { primary } = edgeLoadBalancer.pickBackend(!!supabase);
+
+    if (primary === 'supabase' && supabase) {
       try {
-        const livro = await repo.livro(id);
-        if (!livro) return c.json({ erro: 'Livro não encontrado' }, 404);
-        livro.capa_url = normalizarCapaUrl(livro.capa_url);
-        if (Array.isArray(livro.links)) {
-          livro.links = livro.links.map((lnk: any) => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
+        const livro = await supabase.livro(id);
+        if (livro) {
+          edgeLoadBalancer.recordSuccess('supabase', 0);
+          livro.capa_url = normalizarCapaUrl(livro.capa_url);
+          if (Array.isArray(livro.links)) {
+            livro.links = livro.links.map((lnk: any) => ({ ...lnk, url: normalizarUrlSegura(lnk.url) }));
+          }
+          c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
+          c.header('X-Data-Backend', 'supabase');
+          return c.json(livro);
+        } else if (!d1) {
+          return c.json({ erro: 'Livro não encontrado' }, 404);
         }
-        c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
-        return c.json(livro);
       } catch (err) {
+        edgeLoadBalancer.recordFailure('supabase', err);
         console.error('Supabase livro falhou; a usar D1:', err);
       }
     }
@@ -1203,18 +1240,18 @@ app.get('/api/livros/:id', async (c) => {
           LEFT JOIN fontes f ON f.id = l.fonte_id
           WHERE l.id = ?
         `).bind(id).first<any>();
+        if (livro) edgeLoadBalancer.recordSuccess('d1', 0);
       } catch (dbErr: any) {
-        if (ehErroDeCota(dbErr)) {
-          d1FalhouPorCota = true;
-          const repoFallback = obterRepoSupabase(c.env);
-          if (repoFallback) {
-            try {
-              livro = await repoFallback.livro(id);
-            } catch (_) {}
-          }
-        } else {
-          throw dbErr;
+        edgeLoadBalancer.recordFailure('d1', dbErr);
+        if (ehErroDeCota(dbErr)) d1FalhouPorCota = true;
+        const repoFallback = obterRepoSupabase(c.env);
+        if (repoFallback) {
+          try {
+            livro = await repoFallback.livro(id);
+            if (livro) edgeLoadBalancer.recordSuccess('supabase', 0);
+          } catch (_) {}
         }
+        if (!livro && !ehErroDeCota(dbErr)) throw dbErr;
       }
     }
 
@@ -1288,13 +1325,16 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
     let link: any = null;
     let d1FalhouPorCota = false;
 
-    // 1. Tentar Supabase se configurado como backend primário
-    const repo = repoSupabase(c);
-    if (repo) {
+    // 1. Tentar Supabase se configurado como backend primário ou em auto/supabase_priority
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { primary } = edgeLoadBalancer.pickBackend(!!supabase);
+
+    if (primary === 'supabase' && supabase) {
       try {
-        link = await repo.link(id, linkId);
+        link = await supabase.link(id, linkId);
         if (link) {
-          c.executionCtx.waitUntil(repo.registrarLeitura(id).catch(() => {}));
+          edgeLoadBalancer.recordSuccess('supabase', 0);
+          c.executionCtx.waitUntil(supabase.registrarLeitura(id).catch(() => {}));
         }
       } catch (err: any) {
         if (err?.codigoHttp) {
@@ -1303,6 +1343,7 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
         if (err.message && err.message.includes('rejeitada por violar')) {
           return c.json({ erro: err.message }, 400);
         }
+        edgeLoadBalancer.recordFailure('supabase', err);
         console.error('Supabase leitura falhou; a usar D1:', err);
       }
     }
@@ -1319,11 +1360,13 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
         `).bind(id, linkId).first<any>();
 
         if (link) {
+          edgeLoadBalancer.recordSuccess('d1', 0);
           c.executionCtx.waitUntil(
             db.prepare('UPDATE livros SET leituras = leituras + 1 WHERE id = ?').bind(id).run().catch(() => {})
           );
         }
       } catch (dbErr: any) {
+        edgeLoadBalancer.recordFailure('d1', dbErr);
         if (ehErroDeCota(dbErr)) {
           d1FalhouPorCota = true;
           // Tenta Supabase como fallback em caso de cota esgotada na D1
@@ -1332,9 +1375,11 @@ app.get('/api/livros/:id/ler/:linkId', async (c) => {
             try {
               link = await repoFallback.link(id, linkId);
               if (link) {
+                edgeLoadBalancer.recordSuccess('supabase', 0);
                 c.executionCtx.waitUntil(repoFallback.registrarLeitura(id).catch(() => {}));
               }
             } catch (supaErr: any) {
+              edgeLoadBalancer.recordFailure('supabase', supaErr);
               if (supaErr?.codigoHttp) return c.json({ erro: supaErr.message }, supaErr.codigoHttp);
               console.error('Fallback Supabase leitura falhou:', supaErr);
             }
@@ -1569,40 +1614,32 @@ app.delete('/api/livros/:id', verificarAdminWorker, async (c) => {
 // 5. Fontes e Importação
 app.get('/api/fontes', async (c) => {
   try {
-    const repo = repoSupabase(c);
-    if (repo) {
-      try {
-        const fontes = await repo.fontes();
-        c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
-        return c.json(fontes);
-      } catch (err) {
-        console.error('Supabase fontes falhou; a usar D1:', err);
-      }
-    }
-    const db = c.env.DB;
-    // LEFT JOIN em tabela de contadores (32 linhas) em vez de GROUP BY em 104k.
-    const fontes = (await db.prepare(`
-      SELECT f.id, f.slug, f.nome, f.tipo, f.url_base, f.ativa,
-             COALESCE(k.total, 0) AS total_livros
-      FROM fontes f
-      LEFT JOIN contadores k ON k.dimensao = 'fonte' AND k.chave = CAST(f.id AS TEXT)
-      WHERE f.ativa = 1
-      ORDER BY f.id ASC
-    `).all()).results;
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: fontes, backend, degraded } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? () => supabase.fontes() : undefined,
+      d1: d1 ? async () => {
+        const res = await d1.prepare(`
+          SELECT f.id, f.slug, f.nome, f.tipo, f.url_base, f.ativa,
+                 COALESCE(k.total, 0) AS total_livros
+          FROM fontes f
+          LEFT JOIN contadores k ON k.dimensao = 'fonte' AND k.chave = CAST(f.id AS TEXT)
+          WHERE f.ativa = 1
+          ORDER BY f.id ASC
+        `).all();
+        return res.results;
+      } : undefined,
+      fallback: () => DIMENSOES_ESTATICAS.fontes
+    });
+
     c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
+    c.header('X-Data-Backend', backend);
+    if (degraded) c.header('X-Data-Status', 'degraded');
     return c.json(fontes);
   } catch (err: any) {
     if (ehErroDeCota(err)) {
-      const repoFallback = obterRepoSupabase(c.env);
-      if (repoFallback) {
-        try {
-          const fontes = await repoFallback.fontes();
-          c.header('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
-          c.header('X-Data-Status', 'degraded');
-          return c.json(fontes);
-        } catch {}
-      }
-      return respostaDegradada(c);
+      return respostaDegradada(c, DIMENSOES_ESTATICAS.fontes);
     }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao listar fontes' }, 500);
   }
@@ -1672,90 +1709,78 @@ app.get('/api/import/:id', verificarAdminWorker, async (c) => {
 app.get('/api/cursos', async (c) => {
   const filtros = c.req.query();
   try {
-    const repo = repoSupabase(c);
-    if (repo) {
-      try {
-        const cursos = await repo.cursos(filtros);
-        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-        return c.json(cursos);
-      } catch (err) {
-        console.error('Supabase cursos falhou; a usar D1:', err);
-      }
-    }
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: cursos, backend, degraded } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? () => supabase.cursos(filtros) : undefined,
+      d1: d1 ? async () => {
+        const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps, licenca } = filtros;
+        let query = 'SELECT * FROM cursos WHERE 1=1';
+        const params: any[] = [];
 
-    const db = c.env.DB;
-    const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps, licenca } = filtros;
+        if (tipo) {
+          query += ' AND tipo = ?';
+          params.push(tipo);
+        }
+        if (licenca) {
+          query += ' AND licenca = ?';
+          params.push(licenca);
+        }
+        if (excluir_roadmaps === '1' || excluir_roadmaps === 'true') {
+          query += " AND (tipo != 'roadmap' OR tipo IS NULL)";
+        }
+        if (area) {
+          query += ' AND area = ?';
+          params.push(area);
+        }
+        if (nivel) {
+          query += ' AND nivel = ?';
+          params.push(nivel);
+        }
+        if (plataforma) {
+          query += " AND plataforma LIKE ? ESCAPE '\\'";
+          params.push(`%${escaparLike(plataforma)}%`);
+        } else if (fonte && (fonte.toLowerCase() === 'guiadeti' || fonte.toLowerCase() === 'guia de ti')) {
+          query += ' AND plataforma LIKE ?';
+          params.push('%Guia de TI%');
+        }
+        if (youtube === '1' || youtube === 'true' || (plataforma && plataforma.toLowerCase() === 'youtube')) {
+          query += ' AND plataforma LIKE ?';
+          params.push('%YouTube%');
+        }
+        if (certificado === 'gratuito' || certificado === '1' || certificado === 'true') {
+          query += " AND (instr(LOWER(descricao), 'certifica') > 0 OR instr(LOWER(plataforma), 'certifica') > 0)";
+        }
+        if (busca && busca.trim()) {
+          const termo = `%${escaparLike(busca.trim())}%`;
+          query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
+          params.push(termo, termo, termo);
+        }
 
-    let query = 'SELECT * FROM cursos WHERE 1=1';
-    const params: any[] = [];
+        query += " ORDER BY CASE WHEN plataforma = 'Guia de TI' THEN 0 ELSE 1 END, id ASC";
 
-    if (tipo) {
-      query += ' AND tipo = ?';
-      params.push(tipo);
-    }
-    if (licenca) {
-      query += ' AND licenca = ?';
-      params.push(licenca);
-    }
-    if (excluir_roadmaps === '1' || excluir_roadmaps === 'true') {
-      query += " AND (tipo != 'roadmap' OR tipo IS NULL)";
-    }
-    if (area) {
-      query += ' AND area = ?';
-      params.push(area);
-    }
-    if (nivel) {
-      query += ' AND nivel = ?';
-      params.push(nivel);
-    }
-    if (plataforma) {
-      query += " AND plataforma LIKE ? ESCAPE '\\'";
-      params.push(`%${escaparLike(plataforma)}%`);
-    } else if (fonte && (fonte.toLowerCase() === 'guiadeti' || fonte.toLowerCase() === 'guia de ti')) {
-      query += ' AND plataforma LIKE ?';
-      params.push('%Guia de TI%');
-    }
-    if (youtube === '1' || youtube === 'true' || (plataforma && plataforma.toLowerCase() === 'youtube')) {
-      query += ' AND plataforma LIKE ?';
-      params.push('%YouTube%');
-    }
-    if (certificado === 'gratuito' || certificado === '1' || certificado === 'true') {
-      query += " AND (instr(LOWER(descricao), 'certifica') > 0 OR instr(LOWER(plataforma), 'certifica') > 0)";
-    }
-    if (busca && busca.trim()) {
-      const termo = `%${escaparLike(busca.trim())}%`;
-      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
-      params.push(termo, termo, termo);
-    }
+        const limitParam = filtros.limit || filtros.limite;
+        const pageParam = filtros.page || filtros.pagina;
+        if (limitParam || pageParam) {
+          const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+          const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
+          const offset = (page - 1) * limit;
+          query += ' LIMIT ? OFFSET ?';
+          params.push(limit, offset);
+        }
 
-    query += " ORDER BY CASE WHEN plataforma = 'Guia de TI' THEN 0 ELSE 1 END, id ASC";
+        return (await d1.prepare(query).bind(...params).all()).results;
+      } : undefined,
+      fallback: () => []
+    });
 
-    const limitParam = filtros.limit || filtros.limite;
-    const pageParam = filtros.page || filtros.pagina;
-    if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
-      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
-      const offset = (page - 1) * limit;
-      query += ' LIMIT ? OFFSET ?';
-      params.push(limit, offset);
-    }
-
-    const cursos = (await db.prepare(query).bind(...params).all()).results;
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    c.header('X-Data-Backend', backend);
+    if (degraded) c.header('X-Data-Status', 'degraded');
     return c.json(cursos);
   } catch (err: any) {
-    if (ehErroDeCota(err)) {
-      const repoFallback = obterRepoSupabase(c.env);
-      if (repoFallback) {
-        try {
-          const cursos = await repoFallback.cursos(filtros);
-          c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-          c.header('X-Data-Status', 'degraded');
-          return c.json(cursos);
-        } catch {}
-      }
-      return respostaDegradada(c);
-    }
+    if (ehErroDeCota(err)) return respostaDegradada(c);
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar cursos' }, 500);
   }
 });
@@ -1763,64 +1788,53 @@ app.get('/api/cursos', async (c) => {
 app.get('/api/roadmaps', async (c) => {
   const filtros = c.req.query();
   try {
-    const repo = repoSupabase(c);
-    if (repo) {
-      try {
-        const roadmaps = await repo.roadmaps(filtros);
-        c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-        return c.json(roadmaps);
-      } catch (err) {
-        console.error('Supabase roadmaps falhou; a usar D1:', err);
-      }
-    }
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: roadmaps, backend, degraded } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? () => supabase.roadmaps(filtros) : undefined,
+      d1: d1 ? async () => {
+        const { busca, plataforma, area } = filtros;
+        let query = "SELECT * FROM cursos WHERE tipo = 'roadmap'";
+        const params: any[] = [];
 
-    const db = c.env.DB;
-    const { busca, plataforma, area } = filtros;
-    let query = "SELECT * FROM cursos WHERE tipo = 'roadmap'";
-    const params: any[] = [];
+        if (plataforma) {
+          query += " AND plataforma LIKE ? ESCAPE '\\'";
+          params.push(`%${escaparLike(plataforma)}%`);
+        }
+        if (area) {
+          query += ' AND area = ?';
+          params.push(area);
+        }
+        if (busca && busca.trim()) {
+          const termo = `%${escaparLike(busca.trim())}%`;
+          query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
+          params.push(termo, termo, termo);
+        }
 
-    if (plataforma) {
-      query += " AND plataforma LIKE ? ESCAPE '\\'";
-      params.push(`%${escaparLike(plataforma)}%`);
-    }
-    if (area) {
-      query += ' AND area = ?';
-      params.push(area);
-    }
-    if (busca && busca.trim()) {
-      const termo = `%${escaparLike(busca.trim())}%`;
-      query += " AND (titulo LIKE ? ESCAPE '\\' OR descricao LIKE ? ESCAPE '\\' OR plataforma LIKE ? ESCAPE '\\')";
-      params.push(termo, termo, termo);
-    }
+        query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
 
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
+        const limitParam = filtros.limit || filtros.limite;
+        const pageParam = filtros.page || filtros.pagina;
+        if (limitParam || pageParam) {
+          const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
+          const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
+          const offset = (page - 1) * limit;
+          query += ' LIMIT ? OFFSET ?';
+          params.push(limit, offset);
+        }
 
-    const limitParam = filtros.limit || filtros.limite;
-    const pageParam = filtros.page || filtros.pagina;
-    if (limitParam || pageParam) {
-      const limit = Math.min(Math.max(parseInt(limitParam || '100', 10) || 100, 1), 500);
-      const page = Math.min(2000, Math.max(parseInt(pageParam || '1', 10) || 1, 1));
-      const offset = (page - 1) * limit;
-      query += ' LIMIT ? OFFSET ?';
-      params.push(limit, offset);
-    }
+        return (await d1.prepare(query).bind(...params).all()).results;
+      } : undefined,
+      fallback: () => []
+    });
 
-    const roadmaps = (await db.prepare(query).bind(...params).all()).results;
     c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    c.header('X-Data-Backend', backend);
+    if (degraded) c.header('X-Data-Status', 'degraded');
     return c.json(roadmaps);
   } catch (err: any) {
-    if (ehErroDeCota(err)) {
-      const repoFallback = obterRepoSupabase(c.env);
-      if (repoFallback) {
-        try {
-          const roadmaps = await repoFallback.roadmaps(filtros);
-          c.header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-          c.header('X-Data-Status', 'degraded');
-          return c.json(roadmaps);
-        } catch {}
-      }
-      return respostaDegradada(c);
-    }
+    if (ehErroDeCota(err)) return respostaDegradada(c);
     console.error('[worker]', err); return c.json({ erro: 'Erro ao buscar roadmaps' }, 500);
   }
 });
@@ -1851,27 +1865,37 @@ app.get('/api/cursos/:id', async (c) => {
 app.get('/api/cursos/:id/acessar', async (c) => {
   try {
     const id = c.req.param('id');
-    const repo = repoSupabase(c);
-    if (repo) {
-      try {
-        const curso = await repo.curso(id);
-        if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
-        const urlSegura = validarUrlRedirecionamento(String((curso as any).url));
-        return c.redirect(urlSegura, 302);
-      } catch (err: any) {
-        if (err.message && err.message.includes('rejeitada por violar')) {
-          return c.json({ erro: err.message }, 400);
+    const { d1, supabase, backendMode } = obterRepo(c);
+    const { data: curso } = await edgeLoadBalancer.execute({
+      backendMode,
+      isSupabaseConfigured: !!supabase,
+      supabase: supabase ? async () => {
+        const item = await supabase.curso(id);
+        if (!item) {
+          const err: any = new Error('Curso não encontrado');
+          err.codigoHttp = 404;
+          throw err;
         }
-        console.error('Supabase acessar curso falhou; a usar D1:', err);
-      }
-    }
+        return item;
+      } : undefined,
+      d1: d1 ? async () => {
+        const item = await d1.prepare('SELECT id, titulo, url FROM cursos WHERE id = ?').bind(id).first();
+        if (!item) {
+          const err: any = new Error('Curso não encontrado');
+          err.codigoHttp = 404;
+          throw err;
+        }
+        return item;
+      } : undefined
+    });
 
-    const db = c.env.DB;
-    const curso = await db.prepare('SELECT id, titulo, url FROM cursos WHERE id = ?').bind(id).first<{ url: string }>();
-    if (!curso) return c.json({ erro: 'Curso não encontrado' }, 404);
-    const urlSegura = validarUrlRedirecionamento(curso.url);
+    const urlSegura = validarUrlRedirecionamento(String((curso as any).url));
     return c.redirect(urlSegura, 302);
   } catch (err: any) {
+    if (err?.codigoHttp) return c.json({ erro: err.message }, err.codigoHttp);
+    if (err?.message && err.message.includes('rejeitada por violar')) {
+      return c.json({ erro: err.message }, 400);
+    }
     console.error('[worker]', err); return c.json({ erro: 'Erro ao redirecionar para o curso' }, 500);
   }
 });
@@ -2587,6 +2611,10 @@ async function recomputarEstatisticas(db: D1Database, force: boolean = false): P
 
 export function _limparCacheDashboard() {
   cachedDashboard = null;
+}
+
+export function _obterLoadBalancer() {
+  return edgeLoadBalancer;
 }
 
 // 404 real (sem "soft 404"): a API devolve JSON; a navegação recebe HTML 404.

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600">
+  <defs>
+    <linearGradient id="bgGrad_world_top100_5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#262626"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </linearGradient>
+    <pattern id="pat_bgGrad_world_top100_5" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Fundo com gradiente e textura sutil -->
+  <rect width="400" height="600" fill="url(#bgGrad_world_top100_5)"/>
+  <rect width="400" height="600" fill="url(#pat_bgGrad_world_top100_5)"/>
+
+  <!-- Brilho radial focal atrás do emblema -->
+  <circle cx="200" cy="180" r="110" fill="#e2e8f0" opacity="0.12"/>
+
+  <!-- Efeito de lombada / relevo editorial clássico -->
+  <rect x="0" y="0" width="16" height="600" fill="rgba(0,0,0,0.45)"/>
+  <line x1="16" y1="0" x2="16" y2="600" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <rect x="390" y="0" width="10" height="600" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- Badge Superior: Ranking Oficial / Clássico Universal -->
+  <g transform="translate(40, 36)">
+    <rect width="250" height="26" rx="13" fill="rgba(226,232,240,0.15)" stroke="#e2e8f0" stroke-opacity="0.5" stroke-width="1"/>
+    <circle cx="14" cy="13" r="4" fill="#e2e8f0"/>
+    <text x="26" y="17" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff" letter-spacing="0.8">🌟 #5 MAIS LIDO DO MUNDO</text>
+  </g>
+
+  <!-- Emblema Central Temático -->
+  <g transform="translate(200, 180)">
+    <circle r="60" fill="rgba(0,0,0,0.3)" stroke="#e2e8f0" stroke-opacity="0.4" stroke-width="1.5"/>
+    <circle r="52" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="3,3"/>
+    <g transform="translate(-18, -18) scale(1.5)" fill="none" stroke="#e2e8f0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+   <line x1="16" y1="8" x2="2" y2="22"/>
+   <line x1="17.5" y1="15" x2="9" y2="15"/>
+    </g>
+  </g>
+
+  <!-- Barra divisória de destaque -->
+  <rect x="40" y="298.875" width="48" height="4" rx="2" fill="#e2e8f0"/>
+
+  <!-- Título da Obra -->
+  <text x="40" y="326.875" font-family="Georgia, 'Times New Roman', serif" font-size="29" font-weight="700" fill="#f8fafc">Harry Potter e a</text>
+<text x="40" y="363.125" font-family="Georgia, 'Times New Roman', serif" font-size="29" font-weight="700" fill="#f8fafc">Pedra Filosofal</text>
+
+
+  <!-- Subtítulo / Título Original -->
+  <text x="40" y="407.375" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#e2e8f0">Harry Potter and the</text>
+<text x="40" y="425.375" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#e2e8f0">Philosopher&apos;s Stone</text>
+
+
+  <!-- Nome do Autor e Ano -->
+  <text x="40" y="467.375" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-style="italic" fill="#cbd5e1">J. K. Rowling</text>
+  <text x="40" y="489.375" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#94a3b8">Publicação Original: 1997</text>
+
+  <!-- Rodapé Institucional LinoDigital · Lino Livre -->
+  <line x1="40" y1="545" x2="360" y2="545" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <g transform="translate(40, 563)">
+    <circle cx="5" cy="5" r="3" fill="#e2e8f0"/>
+    <text x="14" y="9" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#e2e8f0" letter-spacing="1">LINODIGITAL · LINO LIVRE</text>
+    <text x="175" y="9" font-family="system-ui, -apple-system, sans-serif" font-size="9.5" font-weight="400" fill="#64748b">Cânone Mundial Aberto</text>
+  </g>
+</svg>

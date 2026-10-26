@@ -25,7 +25,7 @@
       "offlineMode": "Offline Mode: No internet connection. Browsing cached books and pages."
     },
     "goal": {
-      "badge": "Global Collective Goal",
+      "badge": "Global Goal",
       "title": "Towards 10 Million Free Books",
       "subtitle": "An open, universal and free library for all students, educators and readers worldwide. Track our real-time progress and be part of this historic journey!",
       "currentIndexed": "Open Books Indexed",
@@ -44,12 +44,12 @@
       "shareText": "Join Lino Livre on the journey towards 10 Million Free Books! We already have {n} open access books indexed. Read and contribute:"
     },
     "tabs": {
-      "books": "Books",
-      "courses": "Courses",
-      "roadmaps": "Roadmaps",
-      "podcasts": "Podcasts",
-      "tips": "Study Tips",
-      "dashboard": "Metrics"
+      "books": "📚 Digital Books",
+      "courses": "Free Courses",
+      "roadmaps": "Roadmaps & Tracks",
+      "podcasts": "Podcasts & Spotify",
+      "tips": "Study Tips & Tools",
+      "dashboard": "Metrics & Sources"
     },
     "podcasts": {
       "bannerTitle": "Podcasts, Literary Reviews & Oral Tradition",
@@ -68,19 +68,19 @@
       "readOnlineNav": "Read Online in Browser",
       "shareBook": "Share Work",
       "shareBookCopied": "Book link copied to clipboard!",
-      "highlightsTitle": "Featured Books",
-      "highlightsSubtitle": "Discover the most read masterpieces in human history, global bestsellers, and immortal classics available for immediate free reading and download.",
-      "highlightsBadge": "Collection Highlights",
-      "highlightsAll": "Most Sought-After",
+      "highlightsTitle": "Most Popular Books",
+      "highlightsSubtitle": "Classic, academic, and reference works with immediate open access.",
+      "highlightsBadge": "Featured Works",
+      "highlightsAll": "Most Read",
       "highlightsClassics": "Lusophone Classics",
       "highlightsAfrica": "African Literature",
-      "highlightsTech": "Technology & Computing",
-      "highlightsViewAll": "Explore the 100 Most Read",
+      "highlightsTech": "Tech & Programming",
+      "highlightsViewAll": "Explore All 100+ Most Read",
       "highlightsLoading": "Loading featured works...",
       "searchPlaceholder": "Search by title or author...",
       "categories": "Categories:",
       "all": "All",
-      "catTop100": "Top 100 Most Read",
+      "catTop100": "Top 100 Most Read in the World",
       "catGuides": "Guides & Technology",
       "catClassics": "Lusophone Classics",
       "catRomance": "Novels",
@@ -346,8 +346,8 @@
       "Literatura Africana Lusófona": "Lusophone African Literature",
       "Poesia Africana": "African Poetry",
       "Autores Lusófonos Clássicos": "Classic Lusophone Authors",
-      "🌟 Mais Lidos do Mundo": "Top 100 Most Read",
-      "Mais Lidos do Mundo": "Top 100 Most Read"
+      "🌟 Mais Lidos do Mundo": "🌟 World's Most Read",
+      "Mais Lidos do Mundo": "🌟 World's Most Read"
     },
     "areas": {
       "Tecnologia": "Technology",

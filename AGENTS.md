@@ -633,6 +633,42 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
      - `livrosQueries.js`: `buildFiltrosLivros` e `anexarLinksAosLivros`.
   4. **Ganhos de Performance:** Tempo de execução da suíte de 350 testes reduzido de ~71s para ~43s (~40% mais rápida). Total conformidade mantida: 350/350 testes passando (100% verde).
 
+### 2.39. Auditoria Integral e Correção das Capas dos 100 Livros Mais Lidos do Mundo
+- **Problema Reportado:** Algumas capas da coleção dos Mais Lidos do Mundo (`world-top100-*` e `world-hist-*`) não correspondiam ao livro real (ex.: *Quem Pensa Enriquece* apresentava capa do Gutenberg para *Glow Worm*, *Uma Mensagem a Garcia* apresentava *Back to Billabong*, *Uma Vida com Propósitos* apontava para *Lei X Graça*, e várias outras obras continham IDs de capa inválidos ou divergentes).
+- **Causa Raiz:** Mapeamentos incorretos de IDs da Open Library e do Project Gutenberg gerados em migrações anteriores sem verificação individual contra os títulos reais.
+- **Resoluções de Engenharia Implementadas:**
+  1. **Auditoria Automatizada Exaustiva:** Análise de 100% das 105 obras contra as APIs oficiais da Open Library e Project Gutenberg. Identificadas exatamente 16 obras com discrepâncias ou capas genéricas.
+  2. **Correção com Capas Oficiais e Auditadas:**
+     - `world-top100-3` (*O Senhor dos Anéis*): `covers.openlibrary.org/b/id/14625765-L.jpg`
+     - `world-top100-14` (*Quem Pensa Enriquece*): `covers.openlibrary.org/b/id/14542536-L.jpg`
+     - `world-top100-27` (*O Relatório Hite*): `covers.openlibrary.org/b/id/4615281-L.jpg`
+     - `world-top100-30` (*Uma Vida com Propósitos*): `covers.openlibrary.org/b/id/5057338-L.jpg`
+     - `world-top100-33` (*Uma Lagarta Muito Comilona*): `covers.openlibrary.org/b/id/7835968-L.jpg`
+     - `world-top100-34` (*Uma Mensagem a Garcia*): `covers.openlibrary.org/b/id/779431-L.jpg`
+     - `world-top100-41` (*Medo de Voar*): `covers.openlibrary.org/b/id/46711-L.jpg`
+     - `world-top100-46` (*Seus Pontos Fracos*): `covers.openlibrary.org/b/id/5266788-L.jpg`
+     - `world-top100-53` (*Rebecca*): `covers.openlibrary.org/b/id/8238729-L.jpg`
+     - `world-top100-59` (*Ben-Hur*): `covers.openlibrary.org/b/id/13829487-L.jpg`
+     - `world-top100-63` (*Paulo e Virgínia*): `covers.openlibrary.org/b/id/8243325-L.jpg`
+     - `world-top100-87` (*O Ponto de Encontro*): `covers.openlibrary.org/b/id/2405877-L.jpg`
+     - `world-top100-93` (*O Bom Soldado Švejk*): `covers.openlibrary.org/b/id/9314448-L.jpg`
+     - `world-top100-95` (*O Poder do Pensamento Positivo*): `covers.openlibrary.org/b/id/14570194-L.jpg`
+     - `world-top100-99` (*O Macaco Nu*): `covers.openlibrary.org/b/id/12887819-L.jpg`
+     - `world-top100-100` (*Kokoro*): `covers.openlibrary.org/b/id/3970410-L.jpg`
+  3. **Correção de Ordenação do Ranking:** Em `livrosController.js`, `workers/src/index.ts` e `livrosQueries.js`, a ordenação para `world-hist-*` passou a utilizar `CAST(SUBSTR(l.fonte_id_externo, 12) AS INTEGER)`, garantindo que as obras históricas mantenham a sequência canônica (Bíblia #1, Dom Quixote #2, Manifesto #3, Mao #4, Alcorão #5) antes do ranking comercial #1 a #100.
+  4. **Aplicação Local e Produção Remota:** Atualização em `src/database/worldClassicsSeedData.js`, banco local `biblioteca.db` e Cloudflare D1 remota via migração [`migrations/0009_capas_ranking_precisas.sql`](file:///Users/mendes/Desktop/I%20am%20Abc/migrations/0009_capas_ranking_precisas.sql).
+  5. **Conformidade de Testes:** 350 testes em 67 suítes passando (100% verde).
+
+### 2.40. Automação do Fallback Bidirecional Ativo-Ativo entre Cloudflare D1 e Supabase
+- **Objetivo:** Tornar a comutação entre a Cloudflare D1 e o Supabase 100% autônoma, transparente e bidirecional em todas as rotas públicas de leitura (`/api/dashboard`, `/api/categorias`, `/api/fontes`, `/api/autores`, `/api/autores/:id`, `/api/cursos`, `/api/roadmaps`, `/api/cursos/:id/acessar`, `/api/livros`, `/api/livros/:id`, `/api/livros/:id/ler/:linkId`).
+- **Implementação do Motor de Borda (`EdgeLoadBalancer.execute`):**
+  1. `workers/src/loadBalancer.ts`: Método `execute<T>()` orquestra a tentativa no backend primário selecionado pelo modo (`d1_priority`, `supabase_priority` ou `auto`).
+  2. **Circuit Breaker Instantâneo:** Ao detectar erro de cota D1 (código `7500` ou *exceeded D1 free tier limit*), o circuito da D1 abre imediatamente (`OPEN`) e o tráfego é 100% desviado para o Supabase sem intervenção manual.
+  3. **Comutação Graciosa sem 500:** Falhas temporárias (timeout, erro de rede ou 503) no backend primário acionam imediatamente a execução no backend parceiro, marcando o cabeçalho `X-Data-Backend: supabase|d1` e `X-Data-Status: degraded`.
+  4. **Proteção contra Erros 4xx:** Erros de validação do cliente (ex: HTTP 404 para livro inexistente ou 400 para violação de política) não contaminam a contagem de falhas do circuito.
+  5. **Camada de Repositório Supabase Estendida (`workers/src/supabase.ts`):** Adicionados métodos `autores()` e `autor(id)` para suporte integral a fallback de metadados de autores via PostgREST.
+- **Validação de Testes:** Suíte dedicada [`test/automated_fallback_d1_supabase.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/automated_fallback_d1_supabase.test.js) (6 testes cobrindo fallback D1→Supabase, Supabase→D1 e abertura de circuito por cota). Suíte geral atualizada para **356 testes em 68 suítes (100% verde)**.
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:

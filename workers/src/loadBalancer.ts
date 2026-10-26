@@ -150,6 +150,11 @@ class EdgeLoadBalancer {
    * Registra falha de execução e avalia se o circuito deve abrir.
    */
   public recordFailure(backend: BackendId, error: any) {
+    // Erros 4xx de validação de cliente não caracterizam falha de infraestrutura
+    if (error?.codigoHttp && error.codigoHttp < 500) {
+      return;
+    }
+
     const s = this.stats[backend];
     const errMsg = String(error?.message || error || '');
     s.totalRequests++;
@@ -164,6 +169,81 @@ class EdgeLoadBalancer {
     if (ehErroDeCota || s.consecutiveFailures >= this.config.failureThreshold) {
       s.state = 'OPEN';
     }
+  }
+
+  /**
+   * Executa operação com fallback automatizado e circuit breaker entre Cloudflare D1 e Supabase.
+   */
+  public async execute<T>(options: {
+    d1?: () => Promise<T>;
+    supabase?: () => Promise<T>;
+    fallback?: () => Promise<T> | T;
+    isSupabaseConfigured: boolean;
+    backendMode?: 'd1' | 'supabase' | 'auto';
+  }): Promise<{ data: T; backend: BackendId | 'fallback'; degraded: boolean }> {
+    const rawMode = options.backendMode || this.config.mode;
+    const targetMode = rawMode === 'supabase' ? 'supabase_priority'
+      : rawMode === 'auto' ? 'auto'
+      : 'd1_priority';
+    this.config.mode = targetMode;
+
+    const { primary, fallback } = this.pickBackend(options.isSupabaseConfigured && !!options.supabase);
+
+    const fns: Record<BackendId, (() => Promise<T>) | undefined> = {
+      d1: options.d1,
+      supabase: options.supabase
+    };
+
+    let firstErr: any = null;
+    const primaryFn = fns[primary];
+
+    if (primaryFn) {
+      const start = Date.now();
+      try {
+        const data = await primaryFn();
+        this.recordSuccess(primary, Date.now() - start);
+        return { data, backend: primary, degraded: false };
+      } catch (err: any) {
+        firstErr = err;
+        this.recordFailure(primary, err);
+        if (err?.codigoHttp === 404) {
+          throw err;
+        }
+      }
+    }
+
+    // Fallback automático para o backend parceiro
+    if (fallback) {
+      const fallbackFn = fns[fallback];
+      if (fallbackFn) {
+        const start = Date.now();
+        try {
+          const data = await fallbackFn();
+          this.recordSuccess(fallback, Date.now() - start);
+          return { data, backend: fallback, degraded: true };
+        } catch (fbErr: any) {
+          this.recordFailure(fallback, fbErr);
+        }
+      }
+    }
+
+    // Fallback estático / em memória de última instância
+    if (options.fallback) {
+      const data = await options.fallback();
+      return { data, backend: 'fallback', degraded: true };
+    }
+
+    throw firstErr || new Error('Nenhum backend disponível');
+  }
+
+  /**
+   * Reinicia estados dos circuitos para testes unitários e recuperação manual.
+   */
+  public reset() {
+    this.stats.d1.state = 'CLOSED';
+    this.stats.d1.consecutiveFailures = 0;
+    this.stats.supabase.state = 'CLOSED';
+    this.stats.supabase.consecutiveFailures = 0;
   }
 
   /**

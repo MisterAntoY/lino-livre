@@ -1,14 +1,9 @@
 const { getDatabase } = require('../database');
+const { escaparLike } = require('../utils/sanitizer');
 
 const LIMITE_AUTORES = 100;
 const LIMITE_MAXIMO = 500;
 const PAGINA_MAXIMA = 2000;
-
-// Escapa os metacaracteres de LIKE. Sem isto, `busca=%a%b%c...` transforma o
-// filtro num varrimento com múltiplos wildcards (DoS de CPU na base de dados).
-function escaparLike(valor) {
-  return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
-}
 
 function listar(req, res) {
   try {
@@ -20,17 +15,6 @@ function listar(req, res) {
 
     let query = 'SELECT a.* FROM autores a';
     const params = [];
-
-    // Prioriza tabela agregada autor_totais se presente para evitar varredura em livros
-    let temTotais = false;
-    try {
-      temTotais = !!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='autor_totais'").get();
-    } catch (_) {}
-
-    if (temTotais) {
-      query = `SELECT a.*, COALESCE(t.total, 0) AS total_livros
-               FROM autores a LEFT JOIN autor_totais t ON t.autor_id = a.id`;
-    }
 
     if (nomeExato) {
       // Correspondência exata — usa o índice autores(nome COLLATE NOCASE).
@@ -59,8 +43,9 @@ function listar(req, res) {
 
     const autores = db.prepare(query).all(...params);
 
-    // Sem a tabela autor_totais, faz fallback pontual usando idx_livros_autor
-    if (!temTotais && autores.length > 0) {
+    // Contagem apenas dos autores devolvidos (usa idx_livros_autor), em vez de
+    // um LEFT JOIN + GROUP BY sobre a tabela de livros inteira.
+    if (autores.length > 0) {
       const ids = autores.map((a) => a.id);
       const marcadores = ids.map(() => '?').join(',');
       const contagens = db.prepare(

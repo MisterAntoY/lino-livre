@@ -44,26 +44,26 @@
       "shareText": "加入 Lino Livre 迈向 1000 万本自由图书的征程！目前已收录 {n} 本优质开放图书，欢迎阅读与共建："
     },
     "tabs": {
-      "books": "书籍",
-      "courses": "课程",
-      "roadmaps": "路线图",
-      "tips": "学习技巧",
-      "dashboard": "数据统计"
+      "books": "📚 电子书籍",
+      "courses": "免费课程",
+      "roadmaps": "学习路线图",
+      "tips": "学习技巧与工具",
+      "dashboard": "数据与来源"
     },
     "books": {
-      "highlightsTitle": "精选图书",
+      "highlightsTitle": "最热门与高需求图书",
       "highlightsSubtitle": "探索人类历史上最受瞩目的名著、国际畅销书与不朽经典，支持即时在线免费阅读与下载。",
-      "highlightsBadge": "馆藏精选",
-      "highlightsAll": "最受欢迎",
+      "highlightsBadge": "精选力作 • 热度聚焦",
+      "highlightsAll": "全球最热门图书",
       "highlightsClassics": "葡语经典力作",
-      "highlightsAfrica": "非洲文学",
+      "highlightsAfrica": "非洲文明瑰宝",
       "highlightsTech": "编程与技术手册",
-      "highlightsViewAll": "探索全部100本热门名著",
+      "highlightsViewAll": "探索全部100+热门名著",
       "highlightsLoading": "正在加载精选图书……",
       "searchPlaceholder": "按标题或作者搜索……",
       "categories": "分类：",
       "all": "全部",
-      "catTop100": "全球前100热门名著",
+      "catTop100": "全球最受瞩目的100本著作",
       "catGuides": "指南与科技",
       "catClassics": "葡语经典",
       "catRomance": "小说",
@@ -329,8 +329,8 @@
       "Literatura Africana Lusófona": "葡语非洲文学",
       "Poesia Africana": "非洲诗歌",
       "Autores Lusófonos Clássicos": "经典葡语作家",
-      "🌟 Mais Lidos do Mundo": "全球前100热门名著",
-      "Mais Lidos do Mundo": "全球前100热门名著"
+      "🌟 Mais Lidos do Mundo": "全球最畅销与必读书籍",
+      "Mais Lidos do Mundo": "全球最畅销与必读书籍"
     },
     "areas": {
       "Tecnologia": "技术",

@@ -44,26 +44,26 @@
       "shareText": "Rejoignez Lino Livre vers les 10 Millions de Livres Libres ! Déjà {n} ouvrages en accès libre indexés. Lisez et contribuez :"
     },
     "tabs": {
-      "books": "Livres",
-      "courses": "Cours",
-      "roadmaps": "Roadmaps",
-      "tips": "Conseils d'étude",
-      "dashboard": "Statistiques"
+      "books": "📚 Livres numériques",
+      "courses": "Cours gratuits",
+      "roadmaps": "Roadmaps & Parcours",
+      "tips": "Astuces & Outils d'étude",
+      "dashboard": "Statistiques & Sources"
     },
     "books": {
-      "highlightsTitle": "Livres en Vedette",
+      "highlightsTitle": "Livres Les Plus Populaires et Très Recherchés",
       "highlightsSubtitle": "Découvrez les chefs-d'œuvre les plus lus de l'humanité, les grands best-sellers internationaux et les classiques avec lecture en ligne immédiate.",
-      "highlightsBadge": "Sélection du Catalogue",
-      "highlightsAll": "Les Plus Demandés",
+      "highlightsBadge": "Œuvres en Vedette • Les Plus Demandées",
+      "highlightsAll": "Les Plus Lus du Monde",
       "highlightsClassics": "Classiques Lusophones",
-      "highlightsAfrica": "Littérature Africaine",
-      "highlightsTech": "Informatique & Technologie",
-      "highlightsViewAll": "Explorer les 100 Plus Lus",
+      "highlightsAfrica": "Trésors d'Afrique",
+      "highlightsTech": "Manuels de Technologie",
+      "highlightsViewAll": "Explorer les 100+ Plus Lus",
       "highlightsLoading": "Chargement des œuvres en vedette...",
       "searchPlaceholder": "Rechercher par titre ou auteur...",
       "categories": "Catégories :",
       "all": "Tous",
-      "catTop100": "Les 100 Plus Lus",
+      "catTop100": "Les 100 Plus Lus du Monde",
       "catGuides": "Guides & Technologie",
       "catClassics": "Classiques Lusophones",
       "catRomance": "Romans",
@@ -329,8 +329,8 @@
       "Literatura Africana Lusófona": "Littérature Africaine Lusophone",
       "Poesia Africana": "Poésie Africaine",
       "Autores Lusófonos Clássicos": "Auteurs Lusophones Classiques",
-      "🌟 Mais Lidos do Mundo": "Les 100 Plus Lus",
-      "Mais Lidos do Mundo": "Les 100 Plus Lus"
+      "🌟 Mais Lidos do Mundo": "Les Plus Lus du Monde",
+      "Mais Lidos do Mundo": "Les Plus Lus du Monde"
     },
     "areas": {
       "Tecnologia": "Technologie",

@@ -72,3 +72,8 @@ cache/
 .scratch/
 lino-a11y-pr/
 lino-perf-pr/
+
+# Arquivos locais soltos de usuário
+/*.pdf
+/*.png
+

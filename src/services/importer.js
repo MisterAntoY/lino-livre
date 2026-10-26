@@ -71,7 +71,6 @@ async function executarImportacao(jobId, fonteSlug, query) {
     db.prepare(`UPDATE import_jobs SET total = ? WHERE id = ?`).run(itens.length, jobId);
 
     let processados = 0;
-    let catTecnologiaId = null;
 
     for (const item of itens) {
       // Se for curso ou fonte guiadeti, sincronizar na tabela cursos
@@ -135,12 +134,8 @@ async function executarImportacao(jobId, fonteSlug, query) {
       // 2. Resolver categoria
       let categoriaId = item.categoria_id || null;
       if (!categoriaId && (fonteSlug === 'guiadeti' || item.area)) {
-        if (!catTecnologiaId) {
-          const cat = db.prepare("SELECT id FROM categorias WHERE nome = 'Tecnologia' OR slug = 'tecnologia'").get()
-            || db.prepare("SELECT id FROM categorias WHERE nome LIKE '%Tecnologia%'").get();
-          catTecnologiaId = cat ? cat.id : null;
-        }
-        categoriaId = catTecnologiaId;
+        const cat = db.prepare("SELECT id FROM categorias WHERE nome LIKE '%Tecnologia%'").get();
+        if (cat) categoriaId = cat.id;
       }
 
       // 3. Inserir livro de forma idempotente

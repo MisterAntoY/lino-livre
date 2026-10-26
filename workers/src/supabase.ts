@@ -15,8 +15,8 @@ export interface SupabaseConfig {
 type Params = Record<string, string | number | boolean | undefined | null>;
 
 export function obterConfigSupabase(env: any): SupabaseConfig | null {
-  const url = env?.SUPABASE_URL || 'https://pcykiazsqwuiwopyuche.supabase.co';
-  const key = env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUPABASE_SECRET_KEY || env?.SUPABASE_PUBLISHABLE_KEY || env?.SUPABASE_KEY || 'sb_publishable_JMO7he19m68nMFJFKL5JzA_4XG1lWy9';
+  const url = env?.SUPABASE_URL;
+  const key = env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUPABASE_SECRET_KEY || env?.SUPABASE_PUBLISHABLE_KEY || env?.SUPABASE_KEY;
   if (!url || !key) return null;
   return { url: String(url).replace(/\/+$/, ''), key: String(key) };
 }
@@ -369,6 +369,52 @@ export class RepoSupabase {
     if (!fontes.length) throw new Error('Supabase sem fontes (migração não executada)');
     const mapa = new Map((cont as any[]).map((c) => [String(c.chave), Number(c.total)]));
     return (fontes as any[]).map((f) => ({ ...f, total_livros: mapa.get(String(f.id)) ?? 0 }));
+  }
+
+  // ── Autores ───────────────────────────────────────────────
+  async autores(op: { busca?: string; nome?: string; limit?: number; page?: number } = {}) {
+    const params: Params = {
+      select: '*,autor_totais(total)',
+      order: 'nome.asc'
+    };
+    if (op.nome) {
+      params.nome = `eq.${valorEq(op.nome)}`;
+    } else if (op.busca) {
+      params.nome = `ilike.*${limparTermo(op.busca)}*`;
+    }
+    const limit = Math.min(Math.max(Number(op.limit) || 500, 1), 500);
+    const page = Math.min(2000, Math.max(Number(op.page) || 1, 1));
+    params.limit = limit;
+    params.offset = (page - 1) * limit;
+
+    const { data } = await this.api.get('autores', params);
+    return (data as any[]).map((a) => ({
+      id: a.id,
+      nome: a.nome,
+      bio: a.bio,
+      ano_nascimento: a.ano_nascimento,
+      ano_morte: a.ano_morte,
+      nacionalidade: a.nacionalidade,
+      total_livros: a.autor_totais?.total ?? 0
+    }));
+  }
+
+  async autor(id: string | number) {
+    const { data } = await this.api.get('autores', {
+      select: '*,autor_totais(total)',
+      id: `eq.${id}`
+    });
+    const a = data[0];
+    if (!a) return null;
+    return {
+      id: a.id,
+      nome: a.nome,
+      bio: a.bio,
+      ano_nascimento: a.ano_nascimento,
+      ano_morte: a.ano_morte,
+      nacionalidade: a.nacionalidade,
+      total_livros: a.autor_totais?.total ?? 0
+    };
   }
 
   // ── Cursos ────────────────────────────────────────────────

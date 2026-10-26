@@ -306,6 +306,153 @@
 
   <!-- ==================== ABA 1: LIVROS DIGITAIS ==================== -->
   <div id="aba-livros" class="tab-content active">
+    <!-- Placar da Jornada: Rumo aos 10 Milhões de Livros -->
+    <section class="container goal-scoreboard-section" id="secao-placar-meta">
+      <div class="goal-scoreboard-card">
+        <div class="goal-header">
+          <div class="goal-title-group">
+            <div class="goal-badge">
+              <span data-i18n="ui.goal.badge">Meta Coletiva Global</span>
+            </div>
+            <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
+            <p class="goal-subtitle" data-i18n="ui.goal.subtitle">Uma biblioteca aberta, universal e gratuita para todos os estudantes, professores e leitores do mundo. Acompanhe o avanço em tempo real e faça parte desta jornada histórica!</p>
+          </div>
+          <div class="goal-live-counter">
+            <div class="goal-counter-box">
+              <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
+              <div class="counter-number-row">
+                <span class="counter-odometer" id="placar-total-livros">80 331</span>
+                <span class="counter-divider">/</span>
+                <span class="counter-target">10.000.000</span>
+              </div>
+              <span class="counter-pct" id="placar-porcentagem">0.8033% da meta</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de Progresso Visual e Marcos Históricos -->
+        <div class="goal-progress-wrapper">
+          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="80331" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="2.000 de 10.000.000 obras catalogadas" id="placar-progressbar-container">
+            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.0002);"></div>
+          </div>
+          
+          <!-- Marcos da Jornada / Milestones -->
+          <div class="goal-milestones">
+            <div class="milestone-step reached" title="Marco Inicial: Lançamento da Plataforma">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">0</span>
+            </div>
+            <div class="milestone-step reached" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">1.000</span>
+            </div>
+            <div class="milestone-step reached" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">10.000</span>
+            </div>
+            <div class="milestone-step active" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">
+              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>100.000</span>
+            </div>
+            <div class="milestone-step" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
+              <span class="milestone-dot"></span>
+              <span class="milestone-text">1.000.000</span>
+            </div>
+            <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
+              <span class="milestone-dot gold"></span>
+              <span class="milestone-text gold">10.000.000 </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas Rápidas e Ações da Comunidade -->
+        <div class="goal-footer">
+          <div class="goal-stats-grid">
+            <div class="goal-stat-pill">
+
+              <div>
+                <span class="stat-val" id="placar-stat-atual">80 331</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+
+              <div>
+                <span class="stat-val">10.000.000</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statTarget">Alvo Global</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+
+              <div>
+                <span class="stat-val" id="placar-stat-faltam">9 919 669</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
+              </div>
+            </div>
+            <div class="goal-stat-pill">
+
+              <div>
+                <span class="stat-val" id="placar-stat-next-target">10.000</span>
+                <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="goal-actions">
+            <button class="btn btn-goal-contrib" data-acao="abrirModalNovoLivro">
+              <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
+            </button>
+            <button class="btn btn-goal-share" data-acao="compartilharMeta10M">
+              <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
+            </button>
+            <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
+              <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
+              <span data-i18n="ui.goal.btnJoin">Comunidade</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- DESTAQUES DA BIBLIOTECA: LIVROS MAIS POPULARES E MUITO PROCURADOS -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section class="container destaques-section" id="secao-destaques">
+      <div class="destaques-card">
+        <div class="destaques-header">
+          <div class="destaques-title-group">
+            <div class="destaques-badge">
+              <span data-i18n="ui.books.highlightsBadge">Destaques do Acervo</span>
+            </div>
+            <h2 class="destaques-title" data-i18n="ui.books.highlightsTitle">Livros Mais Populares</h2>
+            <p class="destaques-subtitle" data-i18n="ui.books.highlightsSubtitle">Obras clássicas, acadêmicas e de referência com leitura e acesso aberto imediato.</p>
+          </div>
+          <div class="destaques-actions">
+            <button class="btn btn-destaque-all" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.highlightsViewAll">
+              <span>Explorar Todos os 100+ Mais Lidos</span> <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pílulas de Navegação dos Destaques -->
+        <div class="destaques-tabs-pills" id="pills-destaques-tipo">
+          <button class="pill-destaque-tab active" data-tipo="todos" data-acao="trocarAbaDestaques" data-arg="todos" data-i18n="ui.books.highlightsAll">Mais Procurados</button>
+          <button class="pill-destaque-tab" data-tipo="lusofonia" data-acao="trocarAbaDestaques" data-arg="lusofonia" data-i18n="ui.books.highlightsClassics">Clássicos Lusófonos</button>
+          <button class="pill-destaque-tab" data-tipo="africa" data-acao="trocarAbaDestaques" data-arg="africa" data-i18n="ui.books.highlightsAfrica">Literatura Africana</button>
+          <button class="pill-destaque-tab" data-tipo="tech" data-acao="trocarAbaDestaques" data-arg="tech" data-i18n="ui.books.highlightsTech">Tecnologia & Guias</button>
+        </div>
+
+        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
+        <div class="destaques-grid" id="grade-destaques">
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Filtros e Busca com Anotações WebMCP para Agentes de IA -->
     <section class="container filter-section">
       <form id="form-busca-livros" role="search" toolname="buscar_livros" tooldescription="Pesquisar livros digitais no acervo aberto do Lino Livre por título da obra, autor, assunto ou tema" data-acao="buscarComDebounce" data-evento="submit" class="search-bar-wrap">
@@ -345,7 +492,7 @@
         <span class="filter-label" data-i18n="ui.books.categories">Categorias:</span>
         <div class="pills-container" id="pills-categorias">
           <button class="pill active" data-categoria="" data-acao="filtrarPorCategoria" data-arg="" data-i18n="ui.books.all">Todas</button>
-          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.catTop100">Os 100 Mais Lidos do Mundo</button>
+          <button class="pill highlight-pill-gold" data-categoria="🌟 Mais Lidos do Mundo" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.catTop100">100 Mais Lidos do Mundo</button>
           <button class="pill highlight-pill-africa" data-categoria="Autores Lusófonos Clássicos" data-acao="filtrarPorCategoria" data-arg="Autores Lusófonos Clássicos">Autores Lusófonos Clássicos</button>
           <button class="pill highlight-pill-africa" data-categoria="Literatura Angolana" data-acao="filtrarPorCategoria" data-arg="Literatura Angolana">Literatura Angolana</button>
           <button class="pill highlight-pill-africa" data-categoria="🎓 Teses & Trabalhos Universitários (UAN)" data-acao="filtrarPorCategoria" data-arg="🎓 Teses &amp; Trabalhos Universitários (UAN)">Teses & Trabalhos UAN</button>
@@ -379,8 +526,8 @@
           <button class="pill" data-fonte="github-bibliotecadev" data-acao="filtrarPorFonteLivro" data-arg="github-bibliotecadev">BibliotecaDev</button>
           <button class="pill" data-fonte="github-italocamilo" data-acao="filtrarPorFonteLivro" data-arg="github-italocamilo">Books Tech / italocamil0</button>
           <button class="pill" data-fonte="github-freebooks-es" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-es">Free Programming Books ES</button>
-          <button class="pill" data-fonte="rheinwerk-openbook" data-acao="filtrarPorFonteLivro" data-arg="rheinwerk-openbook">Rheinwerk Openbooks</button>
-          <button class="pill" data-fonte="github-freebooks-de" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-de">Free Programming Books DE</button>
+          <button class="pill" data-fonte="rheinwerk-openbook" data-acao="filtrarPorFonteLivro" data-arg="rheinwerk-openbook">🇩🇪 Rheinwerk Openbooks</button>
+          <button class="pill" data-fonte="github-freebooks-de" data-acao="filtrarPorFonteLivro" data-arg="github-freebooks-de">🇩🇪 Free Programming Books DE</button>
         </div>
       </div>
 
@@ -427,147 +574,6 @@
         <button id="btn-pag-prox" class="btn btn-secondary btn-sm" data-acao="proximaPagina" data-i18n="ui.books.next">Próxima →</button>
       </div>
     </main>
-
-    <!-- DESTAQUES DA BIBLIOTECA: LIVROS MAIS POPULARES E PROCURADOS -->
-    <section class="container destaques-section" id="secao-destaques">
-      <div class="destaques-card">
-        <div class="destaques-header">
-          <div class="destaques-title-group">
-            <div class="destaques-badge">
-              <span data-i18n="ui.books.highlightsBadge">Obras em Destaque</span>
-            </div>
-            <h2 class="destaques-title" data-i18n="ui.books.highlightsTitle">Livros em Destaque</h2>
-            <p class="destaques-subtitle" data-i18n="ui.books.highlightsSubtitle">Descubra as obras mais lidas da humanidade, grandes bestsellers internacionais e os clássicos imortais da literatura com leitura online e download gratuito imediato.</p>
-          </div>
-          <div class="destaques-actions">
-            <button class="btn btn-destaque-all" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.highlightsViewAll">
-              <span>Explorar Todos os 100+ Mais Lidos</span> <span>→</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Pílulas de Navegação dos Destaques -->
-        <div class="destaques-tabs-pills" id="pills-destaques-tipo">
-          <button class="pill-destaque-tab active" data-tipo="todos" data-acao="trocarAbaDestaques" data-arg="todos" data-i18n="ui.books.highlightsAll">Mais Procurados</button>
-          <button class="pill-destaque-tab" data-tipo="lusofonia" data-acao="trocarAbaDestaques" data-arg="lusofonia" data-i18n="ui.books.highlightsClassics">Clássicos Lusófonos</button>
-          <button class="pill-destaque-tab" data-tipo="africa" data-acao="trocarAbaDestaques" data-arg="africa" data-i18n="ui.books.highlightsAfrica">Literatura Africana</button>
-          <button class="pill-destaque-tab" data-tipo="tech" data-acao="trocarAbaDestaques" data-arg="tech" data-i18n="ui.books.highlightsTech">Tecnologia & Computação</button>
-        </div>
-
-        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
-        <div class="destaques-grid" id="grade-destaques">
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Placar da Jornada: Rumo aos 10 Milhões de Livros (Compacto e Objetivo) -->
-    <section class="container goal-scoreboard-section" id="secao-placar-meta">
-      <div class="goal-scoreboard-card">
-        <div class="goal-header">
-          <div class="goal-title-group">
-            <div class="goal-badge">
-              <span data-i18n="ui.goal.badge">Meta Coletiva Global</span>
-            </div>
-            <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
-            <p class="goal-subtitle" data-i18n="ui.goal.subtitle">Uma biblioteca aberta, universal e gratuita para todos os estudantes, professores e leitores do mundo.</p>
-          </div>
-          <div class="goal-live-counter">
-            <div class="goal-counter-box">
-              <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
-              <div class="counter-number-row">
-                <span class="counter-odometer" id="placar-total-livros">104 170</span>
-                <span class="counter-divider">/</span>
-                <span class="counter-target">10.000.000</span>
-              </div>
-              <span class="counter-pct" id="placar-porcentagem">1.0417% da meta</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Barra de Progresso Visual e Marcos Históricos -->
-        <div class="goal-progress-wrapper">
-          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="104170" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="104 170 de 10.000.000 obras catalogadas (1.04%)" id="placar-progressbar-container">
-            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.01042);"></div>
-          </div>
-          
-          <!-- Marcos da Jornada / Milestones -->
-          <div class="goal-milestones">
-            <div class="milestone-step reached" title="Marco Inicial: Lançamento da Plataforma">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">0</span>
-            </div>
-            <div class="milestone-step reached" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">1.000</span>
-            </div>
-            <div class="milestone-step reached" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">10.000</span>
-            </div>
-            <div class="milestone-step reached" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">100.000</span>
-            </div>
-            <div class="milestone-step active" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">
-              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>1.000.000</span>
-            </div>
-            <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
-              <span class="milestone-dot gold"></span>
-              <span class="milestone-text gold">10.000.000</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Estatísticas Rápidas e Ações da Comunidade -->
-        <div class="goal-footer">
-          <div class="goal-stats-grid">
-            <div class="goal-stat-pill">
-              <div>
-                <span class="stat-val" id="placar-stat-atual">104 170</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-              <div>
-                <span class="stat-val">10.000.000</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statTarget">Alvo Global</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-              <div>
-                <span class="stat-val" id="placar-stat-faltam">9 895 830</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-              <div>
-                <span class="stat-val" id="placar-stat-next-target">1 000 000</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="goal-actions">
-            <button class="btn btn-goal-contrib" data-acao="abrirModalNovoLivro">
-              <span>+</span> <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
-            </button>
-            <button class="btn btn-goal-share" data-acao="compartilharMeta10M">
-              <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
-            </button>
-            <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
-              <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
-              <span data-i18n="ui.goal.btnJoin">Comunidade</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 
   <!-- ==================== ABA 2: CURSOS GRATUITOS ==================== -->
@@ -593,7 +599,7 @@
           <button class="pill" data-filtro="PhET" data-acao="filtrarCursosPorPlataforma" data-arg="PhET">PhET Simulações</button>
           <button class="pill" data-filtro="CK-12" data-acao="filtrarCursosPorPlataforma" data-arg="CK-12">CK-12 Foundation</button>
           <button class="pill" data-filtro="Khan Academy" data-acao="filtrarCursosPorPlataforma" data-arg="Khan Academy">Khan Academy</button>
-          <button class="pill" data-filtro="Cursa" data-acao="filtrarCursosPorPlataforma" data-arg="Cursa"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursa App (Cursos)</button>
+          <button class="pill" data-filtro="Cursa" data-acao="filtrarCursosPorPlataforma" data-arg="Cursa"><img src="/img/logos/cursa.svg" alt="Cursa" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursa App</button>
           <button class="pill" data-filtro="exercicios" data-acao="filtrarCursosPorTipo" data-arg="exercicios"><img src="/img/logos/cursa.svg" alt="Exercícios" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Cursa Exercícios & Simulados</button>
           <button class="pill" data-filtro="Harvard" data-acao="filtrarCursosPorPlataforma" data-arg="Harvard"><img src="/img/logos/harvard.png" alt="Harvard" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Harvard Online (PLL)</button>
           <button class="pill" data-filtro="Stanford" data-acao="filtrarCursosPorPlataforma" data-arg="Stanford">Stanford Online</button>
@@ -683,10 +689,10 @@
           <button class="pill pill-guiadeti" data-filtro="Guia de TI" data-acao="filtrarRoadmapsPorOrigem" data-arg="Guia de TI"><img src="/img/logos/guiadeti.png" alt="Guia de TI" class="pill-logo" width="16" height="16" loading="lazy" decoding="async"> Guia de TI</button>
           <button class="pill" data-filtro="TechGuide.sh" data-acao="filtrarRoadmapsPorOrigem" data-arg="TechGuide.sh">TechGuide.sh (Alura)</button>
           <button class="pill" data-filtro="Bora na Tech" data-acao="filtrarRoadmapsPorOrigem" data-arg="Bora na Tech">Bora na Tech?</button>
-          <button class="pill" data-filtro="frontend" data-acao="filtrarRoadmapsPorTermo" data-arg="Frontend"> Frontend</button>
-          <button class="pill" data-filtro="backend" data-acao="filtrarRoadmapsPorTermo" data-arg="Backend"> Backend</button>
-          <button class="pill" data-filtro="devops" data-acao="filtrarRoadmapsPorTermo" data-arg="DevOps"> DevOps & Cloud</button>
-          <button class="pill" data-filtro="dados" data-acao="filtrarRoadmapsPorTermo" data-arg="Dados"> IA & Dados</button>
+          <button class="pill" data-filtro="frontend" data-acao="filtrarRoadmapsPorTermo" data-arg="Frontend">Frontend</button>
+          <button class="pill" data-filtro="backend" data-acao="filtrarRoadmapsPorTermo" data-arg="Backend">Backend</button>
+          <button class="pill" data-filtro="devops" data-acao="filtrarRoadmapsPorTermo" data-arg="DevOps">DevOps & Cloud</button>
+          <button class="pill" data-filtro="dados" data-acao="filtrarRoadmapsPorTermo" data-arg="Dados">IA & Dados</button>
         </div>
       </div>
     </section>
@@ -702,7 +708,7 @@
   <div id="aba-dicas" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner dicas-banner">
-        <div class="banner-badge-primary" style="background:#fef3c7; color:#92400e; border-color:#fde68a;"> Métodos Comprovados & Recursos Abertos</div>
+        <div class="banner-badge-primary" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">Métodos Comprovados & Recursos Abertos</div>
         <h2 data-i18n="ui.tips.bannerTitle">Dicas de Estudo, Técnicas de Foco & Ferramentas</h2>
         <p data-i18n="ui.tips.bannerDesc">Seleção prática de metodologias de aprendizagem, temporizadores Pomodoro, repetição espaçada, corretores gramaticais, gestores de anotações e apoios ao estudante.</p>
       </div>
@@ -879,7 +885,7 @@
 
     <div style="margin-top: 1.5rem; text-align: center;">
       <a href="/comunidade" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; padding: 0.55rem 1.15rem; border-radius: var(--radius-sm); border: 1px solid var(--border);" target="_blank">
-        <span>Imprimir Cartaz Escolar (A4)</span>
+        <span>🖨️ Imprimir Cartaz Escolar para Biblioteca (A4)</span>
       </a>
     </div>
   </section>
@@ -1172,7 +1178,6 @@
             <!-- Caixa de Licença Legal -->
             <div class="book-license-box">
               <div class="license-box-header">
-                <span class="license-shield"></span>
                 <strong>Licença:</strong>
                 <span class="badge-license" id="detalhes-licenca">Domínio Público</span>
               </div>
@@ -1208,7 +1213,7 @@
 
             <!-- Nota de Intermediação Legal -->
             <div class="legal-intermediary-notice">
-              <p><em>O Lino Livre, biblioteca digital da LinoDigital, atua unicamente como indexador intermediário. Nenhum arquivo binário é armazenado localmente nos nossos servidores.</em></p>
+              <p>⚖️ <em>O Lino Livre, biblioteca digital da LinoDigital, atua unicamente como indexador intermediário. Nenhum arquivo binário é armazenado localmente nos nossos servidores.</em></p>
             </div>
           </div>
         </div>
@@ -1231,7 +1236,7 @@
         <!-- Aviso de Moderação & Conformidade Legal -->
         <div class="admin-notice-box" style="background: rgba(37, 99, 235, 0.08); border-left: 4px solid var(--accent, #2563eb); padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 4px; font-size: 0.825rem; line-height: 1.4; color: var(--text-color, #1e293b);">
           <div style="font-weight: 600; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
-            <span>Moderação & Conformidade Legal</span>
+            <span>🛡️ Moderação & Conformidade Legal</span>
           </div>
           <span data-i18n="ui.form.moderationNotice">Nota: Apenas administradores com chave autorizada podem publicar diretamente. Contribuições públicas de links devem possuir comprovação de licença aberta ou domínio público e passam por auditoria prévia.</span>
         </div>

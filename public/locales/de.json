@@ -44,26 +44,26 @@
       "shareText": "Begleiten Sie Lino Livre auf dem Weg zu 10 Millionen freien Büchern! Bereits {n} frei zugängliche Werke indexiert:"
     },
     "tabs": {
-      "books": "Bücher",
-      "courses": "Kurse",
-      "roadmaps": "Roadmaps",
-      "tips": "Lerntipps",
-      "dashboard": "Kennzahlen"
+      "books": "📚 Digitale Bücher",
+      "courses": "Kostenlose Kurse",
+      "roadmaps": "Roadmaps & Lernpfade",
+      "tips": "Lerntipps & Werkzeuge",
+      "dashboard": "Kennzahlen & Quellen"
     },
     "books": {
-      "highlightsTitle": "Bücher im Fokus",
+      "highlightsTitle": "Beliebteste und Meistgesuchte Bücher",
       "highlightsSubtitle": "Entdecken Sie die meistgelesenen Meisterwerke der Menschheit, internationale Bestseller und Klassiker mit sofortiger kostenloser Online-Lektüre.",
-      "highlightsBadge": "Highlights der Sammlung",
-      "highlightsAll": "Meistgesucht",
+      "highlightsBadge": "Highlights • Sehr Gefragt",
+      "highlightsAll": "Weltweit Meistgelesen",
       "highlightsClassics": "Lusophone Klassiker",
-      "highlightsAfrica": "Afrikanische Literatur",
+      "highlightsAfrica": "Schätze Afrikas",
       "highlightsTech": "Tech-Handbücher",
-      "highlightsViewAll": "Alle 100 Meistgelesenen entdecken",
+      "highlightsViewAll": "Alle 100+ Meistgelesenen entdecken",
       "highlightsLoading": "Lade Highlights...",
       "searchPlaceholder": "Nach Titel oder Autor suchen...",
       "categories": "Kategorien:",
       "all": "Alle",
-      "catTop100": "Die 100 Meistgelesenen",
+      "catTop100": "Die 100 Meistgelesenen der Welt",
       "catGuides": "Guides & Technik",
       "catClassics": "Lusophone Klassiker",
       "catRomance": "Romane",
@@ -329,8 +329,8 @@
       "Literatura Africana Lusófona": "Lusophone Afrikanische Literatur",
       "Poesia Africana": "Afrikanische Poesie",
       "Autores Lusófonos Clássicos": "Klassische Lusophone Autoren",
-      "🌟 Mais Lidos do Mundo": "Die 100 Meistgelesenen",
-      "Mais Lidos do Mundo": "Die 100 Meistgelesenen"
+      "🌟 Mais Lidos do Mundo": "🌟 Meistgelesene der Welt",
+      "Mais Lidos do Mundo": "🌟 Meistgelesene der Welt"
     },
     "areas": {
       "Tecnologia": "Technik",

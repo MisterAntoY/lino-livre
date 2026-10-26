@@ -190,7 +190,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-3",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 150 milhões. Título original: \"The Lord of the Rings\" (1954). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/15024346-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/14625765-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -423,7 +423,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-14",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 70 milhões. Título original: \"Think and Grow Rich\" (1937). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://www.gutenberg.org/cache/epub/67362/pg67362.cover.medium.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/14542536-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -698,7 +698,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-27",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 50 milhões. Título original: \"The Hite Report\" (1976). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/846825-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/4615281-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -755,7 +755,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-30",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 50 milhões. Título original: \"The Purpose Driven Life\" (2002). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/7438125-M.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/5057338-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -820,7 +820,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-33",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 43 milhões. Título original: \"The Very Hungry Caterpillar\" (1969). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/6573238-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/7835968-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -839,7 +839,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-34",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 40 milhões. Título original: \"A Message to Garcia\" (1899). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://www.gutenberg.org/cache/epub/7047/pg7047.cover.medium.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/779431-L.jpg",
     "links": [
       {
         "formato": "epub",
@@ -980,7 +980,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-41",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 37 milhões. Título original: \"Fear of Flying\" (1973). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/296653-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/46711-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1091,7 +1091,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-46",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 35 milhões. Título original: \"Your Erroneous Zones\" (1976). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/9541476-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/5266788-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1232,7 +1232,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-53",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 30 milhões. Título original: \"Rebecca\" (1938). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/8767961-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/8238729-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -1346,7 +1346,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-59",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 26 milhões. Título original: \"Ben-Hur: A Tale of the Christ\" (1880). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://www.gutenberg.org/cache/epub/2147/pg2147.cover.medium.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/13829487-L.jpg",
     "links": [
       {
         "formato": "epub",
@@ -1430,7 +1430,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-63",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 25 milhões. Título original: \"Paul et Virginie\" (1788). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://www.gutenberg.org/cache/epub/14358/pg14358.cover.medium.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/8243325-L.jpg",
     "links": [
       {
         "formato": "epub",
@@ -1902,7 +1902,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-87",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Women's Room\" (1977). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/915193-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/2405877-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -2032,7 +2032,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-93",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"Osudy dobrého vojáka Švejka\" (1923). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://www.gutenberg.org/cache/epub/63219/pg63219.cover.medium.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/9314448-L.jpg",
     "links": [
       {
         "formato": "epub",
@@ -2078,7 +2078,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-95",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Power of Positive Thinking\" (1952). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/14570213-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/14570194-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -2154,7 +2154,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-99",
     "licenca": "outro",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"The Naked Ape\" (1968). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://covers.openlibrary.org/b/id/15023229-L.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/12887819-L.jpg",
     "links": [
       {
         "formato": "html",
@@ -2173,7 +2173,7 @@ const worldClassicsList = [
     "fonteIdExterno": "world-top100-100",
     "licenca": "dominio-publico",
     "sinopse": "Obra consagrada da literatura mundial com circulação estimada em 20 milhões. Título original: \"こゝろ (Kokoro)\" (1914). Reconhecido no cânone global de obras fundamentais.",
-    "capaUrl": "https://www.gutenberg.org/cache/epub/44885/pg44885.cover.medium.jpg",
+    "capaUrl": "https://covers.openlibrary.org/b/id/3970410-L.jpg",
     "links": [
       {
         "formato": "epub",

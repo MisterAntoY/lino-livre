@@ -89,8 +89,8 @@ function buildFiltrosLivros(query = {}, dimensoes = { categorias: [], fontes: []
 
   const orderByClause = isTop100
     ? `CASE 
-         WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN 0 
-         WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
+         WHEN l.fonte_id_externo LIKE 'world-hist-%' THEN CAST(SUBSTR(l.fonte_id_externo, 12) AS INTEGER) 
+         WHEN l.fonte_id_externo LIKE 'world-top100-%' THEN 1000 + CAST(SUBSTR(l.fonte_id_externo, 14) AS INTEGER) 
          ELSE 9999 
        END ASC, l.leituras DESC, l.titulo ASC`
     : `l.leituras DESC, 
