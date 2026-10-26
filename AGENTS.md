@@ -690,6 +690,18 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   2. **Preload de Scripts Críticos:** Inserção de `<link rel="preload" as="script" href="...">` no `<head>` de `public/index.html` para antecipar o streaming e compilação do JavaScript durante a fase de rede do CSS.
 - **Validação:** 356 testes em 68 suítes verdes e `npx tsc --noEmit` limpo.
 
+### 2.43. Cache LRU de Borda no Worker e Modularização de `livrosController.js` (Express)
+- **Objetivos Executados:**
+  1. **Cache de Consultas de Livros em Memória (LRU de Borda):** Implementação de `EdgeLRUCache` em `workers/src/utils/lruCache.ts` com capacidade para 200 entradas e TTL de 60 segundos. As consultas paginadas idênticas em `GET /api/livros` respondem em < 5ms com `X-Cache: HIT`, poupando leituras na D1. O cache é automaticamente invalidado (`clear()`) em operações de mutação (`POST`, `PUT`, `DELETE /api/livros`).
+  2. **Modularização do Backend Express (`src/controllers/livrosController.js`):** O controller monolítico (670 linhas) foi decomposto em sub-módulos especializados com responsabilidade única:
+     - `src/controllers/livros/livrosHelpers.js`: Normalização de capas, URLs seguras e cache de dimensões estáticas.
+     - `src/controllers/livros/livrosListarController.js`: Listagem paginada, filtros e busca FTS5.
+     - `src/controllers/livros/livrosLeituraController.js`: Leitura, redirecionamento 302 seguro e detalhes por ID.
+     - `src/controllers/livros/livrosMutacaoController.js`: Criação, atualização e remoção com checagens de integridade.
+     - `src/controllers/livros/livrosDestaquesController.js`: Mostruário de destaques e badges dinâmicos.
+     - `src/controllers/livrosController.js`: Fachada unificada exportando todas as funções e constantes para 100% de retrocompatibilidade.
+- **Validação:** 361 testes em 68 suítes passando (100% verde) e TypeScript estrito sem erros (`npx tsc --noEmit`).
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:

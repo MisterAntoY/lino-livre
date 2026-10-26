@@ -48,6 +48,7 @@ import { cursosRouter } from './routes/cursos';
 import { podcastsRouter } from './routes/podcasts';
 import { obterRepo, repoSupabase, obterRepoSupabase, ehErroDeCota, respostaDegradada } from './utils/repoHelper';
 import { escaparLike, normalizarCapaUrl, normalizarUrlSegura, tabelaExiste } from './utils/sqlHelpers';
+import { livrosLruCache } from './utils/lruCache';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -509,6 +510,13 @@ app.get('/api/livros', async (c) => {
     });
   }
   const offset = (numPage - 1) * numLimit;
+  const cacheKey = `${numPage}:${numLimit}:${busca || ''}:${categoria_id || ''}:${autor_id || ''}:${idioma || ''}:${formato || ''}:${licenca || ''}:${fonte || ''}:${fonte_slug || ''}:${colecao || ''}`;
+  const hit = livrosLruCache.get(cacheKey);
+  if (hit) {
+    c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
+    c.header('X-Cache', 'HIT');
+    return c.json(hit);
+  }
 
   try {
     const { d1, supabase, backendMode } = obterRepo(c);
@@ -529,8 +537,10 @@ app.get('/api/livros', async (c) => {
           colecao
         });
         edgeLoadBalancer.recordSuccess('supabase', 0);
+        livrosLruCache.set(cacheKey, payload);
         c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
         c.header('X-Data-Backend', 'supabase');
+        c.header('X-Cache', 'MISS');
         return c.json(payload);
       } catch (err) {
         edgeLoadBalancer.recordFailure('supabase', err);
@@ -765,8 +775,7 @@ app.get('/api/livros', async (c) => {
       }
     }
 
-    c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
-    return c.json({
+    const payload = {
       page: numPage,
       pagina: numPage,
       limit: numLimit,
@@ -775,7 +784,11 @@ app.get('/api/livros', async (c) => {
       total_pages: Math.ceil(total / numLimit),
       total_paginas: Math.ceil(total / numLimit),
       data: livros
-    });
+    };
+    livrosLruCache.set(cacheKey, payload);
+    c.header('Cache-Control', 'public, max-age=600, stale-while-revalidate=3600');
+    c.header('X-Cache', 'MISS');
+    return c.json(payload);
   } catch (err: any) {
     edgeLoadBalancer.recordFailure('d1', err);
     // Recupera assim que a cota reiniciar (00:00 UTC), sem ficar preso em cache.
@@ -1200,6 +1213,7 @@ app.post('/api/livros', verificarAdminWorker, async (c) => {
     const novo = await db.prepare('SELECT * FROM livros WHERE id = ?').bind(livroId).first<any>();
     novo.links = (await db.prepare('SELECT * FROM links_livros WHERE livro_id = ?').bind(livroId).all()).results;
     await registrarMutacaoAcervo(db);
+    livrosLruCache.clear();
 
     return c.json(novo, 201);
   } catch (err: any) {
@@ -1269,6 +1283,7 @@ app.put('/api/livros/:id', verificarAdminWorker, async (c) => {
     ).run();
 
     const atualizado = await db.prepare('SELECT * FROM livros WHERE id = ?').bind(id).first();
+    livrosLruCache.clear();
     return c.json(atualizado);
   } catch (err: any) {
     console.error('[worker]', err); return c.json({ erro: 'Erro ao atualizar livro' }, 500);
@@ -1282,6 +1297,7 @@ app.delete('/api/livros/:id', verificarAdminWorker, async (c) => {
     const res = await db.prepare('DELETE FROM livros WHERE id = ?').bind(id).run();
     if (res.meta.changes === 0) return c.json({ erro: 'Livro não encontrado' }, 404);
     await registrarMutacaoAcervo(db);
+    livrosLruCache.clear();
     return c.json({ mensagem: 'Livro e links removidos com sucesso' });
   } catch (err: any) {
     console.error('[worker]', err); return c.json({ erro: 'Erro ao remover livro' }, 500);

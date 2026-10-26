@@ -4525,13 +4525,13 @@ html[lang^="zh"] .course-title {
 
 .destaque-badge-tag {
   position: absolute;
-  top: 0.65rem;
-  left: 0.65rem;
+  top: 0.5rem;
+  left: 0.5rem;
   background: #0f172a;
   color: #f8fafc;
-  font-size: 0.7rem;
+  font-size: 0.625rem;
   font-weight: 600;
-  padding: 0.2rem 0.55rem;
+  padding: 0.12rem 0.4rem;
   border-radius: var(--radius-sm);
   border: 1px solid #334155;
   z-index: 2;

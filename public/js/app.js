@@ -606,9 +606,9 @@ const app = {
       if (isTop100Book) {
         if (String(l.fonte_id_externo).startsWith('world-top100-')) {
           const rankNum = String(l.fonte_id_externo).replace('world-top100-', '');
-          top100BadgeHtml = `<span class="top100-badge" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:600; border-radius:4px;">#${rankNum} Mais Lido do Mundo</span>`;
+          top100BadgeHtml = `<span class="top100-badge" style="background:#fef3c7; color:#78350f; border:1px solid #fde68a; font-size:0.625rem; padding:0.1rem 0.35rem; margin-left:0.2rem; font-weight:700; border-radius:3px; display:inline-block; vertical-align:middle;">#${rankNum} Mais Lido</span>`;
         } else {
-          top100BadgeHtml = `<span class="top100-badge" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; font-size:0.7rem; padding:0.15rem 0.5rem; margin-left:0.25rem; font-weight:600; border-radius:4px;">Clássico Universal</span>`;
+          top100BadgeHtml = `<span class="top100-badge" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; font-size:0.625rem; padding:0.1rem 0.35rem; margin-left:0.2rem; font-weight:700; border-radius:3px; display:inline-block; vertical-align:middle;">Clássico Universal</span>`;
         }
       }
 
