@@ -669,6 +669,18 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   5. **Camada de Repositório Supabase Estendida (`workers/src/supabase.ts`):** Adicionados métodos `autores()` e `autor(id)` para suporte integral a fallback de metadados de autores via PostgREST.
 - **Validação de Testes:** Suíte dedicada [`test/automated_fallback_d1_supabase.test.js`](file:///Users/mendes/Desktop/I%20am%20Abc/test/automated_fallback_d1_supabase.test.js) (6 testes cobrindo fallback D1→Supabase, Supabase→D1 e abertura de circuito por cota). Suíte geral atualizada para **356 testes em 68 suítes (100% verde)**.
 
+### 2.41. Modularização do Cloudflare Worker (Decomposição de Rotas e Utilitários de Repositório)
+- **Objetivo:** Continuar a modularização do arquivo monolítico `workers/src/index.ts` (redução de 2.660 para 1.956 linhas, −704 linhas), extraindo domínios específicos para módulos dedicados com paridade estrita.
+- **Estruturas Criadas:**
+  1. `workers/src/utils/repoHelper.ts`: `obterRepo`, `repoSupabase`, `obterRepoSupabase`, `ehErroDeCota` e `respostaDegradada`.
+  2. `workers/src/utils/sqlHelpers.ts`: `escaparLike`, `normalizarCapaUrl`, `normalizarUrlSegura` e `tabelaExiste`.
+  3. `workers/src/routes/categorias.ts`: Operações CRUD e listagem com contadores de categorias (`GET/POST/PUT/DELETE /api/categorias`).
+  4. `workers/src/routes/autores.ts`: Operações CRUD e listagem de autores com contadores e livros (`GET/POST/PUT/DELETE /api/autores`).
+  5. `workers/src/routes/fontes.ts`: Listagem de fontes abertas e fila assíncrona de importação (`GET /api/fontes`, `POST/GET /api/import`).
+  6. `workers/src/routes/cursos.ts`: Catálogo de cursos, roadmaps, detalhes, acesso com redirecionamento 302 seguro e administração (`GET/POST/DELETE /api/cursos`, `/api/roadmaps`, `/acessar`).
+  7. `workers/src/routes/podcasts.ts`: Catálogo de podcasts Spotify, episódios recentes, episódios por slug/ID e incremento de reproduções (`GET/POST /api/podcasts`).
+- **Validação:** 356 testes em 68 suítes passando (100% verde) e TypeScript estrito sem erros (`npx tsc --noEmit`).
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:
@@ -772,7 +784,7 @@ Ambos os backends aplicam:
 ## 💻 6. Guia Rápido de Comandos para Agentes
 
 ```bash
-# Executar a suíte completa de testes automatizados (341 testes em 66 suítes)
+# Executar a suíte completa de testes automatizados (356 testes em 68 suítes)
 npm test
 
 # Executar diagnóstico completo de tráfego e consumo de cotas (D1 e Supabase)
@@ -816,7 +828,7 @@ node scripts/aplicar_indices_d1_auto.mjs
 ---
 
 ## 🔒 7. Compromisso Contínuo dos Agentes
-- **Nunca** quebre os 341 testes automatizados em 66 suítes.
+- **Nunca** quebre os 356 testes automatizados em 68 suítes.
 - **Sempre** preserve a hierarquia de marca **LinoDigital (mãe) · Lino Livre (produto)** em todas as superfícies.
 - **Nunca** hospede arquivos de mídia locais.
 - **Sempre** rode `npm test` e `npx tsc --noEmit` antes de qualquer commit.
