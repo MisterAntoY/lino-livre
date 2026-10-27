@@ -57,25 +57,82 @@
         "alternateName": ["Lino Livre", "LinoDigital — Lino Livre"],
         "description": "LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital gratuita e legal de livros de África e da lusofonia, com obras de domínio público, Creative Commons e cursos gratuitos.",
         "inLanguage": ["pt-AO", "pt-BR", "pt-PT", "en", "es", "fr", "de", "zh"],
-        "publisher": { "@id": "https://lino-livre.linolivre.workers.dev/#organization" }
+        "publisher": { "@id": "https://lino-livre.linolivre.workers.dev/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://lino-livre.linolivre.workers.dev/?busca={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
       },
       {
-        "@type": "Organization",
+        "@type": ["Organization", "EducationalOrganization", "Library"],
         "@id": "https://lino-livre.linolivre.workers.dev/#organization",
         "name": "LinoDigital",
         "alternateName": "Lino Livre",
         "url": "https://lino-livre.linolivre.workers.dev/",
-        "logo": "https://lino-livre.linolivre.workers.dev/img/icons/icon-512.png",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://lino-livre.linolivre.workers.dev/img/icons/icon-512.png",
+          "width": 512,
+          "height": 512
+        },
         "image": "https://lino-livre.linolivre.workers.dev/img/brand/linodigital-og.jpg",
         "description": "LinoDigital é a marca institucional de tecnologia e conhecimento livre. O Lino Livre é a sua biblioteca digital intermediária e motor de busca de livros livres e legais: apenas metadados e ligações externas, sem armazenamento de ficheiros.",
-        "sameAs": ["https://github.com/MisterAntoY/lino-livre"]
+        "sameAs": ["https://github.com/MisterAntoY/lino-livre"],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "bv6alblu6@mozmail.com",
+          "url": "https://lino-livre.linolivre.workers.dev/comunidade",
+          "availableLanguage": ["pt", "en", "es", "fr", "de", "zh"]
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://lino-livre.linolivre.workers.dev/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Início",
+            "item": "https://lino-livre.linolivre.workers.dev/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Livros Digitais",
+            "item": "https://lino-livre.linolivre.workers.dev/#livros"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Cursos Gratuitos",
+            "item": "https://lino-livre.linolivre.workers.dev/#cursos"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "Roadmaps & Trilhas",
+            "item": "https://lino-livre.linolivre.workers.dev/#roadmaps"
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "name": "Podcasts & Audiolivros",
+            "item": "https://lino-livre.linolivre.workers.dev/#podcasts"
+          }
+        ]
       },
       {
         "@type": "CollectionPage",
         "@id": "https://lino-livre.linolivre.workers.dev/#catalogo",
         "name": "Catálogo de livros livres e cursos gratuitos",
+        "url": "https://lino-livre.linolivre.workers.dev/#catalogo",
         "isPartOf": { "@id": "https://lino-livre.linolivre.workers.dev/#website" },
-        "about": ["Literatura africana", "Domínio público", "Educação", "Cursos gratuitos"],
+        "about": ["Literatura africana", "Domínio público", "Educação", "Cursos gratuitos", "Tecnologia"],
         "inLanguage": "pt-AO"
       }
     ]
@@ -156,6 +213,65 @@
     ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
     ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
     ::selection{background:rgba(51,65,85,.16);color:var(--text-main)}
+    .btn-agendado{visibility:hidden;pointer-events:none}
+    .nav-tabs-section{margin-top:1rem;margin-bottom:.5rem}
+    .nav-tabs{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.5rem;-webkit-overflow-scrolling:touch}
+    .tab-btn{padding:.65rem 1.25rem;border-radius:var(--radius-md);border:1px solid var(--border);background:#fff;font-weight:600;font-size:.875rem;cursor:pointer;white-space:nowrap;font-family:inherit;color:var(--text-main)}
+    .tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .goal-badge{display:inline-flex;align-items:center;padding:.35rem .85rem;border-radius:999px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;margin-bottom:.85rem}
+    .goal-live-counter{flex:0 0 auto}
+    .goal-counter-box{background:#fafaf9;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 1.4rem;text-align:right}
+    .counter-label{display:block;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);margin-bottom:.25rem}
+    .counter-number-row{display:flex;align-items:baseline;justify-content:flex-end;gap:.35rem}
+    .counter-odometer{font-size:2rem;font-weight:800;letter-spacing:-.03em;color:var(--text-main)}
+    .counter-divider{font-size:1.35rem;color:var(--text-muted);font-weight:300}
+    .counter-target{font-size:1.2rem;font-weight:600;color:var(--text-muted)}
+    .counter-pct{display:inline-block;font-size:.8rem;font-weight:700;color:#059669;margin-top:.3rem;background:#ecfdf5;padding:.2rem .55rem;border-radius:999px}
+    .goal-progress-wrapper{margin:1.5rem 0}
+    .goal-progress-bar-bg{height:12px;background:#e2e8f0;border-radius:999px;overflow:hidden;position:relative}
+    .goal-progress-bar-fill{height:100%;background:linear-gradient(90deg,#059669,#10b981);border-radius:999px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+    .goal-milestones{display:flex;justify-content:space-between;margin-top:.75rem;position:relative}
+    .milestone-step{display:flex;flex-direction:column;align-items:center;font-size:.75rem;color:var(--text-muted);font-weight:600;position:relative}
+    .milestone-dot{width:10px;height:10px;border-radius:50%;background:#cbd5e1;margin-bottom:.35rem;border:2px solid #fff}
+    .milestone-step.reached .milestone-dot{background:#10b981}
+    .milestone-step.active .milestone-dot{background:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.2)}
+    .milestone-tag{position:absolute;top:100%;white-space:nowrap;font-size:.68rem;background:#dbeafe;color:#1e40af;padding:.15rem .45rem;border-radius:999px;font-weight:700}
+    .goal-footer{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)}
+    .goal-stats-grid{display:flex;gap:.75rem;flex-wrap:wrap}
+    .goal-stat-pill{display:flex;align-items:center;gap:.65rem;background:#fafaf9;border:1px solid var(--border);padding:.55rem .95rem;border-radius:var(--radius-sm)}
+    .stat-val{display:block;font-size:1.05rem;font-weight:800;color:var(--text-main);line-height:1.1}
+    .stat-lbl{display:block;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:600}
+    .goal-actions{display:flex;gap:.65rem;flex-wrap:wrap}
+    .btn-goal-contrib{background:var(--primary);color:#fff;border-radius:var(--radius-sm);font-weight:600;padding:.55rem 1rem;font-size:.85rem;border:none;cursor:pointer}
+    .btn-goal-share{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;padding:.55rem 1rem;font-size:.85rem;color:var(--text-main);cursor:pointer}
+    .btn-goal-whatsapp{background:#25d366;color:#fff;border-radius:var(--radius-sm);font-weight:600;padding:.55rem 1rem;font-size:.85rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+    .destaques-section{margin-bottom:2rem}
+    .destaques-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.5rem}
+    .destaques-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+    .destaques-badge{display:inline-flex;align-items:center;padding:.3rem .75rem;border-radius:999px;font-size:.75rem;font-weight:700;background:#fef3c7;color:#92400e;border:1px solid #fde68a;margin-bottom:.5rem}
+    .destaques-title{font-size:1.45rem;font-weight:800;color:var(--text-main);margin:0 0 .35rem}
+    .destaques-subtitle{font-size:.88rem;color:var(--text-muted);margin:0;max-width:700px}
+    .destaques-tabs-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+    .pill-destaque-tab{border:1px solid var(--border);background:#fff;padding:.4rem .9rem;border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;cursor:pointer;color:var(--text-muted);font-family:inherit}
+    .pill-destaque-tab.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
+    .destaques-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;min-height:480px}
+    .destaque-book-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;position:relative;box-shadow:var(--shadow-card)}
+    .destaque-cover-wrap{position:relative;width:100%;aspect-ratio:2/2.85;background:#f1f5f9;overflow:hidden}
+    .destaque-cover{width:100%;height:100%;object-fit:cover}
+    .skeleton-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;position:relative;min-height:440px}
+    .skeleton-cover{width:100%;aspect-ratio:2/2.9;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
+    .skeleton-text{height:16px;margin:12px;border-radius:4px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    @media (max-width:768px){
+      .goal-scoreboard-card{padding:1.4rem 1.25rem}
+      .goal-title{font-size:1.45rem}
+      .goal-counter-box{min-width:100%;text-align:left}
+      .counter-number-row{justify-content:flex-start}
+      .destaques-card{padding:1.25rem 1rem}
+      .destaques-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;min-height:340px}
+      .skeleton-card{min-height:330px}
+      .books-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;min-height:400px}
+    }
   </style>
   
   <!-- Full CSS (render-blocking, 14 KB gzip): um único layout em vez de

@@ -15,6 +15,24 @@ export function timingSafeEqualStr(a: string, b: string): boolean {
 }
 
 // ────────────────────────────────────────────────────────────
+// Redirecionamento HTTP -> HTTPS (Lighthouse PWA / Segurança)
+// ────────────────────────────────────────────────────────────
+export const redirecionarHttps: MiddlewareHandler<{ Bindings: Bindings }> = async (c, next) => {
+  const url = new URL(c.req.url);
+  const proto = c.req.header('x-forwarded-proto');
+  if (
+    (url.protocol === 'http:' || proto === 'http') &&
+    url.hostname !== 'localhost' &&
+    url.hostname !== '127.0.0.1' &&
+    !url.hostname.endsWith('.internal')
+  ) {
+    url.protocol = 'https:';
+    return c.redirect(url.toString(), 301);
+  }
+  await next();
+};
+
+// ────────────────────────────────────────────────────────────
 // Cabeçalhos de segurança HTTP globais
 // ────────────────────────────────────────────────────────────
 export const cabecalhosSeguranca: MiddlewareHandler<{ Bindings: Bindings }> = async (c, next) => {

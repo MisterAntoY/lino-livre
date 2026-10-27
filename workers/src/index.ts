@@ -11,6 +11,7 @@ import { corsMiddleware } from './middlewares/cors';
 import { cacheDeBorda } from './middlewares/cache';
 import {
   cabecalhosSeguranca,
+  redirecionarHttps,
   wafSeguranca,
   rateLimitGlobal,
   verificarAdminWorker,
@@ -64,6 +65,7 @@ const app = new Hono<{ Bindings: Bindings }>();
 // cron) continuam permitidos — a autorização real é a chave administrativa.
 // ────────────────────────────────────────────────────────────
 app.use('/api/*', corsMiddleware);
+app.use('*', redirecionarHttps);
 app.use('*', cabecalhosSeguranca);
 app.use('*', wafSeguranca);
 app.use('/api/*', rateLimitGlobal);

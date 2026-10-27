@@ -29,6 +29,21 @@ if (TRUST_PROXY) {
 // Compressão HTTP (Gzip/Deflate) para economizar dados móveis
 app.use(compression());
 
+// Redirecionamento HTTP -> HTTPS em produção (Lighthouse PWA / Segurança)
+app.use((req, res, next) => {
+  const proto = req.headers['x-forwarded-proto'];
+  const host = req.headers.host || '';
+  if (
+    proto === 'http' &&
+    process.env.NODE_ENV === 'production' &&
+    !host.startsWith('localhost') &&
+    !host.startsWith('127.0.0.1')
+  ) {
+    return res.redirect(301, `https://${host}${req.originalUrl}`);
+  }
+  next();
+});
+
 // ==================== CABEÇALHOS DE SEGURANÇA ====================
 app.use((req, res, next) => {
   // Previne XSS via injecção de HTML/JS em respostas da API
