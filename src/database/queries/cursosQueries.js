@@ -3,7 +3,9 @@
  * Zero dependências de banco e zero I/O — 100% testável.
  */
 
-const { escaparLike } = require('../../utils/sanitizer');
+function escaparLike(valor) {
+  return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
+}
 
 function buildCursosQuery(filtros = {}) {
   const { area, nivel, plataforma, fonte, busca, youtube, certificado, tipo, excluir_roadmaps, licenca } = filtros;

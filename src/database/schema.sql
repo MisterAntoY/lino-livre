@@ -75,9 +75,13 @@ CREATE TABLE IF NOT EXISTS cursos (
     url TEXT NOT NULL,
     licenca TEXT DEFAULT 'gratuito',
     nivel TEXT DEFAULT 'Iniciante',
+    prioridade INTEGER DEFAULT 1,
     descricao TEXT,
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX IF NOT EXISTS idx_cursos_prioridade_id ON cursos(prioridade, id);
+CREATE INDEX IF NOT EXISTS idx_cursos_tipo_prioridade_id ON cursos(tipo, prioridade, id);
 
 -- Tabela Virtual FTS5 para busca textual ultra-rápida
 CREATE VIRTUAL TABLE IF NOT EXISTS livros_fts USING fts5(

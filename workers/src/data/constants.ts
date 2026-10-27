@@ -4,6 +4,8 @@
 
 export const META_GLOBAL_LIVROS = 10000000;
 
+export const LICENCAS_VALIDAS = ['dominio-publico', 'cc0', 'cc-by', 'cc-by-sa', 'cc-by-nc', 'outro'];
+
 export const DIMENSOES_ESTATICAS = {
   fontes: [
     { id: 1, slug: 'wikisource' }, { id: 2, slug: 'gutenberg' }, { id: 3, slug: 'openstax' },

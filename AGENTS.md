@@ -702,6 +702,19 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
      - `src/controllers/livrosController.js`: Fachada unificada exportando todas as funções e constantes para 100% de retrocompatibilidade.
 - **Validação:** 361 testes em 68 suítes passando (100% verde) e TypeScript estrito sem erros (`npx tsc --noEmit`).
 
+### 2.44. Simplificação e Ergonomia do Modo de Leitura Digital (Leitor Imersivo e Sem Firulas)
+- **Diretriz do Usuário:** *"o MODO DE LEITURA ESTÁ BONITO DEMAIS e pouco funcional e eficiente, não inventa a roda"*
+- **Problemas Resolvidos:**
+  1. O leitor anterior abusava de elementos flutuantes (bottom sheet arrastável que cobria as últimas linhas de texto), capitulares fraturadas (`drop-cap` que quebrava palavras e layouts em telas pequenas) e bordas grossas com sombras que reduziam o espaço útil.
+  2. Dificuldade de acompanhar o progresso de leitura em textos longos e ausência de navegação bidirecional por teclado.
+- **Soluções de Engenharia Aplicadas:**
+  1. **Tela Cheia Imersiva:** `#modal-leitor` configurado em `100vw / 100vh` (`100dvh`), eliminando molduras flutuantes.
+  2. **Ergonomia Tipográfica:** Texto delimitado por padrão em `max-width: 68ch` e alinhamento à esquerda natural, eliminando hifenação truncada e drop-caps quebradiços.
+  3. **Barra de Progresso Nativa:** Indicador fino `#reader-progress-bar` no topo com listener passivo de rolagem em tempo real (`{ passive: true }`), sem reflows desnecessários.
+  4. **Menu de Ajustes Direto (`Aa`):** Substituição do painel flutuante inferior por popover limpo superior direito que não obstrui o campo de leitura.
+  5. **Navegação Bidirecional e Atalhos:** Setas do teclado (`ArrowLeft` / `ArrowRight`) avançam ou retrocedem capítulos; atalhos `+` / `-` ajustam o tamanho da fonte; retenção de progresso e capítulo por livro no `localStorage`.
+- **Validação:** Suíte completa mantida 100% verde (388 testes em 77 suítes) e `npx tsc --noEmit` limpo.
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:

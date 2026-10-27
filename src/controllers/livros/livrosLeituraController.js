@@ -4,6 +4,9 @@ const { normalizarCapaUrl, normalizarUrlSegura } = require('./livrosHelpers');
 
 function obterPorId(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID do livro deve ser um número inteiro' });
+    }
     const db = getDatabase();
     const livro = db.prepare(`
       SELECT 
@@ -35,8 +38,11 @@ function obterPorId(req, res) {
 
 function lerRedirect(req, res) {
   try {
-    const db = getDatabase();
     const { id, linkId } = req.params;
+    if (!/^\d+$/.test(id) || !/^\d+$/.test(linkId)) {
+      return res.status(404).json({ erro: 'Parâmetros id e linkId devem ser números inteiros' });
+    }
+    const db = getDatabase();
 
     const link = db.prepare(`
       SELECT ll.*, l.titulo, l.conteudo_texto

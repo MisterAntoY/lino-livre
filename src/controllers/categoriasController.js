@@ -34,6 +34,9 @@ function listar(req, res) {
 
 function obterPorId(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID da categoria deve ser um número inteiro' });
+    }
     const db = getDatabase();
     const categoria = db.prepare('SELECT * FROM categorias WHERE id = ?').get(req.params.id);
     if (!categoria) {
@@ -67,6 +70,9 @@ function criar(req, res) {
 
 function atualizar(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID da categoria deve ser um número inteiro' });
+    }
     const { nome, descricao } = req.body || {};
     if (!nome || !nome.trim()) {
       return res.status(400).json({ erro: 'O nome da categoria é obrigatório' });
@@ -89,6 +95,9 @@ function atualizar(req, res) {
 
 function remover(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID da categoria deve ser um número inteiro' });
+    }
     const db = getDatabase();
     const result = db.prepare('DELETE FROM categorias WHERE id = ?').run(req.params.id);
     if (result.changes === 0) {

@@ -61,7 +61,7 @@ cursosRouter.get('/api/cursos', async (c) => {
           params.push(termo, termo, termo);
         }
 
-        query += " ORDER BY CASE WHEN plataforma = 'Guia de TI' THEN 0 ELSE 1 END, id ASC";
+        query += " ORDER BY prioridade ASC, id ASC";
 
         const limitParam = filtros.limit || filtros.limite;
         const pageParam = filtros.page || filtros.pagina;
@@ -115,7 +115,7 @@ cursosRouter.get('/api/roadmaps', async (c) => {
           params.push(termo, termo, termo);
         }
 
-        query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
+        query += " ORDER BY prioridade ASC, titulo ASC";
 
         const limitParam = filtros.limit || filtros.limite;
         const pageParam = filtros.page || filtros.pagina;
@@ -205,7 +205,8 @@ cursosRouter.get('/api/cursos/:id/acessar', async (c) => {
 
 cursosRouter.post('/api/cursos', verificarAdminWorker, async (c) => {
   try {
-    const { titulo, area, plataforma, url, licenca, nivel, descricao } = await c.req.json<any>();
+    const body = await c.req.json<any>();
+    const { titulo, area, plataforma, url, licenca, nivel, descricao, prioridade } = body || {};
     if (!titulo || !area || !plataforma || !url) {
       return c.json({ erro: 'Campos obrigatórios: titulo, area, plataforma, url' }, 400);
     }
@@ -218,13 +219,16 @@ cursosRouter.post('/api/cursos', verificarAdminWorker, async (c) => {
       return c.json({ erro: 'URL do curso inválida ou não autorizada' }, 400);
     }
 
+    const prioridadeCalc = (plataforma.includes('Guia de TI') || plataforma.includes('Roadmap.sh')) ? 0 : (prioridade !== undefined ? parseInt(prioridade, 10) : 1);
     const db = c.env.DB;
     const res = await db.prepare(`
-      INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, prioridade, descricao)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       titulo.trim(), area.trim(), plataforma.trim(), urlValida,
-      licenca || 'gratuito', nivel || 'Iniciante', descricao ? descricao.trim() : null
+      licenca || 'gratuito', nivel || 'Iniciante',
+      Number.isInteger(prioridadeCalc) ? prioridadeCalc : 1,
+      descricao ? descricao.trim() : null
     ).run();
 
     const novo = await db.prepare('SELECT * FROM cursos WHERE id = ?').bind(res.meta.last_row_id).first();

@@ -167,4 +167,15 @@ describe('Proxy de Capas Externas (/api/capas)', () => {
     const res = await pedir('/api/capas?u=' + encodeURIComponent('https://www.gutenberg.org/redirecionar-externo.jpg'));
     assert.equal(res.status, 403);
   });
+
+  test('12. Intercepta africanstorybook.org e redireciona 302 para capa fallback local', async () => {
+    const res = await pedir('/api/capas?u=' + encodeURIComponent('http://africanstorybook.org/illustrations/covers/18187.png'));
+    assert.equal(res.status, 302);
+    assert.equal(res.headers.get('location'), '/capas/dom_casmurro.jpg');
+  });
+
+  test('13. Faz auto-upgrade de protocolo http para https em origens permitidas', async () => {
+    const res = await pedir('/api/capas?u=' + encodeURIComponent('http://www.gutenberg.org/cache/epub/10/pg10.cover.medium.jpg'));
+    assert.equal(res.status, 200);
+  });
 });

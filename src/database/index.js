@@ -46,6 +46,12 @@ function initDatabase(dbPath = null, setAsInstance = true) {
     if (colunasCursos.length > 0 && !colunasCursos.some(c => c.name === 'tipo')) {
       db.exec("ALTER TABLE cursos ADD COLUMN tipo TEXT DEFAULT 'curso';");
     }
+    if (colunasCursos.length > 0 && !colunasCursos.some(c => c.name === 'prioridade')) {
+      db.exec("ALTER TABLE cursos ADD COLUMN prioridade INTEGER DEFAULT 1;");
+      db.exec("UPDATE cursos SET prioridade = 0 WHERE plataforma LIKE '%Guia de TI%';");
+      db.exec("UPDATE cursos SET prioridade = 0 WHERE tipo = 'roadmap' AND plataforma LIKE '%Roadmap.sh%';");
+      db.exec("UPDATE cursos SET prioridade = 1 WHERE tipo = 'roadmap' AND plataforma LIKE '%Trilha Info%';");
+    }
   } catch (_) {}
 
   // Carregar e executar o esquema

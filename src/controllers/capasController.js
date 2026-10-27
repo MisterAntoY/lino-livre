@@ -71,6 +71,9 @@ async function resolverHostSeguro(hostname) {
 function validarAlvoCapa(url) {
   const validado = validarUrlRedirecionamento(url);
   const parsed = new URL(validado);
+  if (parsed.protocol === 'http:') {
+    parsed.protocol = 'https:';
+  }
   if (parsed.protocol !== 'https:') {
     const erro = new Error('Apenas https é permitido para capas');
     erro.codigoHttp = 403;
@@ -113,6 +116,12 @@ async function proxy(req, res) {
   }
   if (bruto.length > 1000) {
     return res.status(400).json({ erro: 'URL de capa demasiado longa' });
+  }
+
+  // African Storybook tem certificado SSL expirado e ficheiros inexistentes na origem:
+  // redirecionar para capa padrão local segura (sem sair da nossa origem).
+  if (bruto.toLowerCase().includes('africanstorybook.org')) {
+    return res.redirect(302, '/capas/dom_casmurro.jpg');
   }
 
   let alvo;

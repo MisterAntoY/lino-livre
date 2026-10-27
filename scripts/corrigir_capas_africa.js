@@ -20,6 +20,8 @@ for (const [base, arquivoReal] of mapaArquivos.entries()) {
   }
 }
 
-const outputPath = path.join(__dirname, '../atualizar_capas_africa.sql');
+const sqlDir = path.join(__dirname, 'sql');
+if (!fs.existsSync(sqlDir)) fs.mkdirSync(sqlDir, { recursive: true });
+const outputPath = path.join(sqlDir, 'atualizar_capas_africa.sql');
 fs.writeFileSync(outputPath, sql, 'utf8');
-console.log(`Gerado atualizar_capas_africa.sql com ${mapaArquivos.size} verificações.`);
+console.log(`Gerado scripts/sql/atualizar_capas_africa.sql com ${mapaArquivos.size} verificações.`);

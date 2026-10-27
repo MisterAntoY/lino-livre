@@ -172,8 +172,10 @@ async function verifyAll() {
   console.log(`Capas Falhas:    ${failed.length} (${((failed.length / books.length) * 100).toFixed(1)}%)`);
   console.log('=============================================\n');
 
+  const relatorioDir = path.join(__dirname, '../docs/auditorias');
+  if (!fs.existsSync(relatorioDir)) fs.mkdirSync(relatorioDir, { recursive: true });
   fs.writeFileSync(
-    path.join(__dirname, '../relatorio_verificacao_capas.json'),
+    path.join(relatorioDir, 'relatorio_verificacao_capas.json'),
     JSON.stringify({ total: books.length, passed: passed.length, failed: failed.length, failures: failed, results }, null, 2)
   );
 

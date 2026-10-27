@@ -1,9 +1,14 @@
 const { getDatabase } = require('../database');
-const { escaparLike } = require('../utils/sanitizer');
 
 const LIMITE_AUTORES = 100;
 const LIMITE_MAXIMO = 500;
 const PAGINA_MAXIMA = 2000;
+
+// Escapa os metacaracteres de LIKE. Sem isto, `busca=%a%b%c...` transforma o
+// filtro num varrimento com múltiplos wildcards (DoS de CPU na base de dados).
+function escaparLike(valor) {
+  return String(valor || '').slice(0, 120).replace(/[\\%_]/g, '\\$&');
+}
 
 function listar(req, res) {
   try {

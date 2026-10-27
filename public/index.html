@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
   <!-- ═══════════ SEO ═══════════ -->
   <title>LinoDigital — Lino Livre | Biblioteca digital gratuita de livros de África e da lusofonia</title>
@@ -1007,27 +1007,90 @@
         </div>
 
         <div class="reader-header-actions">
-          <button id="btn-toggle-painel" class="reader-action-btn" data-acao="togglePainelAjustes" data-i18n-title="ui.reader.settingsTitle" title="Ajustes de Leitura e Conforto">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <button id="btn-toggle-painel" class="reader-action-btn" data-acao="togglePainelAjustes" data-i18n-title="ui.reader.settingsTitle" title="Ajustes de Leitura (Aa)">
+            <span class="btn-aa-icon">Aa</span>
           </button>
           <a id="btn-leitor-pdf" class="btn-pdf-header hidden" href="#leitor" target="_blank" rel="noopener noreferrer" title="Abrir Edição Oficial Completa (PDF)" data-i18n-title="ui.reader.officialPdf">
              <span class="btn-pdf-label" data-i18n="ui.reader.officialPdf">PDF Oficial</span>
           </a>
-          <button class="reader-action-btn" data-acao="fecharModais" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor"></button>
+          <button class="reader-action-btn" data-acao="fecharModais" data-i18n-title="ui.reader.close" data-i18n-aria="ui.reader.close" title="Fechar Leitor" aria-label="Fechar Leitor">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
         </div>
+
+        <!-- Painel de Conforto Visual (Menu Suspenso no Topo Direito) -->
+        <div id="painel-ajustes-leitura" class="reader-bottom-panel collapsed" data-i18n-aria="ui.reader.settingsLabel" aria-label="Ajustes de leitura">
+          <div class="panel-handle-bar" data-acao="togglePainelAjustes">
+            <span class="panel-drag-pill"></span>
+          </div>
+          
+          <div class="panel-controls-grid">
+            <!-- 1. Modos de Fundo / Tom do Papel -->
+            <div class="panel-control-row">
+              <span class="control-label" data-i18n="ui.reader.paperTone">Tom</span>
+              <div class="paper-swatches">
+                <button type="button" id="swatch-creme" class="paper-swatch swatch-creme active" data-acao="mudarTemaPapel" data-arg="creme" data-i18n-title="ui.reader.creamTitle" title="Creme Natural">
+                  <span data-i18n="ui.reader.cream">Creme</span>
+                </button>
+                <button type="button" id="swatch-sepia" class="paper-swatch swatch-sepia" data-acao="mudarTemaPapel" data-arg="sepia" data-i18n-title="ui.reader.sepiaTitle" title="Sépia Acolhedor">
+                  <span data-i18n="ui.reader.sepia">Sépia</span>
+                </button>
+                <button type="button" id="swatch-noturno" class="paper-swatch swatch-noturno" data-acao="mudarTemaPapel" data-arg="noturno" data-i18n-title="ui.reader.nightTitle" title="Modo Noturno">
+                  <span data-i18n="ui.reader.night">Noite</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. Tamanho da Fonte com Stepper Direto -->
+            <div class="panel-control-row">
+              <span class="control-label" data-i18n="ui.reader.fontSize">Tamanho</span>
+              <div class="font-stepper">
+                <button type="button" class="btn-stepper" data-acao="alterarFonte" data-arg="-2" data-i18n-title="ui.reader.fontDown" title="Diminuir fonte">A−</button>
+                <span id="valor-fonte-indicador" class="stepper-value">20</span>
+                <button type="button" class="btn-stepper" data-acao="alterarFonte" data-arg="2" data-i18n-title="ui.reader.fontUp" title="Aumentar fonte">A+</button>
+              </div>
+            </div>
+
+            <!-- 3. Alinhamento de Texto -->
+            <div class="panel-control-row">
+              <span class="control-label" data-i18n="ui.reader.align">Alinhamento</span>
+              <div class="alignment-buttons">
+                <button type="button" class="btn-align active" data-align="left" data-acao="mudarAlinhamento" data-arg="left" data-i18n-title="ui.reader.alignLeft" title="Alinhar à Esquerda">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                </button>
+                <button type="button" class="btn-align" data-align="justify" data-acao="mudarAlinhamento" data-arg="justify" data-i18n-title="ui.reader.alignJustify" title="Justificado">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4. Iluminação / Brilho Suave -->
+            <div class="panel-control-row">
+              <span class="control-label" data-i18n="ui.reader.brightness">Brilho</span>
+              <div class="brightness-slider-container">
+                <input type="range" id="slider-brilho" min="0.6" max="1.2" step="0.05" value="1" data-acao="ajustarBrilho" data-le-valor="1" data-evento="input" data-i18n-aria="ui.reader.brightnessAria" aria-label="Ajuste de brilho">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Progresso de Leitura -->
+      <div class="reader-progress-track" aria-hidden="true">
+        <div id="reader-progress-bar" class="reader-progress-fill"></div>
       </div>
 
       <!-- Barra de Navegação de Capítulos -->
       <div id="reader-chapter-bar" class="reader-chapter-bar hidden">
         <button id="btn-cap-anterior" class="btn-cap-nav" data-acao="capituloAnterior" title="Capítulo Anterior">
-           <span class="cap-nav-text">Anterior</span>
+           <span class="cap-nav-text">← Anterior</span>
         </button>
         <div class="chapter-select-wrapper">
           <select id="leitor-capitulos-select" class="chapter-nav-select" data-acao="mudarCapituloPeloSelect" data-le-valor="1" data-evento="change" aria-label="Selecionar capítulo">
           </select>
         </div>
         <button id="btn-cap-proximo" class="btn-cap-nav" data-acao="proximoCapitulo" title="Próximo Capítulo">
-          <span class="cap-nav-text">Próximo</span>
+          <span class="cap-nav-text">Próximo →</span>
         </button>
       </div>
 
@@ -1055,85 +1118,27 @@
       <!-- Área de Leitura Principal -->
       <div class="reader-body" id="reader-body-scroll">
         <div class="reader-content font-serif" id="leitor-texto">
-          <!-- Conteúdo gerado dinamicamente com capitular e parágrafos estruturados -->
+          <!-- Conteúdo gerado dinamicamente -->
         </div>
 
-        <!-- Ação de Avanço no Fim do Capítulo -->
+        <!-- Ação de Navegação no Fim do Capítulo -->
         <div id="leitor-proximo-cap-container" class="next-chapter-action hidden">
+          <button id="btn-voltar-cap-fim" class="btn-next-cap" data-acao="capituloAnterior" title="Capítulo Anterior">
+            ← Capítulo Anterior
+          </button>
           <button id="btn-avancar-proximo-cap" class="btn-next-cap" data-acao="proximoCapitulo">
-            Avançar para o Próximo Capítulo
+            Próximo Capítulo →
           </button>
         </div>
 
         <!-- Indicador Sutil no Rodapé da Leitura -->
         <div class="reader-footer-note">
-          <span> Modo Leitura Ultraleve • Obras de domínio público para leitura contínua no navegador.</span>
+          <span>Modo Leitura • Domínio público e acesso livre. Use as setas do teclado (← e →) para mudar de capítulo.</span>
         </div>
       </div>
 
-      <!-- Painel Flutuante de Conforto Visual (Bottom Sheet / Inicia Recolhido) -->
-      <div id="painel-ajustes-leitura" class="reader-bottom-panel collapsed" data-i18n-aria="ui.reader.settingsLabel" aria-label="Ajustes de leitura">
-        <div class="panel-handle-bar" data-acao="togglePainelAjustes">
-          <span class="panel-drag-pill"></span>
-        </div>
-        
-        <div class="panel-controls-grid">
-          <!-- 1. Controle de Luminosidade / Brilho -->
-          <div class="panel-control-row">
-            <span class="control-label" data-i18n="ui.reader.brightness">Iluminação</span>
-            <div class="brightness-slider-container">
-              <span class="sun-icon min"></span>
-              <input type="range" id="slider-brilho" min="0.4" max="1" step="0.05" value="1" data-acao="ajustarBrilho" data-le-valor="1" data-evento="input" data-i18n-aria="ui.reader.brightnessAria" aria-label="Ajuste de brilho">
-              <span class="sun-icon max"></span>
-            </div>
-          </div>
-
-          <!-- 2. Modos de Fundo / Tom do Papel -->
-          <div class="panel-control-row">
-            <span class="control-label" data-i18n="ui.reader.paperTone">Tom do Papel</span>
-            <div class="paper-swatches">
-              <button type="button" id="swatch-creme" class="paper-swatch swatch-creme active" data-acao="mudarTemaPapel" data-arg="creme" data-i18n-title="ui.reader.creamTitle" title="Creme Natural">
-                <span data-i18n="ui.reader.cream">Creme</span>
-              </button>
-              <button type="button" id="swatch-sepia" class="paper-swatch swatch-sepia" data-acao="mudarTemaPapel" data-arg="sepia" data-i18n-title="ui.reader.sepiaTitle" title="Sépia Acolhedor">
-                <span data-i18n="ui.reader.sepia">Sépia</span>
-              </button>
-              <button type="button" id="swatch-noturno" class="paper-swatch swatch-noturno" data-acao="mudarTemaPapel" data-arg="noturno" data-i18n-title="ui.reader.nightTitle" title="Modo Noturno">
-                <span data-i18n="ui.reader.night">Noite</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 3. Tamanho da Fonte com Indicador Numérico -->
-          <div class="panel-control-row">
-            <span class="control-label" data-i18n="ui.reader.fontSize">Tamanho da Fonte</span>
-            <div class="font-stepper">
-              <button type="button" class="btn-stepper" data-acao="alterarFonte" data-arg="-2" data-i18n-title="ui.reader.fontDown" title="Diminuir fonte">−</button>
-              <span id="valor-fonte-indicador" class="stepper-value">22</span>
-              <button type="button" class="btn-stepper" data-acao="alterarFonte" data-arg="2" data-i18n-title="ui.reader.fontUp" title="Aumentar fonte">+</button>
-            </div>
-          </div>
-
-          <!-- 4. Alinhamento de Texto -->
-          <div class="panel-control-row">
-            <span class="control-label" data-i18n="ui.reader.align">Alinhamento</span>
-            <div class="alignment-buttons">
-              <button type="button" class="btn-align" data-align="left" data-acao="mudarAlinhamento" data-arg="left" data-i18n-title="ui.reader.alignLeft" title="Alinhar à Esquerda">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
-              </button>
-              <button type="button" class="btn-align" data-align="center" data-acao="mudarAlinhamento" data-arg="center" data-i18n-title="ui.reader.alignCenter" title="Centralizar">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/></svg>
-              </button>
-              <button type="button" class="btn-align active" data-align="justify" data-acao="mudarAlinhamento" data-arg="justify" data-i18n-title="ui.reader.alignJustify" title="Justificado">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
-              </button>
-              <button type="button" class="btn-align" data-align="right" data-acao="mudarAlinhamento" data-arg="right" data-i18n-title="ui.reader.alignRight" title="Alinhar à Direita">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
+  </div>
 
     </div>
   </div>

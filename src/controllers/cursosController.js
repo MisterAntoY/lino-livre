@@ -55,8 +55,8 @@ function listar(req, res) {
       params.push(termo, termo, termo);
     }
 
-    // Guia de TI como fonte principal destacada no topo, ordenação estável por id
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Guia de TI%' THEN 0 ELSE 1 END, id ASC";
+    // Ordenação indexada por prioridade (0 para parceiros em destaque) e id (idx_cursos_prioridade_id)
+    query += " ORDER BY prioridade ASC, id ASC";
 
     const limitParam = req.query.limit || req.query.limite;
     const pageParam = req.query.page || req.query.pagina;
@@ -97,7 +97,8 @@ function listarRoadmaps(req, res) {
       params.push(termo, termo, termo);
     }
 
-    query += " ORDER BY CASE WHEN plataforma LIKE '%Roadmap.sh%' THEN 0 WHEN plataforma LIKE '%Trilha Info%' THEN 1 ELSE 2 END, titulo ASC";
+    // Ordenação indexada por prioridade e título
+    query += " ORDER BY prioridade ASC, titulo ASC";
 
     const limitParam = req.query.limit || req.query.limite;
     const pageParam = req.query.page || req.query.pagina;
@@ -119,6 +120,9 @@ function listarRoadmaps(req, res) {
 
 function obterPorId(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID do curso deve ser um número inteiro' });
+    }
     const db = getDatabase();
     const curso = db.prepare('SELECT * FROM cursos WHERE id = ?').get(req.params.id);
     if (!curso) return res.status(404).json({ erro: 'Curso não encontrado' });
@@ -144,10 +148,11 @@ function criar(req, res) {
       return res.status(400).json({ erro: 'URL do curso inválida ou não autorizada' });
     }
 
+    const prioridadeCalc = (plataforma.includes('Guia de TI') || plataforma.includes('Roadmap.sh')) ? 0 : (req.body && req.body.prioridade !== undefined ? parseInt(req.body.prioridade, 10) : 1);
     const db = getDatabase();
     const result = db.prepare(`
-      INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, descricao)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO cursos (titulo, area, plataforma, url, licenca, nivel, prioridade, descricao)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       titulo.trim(),
       area.trim(),
@@ -155,6 +160,7 @@ function criar(req, res) {
       urlValida,
       licenca || 'gratuito',
       nivel || 'Iniciante',
+      Number.isInteger(prioridadeCalc) ? prioridadeCalc : 1,
       descricao ? descricao.trim() : null
     );
 
@@ -168,6 +174,9 @@ function criar(req, res) {
 
 function remover(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID do curso deve ser um número inteiro' });
+    }
     const db = getDatabase();
     const resDel = db.prepare('DELETE FROM cursos WHERE id = ?').run(req.params.id);
     if (resDel.changes === 0) return res.status(404).json({ erro: 'Curso não encontrado' });
@@ -180,6 +189,9 @@ function remover(req, res) {
 
 function acessarRedirect(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID do curso deve ser um número inteiro' });
+    }
     const db = getDatabase();
     const curso = db.prepare('SELECT id, titulo, url FROM cursos WHERE id = ?').get(req.params.id);
     if (!curso) {

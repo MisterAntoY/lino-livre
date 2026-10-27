@@ -151,4 +151,15 @@ describe('Cloudflare Worker — Proxy de Capas (/api/capas)', () => {
     assert.equal(fetchCount, antes, 'Cache hit não deve chamar a origem');
     cacheHit = null;
   });
+
+  test('9. Intercepta africanstorybook.org e redireciona 302 para capa fallback local', async () => {
+    const res = await pedir('/api/capas?u=' + encodeURIComponent('http://africanstorybook.org/illustrations/covers/18187.png'));
+    assert.equal(res.status, 302);
+    assert.equal(res.headers.get('location'), '/capas/dom_casmurro.jpg');
+  });
+
+  test('10. Faz auto-upgrade de protocolo http para https em origens permitidas', async () => {
+    const res = await pedir('/api/capas?u=' + encodeURIComponent('http://www.gutenberg.org/cache/epub/10/pg10.cover.medium.jpg'));
+    assert.equal(res.status, 200);
+  });
 });

@@ -92,6 +92,9 @@ function criar(req, res) {
 
 function atualizar(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID do livro deve ser um número inteiro' });
+    }
     const { 
       titulo, subtitulo, isbn, ano_publicacao, idioma, sinopse, capa_url,
       paginas, autor_id, categoria_id, licenca, conteudo_texto 
@@ -165,6 +168,9 @@ function atualizar(req, res) {
 
 function remover(req, res) {
   try {
+    if (!/^\d+$/.test(req.params.id)) {
+      return res.status(404).json({ erro: 'ID do livro deve ser um número inteiro' });
+    }
     const db = getDatabase();
     const result = db.prepare('DELETE FROM livros WHERE id = ?').run(req.params.id);
     if (result.changes === 0) {

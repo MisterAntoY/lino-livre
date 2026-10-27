@@ -78,9 +78,13 @@ const app = {
     this.verificarEconomiaDeDados();
     this.iniciarPwa();
 
-    // Fechar modais ao pressionar tecla Escape
+    // Fechar modais ao pressionar tecla Escape e atalhos de leitura
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') this.fecharModais();
+      if (e.key === 'Escape') {
+        this.fecharModais();
+      } else {
+        this.tratarTecladoLeitor(e);
+      }
     });
 
     // Fechar modais ao clicar no backdrop
@@ -523,7 +527,7 @@ const app = {
         const rotuloAcessivel = `${this.escape(t('books.openFormat', { f: lnk.formato.toUpperCase() }))}: ${this.escape(l.titulo)}${labelTamanho}`;
         return `
           <a class="format-tag" href="/api/livros/${l.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" aria-label="${rotuloAcessivel}" title="${rotuloAcessivel}">
-             ${lnk.formato.toUpperCase()}${labelTamanho}
+             ${this.escape(lnk.formato.toUpperCase())}${this.escape(labelTamanho)}
           </a>
         `;
       }).join('');
@@ -606,7 +610,7 @@ const app = {
       if (isTop100Book) {
         if (String(l.fonte_id_externo).startsWith('world-top100-')) {
           const rankNum = String(l.fonte_id_externo).replace('world-top100-', '');
-          top100BadgeHtml = `<span class="top100-badge" style="background:#fef3c7; color:#78350f; border:1px solid #fde68a; font-size:0.625rem; padding:0.1rem 0.35rem; margin-left:0.2rem; font-weight:700; border-radius:3px; display:inline-block; vertical-align:middle;">#${rankNum} Mais Lido</span>`;
+          top100BadgeHtml = `<span class="top100-badge" style="background:#fef3c7; color:#78350f; border:1px solid #fde68a; font-size:0.625rem; padding:0.1rem 0.35rem; margin-left:0.2rem; font-weight:700; border-radius:3px; display:inline-block; vertical-align:middle;">#${this.escape(rankNum)} Mais Lido</span>`;
         } else {
           top100BadgeHtml = `<span class="top100-badge" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; font-size:0.625rem; padding:0.1rem 0.35rem; margin-left:0.2rem; font-weight:700; border-radius:3px; display:inline-block; vertical-align:middle;">Clássico Universal</span>`;
         }
@@ -797,7 +801,20 @@ const app = {
         // Extrair e configurar múltiplos capítulos
         this.capitulos = this.extrairCapitulos(livro.conteudo_texto, livro);
         this.configurarBarraCapitulos();
-        this.carregarCapitulo(0);
+
+        let capInicial = 0;
+        try {
+          const salvo = localStorage.getItem(`lino_progresso_${livro.id}`);
+          if (salvo !== null) {
+            const parsed = parseInt(salvo, 10);
+            if (!Number.isNaN(parsed) && parsed >= 0 && parsed < this.capitulos.length) {
+              capInicial = parsed;
+            }
+          }
+        } catch (_) {}
+
+        this.carregarCapitulo(capInicial);
+        this.iniciarMonitoramentoLeitor();
 
         this.aplicarPreferenciasLeitor();
         this.ativarModoTexto();
@@ -888,12 +905,21 @@ const app = {
 
     const proximoAction = document.getElementById('leitor-proximo-cap-container');
     if (proximoAction) {
-      if (this.capituloAtualIndex < this.capitulos.length - 1) {
+      const temAnterior = this.capituloAtualIndex > 0;
+      const temProximo = this.capituloAtualIndex < this.capitulos.length - 1;
+      if (temAnterior || temProximo) {
         proximoAction.classList.remove('hidden');
-        const proxTitulo = this.capitulos[this.capituloAtualIndex + 1].titulo;
+        const btnVoltarFim = document.getElementById('btn-voltar-cap-fim');
+        if (btnVoltarFim) {
+          btnVoltarFim.style.display = temAnterior ? 'inline-flex' : 'none';
+        }
         const btnAvancar = document.getElementById('btn-avancar-proximo-cap');
         if (btnAvancar) {
-          btnAvancar.textContent = `Avançar para: ${proxTitulo} `;
+          btnAvancar.style.display = temProximo ? 'inline-flex' : 'none';
+          if (temProximo) {
+            const proxTitulo = this.capitulos[this.capituloAtualIndex + 1].titulo;
+            btnAvancar.textContent = `Avançar: ${proxTitulo} →`;
+          }
         }
       } else {
         proximoAction.classList.add('hidden');
@@ -904,9 +930,16 @@ const app = {
 
     const scrollEl = document.getElementById('reader-body-scroll');
     if (scrollEl) {
-      // Escrever scrollTop logo após innerHTML força um layout síncrono;
-      // adiar para o próximo frame evita o "forced reflow".
-      requestAnimationFrame(() => { scrollEl.scrollTop = 0; });
+      requestAnimationFrame(() => {
+        scrollEl.scrollTop = 0;
+        this.atualizarProgressoLeitura();
+      });
+    }
+
+    if (this.livroAtual && this.livroAtual.id) {
+      try {
+        localStorage.setItem(`lino_progresso_${this.livroAtual.id}`, String(this.capituloAtualIndex));
+      } catch (_) {}
     }
   },
 
@@ -922,29 +955,17 @@ const app = {
     `;
 
     const paragrafosVoz = [];
-    let narrativoCount = 0;
 
     for (let i = 0; i < cap.paragrafos.length; i++) {
       const bloco = cap.paragrafos[i];
       paragrafosVoz.push(bloco);
       const pIdx = paragrafosVoz.length - 1;
 
-      if (narrativoCount === 0 && bloco.length > 2) {
-        const primeiraLetra = bloco.charAt(0);
-        const resto = bloco.slice(1);
-        html += `
-          <p class="reader-paragraph has-drop-cap" id="p-reader-${pIdx}" data-pindex="${pIdx}">
-            <span class="drop-cap">${this.escape(primeiraLetra)}</span>${this.escape(resto)}
-          </p>
-        `;
-        narrativoCount++;
-      } else {
-        html += `
-          <p class="reader-paragraph" id="p-reader-${pIdx}" data-pindex="${pIdx}">
-            ${this.escape(bloco)}
-          </p>
-        `;
-      }
+      html += `
+        <p class="reader-paragraph" id="p-reader-${pIdx}" data-pindex="${pIdx}">
+          ${this.escape(bloco)}
+        </p>
+      `;
     }
 
     textoEl.innerHTML = html;
@@ -973,14 +994,6 @@ const app = {
     this.carregarCapitulo(parseInt(val, 10) || 0);
   },
 
-  fecharPainelSeAberto(event) {
-    const painel = document.getElementById('painel-ajustes-leitura');
-    if (painel && !painel.classList.contains('collapsed')) {
-      if (!painel.contains(event.target) && !event.target.closest('#btn-toggle-painel')) {
-        painel.classList.add('collapsed');
-      }
-    }
-  },
 
   carregarPreferenciasLeitor() {
     const temaSalvo = localStorage.getItem('lino_tema_papel');
@@ -1014,14 +1027,54 @@ const app = {
   },
 
   ajustarBrilho(val, salvar = true) {
-    this.brilho = Math.min(1.5, Math.max(0.5, parseFloat(val) || 1));
+    this.brilho = Math.min(1.2, Math.max(0.6, parseFloat(val) || 1));
     const bodyScroll = document.getElementById('reader-body-scroll');
     if (bodyScroll) {
-      bodyScroll.style.filter = `brightness(${this.brilho})`;
+      bodyScroll.style.filter = this.brilho === 1 ? '' : `brightness(${this.brilho})`;
     }
     const slider = document.getElementById('slider-brilho');
     if (slider) slider.value = this.brilho;
     if (salvar) localStorage.setItem('lino_brilho', this.brilho);
+  },
+
+  atualizarProgressoLeitura() {
+    const scrollEl = document.getElementById('reader-body-scroll');
+    const bar = document.getElementById('reader-progress-bar');
+    if (!scrollEl || !bar) return;
+    const max = scrollEl.scrollHeight - scrollEl.clientHeight;
+    const pct = max > 0 ? Math.min(100, Math.max(0, Math.round((scrollEl.scrollTop / max) * 100))) : 0;
+    bar.style.width = `${pct}%`;
+  },
+
+  iniciarMonitoramentoLeitor() {
+    const scrollEl = document.getElementById('reader-body-scroll');
+    if (scrollEl && !scrollEl._progressoIniciado) {
+      scrollEl._progressoIniciado = true;
+      scrollEl.addEventListener('scroll', () => {
+        this.atualizarProgressoLeitura();
+      }, { passive: true });
+    }
+  },
+
+  tratarTecladoLeitor(e) {
+    const modal = document.getElementById('modal-leitor');
+    if (!modal || modal.classList.contains('hidden')) return;
+    const tag = document.activeElement ? document.activeElement.tagName : '';
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      this.capituloAnterior();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      this.proximoCapitulo();
+    } else if (e.key === '+' || e.key === '=') {
+      e.preventDefault();
+      this.alterarFonte(2);
+    } else if (e.key === '-' || e.key === '_') {
+      e.preventDefault();
+      this.alterarFonte(-2);
+    }
   },
 
   alterarFonte(delta, salvar = true) {
@@ -1080,10 +1133,6 @@ const app = {
       if (encontrada) return encontrada;
     }
     return vozes[0] || null;
-  },
-
-  obterVozPortugues() {
-    return this.obterVozParaIdioma(this.livroAtual?.idioma || 'pt');
   },
 
   atualizarBadgeVoz() {
@@ -1888,11 +1937,6 @@ const app = {
     this.carregarPodcasts();
   },
 
-  scrollParaEpisodiosRecentes() {
-    const el = document.getElementById('secao-episodios-recentes');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  },
-
   tocarEpisodioSpotify(embedUrl, id, titulo, showTitulo) {
     const frame = document.getElementById('spotify-embed-frame');
     const statusText = document.getElementById('player-status-text');
@@ -2611,10 +2655,10 @@ const app = {
             const icon = iconMap[fmt] || fmt.toUpperCase();
             const actionLabel = (fmt === 'html') ? 'Acessar Web / HTML' : `Baixar ${fmt.toUpperCase()}`;
             return `
-              <a href="/api/livros/${livro.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" class="btn-format-download format-${fmt}">
-                <span class="format-badge-label" style="font-size:0.65rem; font-weight:700; letter-spacing:0.04em; background:rgba(0,0,0,0.06); padding:0.15rem 0.4rem; border-radius:3px;">${icon}</span>
-                <strong>${actionLabel}</strong>
-                <span class="format-size">${tamanhoLabel}</span>
+              <a href="/api/livros/${livro.id}/ler/${lnk.id}" target="_blank" rel="noopener noreferrer" class="btn-format-download format-${this.escape(fmt)}">
+                <span class="format-badge-label" style="font-size:0.65rem; font-weight:700; letter-spacing:0.04em; background:rgba(0,0,0,0.06); padding:0.15rem 0.4rem; border-radius:3px;">${this.escape(icon)}</span>
+                <strong>${this.escape(actionLabel)}</strong>
+                <span class="format-size">${this.escape(tamanhoLabel)}</span>
                 <span class="format-redirect-arrow">↗</span>
               </a>
             `;
