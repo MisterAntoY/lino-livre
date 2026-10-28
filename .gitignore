@@ -77,3 +77,6 @@ lino-perf-pr/
 /*.pdf
 /*.png
 
+
+# Cache interno do Graphify
+graphify-out/cache/

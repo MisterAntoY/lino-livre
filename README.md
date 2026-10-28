@@ -31,6 +31,19 @@ O **Lino Livre**, produto da **LinoDigital**, é uma plataforma aberta, ultrassi
 
 ---
 
+## 🗺️ Mapa Arquitetural & Grafo de Dependências
+
+Grafo estrutural e comunidades extraído via [graphify](https://github.com/Graphify-Labs/graphify):
+
+[![Grafo de Arquitetura](./graphify-out/graph.svg)](./graphify-out/GRAPH_REPORT.md)
+
+- 📊 **Relatório Arquitetural:** [graphify-out/GRAPH_REPORT.md](./graphify-out/GRAPH_REPORT.md) (621 comunidades, nós centrais e métricas)
+- 🌐 **Navegador Interativo (HTML):** Abra [`graphify-out/graph.html`](./graphify-out/graph.html) no navegador para exploração na rede
+- 🔀 **Fluxo de Chamadas & Diagramas:** Abra [`graphify-out/lino-livre-callflow.html`](./graphify-out/lino-livre-callflow.html) para visualizar diagramas Mermaid interativos
+
+
+---
+
 ## ⚖️ Arquitetura & Defesa Legal (Servidor Intermediário)
 
 > **AVISO LEGAL E ARQUITETÓNICO:** O **Lino Livre**, da **LinoDigital**, é uma plataforma que atua exclusivamente como **intermediária e indexadora de links**.
