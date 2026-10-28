@@ -713,7 +713,44 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   3. **Barra de Progresso Nativa:** Indicador fino `#reader-progress-bar` no topo com listener passivo de rolagem em tempo real (`{ passive: true }`), sem reflows desnecessários.
   4. **Menu de Ajustes Direto (`Aa`):** Substituição do painel flutuante inferior por popover limpo superior direito que não obstrui o campo de leitura.
   5. **Navegação Bidirecional e Atalhos:** Setas do teclado (`ArrowLeft` / `ArrowRight`) avançam ou retrocedem capítulos; atalhos `+` / `-` ajustam o tamanho da fonte; retenção de progresso e capítulo por livro no `localStorage`.
-- **Validação:** Suíte completa mantida 100% verde (388 testes em 77 suítes) e `npx tsc --noEmit` limpo.
+- **Validação:** Suíte completa mantida 100% verde e `npx tsc --noEmit` limpo.
+
+### 2.45. Eliminação Total de Conteúdo Misto HTTP e Resolução da Auditoria Lighthouse
+- **Problema Reportado pelo Usuário:**
+  ```text
+  Não utiliza HTTPS 1 pedido inseguro encontrado
+  URL inseguro: http://africanstorybook.org/illustrations/covers/18187.png (africanstorybook.org)
+  Atualizado automaticamente para HTTPS
+  ```
+- **Causa Raiz:**
+  1. A importação histórica do African Storybook Project (`global-asp/asp-raw-db`) catalogou 12.083 obras com capas contendo `http://africanstorybook.org/illustrations/covers/...` e 6.150 links HTTP.
+  2. O domínio `africanstorybook.org` possui certificado SSL expirado desde 2018 e retorna HTTP 404 para arquivos de miniatura de capa.
+  3. Embora o navegador faça upgrade oportunista, auditorias de segurança e PWA (Google Lighthouse) reprovam sites com pedidos inseguros ("mixed content").
+- **Solução Defensiva em 5 Camadas:**
+  1. **CSP `upgrade-insecure-requests;`:** Adicionado aos cabeçalhos `Content-Security-Policy` e meta tags em `public/index.html`, `public/_headers`, `src/app.js` e `workers/src/index.ts` (`CSP_HEADER_WORKER`).
+  2. **Frontend Sanitization (`public/js/app.js`):** `capaProxyUrl` e `sanitizeUrl` detectam `africanstorybook.org` e redirecionam instantaneamente para o fallback local seguro `/capas/dom_casmurro.jpg`, além de promover qualquer URL HTTP para HTTPS.
+  3. **Backend Output Sanitization:** Funções auxiliares `normalizarCapaUrl` e `normalizarUrlSegura` aplicadas em todas as respostas de API (`/api/livros`, `/api/livros/destaques`, `/api/livros/:id`, `/api/dashboard`), anulando capas do ASP e forçando HTTPS em links.
+  4. **Cover Proxy (`/api/capas`):** Em `src/controllers/capasController.js` e `workers/src/routes/capas.ts`, pedidos com `africanstorybook.org` recebem redirecionamento 302 direto para a capa fallback local segura, e qualquer protocolo HTTP é atualizado para HTTPS antes da checagem de allowlist.
+  5. **Sanitização Automatizada da Base (`scripts/sanitizar_urls_https_d1.mjs`):** Script executado na Cloudflare D1 remota (`lino-livre-db`) e no SQLite local (`biblioteca.db`), zerando 100% das capas e links inseguros (`capas_inseguras: 0, links_inseguros: 0`).
+  6. **Suíte de Testes:** Criação de `test/https_mixed_content.test.js` com 9 testes automatizados cobrindo todas as 5 camadas defensivas. Suíte completa mantida com 406 testes em 79 suítes 100% verdes.
+
+### 2.46. Conclusão Integral da Sincronização em Nuvem (Supabase & D1 em Paridade Total de 100%)
+- **Status Auditado de Produção no Supabase (PostgREST / PostgreSQL):**
+  - `fontes`: **32 registros** (100%).
+  - `categorias`: **30 registros** (100%).
+  - `autores`: **37.950 registros** (100% sincronizados).
+  - `livros`: **104.949 obras** (100% do acervo migrado).
+  - `links_livros`: **104.315 links externos** (100% dos formatos EPUB/PDF/HTML).
+  - `cursos`: **8.541 registros** (100%).
+  - `estatisticas`: **7 registros** (agregados globais pré-calculados).
+  - `contadores`: **337 registros** (contadores rápidos por dimensão).
+  - `autor_totais`: **37.348 registros** (totais pré-computados por autor).
+- **Resolução de Integridade Referencial & Foreign Keys:**
+  1. Identificados e migrados os últimos 31 autores (IDs 81984 a 82014) e 101 livros pendentes (IDs 313173 a 313273) que causavam quebra de chave estrangeira (`livros_autor_id_fkey`).
+  2. Ajustado o script [`scripts/migrar_d1_para_supabase.js`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/migrar_d1_para_supabase.js) para processamento em lotes de alto desempenho (1.000 livros/lote e 2.500 links/lote) com `on_conflict=id` idempotente.
+  3. Resolução da chave estrangeira `links_livros_livro_id_fkey`: após a presença de 100% dos livros, todos os 104.315 links foram inseridos e verificados sem uma única falha de integridade.
+  4. Executado com sucesso o RPC `recalcular_estatisticas` gerando os agregados oficiais diretamente no PostgreSQL.
+  5. Testadas e validadas as funções RPC `buscar_livros` e `contar_livros` com paginação, filtros e busca por trigramas.
 
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 

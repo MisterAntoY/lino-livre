@@ -2666,6 +2666,31 @@ const app = {
         }
       }
 
+      // Injetar dados estruturados dinâmicos Schema.org (Book) para Rich Results
+      let scriptLivro = document.getElementById('jsonld-livro');
+      if (!scriptLivro) {
+        scriptLivro = document.createElement('script');
+        scriptLivro.id = 'jsonld-livro';
+        scriptLivro.type = 'application/ld+json';
+        document.head.appendChild(scriptLivro);
+      }
+      scriptLivro.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Book',
+        '@id': `https://lino-livre.linolivre.workers.dev/#livro-${livro.id}`,
+        'name': livro.titulo,
+        'author': {
+          '@type': 'Person',
+          'name': livro.autor_nome || 'Domínio Público'
+        },
+        'description': sinopse,
+        'inLanguage': rawLang || 'pt',
+        'genre': traduzirCategoria(livro.categoria_nome) || 'Literatura',
+        'license': livro.licenca || 'dominio-publico',
+        'image': capaUrl.startsWith('http') ? capaUrl : `https://lino-livre.linolivre.workers.dev${capaUrl}`,
+        'url': `https://lino-livre.linolivre.workers.dev/#livro-${livro.id}`
+      }, null, 2);
+
       // Atualizar URL hash para navegação / compartilhamento direto
       history.replaceState(null, '', `#livro-${livro.id}`);
 

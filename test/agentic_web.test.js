@@ -138,6 +138,78 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
     });
   });
 
+  // 5. Dados Estruturados Schema.org (Google Rich Results & Lighthouse)
+  describe('5. Dados Estruturados Schema.org e Rich Results', () => {
+    test('5.1 - public/index.html possui grafo Schema.org válido com WebSite, Organization e BreadcrumbList', () => {
+      const html = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
+      const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+      assert.ok(match, 'index.html deve conter tag <script type="application/ld+json">');
+
+      const jsonLd = JSON.parse(match[1]);
+      assert.equal(jsonLd['@context'], 'https://schema.org');
+      assert.ok(Array.isArray(jsonLd['@graph']), '@graph deve ser um array');
+
+      const website = jsonLd['@graph'].find(item => item['@type'] === 'WebSite');
+      assert.ok(website, 'Deve conter nó WebSite');
+      assert.ok(website.potentialAction, 'WebSite deve conter potentialAction (Google Sitelinks Searchbox)');
+      assert.equal(website.potentialAction['@type'], 'SearchAction');
+      assert.ok(website.potentialAction.target.urlTemplate.includes('busca={search_term_string}'));
+
+      const org = jsonLd['@graph'].find(item => Array.isArray(item['@type']) ? item['@type'].includes('Organization') : item['@type'] === 'Organization');
+      assert.ok(org, 'Deve conter nó Organization/Library');
+      assert.ok(org.logo, 'Organization deve conter logo');
+      assert.ok(org.contactPoint, 'Organization deve conter contactPoint');
+
+      const breadcrumb = jsonLd['@graph'].find(item => item['@type'] === 'BreadcrumbList');
+      assert.ok(breadcrumb, 'Deve conter nó BreadcrumbList');
+      assert.ok(Array.isArray(breadcrumb.itemListElement), 'BreadcrumbList deve ter itemListElement');
+      assert.ok(breadcrumb.itemListElement.length >= 3, 'Deve conter ao menos 3 níveis de breadcrumb');
+    });
+
+    test('5.2 - Páginas secundárias (legal, termos, creditos, comunidade) possuem Schema.org válido', () => {
+      const paginas = ['legal.html', 'termos.html', 'creditos.html', 'comunidade.html'];
+      for (const pag of paginas) {
+        const conteudo = fs.readFileSync(path.join(__dirname, `../public/${pag}`), 'utf8');
+        const match = conteudo.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+        assert.ok(match, `${pag} deve conter <script type="application/ld+json">`);
+        const jsonLd = JSON.parse(match[1]);
+        assert.equal(jsonLd['@context'], 'https://schema.org');
+        assert.ok(Array.isArray(jsonLd['@graph']), `${pag}: @graph deve ser array`);
+        assert.ok(jsonLd['@graph'].some(item => item['@type'] === 'WebPage'), `${pag}: deve conter nó WebPage`);
+        assert.ok(jsonLd['@graph'].some(item => item['@type'] === 'BreadcrumbList'), `${pag}: deve conter nó BreadcrumbList`);
+      }
+    });
+
+    test('5.3 - public/js/app.js injeta dados estruturados de Book dinamicamente ao abrir modal', () => {
+      const js = fs.readFileSync(path.join(__dirname, '../public/js/app.js'), 'utf8');
+      assert.ok(js.includes('jsonld-livro'), 'Deve gerenciar elemento jsonld-livro');
+      assert.ok(js.includes("'@type': 'Book'"), 'Deve instanciar tipo Schema.org Book');
+      assert.ok(js.includes('traduzirCategoria'), 'Deve mapear categoria para gênero da obra');
+    });
+
+    test('5.4 - Redirecionamento HTTP -> HTTPS está ativo no Worker e Express', () => {
+      const workerSecurity = fs.readFileSync(path.join(__dirname, '../workers/src/middlewares/security.ts'), 'utf8');
+      assert.ok(workerSecurity.includes('redirecionarHttps'), 'Worker deve declarar middleware redirecionarHttps');
+      assert.ok(workerSecurity.includes('url.protocol = \'https:\''), 'Worker deve trocar protocolo para https:');
+
+      const appJs = fs.readFileSync(path.join(__dirname, '../src/app.js'), 'utf8');
+      assert.ok(appJs.includes("proto === 'http'"), 'Express deve checar cabeçalho x-forwarded-proto');
+      assert.ok(appJs.includes('res.redirect(301,'), 'Express deve responder com 301');
+    });
+
+    test('5.5 - Tabela cursos possui coluna prioridade e índice de ordenação eficiente', () => {
+      const schemaSql = fs.readFileSync(path.join(__dirname, '../src/database/schema.sql'), 'utf8');
+      assert.ok(schemaSql.includes('prioridade INTEGER DEFAULT 1'), 'schema.sql deve conter coluna prioridade');
+      assert.ok(schemaSql.includes('idx_cursos_prioridade_id'), 'schema.sql deve conter idx_cursos_prioridade_id');
+
+      const migrationPath = fs.existsSync(path.join(__dirname, '../migrations/0010_cursos_prioridade.sql'))
+        ? path.join(__dirname, '../migrations/0010_cursos_prioridade.sql')
+        : path.join(__dirname, '../migrations/0006_cursos_prioridade.sql');
+      const migrationSql = fs.readFileSync(migrationPath, 'utf8');
+      assert.ok(migrationSql.includes('ADD COLUMN prioridade INTEGER DEFAULT 1'), 'Migração de prioridade de cursos deve existir');
+    });
+  });
+
   test('Encerrar servidor de testes', () => {
     if (server) server.close();
   });
