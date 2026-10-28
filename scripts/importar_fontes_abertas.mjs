@@ -460,12 +460,15 @@ async function importarStandardEbooks(aplicar) {
   const titleCase = (s) => s.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
   for (const nomeObra of obras) {
     const [autorSlug, obraSlug] = nomeObra.split('_');
+    const capaUrl = (autorSlug && obraSlug)
+      ? `https://standardebooks.org/ebooks/${autorSlug}/${obraSlug}/downloads/cover-thumbnail.jpg`
+      : null;
     c.add({
       titulo: titleCase(obraSlug),
       autor: titleCase(autorSlug),
       idioma: 'en', // maior parte esmagadora; obras noutros idiomas ficam marcadas em sinopse
       licenca: 'dominio-publico',
-      capaUrl: null,
+      capaUrl,
       sinopse: `Obra em domínio público formatada pela Standard Ebooks. Fonte oficial com EPUB e leitura online.`,
       ano: null,
       urlLeitura: `https://www.standardebooks.org/ebooks/${autorSlug}/${obraSlug}`,

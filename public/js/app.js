@@ -514,7 +514,8 @@ const app = {
     }
 
     grid.innerHTML = lista.map(l => {
-      const capaUrl = this.capaProxyUrl(l.capa_url, '/capas/dom_casmurro.jpg');
+      const capaPadrao = this.gerarCapaSvg(l.titulo, l.autor_nome, l.categoria_nome);
+      const capaUrl = l.capa_url ? this.capaProxyUrl(l.capa_url, capaPadrao) : capaPadrao;
       const licencaFormatada = traduzirLicenca(l.licenca || 'dominio-publico');
       
       const links = l.links || [];
@@ -619,7 +620,7 @@ const app = {
       return `
         <article class="book-card ${isAfrica ? 'book-card-africa' : ''}">
           <div class="book-cover-container" data-acao="abrirDetalhesLivro" data-arg="${l.id}" style="cursor:pointer;" title="Ver detalhes da obra e formatos">
-            <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" width="180" height="261" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
+            <img src="${capaUrl}" alt="${this.escape(t('books.coverOf', { t: l.titulo }))}" class="book-cover" width="180" height="261" loading="lazy" decoding="async" data-acao="fallbackImagem" data-titulo="${this.escape(l.titulo)}" data-autor="${this.escape(l.autor_nome || '')}" data-categoria="${this.escape(l.categoria_nome || '')}">
             <span class="badge-format">${flagLabel}</span>
           </div>
 
@@ -701,7 +702,8 @@ const app = {
     }
 
     grade.innerHTML = lista.map(l => {
-      const capaUrl = this.capaProxyUrl(l.capa_url, '/capas/dom_casmurro.jpg');
+      const capaPadrao = this.gerarCapaSvg(l.titulo, l.autor_nome, l.categoria_nome);
+      const capaUrl = l.capa_url ? this.capaProxyUrl(l.capa_url, capaPadrao) : capaPadrao;
       const links = l.links || [];
       const rawBadge = l.destaque_badge || 'Mais Procurado';
       const badgeText = rawBadge.replace(/^[^\w\d#]+/, '').trim();
@@ -733,7 +735,7 @@ const app = {
       return `
         <article class="destaque-book-card" data-acao="abrirDetalhesLivro" data-arg="${l.id}" title="${this.escape(l.titulo)} — Clique para ver detalhes">
           <div class="destaque-cover-wrap">
-            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" width="160" height="228" loading="lazy" decoding="async" data-acao="fallbackImagem" data-fallback="/capas/dom_casmurro.jpg">
+            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" width="160" height="228" loading="lazy" decoding="async" data-acao="fallbackImagem" data-titulo="${this.escape(l.titulo)}" data-autor="${this.escape(l.autor_nome || '')}" data-categoria="${this.escape(l.categoria_nome || '')}">
             <span class="destaque-badge-tag">${this.escape(badgeText)}</span>
           </div>
           <div class="destaque-info">
@@ -2577,7 +2579,8 @@ const app = {
       const modal = document.getElementById('modal-detalhes-livro');
       if (!modal) return;
 
-      const capaUrl = this.capaProxyUrl(livro.capa_url, '/capas/dom_casmurro.jpg');
+      const capaPadrao = this.gerarCapaSvg(livro.titulo, livro.autor_nome, livro.categoria_nome);
+      const capaUrl = livro.capa_url ? this.capaProxyUrl(livro.capa_url, capaPadrao) : capaPadrao;
       const licencaFormatada = traduzirLicenca(livro.licenca || 'dominio-publico');
       const sinopse = I18N.sinopse(livro.id, livro.sinopse || t('books.synopsisFallback'));
       const rawLang = String(livro.idioma || 'pt').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
@@ -2594,6 +2597,10 @@ const app = {
       const elCapa = document.getElementById('detalhes-capa');
       if (elCapa) {
         elCapa.src = capaUrl;
+        elCapa.dataset.titulo = livro.titulo || '';
+        elCapa.dataset.autor = livro.autor_nome || '';
+        elCapa.dataset.categoria = livro.categoria_nome || '';
+        elCapa.dataset.fallbackAplicado = '0';
         elCapa.alt = t('books.coverOf', { t: livro.titulo });
       }
 
@@ -3071,29 +3078,128 @@ const app = {
     return fallback;
   },
 
+  // Gera capa tipográfica vetorial única e elegante (SVG em Data URI)
+  // com paleta determinística baseada no título/autor da obra.
+  hashString(str) {
+    let hash = 0;
+    const s = String(str || '');
+    for (let i = 0; i < s.length; i++) {
+      hash = ((hash << 5) - hash) + s.charCodeAt(i);
+      hash |= 0;
+    }
+    return Math.abs(hash);
+  },
+
+  quebrarTexto(texto, maxChars = 20) {
+    const palavras = String(texto || '').trim().split(/\s+/);
+    const linhas = [];
+    let linhaAtual = '';
+    for (const p of palavras) {
+      if (!linhaAtual) {
+        linhaAtual = p;
+      } else if ((linhaAtual + ' ' + p).length <= maxChars) {
+        linhaAtual += ' ' + p;
+      } else {
+        linhas.push(linhaAtual);
+        linhaAtual = p;
+      }
+    }
+    if (linhaAtual) linhas.push(linhaAtual);
+    return linhas.slice(0, 4);
+  },
+
+  escapeXml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  },
+
+  gerarCapaSvg(titulo, autor, categoria) {
+    const PALETAS = [
+      { bg: '#0f172a', border: '#d97706', accent: '#f59e0b', text: '#ffffff', author: '#cbd5e1' },
+      { bg: '#064e3b', border: '#34d399', accent: '#10b981', text: '#ffffff', author: '#a7f3d0' },
+      { bg: '#4c0519', border: '#fb7185', accent: '#f43f5e', text: '#ffffff', author: '#fecdd3' },
+      { bg: '#1e1b4b', border: '#60a5fa', accent: '#38bdf8', text: '#ffffff', author: '#c7d2fe' },
+      { bg: '#7c2d12', border: '#f97316', accent: '#fbbf24', text: '#ffffff', author: '#fed7aa' },
+      { bg: '#1e293b', border: '#94a3b8', accent: '#38bdf8', text: '#ffffff', author: '#e2e8f0' },
+      { bg: '#581c87', border: '#c084fc', accent: '#d8b4fe', text: '#ffffff', author: '#e9d5ff' },
+      { bg: '#134e4a', border: '#2dd4bf', accent: '#5eead4', text: '#ffffff', author: '#ccfbf1' },
+      { bg: '#172554', border: '#3b82f6', accent: '#60a5fa', text: '#ffffff', author: '#dbeafe' },
+      { bg: '#365314', border: '#a3e635', accent: '#facc15', text: '#ffffff', author: '#ecfccb' }
+    ];
+
+    const semente = (titulo || '') + (autor || '');
+    const paleta = PALETAS[this.hashString(semente) % PALETAS.length];
+    const cat = (categoria || 'OBRA ABERTA').toUpperCase();
+    const linhasTitulo = this.quebrarTexto(titulo || 'Sem Título', 18);
+    const autorTxt = (autor || 'Autor Consagrado').trim();
+
+    const lineHeight = 26;
+    const totalTituloHeight = linhasTitulo.length * lineHeight;
+    const startY = 195 - (totalTituloHeight / 2);
+
+    const tspanLines = linhasTitulo.map((linha, idx) => {
+      return `<tspan x="150" dy="${idx === 0 ? 0 : lineHeight}">${this.escapeXml(linha)}</tspan>`;
+    }).join('');
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 435" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${paleta.bg}" stop-opacity="1"/>
+      <stop offset="100%" stop-color="${paleta.bg}" stop-opacity="0.88"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="435" fill="url(#grad)"/>
+  <rect x="12" y="12" width="276" height="411" fill="none" stroke="${paleta.border}" stroke-width="1.5" stroke-opacity="0.45" rx="4"/>
+  <rect x="18" y="18" width="264" height="399" fill="none" stroke="${paleta.border}" stroke-width="0.75" stroke-opacity="0.25" rx="2"/>
+  <text x="150" y="55" text-anchor="middle" fill="${paleta.accent}" font-family="system-ui, -apple-system, sans-serif" font-size="9.5" font-weight="700" letter-spacing="2.5">${this.escapeXml(cat)}</text>
+  <line x1="100" y1="68" x2="200" y2="68" stroke="${paleta.border}" stroke-width="1" stroke-opacity="0.35"/>
+  <text x="150" y="${startY}" text-anchor="middle" fill="${paleta.text}" font-family="Georgia, 'Playfair Display', serif" font-size="20" font-weight="700">
+    ${tspanLines}
+  </text>
+  <line x1="75" y1="${startY + totalTituloHeight + 20}" x2="225" y2="${startY + totalTituloHeight + 20}" stroke="${paleta.border}" stroke-width="1.2" stroke-opacity="0.4"/>
+  <circle cx="150" cy="${startY + totalTituloHeight + 20}" r="3" fill="${paleta.accent}"/>
+  <text x="150" y="${startY + totalTituloHeight + 46}" text-anchor="middle" fill="${paleta.author}" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" letter-spacing="1">${this.escapeXml(autorTxt)}</text>
+  <text x="150" y="398" text-anchor="middle" fill="${paleta.accent}" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="700" letter-spacing="2" opacity="0.75">LINO LIVRE • ACERVO ABERTO</text>
+</svg>`;
+
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  },
+
   // Capas externas passam pelo proxy /api/capas para receberem Cache-Control
   // eficiente (1 ano) e para evitar pedidos repetidos a origens lentas.
-  capaProxyUrl(url, fallback = '/capas/dom_casmurro.jpg') {
-    if (!url || typeof url !== 'string') return fallback;
+  capaProxyUrl(url, fallback = null) {
+    if (!url || typeof url !== 'string') return fallback || '';
     const trimmed = url.trim();
     if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
       return this.escape(trimmed);
+    }
+    if (trimmed.startsWith('data:image/')) {
+      return trimmed;
     }
     try {
       const parsed = new URL(trimmed);
       // African Storybook tem certificado SSL expirado e ficheiros inexistentes na origem
       if (parsed.hostname.toLowerCase().includes('africanstorybook.org')) {
-        return fallback;
+        return fallback || '';
       }
       // Forçar HTTPS para evitar qualquer pedido inseguro / mixed content
       if (parsed.protocol === 'http:') {
         parsed.protocol = 'https:';
       }
+      // Standard Ebooks tem CDN própria com Cache de 6 meses e CORS aberto;
+      // servir diretamente evita latência e bloqueios de datacenter em proxies de borda.
+      if (parsed.hostname.toLowerCase().includes('standardebooks.org')) {
+        return this.escape(parsed.href);
+      }
       if (parsed.protocol === 'https:') {
         return this.escape(`/api/capas?u=${encodeURIComponent(parsed.href)}`);
       }
     } catch (_) {}
-    return fallback;
+    return fallback || '';
   },
 
   deferredPrompt: null,
@@ -3297,11 +3403,16 @@ document.addEventListener('submit', (ev) => {
   executarAcaoDelegada(alvo, ev);
 });
 
-// Fallback de imagens quebradas (substitui os antigos handlers error inline)
+// Fallback de imagens quebradas: substitui com capa tipográfica vetorial personalizada
+// para a própria obra (título, autor, categoria), garantindo que NENHUM livro exiba capa de outro.
 document.addEventListener('error', (ev) => {
   const el = ev.target;
   if (!el || !el.dataset || el.dataset.acao !== 'fallbackImagem') return;
   if (el.dataset.fallbackAplicado === '1') return;
   el.dataset.fallbackAplicado = '1';
-  el.src = el.dataset.fallback;
+  if (el.dataset.titulo) {
+    el.src = app.gerarCapaSvg(el.dataset.titulo, el.dataset.autor, el.dataset.categoria);
+  } else if (el.dataset.fallback) {
+    el.src = el.dataset.fallback;
+  }
 }, true);

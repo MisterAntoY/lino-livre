@@ -54,6 +54,9 @@ capasApp.get('/api/capas', async (c) => {
   if (alvo.hostname.toLowerCase().includes('africanstorybook.org')) {
     return c.redirect('/capas/dom_casmurro.jpg', 302);
   }
+  if (alvo.hostname.toLowerCase().includes('standardebooks.org')) {
+    return c.redirect(alvo.href, 302);
+  }
   if (alvo.protocol !== 'https:' || !hostCapaPermitido(alvo.hostname)) {
     return c.json({ erro: 'Origem de capa não permitida' }, 403);
   }
@@ -80,8 +83,9 @@ capasApp.get('/api/capas', async (c) => {
         },
         cf: { cacheEverything: true, cacheTtl: 2592000 }
       });
-    } catch {
-      return c.json({ erro: 'Não foi possível obter a capa na origem' }, 502);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      return c.json({ erro: 'Não foi possível obter a capa na origem', motivo: msg }, 502);
     }
 
     if (STATUS_REDIRECT.has(resposta.status)) {
@@ -112,8 +116,9 @@ capasApp.get('/api/capas', async (c) => {
     return c.json({ erro: 'Demasiados redirecionamentos na origem' }, 502);
   }
   if (!origem.ok) {
+    const statusCod = origem.status;
     try { await origem.body?.cancel(); } catch { /* ignorado */ }
-    return c.json({ erro: 'Não foi possível obter a capa na origem' }, 502);
+    return c.json({ erro: 'Não foi possível obter a capa na origem', status_origem: statusCod }, 502);
   }
 
   const tipo = (origem.headers.get('content-type') || '').toLowerCase().split(';')[0].trim();

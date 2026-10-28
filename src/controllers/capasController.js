@@ -140,6 +140,11 @@ async function proxy(req, res) {
     return res.redirect(302, '/capas/dom_casmurro.jpg');
   }
 
+  // Standard Ebooks possui CDN oficial com CORS e Cache abertos: redirecionamento 302 direto
+  if (alvo.hostname.toLowerCase().includes('standardebooks.org')) {
+    return res.redirect(302, alvo.href);
+  }
+
   if (!(await resolverHostSeguro(alvo.hostname))) {
     return res.status(403).json({ erro: 'Origem de capa não permitida' });
   }

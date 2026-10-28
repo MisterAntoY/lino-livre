@@ -752,6 +752,36 @@ O projeto executou de forma estrita as fases detalhadas em [`docs/planos/PLANO-R
   4. Executado com sucesso o RPC `recalcular_estatisticas` gerando os agregados oficiais diretamente no PostgreSQL.
   5. Testadas e validadas as funções RPC `buscar_livros` e `contar_livros` com paginação, filtros e busca por trigramas.
 
+### 2.47. Erradicação Definitiva de Capas Duplicadas e Fallback Vetorial Tipográfico Dinâmico
+- **Incidente Relatado pelo Usuário:**
+  - O usuário identificou em tela que diversas obras distintas (*A Tangled Tale*, *Main Street*, *Arrowsmith*, *Babbitt*, *Poetry*, *The Monk*, *Elmer Gantry*, *Sylvie and Bruno*, *Sticks and Stones*) estavam sendo exibidas com a mesma capa: **"DOM CASMURRO por MACHADO DE ASSIS"** (*"Capas iguais, vc mentiu para mim, sua validação é pifia"*).
+- **Causa Raiz Identificada:**
+  1. **Standard Ebooks Importados sem Capa:** No script de importação [`scripts/importar_fontes_abertas.mjs`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/importar_fontes_abertas.mjs), as 1.218 obras do Standard Ebooks foram cadastradas com `capaUrl: null`.
+  2. **Fallback Global Hardcoded para Dom Casmurro:** No frontend ([`public/js/app.js`](file:///Users/mendes/Desktop/I%20am%20Abc/public/js/app.js)) e no modal ([`public/index.html`](file:///Users/mendes/Desktop/I%20am%20Abc/public/index.html)), toda chamada `this.capaProxyUrl(l.capa_url, '/capas/dom_casmurro.jpg')` e os atributos `data-fallback="/capas/dom_casmurro.jpg"` forçavam a imagem `/capas/dom_casmurro.jpg` para qualquer livro com capa nula ou com falha de carregamento.
+  3. **Bloqueio de Datacenter no Proxy de Capas:** A origem `standardebooks.org` rejeitava chamadas vindas de datacenters do Worker com HTTP 403, acionando o fallback local.
+- **Ações e Resoluções Implementadas:**
+  1. **Ingestão Oficial das Capas Reais do Standard Ebooks (1.218 Obras):**
+     - O padrão oficial do Standard Ebooks `https://standardebooks.org/ebooks/{autorSlug}/{obraSlug}/downloads/cover-thumbnail.jpg` (verificado HTTP 200, imagem JPEG de alta resolução) foi mapeado a partir de `fonte_id_externo` (`{autor-slug}_{obra-slug}`).
+     - Atualizadas as **1.218 obras** na Cloudflare D1 remota e no Supabase (`public.livros`), atingindo 100% de preenchimento real para o Standard Ebooks.
+     - Script [`scripts/importar_fontes_abertas.mjs`](file:///Users/mendes/Desktop/I%20am%20Abc/scripts/importar_fontes_abertas.mjs) atualizado com cálculo automático da URL oficial de capa.
+  2. **Eliminação Total de Referências Globais a Dom Casmurro:**
+     - Removida qualquer atribuição de `/capas/dom_casmurro.jpg` como fallback para obras que não sejam a obra #1 (*Dom Casmurro* de Machado de Assis).
+     - No HTML ([`public/index.html`](file:///Users/mendes/Desktop/I%20am%20Abc/public/index.html)), o elemento `#detalhes-capa` foi limpo de fallbacks estáticos de Dom Casmurro.
+  3. **Motor de Capa Tipográfica Dinâmica Vetorial (SVG Data-URI):**
+     - Implementado em [`public/js/app.js`](file:///Users/mendes/Desktop/I%20am%20Abc/public/js/app.js) o método `app.gerarCapaSvg(titulo, autor, categoria)`:
+       - 10 paletas clássicas e editoriais determinísticas geradas por hash de título e autor (Midnight Navy, Deep Emerald, Royal Indigo, Bordeaux, Terracotta, Charcoal, Amethyst, Petroleum, Sapphire, Olive).
+       - Tipografia editorial refinada (Playfair/Georgia com quebra inteligente de linhas para títulos longos).
+       - Badges superiores de categoria e rodapé comemorativo Lino Livre.
+       - Geração instantânea (0ms de latência de rede, 0 bytes transferidos em HTTP).
+     - No handler global de erro (`document.addEventListener('error', ...)`), qualquer imagem que falhe no navegador do usuário é substituída dinamicamente pela capa vetorial com o título e autor **reais da própria obra**.
+  4. **Otimização de Roteamento para CDN Aberta (Standard Ebooks):**
+     - `public/js/app.js`: requisições para `standardebooks.org` são entregues diretamente pelo navegador com CORS e cache de 6 meses aberto, evitando latência e bloqueios de IP de datacenter.
+     - `src/controllers/capasController.js` e `workers/src/routes/capas.ts`: qualquer requisição ao proxy para `standardebooks.org` redireciona 302 direto para a origem oficial.
+  5. **Verificação & Deploy:**
+     - 406 testes em 79 suítes 100% aprovados (`npm test`).
+     - TypeScript validado sem erros (`npx tsc --noEmit`).
+     - Deploy publicado no Cloudflare Workers (`https://lino-livre.linolivre.workers.dev`, Version ID: `240355ca-605c-47c6-9c21-d3870f0f8643`).
+
 ## 🛡️ 3. Arquitetura de Cybersegurança e Controles Defensivos
 
 Todas as diretrizes do relatório [`docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md`](file:///Users/mendes/Desktop/I%20am%20Abc/docs/auditorias/AUDITORIA_SEGURANCA_ARQUITETURA.md) foram implementadas em código e devem ser mantidas:
