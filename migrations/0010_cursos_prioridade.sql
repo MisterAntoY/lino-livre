@@ -7,7 +7,8 @@
 -- prioridade = 1 para catálogo padrão
 -- ============================================================
 
-ALTER TABLE cursos ADD COLUMN prioridade INTEGER DEFAULT 1;
+-- Idempotente: ignora se a coluna já existe
+ALTER TABLE cursos ADD COLUMN IF NOT EXISTS prioridade INTEGER DEFAULT 1;
 
 UPDATE cursos SET prioridade = 0 WHERE plataforma LIKE '%Guia de TI%';
 UPDATE cursos SET prioridade = 0 WHERE tipo = 'roadmap' AND plataforma LIKE '%Roadmap.sh%';
