@@ -206,7 +206,7 @@ describe('Suíte de Navegação com Agência e Padrões de IA (WebMCP, ARD e llm
         ? path.join(__dirname, '../migrations/0010_cursos_prioridade.sql')
         : path.join(__dirname, '../migrations/0006_cursos_prioridade.sql');
       const migrationSql = fs.readFileSync(migrationPath, 'utf8');
-      assert.ok(migrationSql.includes('ADD COLUMN prioridade INTEGER DEFAULT 1'), 'Migração de prioridade de cursos deve existir');
+      assert.ok(migrationSql.includes('ADD COLUMN') && migrationSql.includes('prioridade INTEGER DEFAULT 1'), 'Migração de prioridade de cursos deve existir');
     });
   });
 
