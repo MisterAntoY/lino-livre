@@ -73,6 +73,7 @@ const app = {
       I18N.aoTrocar(() => this.aplicarIdioma());
     }
 
+    this.iniciarTema();
     this.carregarPreferenciasLeitor();
     this.iniciarSinteseVoz();
     this.verificarEconomiaDeDados();
@@ -897,6 +898,38 @@ const app = {
     this.carregarCapitulo(parseInt(val, 10) || 0);
   },
 
+
+  iniciarTema() {
+    let salvo = null;
+    try { salvo = localStorage.getItem('lino_theme'); } catch (_) {}
+    if (salvo === 'dark' || salvo === 'light') {
+      document.documentElement.setAttribute('data-theme', salvo);
+      this.atualizarIconeTema(salvo);
+    } else {
+      const prefereDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.atualizarIconeTema(prefereDark ? 'dark' : 'light');
+    }
+  },
+
+  alternarTema() {
+    const atual = document.documentElement.getAttribute('data-theme') ||
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const proximo = atual === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', proximo);
+    try { localStorage.setItem('lino_theme', proximo); } catch (_) {}
+    this.atualizarIconeTema(proximo);
+  },
+
+  atualizarIconeTema(tema) {
+    const btn = document.getElementById('btn-theme-toggle');
+    if (!btn) return;
+    const isDark = tema === 'dark';
+    btn.innerHTML = isDark
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    btn.setAttribute('title', isDark ? 'Ativar modo claro' : 'Ativar modo escuro');
+    btn.setAttribute('aria-label', isDark ? 'Ativar modo claro' : 'Ativar modo escuro');
+  },
 
   carregarPreferenciasLeitor() {
     const temaSalvo = localStorage.getItem('lino_tema_papel');
@@ -3204,6 +3237,7 @@ const ACOES_PERMITIDAS = new Set([
   'alterarVelocidadeAudio',
   'alternarBuscaFederada',
   'alternarPlayAudio',
+  'alternarTema',
   'ativarModoAudio',
   'ativarModoTexto',
   'buscarComDebounce',

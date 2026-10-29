@@ -1,17 +1,17 @@
 /* Critical CSS - Above-the-fold styles inlined in HTML head */
 :root {
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --bg-page: #f8fafc;
+  --primary: #09090b;
+  --primary-hover: #27272a;
+  --bg-page: #ffffff;
   --bg-card: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #475569;
-  --border: #e2e8f0;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-hover: 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --text-main: #09090b;
+  --text-muted: #71717a;
+  --border: #e4e4e7;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  --shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
 }
 
 *, *::before, *::after {
@@ -158,29 +158,29 @@ body {
 }
 
 .btn-whatsapp {
-  background: #25d366;
+  background: var(--primary);
   color: #ffffff;
-  border-color: #25d366;
+  border-color: var(--primary);
 }
 
 .btn-whatsapp:hover {
-  background: #128c7e;
+  background: var(--primary-hover);
 }
 
 .btn-whatsapp-outline {
   background: transparent;
-  border-color: #25d366;
-  color: #25d366;
+  border-color: var(--border);
+  color: var(--text-main);
 }
 
 .btn-whatsapp-outline:hover {
-  background: rgba(37, 211, 102, 0.1);
+  background: #f4f4f5;
 }
 
 .btn-kofi {
-  background: #ff5e5b;
+  background: var(--primary);
   color: #ffffff;
-  border-color: #ff5e5b;
+  border-color: var(--primary);
 }
 
 .btn-kofi:hover {
@@ -234,7 +234,7 @@ body {
 
 .search-bar input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 1px var(--primary);
 }
 
 .pills-container {
@@ -429,13 +429,13 @@ body {
 
 .badge-license {
   display: inline-block;
-  padding: 0.25rem 0.625rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 999px;
   font-size: 0.6875rem;
   font-weight: 600;
-  background: #eff6ff;
-  color: var(--primary);
-  border: 1px solid #bfdbfe;
+  background: #f4f4f5;
+  color: var(--text-main);
+  border: 1px solid var(--border);
   width: fit-content;
 }
 

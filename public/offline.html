@@ -11,13 +11,13 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #10b981;
-      --primary-hover: #059669;
-      --border: #334155;
+      --bg: #09090b;
+      --card-bg: #18181b;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --primary: #fafafa;
+      --primary-hover: #e4e4e7;
+      --border: #27272a;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -35,7 +35,7 @@
     .offline-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 2.5rem 2rem;
       max-width: 520px;
       width: 100%;
@@ -46,8 +46,8 @@
       height: 72px;
       margin: 0 auto 1.5rem;
       border-radius: 50%;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      background: #27272a;
+      border: 1px solid #3f3f46;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -79,10 +79,10 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      padding: 0.85rem 1.5rem;
-      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 500;
       text-decoration: none;
       cursor: pointer;
       transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
@@ -90,7 +90,8 @@
     }
     .btn-primary {
       background: var(--primary);
-      color: #ffffff;
+      color: #09090b;
+      border-color: var(--primary);
     }
     .btn-primary:hover {
       background: var(--primary-hover);
@@ -101,15 +102,16 @@
       color: var(--text);
     }
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: #27272a;
     }
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
       font-size: 0.8rem;
-      color: #fbbf24;
-      background: rgba(251, 191, 36, 0.1);
+      color: #fafafa;
+      background: #27272a;
+      border: 1px solid #3f3f46;
       padding: 0.35rem 0.75rem;
       border-radius: 9999px;
       margin-bottom: 1.5rem;
@@ -117,7 +119,7 @@
     .pulse-dot {
       width: 8px;
       height: 8px;
-      background: #fbbf24;
+      background: #fafafa;
       border-radius: 50%;
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
