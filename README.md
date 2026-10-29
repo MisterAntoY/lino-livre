@@ -1,7 +1,29 @@
-# LinoDigital — Lino Livre
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/header/graph.svg?title=Lino+Livre&subtitle=Biblioteca+Digital+Aberta+de+Livros+e+Cursos+Gratuitos+%7C+Angola&logo=book&theme=indigo&mode=dark" />
+    <img alt="Lino Livre" src="https://shieldcn.dev/header/graph.svg?title=Lino+Livre&subtitle=Biblioteca+Digital+Aberta+de+Livros+e+Cursos+Gratuitos+%7C+Angola&logo=book&theme=indigo&mode=light" />
+  </picture>
+</p>
+
+<p align="center">
+  <a href="https://github.com/MisterAntoY/lino-livre"><img alt="GitHub Stars" src="https://shieldcn.dev/github/stars/MisterAntoY/lino-livre.svg?variant=secondary&size=sm&theme=indigo" /></a>
+  <a href="https://github.com/MisterAntoY/lino-livre"><img alt="Last Commit" src="https://shieldcn.dev/github/last-commit/MisterAntoY/lino-livre.svg?variant=secondary&size=sm&theme=indigo" /></a>
+  <a href="https://github.com/MisterAntoY/lino-livre/blob/main/LICENSE"><img alt="License" src="https://shieldcn.dev/badge/License-Apache_2.0-2563eb.svg?variant=secondary&size=sm&theme=indigo" /></a>
+  <img alt="Tests" src="https://shieldcn.dev/badge/Tests-145_Passing-10b981.svg?variant=secondary&size=sm&theme=indigo" />
+  <img alt="Acervo" src="https://shieldcn.dev/badge/Acervo-100%2B_Obras_Curadas-0057ff.svg?variant=secondary&size=sm&theme=indigo" />
+</p>
+
+<p align="center">
+  <a href="https://nodejs.org/"><img alt="Node.js" src="https://shieldcn.dev/badge/Node.js-22+-5FA04E.svg?logo=nodedotjs&variant=secondary&size=sm" /></a>
+  <a href="https://www.typescriptlang.org/"><img alt="TypeScript" src="https://shieldcn.dev/badge/TypeScript-5-3178C6.svg?logo=typescript&variant=secondary&size=sm" /></a>
+  <a href="https://sqlite.org/"><img alt="SQLite FTS5" src="https://shieldcn.dev/badge/SQLite-FTS5-003B57.svg?logo=sqlite&variant=secondary&size=sm" /></a>
+  <a href="https://hono.dev/"><img alt="Hono" src="https://shieldcn.dev/badge/Hono-Edge_Ready-E36002.svg?logo=hono&variant=secondary&size=sm" /></a>
+  <a href="https://workers.cloudflare.com/"><img alt="Cloudflare Workers" src="https://shieldcn.dev/badge/Cloudflare-Workers_D1-F38020.svg?logo=cloudflare&variant=secondary&size=sm" /></a>
+</p>
+
+---
 
 > **LinoDigital** é a marca institucional de tecnologia e conhecimento livre. O **Lino Livre** é a sua biblioteca digital aberta de livros e cursos gratuitos.
-
 > *"Livros livres, para todos."*
 
 O **Lino Livre**, produto da **LinoDigital**, é uma plataforma aberta, ultrassimples e direta para distribuição de **livros digitais** e **cursos gratuitos**, voltada para escolas, estudantes e a comunidade em geral. O modelo de empréstimo físico e controle de inventário foi integralmente descartado em prol do acesso livre, irrestrito e legal.
