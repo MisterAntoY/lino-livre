@@ -245,33 +245,13 @@
     .btn-goal-contrib{background:var(--primary);color:#fff;border-radius:var(--radius-sm);font-weight:600;padding:.55rem 1rem;font-size:.85rem;border:none;cursor:pointer}
     .btn-goal-share{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;padding:.55rem 1rem;font-size:.85rem;color:var(--text-main);cursor:pointer}
     .btn-goal-whatsapp{background:#25d366;color:#fff;border-radius:var(--radius-sm);font-weight:600;padding:.55rem 1rem;font-size:.85rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
-    .destaques-section{margin-bottom:2rem}
-    .destaques-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.5rem}
-    .destaques-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
-    .destaques-badge{display:inline-flex;align-items:center;padding:.3rem .75rem;border-radius:999px;font-size:.75rem;font-weight:700;background:#fef3c7;color:#92400e;border:1px solid #fde68a;margin-bottom:.5rem}
-    .destaques-title{font-size:1.45rem;font-weight:800;color:var(--text-main);margin:0 0 .35rem}
-    .destaques-subtitle{font-size:.88rem;color:var(--text-muted);margin:0;max-width:700px}
-    .destaques-tabs-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
-    .pill-destaque-tab{border:1px solid var(--border);background:#fff;padding:.4rem .9rem;border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;cursor:pointer;color:var(--text-muted);font-family:inherit}
-    .pill-destaque-tab.active{background:var(--text-main);color:#fff;border-color:var(--text-main)}
-    .destaques-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;min-height:480px}
-    .destaque-book-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;position:relative;box-shadow:var(--shadow-card)}
-    .destaque-cover-wrap{position:relative;width:100%;aspect-ratio:2/2.85;background:#f1f5f9;overflow:hidden}
-    .destaque-cover{width:100%;height:100%;object-fit:cover}
-    .skeleton-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;position:relative;min-height:440px}
-    .skeleton-cover{width:100%;aspect-ratio:2/2.9;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
-    .skeleton-text{height:16px;margin:12px;border-radius:4px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
-    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    @media (max-width:768px){
-      .goal-scoreboard-card{padding:1.4rem 1.25rem}
-      .goal-title{font-size:1.45rem}
-      .goal-counter-box{min-width:100%;text-align:left}
-      .counter-number-row{justify-content:flex-start}
-      .destaques-card{padding:1.25rem 1rem}
-      .destaques-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;min-height:340px}
-      .skeleton-card{min-height:330px}
-      .books-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;min-height:400px}
-    }
+    /* Quick Navigation Cards - shadcn inspired */
+    .quick-nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1.5rem 0 2rem}
+    .quick-nav-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem;text-decoration:none;color:inherit;transition:all .15s ease;display:block;box-shadow:var(--shadow-card)}
+    .quick-nav-card:hover{border-color:var(--primary);box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+    .quick-nav-icon{font-size:1.75rem;margin-bottom:.5rem;line-height:1}
+    .quick-nav-title{font-size:1rem;font-weight:600;color:var(--text-main);margin:0 0 .25rem}
+    .quick-nav-desc{font-size:.8rem;color:var(--text-muted);margin:0;line-height:1.4}
   </style>
   
   <!-- Full CSS (render-blocking, 14 KB gzip): um único layout em vez de
@@ -535,43 +515,41 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- DESTAQUES DA BIBLIOTECA: LIVROS MAIS POPULARES E MUITO PROCURADOS -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <section class="container destaques-section" id="secao-destaques">
-      <div class="destaques-card">
-        <div class="destaques-header">
-          <div class="destaques-title-group">
-            <div class="destaques-badge">
-              <span data-i18n="ui.books.highlightsBadge">Destaques do Acervo</span>
-            </div>
-            <h2 class="destaques-title" data-i18n="ui.books.highlightsTitle">Livros Mais Populares</h2>
-            <p class="destaques-subtitle" data-i18n="ui.books.highlightsSubtitle">Obras clássicas, acadêmicas e de referência com leitura e acesso aberto imediato.</p>
-          </div>
-          <div class="destaques-actions">
-            <button class="btn btn-destaque-all" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo" data-i18n="ui.books.highlightsViewAll">
-              <span>Explorar Todos os 100+ Mais Lidos</span> <span>→</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Pílulas de Navegação dos Destaques -->
-        <div class="destaques-tabs-pills" id="pills-destaques-tipo">
-          <button class="pill-destaque-tab active" data-tipo="todos" data-acao="trocarAbaDestaques" data-arg="todos" data-i18n="ui.books.highlightsAll">Mais Procurados</button>
-          <button class="pill-destaque-tab" data-tipo="lusofonia" data-acao="trocarAbaDestaques" data-arg="lusofonia" data-i18n="ui.books.highlightsClassics">Clássicos Lusófonos</button>
-          <button class="pill-destaque-tab" data-tipo="africa" data-acao="trocarAbaDestaques" data-arg="africa" data-i18n="ui.books.highlightsAfrica">Literatura Africana</button>
-          <button class="pill-destaque-tab" data-tipo="tech" data-acao="trocarAbaDestaques" data-arg="tech" data-i18n="ui.books.highlightsTech">Tecnologia & Guias</button>
-        </div>
-
-        <!-- Grade de Destaques (Carrossel / Prateleira Responsiva Anti-CLS) -->
-        <div class="destaques-grid" id="grade-destaques">
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:75%;"></div><div class="skeleton-text" style="width:45%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:85%;"></div><div class="skeleton-text" style="width:50%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:65%;"></div><div class="skeleton-text" style="width:40%;"></div></div>
-          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-text" style="width:80%;"></div><div class="skeleton-text" style="width:55%;"></div></div>
-        </div>
+    <!-- Navegação Rápida por Categorias Principais -->
+    <div class="container">
+      <div class="quick-nav-grid" id="quick-nav">
+        <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo">
+          <div class="quick-nav-icon" aria-hidden="true">🌟</div>
+          <h3 class="quick-nav-title">Mais Lidos do Mundo</h3>
+          <p class="quick-nav-desc">Os 100 clássicos universais mais lidos da história</p>
+        </a>
+        <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Autores Lusófonos Clássicos">
+          <div class="quick-nav-icon" aria-hidden="true">📚</div>
+          <h3 class="quick-nav-title">Clássicos Lusófonos</h3>
+          <p class="quick-nav-desc">Machado de Assis, Pessoa, Camões e outros gigantes</p>
+        </a>
+        <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Literatura Angolana">
+          <div class="quick-nav-icon" aria-hidden="true">🌍</div>
+          <h3 class="quick-nav-title">Literatura Angolana</h3>
+          <p class="quick-nav-desc">Vozes de Angola: Pepetela, Luandino Vieira, Uanhenga Xitu</p>
+        </a>
+        <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Ciência de Dados & Inteligência Artificial">
+          <div class="quick-nav-icon" aria-hidden="true">🤖</div>
+          <h3 class="quick-nav-title">IA & Dados</h3>
+          <p class="quick-nav-desc">Machine learning, Python, redes neurais e data science</p>
+        </a>
+        <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="DevOps, Cloud & Infraestrutura">
+          <div class="quick-nav-icon" aria-hidden="true">☁️</div>
+          <h3 class="quick-nav-title">Cloud & DevOps</h3>
+          <p class="quick-nav-desc">AWS, Docker, Kubernetes, CI/CD e infraestrutura moderna</p>
+        </a>
+        <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Programação & Web">
+          <div class="quick-nav-icon" aria-hidden="true">💻</div>
+          <h3 class="quick-nav-title">Programação</h3>
+          <p class="quick-nav-desc">JavaScript, TypeScript, React, Node.js e desenvolvimento web</p>
+        </a>
       </div>
-    </section>
+    </div>
 
     <!-- Filtros e Busca com Anotações WebMCP para Agentes de IA -->
     <section class="container filter-section">

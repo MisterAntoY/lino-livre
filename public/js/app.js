@@ -15,8 +15,8 @@ if (typeof window !== 'undefined' && window.trustedTypes && typeof window.truste
 
 const app = {
   abaAtiva: 'livros',
-  destaquesTipoAtivo: 'todos',
-  destaquesLivros: [],
+  // destaquesTipoAtivo: removido - seção removida
+  // destaquesLivros: removido - seção removida
   livros: [],
   cursos: [],
   roadmaps: [],
@@ -100,7 +100,6 @@ const app = {
 
     // Caminho crítico: apenas o catálogo e o placar (ambos acima da dobra).
     await Promise.all([
-      this.carregarDestaques(),
       this.carregarLivros(),
       this.carregarPlacarMeta()
     ]);
@@ -650,104 +649,6 @@ const app = {
             <div class="book-actions">
               ${botoesAcaoHtml}
               <button class="btn btn-outline" data-acao="abrirDetalhesLivro" data-arg="${l.id}" aria-label="Detalhes da obra ${this.escape(l.titulo)}" title="Ver sinopse e formatos para baixar">
-                ℹ Detalhes
-              </button>
-            </div>
-          </div>
-        </article>
-      `;
-    }).join('');
-  },
-
-  // ==================== DESTAQUES (MAIS POPULARES E PROCURADOS) ====================
-  async carregarDestaques(tipo = 'todos') {
-    const grade = document.getElementById('grade-destaques');
-    if (!grade) return;
-    this.destaquesTipoAtivo = tipo;
-
-    try {
-      const res = await fetch(`/api/livros/destaques?tipo=${encodeURIComponent(tipo)}&limit=12`);
-      if (!res.ok) throw new Error('Falha ao carregar destaques');
-      const json = await res.json();
-      this.destaquesLivros = json.data || [];
-      this.renderizarDestaques(this.destaquesLivros);
-    } catch (err) {
-      if (this.livros && this.livros.length > 0) {
-        this.renderizarDestaques(this.livros.slice(0, 8));
-      } else {
-        grade.innerHTML = `<div class="loading" style="padding:1.5rem; color:#b91c1c;">${this.escape(t('books.error', { msg: err.message }))}</div>`;
-      }
-    }
-  },
-
-  trocarAbaDestaques(tipo) {
-    this.destaquesTipoAtivo = tipo;
-    document.querySelectorAll('#pills-destaques-tipo .pill-destaque-tab').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-tipo') === tipo);
-    });
-    const grade = document.getElementById('grade-destaques');
-    if (grade) {
-      grade.innerHTML = `<div class="loading" style="padding: 2rem 0;">${t('books.loading')}</div>`;
-    }
-    this.carregarDestaques(tipo);
-  },
-
-  renderizarDestaques(lista) {
-    const grade = document.getElementById('grade-destaques');
-    if (!grade) return;
-
-    if (!lista || lista.length === 0) {
-      grade.innerHTML = `<div class="loading" style="padding: 2rem 0;">${t('books.empty')}</div>`;
-      return;
-    }
-
-    grade.innerHTML = lista.map(l => {
-      const capaPadrao = this.gerarCapaSvg(l.titulo, l.autor_nome, l.categoria_nome);
-      const capaUrl = l.capa_url ? this.capaProxyUrl(l.capa_url, capaPadrao) : capaPadrao;
-      const links = l.links || [];
-      const rawBadge = l.destaque_badge || 'Mais Procurado';
-      const badgeText = rawBadge.replace(/^[^\w\d#]+/, '').trim();
-
-      const pdfLink = links.find(lnk => lnk.formato.toLowerCase() === 'pdf');
-      const htmlLink = links.find(lnk => lnk.formato.toLowerCase() === 'html');
-      const epubLink = links.find(lnk => lnk.formato.toLowerCase() === 'epub');
-      const mainLink = pdfLink || epubLink || htmlLink || links[0];
-
-      const tagsFormatos = links.slice(0, 3).map(lnk => {
-        return `<span class="badge-license" style="font-size:0.68rem; padding:0.15rem 0.45rem;">${lnk.formato.toUpperCase()}</span>`;
-      }).join('');
-
-      let btnLer = '';
-      if (mainLink) {
-        btnLer = `
-          <a class="btn btn-primary" href="/api/livros/${l.id}/ler/${mainLink.id}" target="_blank" rel="noopener noreferrer" data-stop="1" aria-label="Ler ${this.escape(l.titulo)}" title="Acessar obra imediatamente">
-            Ler Agora
-          </a>
-        `;
-      } else {
-        btnLer = `
-          <button class="btn btn-primary" data-acao="abrirDetalhesLivro" data-arg="${l.id}" data-stop="1">
-            Ler Agora
-          </button>
-        `;
-      }
-
-      return `
-        <article class="destaque-book-card" data-acao="abrirDetalhesLivro" data-arg="${l.id}" title="${this.escape(l.titulo)} — Clique para ver detalhes">
-          <div class="destaque-cover-wrap">
-            <img src="${capaUrl}" alt="${this.escape(l.titulo)}" class="destaque-cover" width="160" height="228" loading="lazy" decoding="async" data-acao="fallbackImagem" data-titulo="${this.escape(l.titulo)}" data-autor="${this.escape(l.autor_nome || '')}" data-categoria="${this.escape(l.categoria_nome || '')}">
-            <span class="destaque-badge-tag">${this.escape(badgeText)}</span>
-          </div>
-          <div class="destaque-info">
-            <span class="destaque-category">${this.escape(traduzirCategoria(l.categoria_nome) || 'Literatura')}</span>
-            <h3 class="destaque-book-title">${this.escape(l.titulo)}</h3>
-            <p class="destaque-book-author">${this.escape(l.autor_nome || 'Autor Consagrado')} ${l.ano_publicacao ? `• ${l.ano_publicacao}` : ''}</p>
-            <div class="destaque-formats">
-              ${tagsFormatos}
-            </div>
-            <div class="destaque-card-actions">
-              ${btnLer}
-              <button class="btn btn-outline" data-acao="abrirDetalhesLivro" data-arg="${l.id}" data-stop="1" aria-label="Detalhes de ${this.escape(l.titulo)}" title="Ver detalhes completos da obra">
                 ℹ Detalhes
               </button>
             </div>
@@ -3340,7 +3241,6 @@ const ACOES_PERMITIDAS = new Set([
   'salvarNovoLivro',
   'togglePainelAjustes',
   'trocarAba',
-  'trocarAbaDestaques',
   'trocarAbaLegal',
   'trocarIdioma',
 ]);
