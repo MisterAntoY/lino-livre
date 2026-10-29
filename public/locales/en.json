@@ -27,7 +27,6 @@
     "goal": {
       "badge": "Global Goal",
       "title": "Towards 10 Million Free Books",
-      "subtitle": "An open, universal and free library for all students, educators and readers worldwide. Track our real-time progress and be part of this historic journey!",
       "currentIndexed": "Open Books Indexed",
       "target": "10,000,000",
       "pctOfTarget": "{p}% of goal",
