@@ -1,3 +1,5 @@
+# LinoDigital — Lino Livre
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/header/graph.svg?title=Lino+Livre&subtitle=Biblioteca+Digital+Aberta+de+Livros+e+Cursos+Gratuitos+%7C+Angola&logo=book&theme=indigo&mode=dark" />
