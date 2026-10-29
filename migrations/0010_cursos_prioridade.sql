@@ -5,10 +5,11 @@
 -- e suporta paginação eficiente sem varreduras completas.
 -- prioridade = 0 para parceiros em destaque (Guia de TI, Roadmap.sh)
 -- prioridade = 1 para catálogo padrão
+-- Nota: esta migração já foi aplicada com sucesso. Se o deploy tentar
+-- aplicar novamente, ignore o erro "duplicate column name" — a coluna já existe.
 -- ============================================================
 
--- Idempotente: ignora se a coluna já existe
-ALTER TABLE cursos ADD COLUMN IF NOT EXISTS prioridade INTEGER DEFAULT 1;
+ALTER TABLE cursos ADD COLUMN prioridade INTEGER DEFAULT 1;
 
 UPDATE cursos SET prioridade = 0 WHERE plataforma LIKE '%Guia de TI%';
 UPDATE cursos SET prioridade = 0 WHERE tipo = 'roadmap' AND plataforma LIKE '%Roadmap.sh%';
