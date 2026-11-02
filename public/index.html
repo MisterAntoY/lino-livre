@@ -189,21 +189,21 @@
     @font-face{font-family:'Lora';font-style:italic;font-weight:400 700;font-display:optional;src:url(/fonts/lora-italic-latin-var-v20261023.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
     /* Herói/Placar: estilos críticos do elemento LCP (evita reflow/repaint quando o CSS completo chega) */
     .goal-scoreboard-section{margin-top:1.25rem;margin-bottom:1.75rem}
-    .goal-scoreboard-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.85rem 2.25rem;position:relative;overflow:hidden;box-shadow:var(--shadow-card)}
+    .goal-scoreboard-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.85rem 2.25rem;position:relative;box-shadow:var(--shadow-card)}
     .goal-header{display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem}
     .goal-title-group{flex:1 1 500px}
     .goal-title{font-size:1.85rem;font-weight:800;color:var(--text-main);margin:0 0 .45rem;line-height:1.25;letter-spacing:-.025em}
     .goal-subtitle{font-size:.95rem;line-height:1.55;color:var(--text-muted);margin:0;max-width:650px}
     .pagination-container{display:flex;justify-content:center;align-items:center;gap:1rem;padding:2rem 0}
     .reader-modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
-    .reader-modal.theme-creme{background:rgba(9,9,11,.85);backdrop-filter:blur(8px)}
+    .reader-modal.theme-creme{background:var(--bg-card);backdrop-filter:blur(8px)}
     .reader-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
-    .reader-title{font-size:1.125rem;font-weight:700;color:#fafafa;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .reader-subtitle{font-size:.875rem;color:#a1a1aa;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .reader-title{font-size:1.125rem;font-weight:700;color:var(--text-main);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .reader-subtitle{font-size:.875rem;color:var(--text-muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .book-details{padding:1.25rem;display:flex;flex-direction:column;gap:.75rem;flex:1;min-height:0}
     .book-title{font-size:1.125rem;font-weight:700;color:var(--text-main);line-height:1.3;margin:0}
     .book-author{font-size:.875rem;color:var(--text-muted);margin:0}
-    .badge-license{display:inline-block;padding:.2rem .55rem;border-radius:999px;font-size:.6875rem;font-weight:600;background:#f4f4f5;color:var(--text-main);border:1px solid var(--border);width:fit-content}
+    .badge-license{display:inline-block;padding:.2rem .55rem;border-radius:999px;font-size:.75rem;font-weight:600;background:#f4f4f5;color:var(--text-main);border:1px solid var(--border);width:fit-content}
     .book-synopsis{font-size:.8125rem;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0}
     .visually-hidden,.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     @media (prefers-reduced-motion:reduce){*, *::before, *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
@@ -221,7 +221,7 @@
     .goal-badge{display:inline-flex;align-items:center;padding:.25rem .75rem;border-radius:999px;font-size:.75rem;font-weight:600;background:#f4f4f5;color:var(--text-main);border:1px solid var(--border);margin-bottom:.85rem}
     .goal-live-counter{flex:0 0 auto}
     .goal-counter-box{background:#f4f4f5;border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 1.4rem;text-align:right}
-    .counter-label{display:block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);margin-bottom:.25rem}
+    .counter-label{display:block;font-size:.8rem;font-weight:500;color:var(--text-muted);margin-bottom:.25rem}
     .counter-number-row{display:flex;align-items:baseline;justify-content:flex-end;gap:.35rem}
     .counter-odometer{font-size:2rem;font-weight:800;letter-spacing:-.03em;color:var(--text-main)}
     .counter-divider{font-size:1.35rem;color:var(--text-muted);font-weight:300}
@@ -235,12 +235,12 @@
     .milestone-dot{width:10px;height:10px;border-radius:50%;background:var(--border);margin-bottom:.35rem;border:2px solid #fff}
     .milestone-step.reached .milestone-dot{background:var(--primary)}
     .milestone-step.active .milestone-dot{background:var(--primary);box-shadow:0 0 0 3px var(--border)}
-    .milestone-tag{position:absolute;top:100%;white-space:nowrap;font-size:.68rem;background:var(--primary);color:#fff;padding:.15rem .45rem;border-radius:999px;font-weight:600}
+    .milestone-tag{position:absolute;top:100%;white-space:nowrap;font-size:.75rem;background:var(--secondary);color:var(--secondary-foreground);border:1px solid var(--border);padding:.15rem .45rem;border-radius:999px;font-weight:600}
     .goal-footer{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)}
     .goal-stats-grid{display:flex;gap:.75rem;flex-wrap:wrap}
     .goal-stat-pill{display:flex;align-items:center;gap:.65rem;background:#f4f4f5;border:1px solid var(--border);padding:.55rem .95rem;border-radius:var(--radius-sm)}
     .stat-val{display:block;font-size:1.05rem;font-weight:800;color:var(--text-main);line-height:1.1}
-    .stat-lbl{display:block;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:600}
+    .stat-lbl{display:block;font-size:.75rem;color:var(--text-muted);font-weight:500}
     .goal-actions{display:flex;gap:.65rem;flex-wrap:wrap}
     .btn-goal-contrib{background:var(--primary);color:#fff;border-radius:var(--radius-sm);font-weight:500;padding:.55rem 1rem;font-size:.85rem;border:none;cursor:pointer}
     .btn-goal-share{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:500;padding:.55rem 1rem;font-size:.85rem;color:var(--text-main);cursor:pointer}
@@ -249,7 +249,8 @@
     .quick-nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1.5rem 0 2rem}
     .quick-nav-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;text-decoration:none;color:inherit;transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease;display:block;box-shadow:var(--shadow-card)}
     .quick-nav-card:hover{border-color:var(--primary);box-shadow:var(--shadow-hover);transform:translateY(-2px)}
-    .quick-nav-icon{font-size:1.75rem;margin-bottom:.5rem;line-height:1}
+    .quick-nav-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+    .quick-nav-icon{display:inline-flex;align-items:center;justify-content:center;color:var(--text-main);flex-shrink:0}
     .quick-nav-title{font-size:1rem;font-weight:600;color:var(--text-main);margin:0 0 .25rem}
     .quick-nav-desc{font-size:.8rem;color:var(--text-muted);margin:0;line-height:1.4}
   </style>
@@ -414,9 +415,6 @@
       <div class="goal-scoreboard-card">
         <div class="goal-header">
           <div class="goal-title-group">
-            <div class="goal-badge">
-              <span data-i18n="ui.goal.badge">Meta Coletiva Global</span>
-            </div>
             <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
           </div>
           <div class="goal-live-counter">
@@ -521,33 +519,45 @@
     <div class="container">
       <div class="quick-nav-grid" id="quick-nav">
         <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="🌟 Mais Lidos do Mundo">
-          <div class="quick-nav-icon" aria-hidden="true">🌟</div>
-          <h3 class="quick-nav-title">Mais Lidos do Mundo</h3>
+          <div class="quick-nav-header">
+            <svg class="quick-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <h3 class="quick-nav-title">Mais Lidos do Mundo</h3>
+          </div>
           <p class="quick-nav-desc">Os 100 clássicos universais mais lidos da história</p>
         </a>
         <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Autores Lusófonos Clássicos">
-          <div class="quick-nav-icon" aria-hidden="true">📚</div>
-          <h3 class="quick-nav-title">Clássicos Lusófonos</h3>
+          <div class="quick-nav-header">
+            <svg class="quick-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <h3 class="quick-nav-title">Clássicos Lusófonos</h3>
+          </div>
           <p class="quick-nav-desc">Machado de Assis, Pessoa, Camões e outros gigantes</p>
         </a>
         <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Literatura Angolana">
-          <div class="quick-nav-icon" aria-hidden="true">🌍</div>
-          <h3 class="quick-nav-title">Literatura Angolana</h3>
+          <div class="quick-nav-header">
+            <svg class="quick-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <h3 class="quick-nav-title">Literatura Angolana</h3>
+          </div>
           <p class="quick-nav-desc">Vozes de Angola: Pepetela, Luandino Vieira, Uanhenga Xitu</p>
         </a>
         <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Ciência de Dados & Inteligência Artificial">
-          <div class="quick-nav-icon" aria-hidden="true">🤖</div>
-          <h3 class="quick-nav-title">IA & Dados</h3>
+          <div class="quick-nav-header">
+            <svg class="quick-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+            <h3 class="quick-nav-title">IA & Dados</h3>
+          </div>
           <p class="quick-nav-desc">Machine learning, Python, redes neurais e data science</p>
         </a>
         <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="DevOps, Cloud & Infraestrutura">
-          <div class="quick-nav-icon" aria-hidden="true">☁️</div>
-          <h3 class="quick-nav-title">Cloud & DevOps</h3>
+          <div class="quick-nav-header">
+            <svg class="quick-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            <h3 class="quick-nav-title">Cloud & DevOps</h3>
+          </div>
           <p class="quick-nav-desc">AWS, Docker, Kubernetes, CI/CD e infraestrutura moderna</p>
         </a>
         <a class="quick-nav-card" data-acao="filtrarPorCategoria" data-arg="Programação & Web">
-          <div class="quick-nav-icon" aria-hidden="true">💻</div>
-          <h3 class="quick-nav-title">Programação</h3>
+          <div class="quick-nav-header">
+            <svg class="quick-nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <h3 class="quick-nav-title">Programação</h3>
+          </div>
           <p class="quick-nav-desc">JavaScript, TypeScript, React, Node.js e desenvolvimento web</p>
         </a>
       </div>
@@ -770,7 +780,7 @@
   <div id="aba-roadmaps" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner roadmap-banner">
-        <div class="banner-badge-primary" style="background:#e0e7ff; color:#3730a3; border-color:#c7d2fe;"> Árvores de Habilidades & Carreiras Tech</div>
+        <div class="banner-badge-primary">Árvores de Habilidades & Carreiras Tech</div>
         <h2 data-i18n="ui.roadmaps.bannerTitle">Roadmaps e Trilhas Guiadas de Aprendizado</h2>
         <p data-i18n="ui.roadmaps.bannerDesc">Mapas interativos passo a passo e caminhos estruturados de formação profissional reunindo recursos abertos de <a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer" class="link-destaque">Roadmap.sh</a>, <a href="https://trilha.info" target="_blank" rel="noopener noreferrer" class="link-destaque">Trilha Info</a> e do <a href="https://guiadeti.com.br" target="_blank" rel="noopener noreferrer" class="link-destaque">Guia de TI</a>.</p>
       </div>
@@ -808,7 +818,7 @@
   <div id="aba-dicas" class="tab-content hidden">
     <section class="container filter-section">
       <div class="cursos-header-banner dicas-banner">
-        <div class="banner-badge-primary" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">Métodos Comprovados & Recursos Abertos</div>
+        <div class="banner-badge-primary">Métodos Comprovados & Recursos Abertos</div>
         <h2 data-i18n="ui.tips.bannerTitle">Dicas de Estudo, Técnicas de Foco & Ferramentas</h2>
         <p data-i18n="ui.tips.bannerDesc">Seleção prática de metodologias de aprendizagem, temporizadores Pomodoro, repetição espaçada, corretores gramaticais, gestores de anotações e apoios ao estudante.</p>
       </div>
@@ -974,7 +984,7 @@
       </div>
 
       <div id="card-kofi" class="whatsapp-card kofi-card">
-        <div class="whatsapp-qr kofi-qr" style="display:flex;align-items:center;justify-content:center;font-size:1.25rem;background:#f5f5f4;border-radius:var(--radius-sm);width:160px;height:160px;">Ko-fi</div>
+        <div class="whatsapp-qr kofi-qr" style="display:flex;align-items:center;justify-content:center;font-size:1.25rem;background:var(--muted);border-radius:var(--radius-sm);width:160px;height:160px;">Ko-fi</div>
         <h3 data-i18n="ui.kofi.cardTitle"> Apoie no Ko-fi</h3>
         <p data-i18n="ui.kofi.cardDesc">Contribua com qualquer valor para ajudar a manter o servidor e expandir o acervo livre.</p>
         <a id="link-card-kofi" class="btn btn-kofi" href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer">
@@ -1339,7 +1349,7 @@
       </div>
       <form data-acao="salvarNovoLivro" data-passa-ev="1" data-evento="submit" class="modal-card-body">
         <!-- Aviso de Moderação & Conformidade Legal -->
-        <div class="admin-notice-box" style="background: var(--muted, #f4f4f5); border-left: 4px solid var(--primary, #09090b); padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: var(--radius-sm, 4px); font-size: 0.825rem; line-height: 1.4; color: var(--text-main, #09090b);">
+        <div class="admin-notice-box" style="background: var(--muted, #f4f4f5); border: 1px solid var(--border, #e4e4e7); padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: var(--radius-sm, 4px); font-size: 0.825rem; line-height: 1.4; color: var(--text-main, #09090b);">
           <div style="font-weight: 600; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
             <span>Moderação & Conformidade Legal</span>
           </div>
@@ -1407,7 +1417,7 @@
         <div class="form-group">
           <label for="novo-admin-key" style="display: flex; justify-content: space-between; align-items: center;">
             <span data-i18n="ui.form.labelAdminKey">Chave Administrativa (x-admin-key)</span>
-            <span style="font-size: 0.75rem; color: var(--text-muted, #64748b); font-weight: normal;" data-i18n="ui.form.adminKeyHint">Exigida para publicação direta</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;" data-i18n="ui.form.adminKeyHint">Exigida para publicação direta</span>
           </label>
           <input type="password" id="novo-admin-key" class="form-input" placeholder="Insira a chave autorizada ou deixe vazio para moderação" data-i18n-ph="ui.form.phAdminKey" autocomplete="off">
         </div>
@@ -1454,8 +1464,8 @@
         <!-- Aba 2: Intermediário & Isenção -->
         <div id="legal-conteudo-isencao" class="legal-tab-panel">
           <h4>2. Papel Exclusivo de Intermediário (Zero Armazenamento Local)</h4>
-          <div style="background:#f5f5f4;border-left:4px solid #334155;padding:0.75rem 1rem;border-radius:4px;margin-bottom:1rem;">
-            <p style="margin:0;font-size:0.9rem;color:#334155;"><strong>Diretriz Inviolável de Arquitetura:</strong> Os servidores e bancos de dados da LinoDigital e do Lino Livre <strong>NUNCA</strong> armazenam arquivos binários de livros (PDF, EPUB, MOBI ou TXT). O sistema armazena unicamente metadados públicos e hiperligações para provedores externos.</p>
+          <div style="background:var(--muted,#f4f4f5);border:1px solid var(--border,#e4e4e7);padding:0.75rem 1rem;border-radius:var(--radius-sm,4px);margin-bottom:1rem;">
+            <p style="margin:0;font-size:0.9rem;color:var(--text-main,#09090b);"><strong>Diretriz Inviolável de Arquitetura:</strong> Os servidores e bancos de dados da LinoDigital e do Lino Livre <strong>NUNCA</strong> armazenam arquivos binários de livros (PDF, EPUB, MOBI ou TXT). O sistema armazena unicamente metadados públicos e hiperligações para provedores externos.</p>
           </div>
           <p>Toda leitura externa é realizada através de redirecionamento de protocolo padrão (HTTP 302) para os repositórios originais na internet. A plataforma opera como mero intermediário tecnológico e provedor de busca educativa, conforme a Lei n.º 15/14 de Angola (arts. 32.º e 42.º a 45.º), os tratados da OMPI (WIPO), o Marco Civil da Internet (Lei 12.965/2014, art. 19), a DMCA (17 U.S.C. § 512) e a Diretiva de Comércio Eletrónico da UE (2000/31/CE).</p>
         </div>
@@ -1464,9 +1474,9 @@
         <div id="legal-conteudo-takedown" class="legal-tab-panel">
           <h4>3. Notificação e Remoção Imediata de Links (Notice and Takedown)</h4>
           <p>Respeitamos rigorosamente os direitos autorais. Caso identifique qualquer hiperligação apontando para obra que infrinja seus direitos, disponibilizamos um procedimento célere para remoção voluntária do índice em até <strong>24 a 48 horas úteis</strong>.</p>
-          <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:1rem;border-radius:var(--radius-sm);margin:1rem 0;">
+          <div style="background:var(--muted,#f4f4f5);border:1px solid var(--border,#e4e4e7);padding:1rem;border-radius:var(--radius-sm,4px);margin:1rem 0;">
             <p style="margin:0 0 0.5rem 0;"><strong>Canal Oficial de Atendimento:</strong> <a href="mailto:bv6alblu6@mozmail.com" style="color:var(--primary);font-weight:600;">bv6alblu6@mozmail.com</a></p>
-            <p style="margin:0;font-size:0.85rem;color:#64748b;">Assunto: <code>[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre</code></p>
+            <p style="margin:0;font-size:0.85rem;color:var(--muted-foreground,#71717a);">Assunto: <code>[NOTIFICAÇÃO DE DIREITOS AUTORAIS / TAKEDOWN] - Lino Livre</code></p>
           </div>
           <a href="mailto:bv6alblu6@mozmail.com?subject=%5BNOTIFICA%C3%87%C3%83O%20DE%20DIREITOS%20AUTORAIS%20%2F%20TAKEDOWN%5D%20-%20Lino%20Livre&body=Prezada%20Equipe%20do%20Lino%20Livre%2C%0A%0ASolicito%20a%20remo%C3%A7%C3%A3o%20imediata%20da%20seguinte%20hiperliga%C3%A7%C3%A3o%20do%20cat%C3%A1logo%3A%0A%0A1.%20T%C3%ADtulo%20da%20Obra%3A%20%0A2.%20Autor%2FTitular%20dos%20Direitos%3A%20%0A3.%20URL%20no%20Lino%20Livre%3A%20%0A4.%20URL%20Externa%20Apontada%3A%20%0A5.%20Comprova%C3%A7%C3%A3o%20da%20Titularidade%3A%20%0A%0ADeclaro%20de%20boa-f%C3%A9%20que%20sou%20o%20detentor%20leg%C3%ADtimo%20ou%20representante%20autorizado.%0A%0AAtenciosamente%2C%0ANome%3A%20%0AContato%3A%20" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;font-size:0.9rem;">
              Enviar Notificação de Remoção (E-mail Formatado)
