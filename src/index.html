@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lino Digital</title>
+  <meta name="description" content="Lino Digital — Meu site pessoal de tecnologia e conhecimento." />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #10b981;
+      --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      border: 1px solid transparent;
+    }
+
+    .card:hover {
+      background-color: #334155;
+      border-color: var(--accent);
+    }
+
+    .card:active {
+      transform: scale(0.98);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.5rem; }
+      .card { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Lino Digital</h1>
+      <p class="subtitle">Meu site pessoal de tecnologia e conhecimento.</p>
+    </header>
+
+    <div class="grid">
+      <a href="https://lino-livre.linolivre.workers.dev/" class="card" target="_blank" rel="noopener noreferrer">
+        <div class="card-icon">📚</div>
+        <div class="card-title">Lino Livre</div>
+        <div class="card-desc">Biblioteca digital comunitária</div>
+      </a>
+
+      <a href="./" class="card" aria-current="page">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">Lino Digital</div>
+        <div class="card-desc">Meu site — tecnologia e conhecimento</div>
+      </a>
+    </div>
+
+    <footer>
+      <p>© 2026 Lino Digital</p>
+      <p style="margin-top: 0.5rem">Operado por LAIPMENDES — COMERCIO E PRESTAÇAO DE SERVIÇOS, LDA (NIF: 5003237591) · Luanda, Angola</p>
+    </footer>
+  </div>
+</body>
+</html>
