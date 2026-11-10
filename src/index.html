@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lino Digital</title>
   <meta name="description" content="Lino Digital — Meu site pessoal de tecnologia e conhecimento." />
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style>
     :root {
       --bg: #0f172a;
@@ -68,6 +71,9 @@
       color: var(--text);
       transition: background-color 0.2s ease, transform 0.1s ease;
       border: 1px solid transparent;
+      will-change: transform;
+      backface-visibility: hidden;
+      transform: translateZ(0);
     }
 
     .card:hover {
