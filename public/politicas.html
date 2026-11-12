@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://open.spotify.com; object-src 'none'; base-uri 'self'; form-action 'self';">
+  <title>Políticas Internas, Governança & Diretrizes Jurídicas — Lino Livre</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#10b981">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=20261025b">
+
+  <!-- Dados estruturados Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://lino-livre.linolivre.workers.dev/politicas#webpage",
+        "url": "https://lino-livre.linolivre.workers.dev/politicas",
+        "name": "Políticas Internas, Governança & Diretrizes Jurídicas — Lino Livre",
+        "description": "Declaração de políticas internas, missão comunitária, conformidade jurídica (Lei n.º 15/14 de Angola, LGPD/RGPD), procedimento DMCA e termos de uso.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://lino-livre.linolivre.workers.dev/#website",
+          "name": "LinoDigital",
+          "url": "https://lino-livre.linolivre.workers.dev/"
+        },
+        "inLanguage": "pt-AO"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://lino-livre.linolivre.workers.dev/politicas#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Início",
+            "item": "https://lino-livre.linolivre.workers.dev/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Políticas & Jurídico",
+            "item": "https://lino-livre.linolivre.workers.dev/politicas"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .legal-page-wrapper {
+      max-width: 920px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1.5rem;
+    }
+    .legal-header {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .legal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f0fdf4;
+      color: #166534;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+      border: 1px solid #bbf7d0;
+    }
+    .legal-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+    .legal-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .legal-meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .policy-group-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 680px) {
+      .policy-group-nav { grid-template-columns: 1fr; }
+    }
+    .policy-nav-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+    }
+    .policy-nav-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .policy-nav-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .policy-nav-box a {
+      color: #475569;
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .policy-nav-box a:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    .legal-card-section {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2rem 2rem;
+      margin-bottom: 1.75rem;
+      scroll-margin-top: 1.5rem;
+    }
+    .legal-card-section.internal-policy {
+      border-left: 4px solid #3b82f6;
+    }
+    .legal-card-section.external-policy {
+      border-left: 4px solid var(--primary);
+    }
+    .legal-card-section.institutional-policy {
+      border-left: 4px solid #6366f1;
+    }
+    .legal-section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+    .tag-internal { color: #2563eb; }
+    .tag-external { color: #166534; }
+    .tag-institutional { color: #4f46e5; }
+    .legal-section-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    .legal-content p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #334155;
+      margin-bottom: 1rem;
+    }
+    .legal-content ul, .legal-content ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+      color: #334155;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .legal-content li {
+      margin-bottom: 0.5rem;
+    }
+    .legal-highlight-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+    }
+    .legal-highlight-box h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+    .legal-highlight-box p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: #475569;
+    }
+    .legal-highlight-box.warning {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .takedown-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      margin-top: 1.5rem;
+    }
+    .btn-takedown-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: #ffffff;
+      padding: 0.75rem 1.4rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-top: 1rem;
+      transition: background 0.15s ease;
+    }
+    .btn-takedown-email:hover {
+      background: var(--primary-hover);
+    }
+    .company-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .company-field-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.2rem;
+    }
+    .company-field-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body class="site-body">
+
+  <!-- Barra Superior de Navegação -->
+  <header class="site-header" style="background:#fff;border-bottom:1px solid var(--border);padding:0.85rem 0;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <a href="/" style="display:inline-flex;align-items:center;gap:0.65rem;text-decoration:none;color:var(--text-main);">
+        <svg class="header-logo" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span style="font-size:1.25rem;font-weight:800;letter-spacing:-0.02em;">Lino Livre</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <a href="/" class="btn btn-secondary" style="font-size:0.85rem;padding:0.45rem 0.95rem;text-decoration:none;border-radius:var(--radius-sm);border:1px solid var(--border);color:var(--text-main);font-weight:600;">
+          ← Voltar ao Catálogo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="legal-page-wrapper">
+
+    <!-- Cabeçalho Principal -->
+    <header class="legal-header">
+      <div class="legal-badge">
+        <span>🛡️ Governança & Conformidade Transparente</span>
+      </div>
+      <h1 class="legal-title">Políticas Internas, Governança & Diretrizes Jurídicas</h1>
+      <p class="legal-subtitle">
+        Documento unificado de conformidade legal, compromisso comunitário, proteção aos direitos autorais, enquadramento como intermediário tecnológico e política de privacidade da plataforma Lino Livre.
+      </p>
+      <div class="legal-meta-bar">
+        <span><strong>Versão:</strong> 2.0 (Novembro/2026)</span>
+        <span><strong>Âmbito:</strong> Global (com foco nos PALOP e Sul Global)</span>
+        <span><strong>Jurisdição Principal:</strong> República de Angola</span>
+      </div>
+    </header>
+
+    <!-- Navegação em Dois Blocos: Políticas Internas vs Políticas Externas -->
+    <nav class="policy-group-nav" aria-label="Navegação de Políticas">
+      <div class="policy-nav-box">
+        <h3>📘 Políticas Internas (Comunidade & Ética)</h3>
+        <ul>
+          <li><a href="#politica-missao">1. Missão Social e Inclusão Educacional</a></li>
+          <li><a href="#politica-sustentabilidade">2. Ausência de Fins Lucrativos e Sem Anúncios</a></li>
+          <li><a href="#politica-curadoria">3. Critérios de Curadoria & Fontes Homologadas</a></li>
+          <li><a href="#politica-conduta">4. Código de Conduta e Uso Aceitável</a></li>
+        </ul>
+      </div>
+      <div class="policy-nav-box">
+        <h3>⚖️ Políticas Externas & Jurídico</h3>
+        <ul>
+          <li><a href="#juridico-intermediario">5. Papel de Intermediário (Zero Armazenamento)</a></li>
+          <li><a href="#juridico-isencao">6. Isenção de Responsabilidade (Safe Harbor)</a></li>
+          <li><a href="#juridico-dmca">7. Notificação e Desindexação DMCA (24-48h)</a></li>
+          <li><a href="#juridico-legislacao">8. Conformidade Legal (Angola e Internacional)</a></li>
+          <li><a href="#juridico-privacidade">9. Política de Privacidade & Dados (LGPD/RGPD)</a></li>
+          <li><a href="#juridico-institucional">10. Identificação Corporativa & Contato</a></li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <!-- ================================================================= -->
+    <!-- PARTE 1: POLÍTICAS INTERNAS DE GOVERNANÇA E ÉTICA                 -->
+    <!-- ================================================================= -->
+
+    <!-- SEÇÃO 1: MISSÃO E INCLUSÃO -->
+    <section id="politica-missao" class="legal-card-section internal-policy">
+      <span class="legal-section-tag tag-internal">Política Interna • Seção 1</span>
+      <h2 class="legal-section-title">Missão Social e Inclusão Educacional</h2>
+      <div class="legal-content">
+        <p>
+          O <strong>Lino Livre</strong> é a biblioteca digital pública da marca institucional <strong>LinoDigital</strong>, desenvolvida para ser um instrumento ativo de emancipação intelectual e redução do fosso digital.
+        </p>
+        <p>
+          A plataforma foi arquitetada prioritariamente para apoiar estudantes, pesquisadores, autodidatas e professores nos <strong>Países Africanos de Língua Oficial Portuguesa (PALOP)</strong> — com destaque para Angola, Moçambique, Cabo Verde, Guiné-Bissau e São Tomé e Príncipe — além de outras comunidades do Sul Global onde o acesso a livros físicos e assinaturas pagas é severamente restringido por barreiras cambiais e financeiras.
+        </p>
+        <p>
+          Reconhecemos o acesso à literatura, à ciência e à cultura como direitos fundamentais inalienáveis. Por isso, a plataforma é de acesso 100% público, gratuito e universal.
+        </p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2: SUSTENTABILIDADE -->
+    <section id="politica-sustentabilidade" class="legal-card-section internal-policy">
+      <span class="legal-section-tag tag-internal">Política Interna • Seção 2</span>
+      <h2 class="legal-section-title">Ausência de Fins Lucrativos e Ausência de Anúncios</h2>
+      <div class="legal-content">
+        <p>
+          O Lino Livre opera estritamente sem finalidade lucrativa:
+        </p>
+        <ul>
+          <li><strong>Zero Venda de Livros:</strong> Não cobramos, não comercializamos e não intermediamos pagamentos por nenhuma das obras indexadas no acervo.</li>
+          <li><strong>Zero Publicidade Comercial:</strong> A plataforma é livre de banners promocionais, anúncios invasivos, rastreadores comerciais ou patrocínios que comprometam a experiência do leitor.</li>
+          <li><strong>Sustentabilidade Comunitária:</strong> Custos operacionais mínimos de infraestrutura de borda (Cloudflare Workers) e domínios são mantidos voluntariamente pela comunidade e doações espontâneas via Ko-fi.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: CURADORIA -->
+    <section id="politica-curadoria" class="legal-card-section internal-policy">
+      <span class="legal-section-tag tag-internal">Política Interna • Seção 3</span>
+      <h2 class="legal-section-title">Critérios de Curadoria & Fontes Homologadas</h2>
+      <div class="legal-content">
+        <p>
+          A catalogação do Lino Livre segue rigorosa política de verificação de fontes. São indexados prioritariamente materiais sob as seguintes categorias de licença:
+        </p>
+        <ul>
+          <li><strong>Domínio Público (<code>dominio-publico</code>):</strong> Obras cujos direitos patrimoniais prescreveram pelo decurso do prazo legal, permitindo reprodução, estudo e difusão livres.</li>
+          <li><strong>Creative Commons Zero (<code>cc0</code>):</strong> Conteúdos dedicados integralmente ao domínio público pelos respectivos autores originais.</li>
+          <li><strong>Licenças Abertas (<code>cc-by</code>, <code>cc-by-sa</code>, <code>cc-by-nc</code>):</strong> Obras distribuídas legalmente para finalidades pedagógicas, culturais e não-comerciais mediante a citação de autoria.</li>
+          <li><strong>Recursos Educacionais Abertos (REA):</strong> Livros técnicos, tutoriais de código aberto e apostilas colaborativas mantidas publicamente em repositórios abertos (ex.: Project Gutenberg, Internet Archive Open Library, Wikibooks, repositórios universitários).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4: CONDUTA -->
+    <section id="politica-conduta" class="legal-card-section internal-policy">
+      <span class="legal-section-tag tag-internal">Política Interna • Seção 4</span>
+      <h2 class="legal-section-title">Código de Conduta e Uso Aceitável</h2>
+      <div class="legal-content">
+        <p>Ao navegar pelo Lino Livre e participar dos canais comunitários, o usuário compromete-se a:</p>
+        <ol>
+          <li>Utilizar a plataforma exclusivamente para fins de estudo, leitura pessoal, pesquisa científica e desenvolvimento profissional;</li>
+          <li>Não realizar ataques de negação de serviço (DDoS), varreduras hostis, extrações em massa predatórias ou qualquer ato que prejudique a estabilidade do serviço para a comunidade;</li>
+          <li>Manter postura respeitosa e colaborativa nos canais comunitários (WhatsApp e fóruns parceiros).</li>
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- PARTE 2: POLÍTICAS EXTERNAS & DIRETRIZES JURÍDICAS                -->
+    <!-- ================================================================= -->
+
+    <!-- SEÇÃO 5: INTERMEDIÁRIO -->
+    <section id="juridico-intermediario" class="legal-card-section external-policy">
+      <span class="legal-section-tag tag-external">Diretriz Jurídica • Seção 5</span>
+      <h2 class="legal-section-title">Papel de Intermediário Tecnológico (Zero Armazenamento Local)</h2>
+      <div class="legal-content">
+        <p>
+          Para assegurar total transparência perante a lei, autores, editoras e utilizadores, a arquitetura técnica do Lino Livre observa uma diretriz permanente e imutável:
+        </p>
+
+        <div class="legal-highlight-box">
+          <h4>🏛️ Regra de Ouro da Arquitetura: Servidor de Busca e Metadados</h4>
+          <p>
+            O servidor web, a CDN e o banco de dados do Lino Livre <strong>NÃO ARMAZENAM, NÃO GRAVAM E NÃO HOSPEDAM</strong> nenhum arquivo binário de livro (PDF, EPUB, MOBI ou TXT).
+          </p>
+        </div>
+
+        <ul>
+          <li><strong>Catálogo Exclusivo de Metadados:</strong> A base armazena unicamente metadados públicos (título, autor, categoria, idioma, licença) e URLs para destinos externos pré-existentes na Web.</li>
+          <li><strong>Redirecionamento de Protocolo (HTTP 302):</strong> Toda solicitação de leitura externa ou download ocorre via redirecionamento de protocolo padrão (HTTP 302) diretamente para os servidores e bibliotecas originais onde o material está hospedado.</li>
+          <li><strong>Enquadramento:</strong> O Lino Livre enquadra-se estritamente como provedor de aplicações de busca, catalogação e indexação de hiperligações da Internet.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: ISENÇÃO -->
+    <section id="juridico-isencao" class="legal-card-section external-policy">
+      <span class="legal-section-tag tag-external">Diretriz Jurídica • Seção 6</span>
+      <h2 class="legal-section-title">Isenção de Responsabilidade por Conteúdo de Terceiros (Safe Harbor)</h2>
+      <div class="legal-content">
+        <p>
+          Por ser um motor de busca e indexador de referências públicas:
+        </p>
+        <ul>
+          <li><strong>Ausência de Controle Editorial sobre Servidores Externos:</strong> O Lino Livre não controla, não edita e não supervisiona o conteúdo, estabilidade ou legalidade de sites externos vinculados.</li>
+          <li><strong>Inexistência de Vínculo Comercial:</strong> A disponibilização de um link não implica sociedade, afiliação comercial, endosso ou responsabilidade solidária por eventuais infrações cometidas pelos repositórios de origem.</li>
+          <li><strong>Dever do Utilizador:</strong> Ao acessar uma URL externa, o usuário fica sujeito aos termos e políticas do respectivo site de destino.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 7: DMCA E TAKEDOWN -->
+    <section id="juridico-dmca" class="legal-card-section external-policy">
+      <span class="legal-section-tag tag-external">Diretriz Jurídica • Seção 7</span>
+      <h2 class="legal-section-title">Direitos Autorais e Procedimento de Notificação e Desindexação (DMCA)</h2>
+      <div class="legal-content">
+        <p>
+          Respeitamos plenamente os direitos de propriedade intelectual. Caso autores, editoras ou representantes legais identifiquem qualquer link no catálogo que aponte para material que infrinja direitos autorais, disponibilizamos um <strong>canal célere e desburocratizado para desindexação imediata</strong>:
+        </p>
+
+        <div class="takedown-box">
+          <h3 style="font-size: 1.15rem; color: #166534; margin-bottom: 0.75rem;">
+            📬 Canal Oficial de Notificação & Remoção (Takedown)
+          </h3>
+          <p style="font-size: 0.95rem; color: #334155; margin-bottom: 0.85rem;">
+            Envie sua notificação para o e-mail oficial contendo os seguintes elementos:
+          </p>
+          <ol style="font-size: 0.92rem; color: #475569; margin-bottom: 1rem;">
+            <li>Identificação da obra protegida por direitos de autor (título e autor);</li>
+            <li>Comprovação de titularidade ou procuração de representação legal;</li>
+            <li>Link da página no Lino Livre onde a referência está indexada;</li>
+            <li>Declaração de boa-fé de que a publicação externa não foi autorizada;</li>
+            <li>Dados de contato para confirmação da resolução.</li>
+          </ol>
+          <p style="font-weight: 700; color: #166534; font-size: 0.95rem;">
+            ⏱️ <strong>Prazo Máximo de Atendimento:</strong> Entre <strong>24 a 48 horas úteis</strong> após a recepção do e-mail.
+          </p>
+          <a href="mailto:bv6alblu6@mozmail.com?subject=%5BNOTIFICA%C3%87%C3%83O%20DE%20DIREITOS%20AUTORAIS%20%2F%20TAKEDOWN%5D%20-%20Lino%20Livre&body=Prezada%20Equipe%20do%20Lino%20Livre%2C%0A%0ASolicito%20a%20desindexa%C3%A7%C3%A3o%20da%20seguinte%20hiperliga%C3%A7%C3%A3o%20do%20cat%C3%A1logo%3A%0A%0A1.%20T%C3%ADtulo%20da%20Obra%3A%20%0A2.%20Autor%20ou%20Detentor%20dos%20Direitos%3A%20%0A3.%20URL%20ou%20ID%20no%20Lino%20Livre%3A%20%0A4.%20URL%20Externa%20Apontada%3A%20%0A5.%20Comprova%C3%A7%C3%A3o%20de%20Titularidade%3A%20%0A%0AAtenciosamente%2C%0ANome%3A%20%0AContato%3A%20" class="btn-takedown-email">
+            ✉️ Enviar Notificação de Remoção (E-mail Pré-Formatado)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 8: LEGISLAÇÃO -->
+    <section id="juridico-legislacao" class="legal-card-section external-policy">
+      <span class="legal-section-tag tag-external">Diretriz Jurídica • Seção 8</span>
+      <h2 class="legal-section-title">Conformidade Legal (Legislação de Angola e Tratados Internacionais)</h2>
+      <div class="legal-content">
+        <p>A operação do Lino Livre fundamenta-se nos seguintes diplomas e marcos regulatórios:</p>
+        <ul>
+          <li><strong>República de Angola:</strong> Lei n.º 15/14, de 31 de Julho (Lei sobre os Direitos de Autor e Conexos), em especial seus artigos 32.º (limitações em benefício do ensino e instrução pública) e 42.º a 45.º (obras em domínio público e património cultural comum).</li>
+          <li><strong>Tratados Internacionais:</strong> Convenção de Berna para a Proteção das Obras Literárias e Artísticas e tratados administrados pela Organização Mundial da Propriedade Intelectual (OMPI/WIPO).</li>
+          <li><strong>Princípios Globais de Intermediação Tecnológica:</strong> Princípios consolidados de porto seguro (*Safe Harbor*) para motores de busca e indexadores, compatíveis com a Diretiva 2000/31/CE do Parlamento Europeu e o artigo 19 do Marco Civil da Internet.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 9: PRIVACIDADE -->
+    <section id="juridico-privacidade" class="legal-card-section external-policy">
+      <span class="legal-section-tag tag-external">Diretriz Jurídica • Seção 9</span>
+      <h2 class="legal-section-title">Política de Privacidade & Proteção de Dados (LGPD e RGPD)</h2>
+      <div class="legal-content">
+        <p>
+          O Lino Livre adota o princípio de <em>Privacy by Design</em> e <em>Data Minimization</em>:
+        </p>
+        <ul>
+          <li><strong>Nenhum Cadastro Exigido:</strong> O usuário navega, pesquisa e lê sem necessidade de criar conta, fornecer e-mail, telefone ou dados pessoais.</li>
+          <li><strong>Armazenamento Exclusivamente Local (<code>localStorage</code>):</strong> Preferências de acessibilidade visual (modo noite, tipo de papel, tamanho da fonte) são gravadas unicamente no dispositivo do leitor.</li>
+          <li><strong>Zero Rastreamento Invasivo:</strong> Não usamos cookies de terceiros para publicidade comportamental e não vendemos informações de acesso.</li>
+        </ul>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- PARTE 3: IDENTIFICAÇÃO CORPORATIVA E CONTATO                      -->
+    <!-- ================================================================= -->
+
+    <section id="juridico-institucional" class="legal-card-section institutional-policy">
+      <span class="legal-section-tag tag-institutional">Entidade Mantenedora • Seção 10</span>
+      <h2 class="legal-section-title">Identificação Corporativa & Encarregado de Conformidade</h2>
+      <div class="legal-content">
+        <p>
+          O projeto Lino Livre e a marca institucional LinoDigital são operados e mantidos pela seguinte pessoa coletiva legalmente constituída:
+        </p>
+
+        <div class="company-card">
+          <div>
+            <div class="company-field-label">Razão Social / Entidade</div>
+            <div class="company-field-value">LAIPMENDES - COMERCIO E PRESTAÇAO DE SERVIÇOS, LDA</div>
+          </div>
+          <div>
+            <div class="company-field-label">Número de Identificação Fiscal (NIF)</div>
+            <div class="company-field-value">5003237591</div>
+          </div>
+          <div>
+            <div class="company-field-label">Sede e Jurisdição</div>
+            <div class="company-field-value">Luanda, República de Angola</div>
+          </div>
+          <div>
+            <div class="company-field-label">Canal Oficial do Encarregado</div>
+            <div class="company-field-value"><a href="mailto:bv6alblu6@mozmail.com" style="color:var(--primary);text-decoration:none;">bv6alblu6@mozmail.com</a></div>
+          </div>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.9rem; color: #64748b;">
+          Para questões legais, notificações formais, pedidos de parceria acadêmica ou relatórios de vulnerabilidade, utilize sempre o canal oficial do encarregado indicado acima.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Rodapé Minimalista -->
+  <footer class="site-footer">
+    <div class="container footer-clean-wrapper">
+      <div class="footer-brand-section">
+        <div class="footer-brand-title">Lino Livre</div>
+        <p class="footer-tagline">Livros livres, para todos. Biblioteca digital comunitária e aberta.</p>
+      </div>
+      <nav class="footer-nav-simple">
+        <a href="/">Voltar ao Início</a>
+        <a href="/#aba-livros">Catálogo de Livros</a>
+        <a href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">Comunidade WhatsApp</a>
+        <a href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer">Apoiar Projeto</a>
+        <a href="mailto:bv6alblu6@mozmail.com">Contacto</a>
+      </nav>
+      <div class="footer-bottom-bar">
+        <p>© 2026 <strong>LinoDigital</strong> · Plataforma operada por <strong>LAIPMENDES, LDA</strong> (NIF: 5003237591) · Luanda, Angola</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

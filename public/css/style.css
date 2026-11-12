@@ -1573,7 +1573,7 @@ body {
   border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--text-main);
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   min-height: 72px;
 }
 
@@ -1647,7 +1647,7 @@ body {
   font-weight: 600;
   color: var(--text-muted);
   white-space: nowrap;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
   cursor: help;
 }
 
@@ -4984,4 +4984,87 @@ html[lang^="zh"] .course-title {
 }
 .turnstile-widget[hidden] {
   display: none;
+}
+
+/* ==========================================================================
+   Rodapé Minimalista Limpo (Lino Livre)
+   ========================================================================== */
+.footer-clean-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 1.5rem 1rem 0.5rem 1rem;
+}
+
+.footer-brand-section .footer-brand-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.footer-brand-section .footer-tagline {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.footer-nav-simple {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  width: 100%;
+  max-width: 760px;
+}
+
+.footer-nav-simple a {
+  color: #334155;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: color 0.15s ease;
+}
+
+.footer-nav-simple a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.footer-nav-simple a.footer-link-highlight {
+  color: var(--primary);
+  font-weight: 600;
+  background: #f0fdf4;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #bbf7d0;
+}
+
+.footer-clean-wrapper .footer-bottom-bar {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.footer-clean-wrapper .footer-bottom-bar p {
+  margin: 0.35rem 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.footer-clean-wrapper .footer-sub-text {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.footer-clean-wrapper .footer-sub-text a {
+  color: var(--primary);
+  text-decoration: underline;
 }

@@ -317,6 +317,11 @@ const DIMENSOES_CACHE_TTL = 30 * 60 * 1000; // 30 minutos
 export { servirAiCatalogWorker, SECURITY_TXT } from './routes/agentic';
 // Marca institucional nos fallbacks do Worker: # LinoDigital — Lino Livre, name: 'LinoDigital' e LinoDigital · Lino Livre
 
+// Rotas diretas para a página de políticas e diretrizes legais
+app.get('/politicas', (c) => c.redirect('/politicas.html', 301));
+app.get('/legal', (c) => c.redirect('/politicas.html', 301));
+app.get('/termos', (c) => c.redirect('/politicas.html', 301));
+
 // Diretrizes Legais, Intermediação, DMCA / Takedown e Privacidade
 app.get('/api/legal', (c) => {
   return c.json({
@@ -358,8 +363,9 @@ app.get('/api/legal', (c) => {
     },
     licencas_suportadas: LICENCAS_VALIDAS,
     links: {
-      termos_completos: '/termos.html',
-      aviso_legal: '/legal.html',
+      politicas_e_juridico: '/politicas.html',
+      termos_completos: '/politicas.html',
+      aviso_legal: '/politicas.html',
       creditos_licencas: '/creditos.html',
       documento_oficial: 'https://github.com/MisterAntoY/lino-livre/blob/main/TERMOS-DE-USO-E-AVISO-LEGAL.md',
       documento_compliance: 'https://github.com/MisterAntoY/lino-livre/blob/main/docs/FONTES-E-COMPLIANCE.md'

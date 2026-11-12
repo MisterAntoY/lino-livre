@@ -410,111 +410,6 @@
 
   <!-- ==================== ABA 1: LIVROS DIGITAIS ==================== -->
   <div id="aba-livros" class="tab-content active">
-    <!-- Placar da Jornada: Rumo aos 10 Milhões de Livros -->
-    <section class="container goal-scoreboard-section" id="secao-placar-meta">
-      <div class="goal-scoreboard-card">
-        <div class="goal-header">
-          <div class="goal-title-group">
-            <h2 class="goal-title" data-i18n="ui.goal.title">Rumo aos 10 Milhões de Livros Livres</h2>
-          </div>
-          <div class="goal-live-counter">
-            <div class="goal-counter-box">
-              <span class="counter-label" data-i18n="ui.goal.currentIndexed">Obras Abertas Indexadas</span>
-              <div class="counter-number-row">
-                <span class="counter-odometer" id="placar-total-livros">80 331</span>
-                <span class="counter-divider">/</span>
-                <span class="counter-target">10.000.000</span>
-              </div>
-              <span class="counter-pct" id="placar-porcentagem">0.8033% da meta</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Barra de Progresso Visual e Marcos Históricos -->
-        <div class="goal-progress-wrapper">
-          <div class="goal-progress-bar-bg" role="progressbar" aria-label="Progresso da meta de 10 milhões de livros livres" aria-valuenow="80331" aria-valuemin="0" aria-valuemax="10000000" aria-valuetext="2.000 de 10.000.000 obras catalogadas" id="placar-progressbar-container">
-            <div class="goal-progress-bar-fill" id="placar-barra-progresso" style="transform: scaleX(0.0002);"></div>
-          </div>
-          
-          <!-- Marcos da Jornada / Milestones -->
-          <div class="goal-milestones">
-            <div class="milestone-step reached" title="Marco Inicial: Lançamento da Plataforma">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">0</span>
-            </div>
-            <div class="milestone-step reached" id="milestone-1k" title="Marco 1: 1.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">1.000</span>
-            </div>
-            <div class="milestone-step reached" id="milestone-10k" title="Marco 2: 10.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">10.000</span>
-            </div>
-            <div class="milestone-step active" id="milestone-100k" title="Marco 3: 100.000 Obras Abertas">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">
-              <span class="milestone-tag" data-i18n="ui.goal.nextMilestone">Próximo</span>100.000</span>
-            </div>
-            <div class="milestone-step" id="milestone-1m" title="Marco 4: 1.000.000 (1 Milhão)">
-              <span class="milestone-dot"></span>
-              <span class="milestone-text">1.000.000</span>
-            </div>
-            <div class="milestone-step milestone-target" id="milestone-10m" title="Grande Meta: 10.000.000 de Livros">
-              <span class="milestone-dot gold"></span>
-              <span class="milestone-text gold">10.000.000 </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Estatísticas Rápidas e Ações da Comunidade -->
-        <div class="goal-footer">
-          <div class="goal-stats-grid">
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val" id="placar-stat-atual">80 331</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statIndexed">Acervo Atual</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val">10.000.000</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statTarget">Alvo Global</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val" id="placar-stat-faltam">9 919 669</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statRemaining">Faltam Indexar</span>
-              </div>
-            </div>
-            <div class="goal-stat-pill">
-
-              <div>
-                <span class="stat-val" id="placar-stat-next-target">10.000</span>
-                <span class="stat-lbl" data-i18n="ui.goal.statNextTarget">Meta Imediata</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="goal-actions">
-            <button class="btn btn-goal-contrib" data-acao="abrirModalNovoLivro">
-              <span data-i18n="ui.goal.btnContribute">Indicar Livro Aberto</span>
-            </button>
-            <button class="btn btn-goal-share" data-acao="compartilharMeta10M">
-              <span data-i18n="ui.goal.btnShare">Partilhar a Jornada</span>
-            </button>
-            <a class="btn btn-goal-whatsapp" id="btn-goal-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
-              <svg class="icon-whatsapp" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-whatsapp"></use></svg>
-              <span data-i18n="ui.goal.btnJoin">Comunidade</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Navegação Rápida por Categorias Principais -->
     <div class="container">
       <div class="quick-nav-grid" id="quick-nav">
@@ -1000,90 +895,28 @@
     </div>
   </section>
 
-  <!-- Rodapé Global da Plataforma -->
+  <!-- Rodapé Global da Plataforma (Simplificado e Limpo) -->
   <footer class="site-footer">
-    <div class="container footer-content-grid">
-      <!-- Coluna 1: Missão & Marca LinoDigital -->
-      <div class="footer-col footer-col-brand">
+    <div class="container footer-clean-wrapper">
+      <div class="footer-brand-section">
         <div class="footer-brand-title">LinoDigital</div>
-        <p class="footer-brand-desc" data-i18n="ui.footer.mission">
-          LinoDigital é a marca institucional de tecnologia e conhecimento livre. O <strong>Lino Livre</strong> é a sua biblioteca digital comunitária e sem fins lucrativos, dedicada a democratizar o acesso universal ao conhecimento, à literatura e à tecnologia nos PALOP e no Sul Global.
-        </p>
-        <div class="footer-safe-badge">
-          <span data-i18n="ui.footer.safeBadge"> Provedor Intermediário de Busca • Zero Armazenamento Local</span>
-        </div>
+        <p class="footer-tagline" data-i18n="ui.footer.tagline">Lino Livre · Livros livres, para todos. Biblioteca digital comunitária e aberta.</p>
       </div>
 
-      <!-- Coluna 2: Navegação Rápida -->
-      <div class="footer-col">
-        <h4 class="footer-heading" data-i18n="ui.footer.headingExplore">Explorar Acervo</h4>
-        <ul class="footer-nav-list">
-          <li><a href="#aba-livros" data-acao="trocarAba" data-arg="livros" data-i18n="ui.tabs.books"> Livros Digitais</a></li>
-          <li><a href="#aba-cursos" data-acao="trocarAba" data-arg="cursos" data-i18n="ui.tabs.courses"> Cursos Gratuitos</a></li>
-          <li><a href="#aba-roadmaps" data-acao="trocarAba" data-arg="roadmaps" data-i18n="ui.tabs.roadmaps"> Roadmaps & Trilhas</a></li>
-          <li><a href="#aba-podcasts" data-acao="trocarAba" data-arg="podcasts" data-i18n="ui.tabs.podcasts"> Podcasts & Spotify</a></li>
-          <li><a href="#aba-dashboard" data-acao="trocarAba" data-arg="dashboard" data-i18n="ui.tabs.dashboard"> Métricas & Fontes</a></li>
-        </ul>
-      </div>
+      <nav class="footer-nav-simple" aria-label="Navegação secundária">
+        <a href="#aba-livros" data-acao="trocarAba" data-arg="livros" data-i18n="ui.tabs.books">Catálogo</a>
+        <a id="btn-goal-comunidade" class="btn-goal-whatsapp" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.group">Comunidade</a>
+        <a href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" data-i18n="ui.header.kofi">Apoiar Projeto</a>
+        <a href="/politicas.html" class="footer-link-highlight">Políticas & Diretrizes Jurídicas</a>
+        <a href="mailto:bv6alblu6@mozmail.com">Contacto</a>
+      </nav>
 
-      <!-- Coluna 3: Jurídico & Responsabilidade -->
-      <div class="footer-col">
-        <h4 class="footer-heading" data-i18n="ui.footer.headingLegal">Jurídico & Diretrizes</h4>
-        <ul class="footer-nav-list">
-          <li><a href="/legal.html#secao-missao" data-acao="abrirModalLegal" data-arg="termos" data-i18n="ui.footer.terms"> Termos de Uso</a></li>
-          <li><a href="/legal.html#secao-isencao" data-acao="abrirModalLegal" data-arg="isencao" data-i18n="ui.footer.disclaimer"> Isenção de Responsabilidade</a></li>
-          <li><a href="/legal.html#secao-direitos" data-acao="abrirModalLegal" data-arg="takedown" data-i18n="ui.footer.dmca"> Direitos Autorais & DMCA</a></li>
-          <li><a href="/legal.html#secao-privacidade" data-acao="abrirModalLegal" data-arg="privacidade" data-i18n="ui.footer.privacy"> Privacidade (LGPD/RGPD)</a></li>
-          <li><a href="/creditos.html" target="_blank" rel="noopener noreferrer">Créditos & Licenças ↗</a></li>
-          <li><a href="/termos.html" target="_blank" rel="noopener noreferrer" data-i18n="ui.footer.fullTerms"> Página Legal Completa ↗</a></li>
-        </ul>
+      <div class="footer-bottom-bar">
+        <p>© 2026 <strong>LinoDigital</strong> · Lino Livre — Plataforma operada por <strong>LAIPMENDES, LDA</strong> (NIF: 5003237591) · Luanda, Angola</p>
+        <p class="footer-sub-text">Obras em Domínio Público e Recursos Educacionais Abertos (REA) • Zero Armazenamento de Arquivos • <a href="/politicas.html">Ver Políticas Internas & Diretrizes Externas</a></p>
       </div>
-
-      <!-- Coluna 4: Comunidade & Suporte -->
-      <div class="footer-col">
-        <h4 class="footer-heading" data-i18n="ui.footer.headingCommunity">Comunidade & Suporte</h4>
-        <ul class="footer-nav-list">
-          <li id="footer-links-container">
-            <a id="link-footer-comunidade" href="https://chat.whatsapp.com/FobzGj8sibBI0EWfQrl2oU" target="_blank" rel="noopener noreferrer">
-              <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-              <span data-i18n="ui.footer.group">Comunidade WhatsApp</span>
-            </a>
-          </li>
-          <li id="footer-canal-container">
-            <a id="link-footer-canal" href="https://whatsapp.com/channel/0029Vb8qMqDBlHpk2TQYwU0X" target="_blank" rel="noopener noreferrer">
-              <svg class="icon-whatsapp" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-              <span data-i18n="ui.footer.channel">Canal WhatsApp</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://ko-fi.com/linolivre" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">
-               <span data-i18n="ui.header.kofi">Apoiar Projeto</span>
-            </a>
-          </li>
-          <li>
-            <a href="mailto:bv6alblu6@mozmail.com" style="color: var(--primary); font-weight: 500;">
-               bv6alblu6@mozmail.com
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Caixa de Isenção e Intermediação em Destaque -->
-    <div class="container footer-disclaimer-wrapper">
-      <div class="footer-disclaimer-box">
-        <p data-i18n="ui.footer.disclaimerText">
-          Aviso de Intermediação & Isenção de Responsabilidade: O Lino Livre é estritamente uma plataforma intermediária e motor de busca de hiperligações externas públicas. Nossos servidores e banco de dados não armazenam, não hospedam e não distribuem arquivos binários de livros (PDF, EPUB, TXT). Todo acesso e leitura ocorrem via redirecionamento de protocolo (HTTP 302) para os repositórios públicos originais. Detentores legítimos de direitos autorais podem solicitar a desindexação imediata de links através de bv6alblu6@mozmail.com — atendimento e remoção em até 48 horas úteis.
-        </p>
-      </div>
-    </div>
-
-    <div class="container footer-bottom-bar">
-      <p>© 2026 <strong>LinoDigital</strong> · Lino Livre — Plataforma operada por <strong>LAIPMENDES - COMERCIO E PRESTAÇAO DE SERVIÇOS, LDA</strong> (NIF: 5003237591) | Luanda, Angola</p>
-      <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.35rem;"><span data-i18n="ui.footer.tagline">• Livros livres, para todos. Obras em Domínio Público e Recursos Educacionais Abertos.</span></p>
     </div>
   </footer>
-
 
   <!-- MODAL: LEITOR DIGITAL IMERSIVO (ESTILO ONLINE LINO LIVRE) -->
   <div id="modal-leitor" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="leitor-titulo">
