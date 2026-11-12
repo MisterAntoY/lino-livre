@@ -429,9 +429,9 @@ async function buscarGuiaDeTI(query = '') {
     } catch (_) {}
   }
 
-  // Se nenhum item foi obtido da rede (ex: teste ou offline), usar acervo base do Guia de TI
-  if (itemsMap.size === 0) {
-    for (const item of GUIA_DE_TI_FALLBACK) {
+  // Assegurar a presença do acervo canónico de base (resiliência offline, testes determinísticos e catálogo contínuo)
+  for (const item of GUIA_DE_TI_FALLBACK) {
+    if (!itemsMap.has(item.link)) {
       itemsMap.set(item.link, item);
     }
   }
